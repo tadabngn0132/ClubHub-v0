@@ -1,33 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { FORM_FIELD, PLACEHOLDER_FORM } from './constants/FormField'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const handleSignIn = () => {
+
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='sign-in-page-container'>
+        {/* head */}
+        <div className="sign-in-form-head-container">
+          <h2 className="sign-in-head-text">Sign in</h2>
+        </div>
+        
+        {/* form */}
+        <div className="sign-in-form-container">
+          <form action={handleSignIn}
+            className="sign-in-form"
+            name='basic-login'>
+              <input
+                type='text'
+                className='sign-in-username-field'
+                name={FORM_FIELD.USERNAME}
+                placeholder={PLACEHOLDER_FORM.USERNAME}
+              />
+
+              <input 
+                type="password"
+                className='sign-in-password-field'
+                name={FORM_FIELD.PASSWORD}
+                placeholder={PLACEHOLDER_FORM.PASSWORD}
+              />
+
+              <button 
+                className='sign-in-submit-btn'
+                type="submit"
+              >
+                  Sign in
+              </button>
+          </form>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
