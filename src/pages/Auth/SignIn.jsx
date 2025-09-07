@@ -1,4 +1,4 @@
-import { FORM_FIELD, PLACEHOLDER_FORM } from '../../constants/formField';
+import { FORM_FIELD, PLACEHOLDER_FORM } from '../../utils/constants'
 
 const SignIn = () => {
   const handleSignIn = () => {};
