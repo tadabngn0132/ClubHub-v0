@@ -2,10 +2,10 @@ import React from "react";
 
 const Header = () => {
   return (
-    <div className="flex justify-between items-center pt-1 pb-1 pl-4 pr-4">
+    <div className="flex justify-between items-center p-2 pl-9 pr-9">
       <div className="logo flex">
         <img className="w-25" src="src/assets/logos/logo.webp" alt="GDC Logo" />
-        <img src="" alt="UoG Logo" />
+        <img className="w-25" src="src/assets/logos/logo.webp" alt="UoG Logo" />
       </div>
 
       <nav className="">
