@@ -1,52 +1,60 @@
-import { FORM_FIELD, PLACEHOLDER_FORM } from '../../utils/constants'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faGoogle } from "@fortawesome/free-brands-svg-icons"
+import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
+import { faLock, faUser } from "@fortawesome/free-solid-svg-icons"
 
 const SignIn = () => {
-  const handleSignIn = () => {};
-
   return (
-    <>
-      <div className="m-0 p-0 box-border flex flex-col gap-15 bg-auto ">
-        {/* head */}
-        <div className="flex flex-col items-center">
-          <h2 className="font-bold text-5xl">Sign in</h2>
-        </div>
-
-        {/* form */}
-        <div className="">
-          <form action={handleSignIn} className="flex flex-col gap-5" name="basic-login">
+    <div className="flex flex-col items-start pink-bg-color w-max p-12 pl-16 pr-16 rounded-[3rem]">
+      <h1 className="monument-extra-bold text-3xl text-black mb-20">
+        Welcome <br /> Back!
+      </h1>
+      <form action="" className="flex flex-col">
+        <div className="flex flex-col gap-2.5 mb-1">
+          <div className="flex items-center relative">
+            <FontAwesomeIcon icon={faEnvelope} size="lg" className="absolute text-[#454545] left-3"/>
             <input
-              type="text"
-              className="border-1 border-gray-500 p-4 pb-2 pt-2 w-80 rounded-4xl outline-0 focus:border-cyan-300"
-              name={FORM_FIELD.USERNAME}
-              placeholder={PLACEHOLDER_FORM.USERNAME}
+              type="email"
+              placeholder="Email Address"
+              className="p-2 pl-14 text-[#454545] bg-white rounded-[1rem] placeholder-[#454545] w-1/1"
             />
+          </div>
 
+          <div className="flex items-center relative">
+            <FontAwesomeIcon icon={faLock} size="lg" className="absolute text-[#454545] left-3" />
             <input
               type="password"
-              className="border-1 border-gray-500 p-4 pb-2 pt-2 w-80 rounded-4xl outline-0 focus:border-cyan-300"
-              name={FORM_FIELD.PASSWORD}
-              placeholder={PLACEHOLDER_FORM.PASSWORD}
+              placeholder="Password"
+              className="p-2 pl-14 text-[#454545] bg-white rounded-[1rem] placeholder-[#454545] w-1/1"
             />
-
-            <div className="flex justify-between">
-              <div className="flex gap-1.5 items-center">
-                <input type="checkbox" name="remember" />
-                <span>Remember me</span>
-              </div>
-
-              <div className="self-baseline-last underline underline-offset-2">Forgot Password?</div>
-            </div>
-
-            <button
-              className="mt-10 p-2 rounded-4xl bg-gray-500 hover:bg-cyan-500 hover:text-black hover:font-medium cursor-pointer"
-              type="submit"
-            >
-              Sign in
-            </button>
-          </form>
+          </div>
         </div>
-      </div>
-    </>
+
+        <a className="mb-8 pl-4" href="">Forgot Password?</a>
+
+        <div className="flex flex-col gap-2.5 mb-1">
+          <div className="flex items-center relative">
+            <FontAwesomeIcon icon={faGoogle} size="2xl" className="absolute text-black left-2"/>
+            <input 
+              type="button" 
+              value="Signin with Google"
+              className="bg-white text-black p-2 pl-14 pr-14 rounded-2xl w-1/1 text-left"
+            />
+          </div>
+
+          <div className="flex items-center relative">
+            <FontAwesomeIcon icon={faUser} size="2xl" className="absolute text-black left-2"/>
+            <input 
+              type="button" 
+              value="Signin with email fpt.edu.vn"
+              className="bg-white text-black p-2 pl-14 pr-14 rounded-2xl w-1/1 text-left"
+            />
+          </div>
+        </div>
+
+        <input type="button" value="SIGN IN" className="pink-color bg-white w-fit p-1 pl-4 pr-4 rounded-2xl mt-5"/>
+      </form>
+    </div>
   );
 };
 
