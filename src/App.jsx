@@ -1,4 +1,4 @@
-import SignIn from './pages/Auth/SignIn'
+import SignIn from './pages/auth/SignIn'
 import Header from './components/layout/public/Header'
 import Footer from './components/layout/public/Footer'
 
@@ -8,7 +8,9 @@ function App() {
     <>
       {/* <Header /> */}
       {/* <Footer /> */}
-      <SignIn />
+      <main className='flex items-center justify-center min-h-[46.5vw]'>
+        <SignIn />
+      </main>
     </>
   )
 }
