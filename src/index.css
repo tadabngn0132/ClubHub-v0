@@ -1,6 +1,34 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Monument';
+  src: url('src/assets/fonts/PPMonumentExtended-Regular.woff2') format('woff2')
+      url('src/assets/fonts/PPMonumentExtended-Regular.woff') format('woff'),  
+      url('src/assets/fonts/PPMonumentExtended-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   background-color: #000;
   color: #fff;
+}
+
+.monument-regular {
+    font-family: 'Monument', sans-serif;
+    font-weight: 400;
+}
+
+.monument-extra-bold {
+    font-family: 'Monument', sans-serif;
+    font-weight: 900;
+}
+
+.pink-color {
+  color: #DB3F7A;
+}
+
+.pink-bg-color {
+  background-color: #DB3F7A;
 }

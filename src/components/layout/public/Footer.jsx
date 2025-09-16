@@ -12,22 +12,22 @@ const Footer = () => {
       <img className="w-50" src="src/assets/logos/logo.webp" alt="GDC Logo" />
       <div className="flex justify-between">
         <div>
-          <h1 className="text-[2.75rem] font-medium leading-12">
-            Wanna <span className="text-pink-500">create</span> an
+          <h1 className="monument-extra-bold text-[1.75rem] font-medium">
+            Wanna <span className="pink-color">create</span> an
             <br />
-            <span className="text-pink-500"> unforgettable </span>
+            <span className="pink-color"> unforgettable </span>
             <br />
-            moment <span className="text-pink-500">together?</span>
+            moment <span className="pink-color">together?</span>
           </h1>
 
-          <button className="bg-pink-500 p-1 pl-4 pr-4 rounded-4xl mt-6 font-medium">
+          <button className="pink-bg-color p-1 pl-4 pr-4 rounded-4xl mt-6 font-medium">
             GET IN TOUCH
           </button>
         </div>
 
         <div className="flex gap-40">
           <div>
-            <h3 className="text-pink-500 font-medium">PAGE NAVIGATION</h3>
+            <h3 className="pink-color font-medium">PAGE NAVIGATION</h3>
             <div>
               <h4>
                 Home <span>.</span> About <span>.</span> Account
@@ -42,12 +42,12 @@ const Footer = () => {
 
           <div className="flex flex-col justify-between">
             <div className="flex flex-col items-end">
-              <h3 className="text-pink-500 font-medium">CONTACT</h3>
+              <h3 className="pink-color font-medium">CONTACT</h3>
               <p>@gdc.fpt2022@gmail.com</p>
             </div>
 
             <div className="flex flex-col items-end">
-              <h3 className="text-pink-500 font-medium">FOLLOW US</h3>
+              <h3 className="pink-color font-medium">FOLLOW US</h3>
               <div>
                 <FontAwesomeIcon icon={faFacebookF} />
                 <FontAwesomeIcon icon={faInstagram} />
@@ -59,7 +59,10 @@ const Footer = () => {
         </div>
       </div>
 
-      <p className="border-b-1 mt-12">&copy; GDC - Greenwich Dance Crew</p>
+      <div>
+        <p className="border-b-1 mt-12">&copy; GDC - Greenwich Dance Crew</p>
+        <img src="src/assets/backgrounds/text-footer.webp" alt="Footer image" />
+      </div>
     </div>
   );
 };

@@ -10,14 +10,14 @@ const Header = () => {
 
       <nav className="">
         <ul className="flex">
-          <li className="p-4.5">ABOUT</li>
-          <li className="p-4.5">MEMBERS</li>
-          <li className="p-4.5">ACTIVITIES</li>
-          <li className="p-4.5">CONTACT</li>
+          <li className="p-4.5 font-bold">ABOUT</li>
+          <li className="p-4.5 font-bold">MEMBERS</li>
+          <li className="p-4.5 font-bold">ACTIVITIES</li>
+          <li className="p-4.5 font-bold">CONTACT</li>
         </ul>
       </nav>
 
-      <a href="">ACCOUNT</a>
+      <a className="font-extrabold" href="">ACCOUNT</a>
     </div>
   );
 };
