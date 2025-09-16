@@ -2,8 +2,8 @@
 
 @font-face {
   font-family: 'Monument';
-  src: url('src/assets/fonts/PPMonumentExtended-Regular.woff2') format('woff2')
-      url('src/assets/fonts/PPMonumentExtended-Regular.woff') format('woff'),  
+  src: url('src/assets/fonts/PPMonumentExtended-Regular.woff2') format('woff2'),
+      url('src/assets/fonts/PPMonumentExtended-Regular.woff') format('woff'),
       url('src/assets/fonts/PPMonumentExtended-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
@@ -15,6 +15,7 @@ body {
   color: #fff;
 }
 
+/* Font */
 .monument-regular {
     font-family: 'Monument', sans-serif;
     font-weight: 400;
@@ -25,6 +26,15 @@ body {
     font-weight: 900;
 }
 
+.inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Color */
 .pink-color {
   color: #DB3F7A;
 }
