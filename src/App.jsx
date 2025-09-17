@@ -7,12 +7,12 @@ function App() {
 
   return (
     <>
-      {/* <Header /> */}
-      {/* <Footer /> */}
+      <Header />
       <main className='flex items-center justify-center min-h-[46.5vw]'>
         {/* <SignIn /> */}
         <ErrorBoundary />
       </main>
+      <Footer />
     </>
   )
 }
