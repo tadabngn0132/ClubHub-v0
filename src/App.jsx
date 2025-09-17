@@ -8,9 +8,9 @@ function App() {
   return (
     <>
       <Header />
-      <main className='flex items-center justify-center min-h-[46.5vw]'>
-        {/* <SignIn /> */}
-        <ErrorBoundary />
+      <main className='flex flex-col items-center justify-center min-h-[46.5vw] pt-[4.5rem]'>
+        <SignIn />
+        {/* <ErrorBoundary /> */}
       </main>
       <Footer />
     </>

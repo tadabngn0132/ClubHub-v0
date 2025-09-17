@@ -49,7 +49,7 @@ const SignIn = () => {
               <input 
                 type="button" 
                 value="Signin with Google"
-                className="bg-white text-black p-2 pl-14 pr-14 rounded-2xl w-1/1 text-left"
+                className="bg-white text-black p-2 pl-14 pr-14 rounded-2xl w-1/1 text-left cursor-pointer"
               />
             </div>
 
@@ -58,12 +58,12 @@ const SignIn = () => {
               <input 
                 type="button" 
                 value="Signin with email fpt.edu.vn"
-                className="bg-white text-black p-2 pl-14 pr-14 rounded-2xl w-1/1 text-left"
+                className="bg-white text-black p-2 pl-14 pr-14 rounded-2xl w-1/1 text-left cursor-pointer"
               />
             </div>
           </div>
 
-          <input type="button" value="SIGN IN" className="pink-color bg-white w-fit p-1 pl-4 pr-4 rounded-2xl mt-5"/>
+          <input type="button" value="SIGN IN" className="pink-color bg-white w-fit p-1 pl-8 pr-8 rounded-2xl mt-5 shadow-white-centered font-bold cursor-pointer"/>
         </form>
       </div>
     </div>

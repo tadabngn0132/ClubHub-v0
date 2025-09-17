@@ -20,39 +20,41 @@ const Footer = () => {
             moment <span className="pink-color">together?</span>
           </h1>
 
-          <button className="pink-bg-color p-1 pl-4 pr-4 rounded-4xl mt-6 font-medium">
+          <button className="pink-bg-color p-1 pl-4 pr-4 rounded-4xl mt-6 font-medium cursor-pointer">
             GET IN TOUCH
           </button>
         </div>
 
         <div className="flex gap-40">
-          <div>
+          <div className="flex flex-col gap-1">
             <h3 className="pink-color font-medium">PAGE NAVIGATION</h3>
-            <div>
-              <h4>
-                Home <span>.</span> About <span>.</span> Account
-              </h4>
-            </div>
-            <div>
-              <p>
-                Activities <span>.</span> Members
-              </p>
-            </div>
+            <h4>
+              Home <span>.</span> About <span>.</span> Account <br />
+              Activities <span>.</span> Members
+            </h4>
           </div>
 
           <div className="flex flex-col justify-between">
-            <div className="flex flex-col items-end">
+            <div className="flex flex-col items-end gap-1">
               <h3 className="pink-color font-medium">CONTACT</h3>
               <p>@gdc.fpt2022@gmail.com</p>
             </div>
 
-            <div className="flex flex-col items-end">
-              <h3 className="pink-color font-medium">FOLLOW US</h3>
-              <div>
-                <FontAwesomeIcon icon={faFacebookF} />
-                <FontAwesomeIcon icon={faInstagram} />
-                <FontAwesomeIcon icon={faTiktok} />
-                <FontAwesomeIcon icon={faYoutube} />
+            <div className="flex flex-col items-end gap-1">
+              <h3 className="pink-color font-medium mb-1.5">FOLLOW US</h3>
+              <div className="">
+                <a href="https://www.facebook.com/gdcgwdance" className="hover:text-[#DB3F7A] text-lg">
+                  <FontAwesomeIcon icon={faFacebookF} size="xl" />
+                </a>
+                <a href="https://www.instagram.com/gdc.gwhn/" className="hover:text-[#DB3F7A] text-lg">
+                  <FontAwesomeIcon icon={faInstagram} size="xl" />
+                </a>
+                <a href="https://www.tiktok.com/@greenwichdancecrew" className="hover:text-[#DB3F7A] text-lg">
+                  <FontAwesomeIcon icon={faTiktok} size="xl" />
+                </a>
+                <a href="https://www.youtube.com/@GDC-GreenwichDanceCrew" className="hover:text-[#DB3F7A] text-lg">
+                  <FontAwesomeIcon icon={faYoutube} size="xl" />
+                </a>
               </div>
             </div>
           </div>

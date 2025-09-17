@@ -60,3 +60,8 @@ body {
 .pink-bg-color {
   background-color: #DB3F7A;
 }
+
+/* Shadow */
+.shadow-white-centered {
+  box-shadow: 0 0 10px 6px rgba(255, 255, 255, 0.25);
+}
