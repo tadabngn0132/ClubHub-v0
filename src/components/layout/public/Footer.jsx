@@ -25,12 +25,12 @@ const Footer = () => {
           </button>
         </div>
 
-        <div className="flex gap-40">
+        <div className="flex gap-30">
           <div className="flex flex-col gap-1">
             <h3 className="pink-color font-medium">PAGE NAVIGATION</h3>
-            <h4>
-              Home <span>.</span> About <span>.</span> Account <br />
-              Activities <span>.</span> Members
+            <h4 className="leading-6.5">
+              Home <span className="bigger-text m-0 ml-4 mr-4">.</span> About <span className="bigger-text m-0 ml-4 mr-4">.</span> Account <br />
+              Activities <span className="bigger-text m-0 ml-4 mr-4">.</span> Members
             </h4>
           </div>
 

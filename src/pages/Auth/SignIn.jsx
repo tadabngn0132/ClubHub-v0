@@ -9,7 +9,7 @@ const SignIn = () => {
       <div className="flex flex-col p-10 pt-8 justify-between">
         <div className="flex">
           <img className="w-25" src="src/assets/logos/logo.webp" alt="GDC Logo" />
-          <img src="" alt="UoG Logo" />
+          <img className="w-25" src="src/assets/logos/uog_logo.webp" alt="UoG Logo" />
         </div>
         <div>
           <img src="" alt="Hello" />
