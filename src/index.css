@@ -2,10 +2,20 @@
 
 @font-face {
   font-family: 'Monument';
-  src: url('src/assets/fonts/PPMonumentExtended-Regular.woff2') format('woff2'),
-      url('src/assets/fonts/PPMonumentExtended-Regular.woff') format('woff'),
-      url('src/assets/fonts/PPMonumentExtended-Regular.otf') format('opentype');
-  font-weight: normal;
+  src: url('src/assets/fonts/MonumentExtended-Regular.woff2') format('woff2'),
+      url('src/assets/fonts/MonumentExtended-Regular.woff') format('woff'),
+      url('src/assets/fonts/MonumentExtended-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Monument';
+  src: url('src/assets/fonts/MonumentExtended-UltraBold.woff2') format('woff2'),
+      url('src/assets/fonts/MonumentExtended-UltraBold.woff') format('woff'),
+      url('src/assets/fonts/MonumentExtended-UltraBold.otf') format('opentype');
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }

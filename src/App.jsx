@@ -10,8 +10,8 @@ function App() {
     <>
       <Header />
       <main className='flex flex-col items-center justify-center min-h-[46.5vw] pt-[6.5rem] pb-[6.5rem]'>
-        {/* <SignIn /> */}
-        {/* <ErrorBoundary /> */}
+        <SignIn />
+        <ErrorBoundary />
         <Loading />
       </main>
       <Footer />

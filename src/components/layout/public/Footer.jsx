@@ -9,10 +9,10 @@ import {
 const Footer = () => {
   return (
     <div className="flex flex-col p-2 pl-9 pr-9 gap-6">
-      <img className="w-50" src="src/assets/logos/logo.webp" alt="GDC Logo" />
+      <img className="w-60" src="src/assets/logos/GDC_logo.svg" alt="GDC Logo" />
       <div className="flex justify-between">
         <div>
-          <h1 className="monument-extra-bold text-[1.75rem] font-medium">
+          <h1 className="monument-regular text-3xl">
             Wanna <span className="pink-color">create</span> an
             <br />
             <span className="pink-color"> unforgettable </span>
@@ -20,20 +20,12 @@ const Footer = () => {
             moment <span className="pink-color">together?</span>
           </h1>
 
-          <button className="pink-bg-color p-1 pl-4 pr-4 rounded-4xl mt-6 font-medium cursor-pointer">
+          <button className="monument-regular pink-bg-color text-[14px] p-2.5 pl-4 pr-4 rounded-4xl mt-6 cursor-pointer">
             GET IN TOUCH
           </button>
         </div>
 
         <div className="flex gap-30">
-          <div className="flex flex-col gap-1">
-            <h3 className="pink-color font-medium">PAGE NAVIGATION</h3>
-            <h4 className="leading-6.5">
-              Home <span className="bigger-text m-0 ml-4 mr-4">.</span> About <span className="bigger-text m-0 ml-4 mr-4">.</span> Account <br />
-              Activities <span className="bigger-text m-0 ml-4 mr-4">.</span> Members
-            </h4>
-          </div>
-
           <div className="flex flex-col justify-between">
             <div className="flex flex-col items-end gap-1">
               <h3 className="pink-color font-medium">CONTACT</h3>
@@ -61,9 +53,9 @@ const Footer = () => {
         </div>
       </div>
 
-      <div>
+      <div className="flex flex-col gap-6">
         <p className="border-b-1 mt-12">&copy; GDC - Greenwich Dance Crew</p>
-        <img src="src/assets/backgrounds/text-footer.webp" alt="Footer image" />
+        <img src="src/assets/items/footer.webp" alt="Footer image" />
       </div>
     </div>
   );
