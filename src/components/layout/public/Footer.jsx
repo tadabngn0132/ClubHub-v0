@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <div className="flex flex-col p-2 pl-9 pr-9 gap-6">
       <img className="w-60" src="src/assets/logos/GDC_logo.svg" alt="GDC Logo" />
-      <div className="flex flex-col items-start">
+      <div className="flex flex-col items-start md:flex-row md:justify-between md:items-end">
         <div>
           <h1 className="monument-regular text-[1.6rem]">
             Wanna <span className="pink-color">create</span> an
