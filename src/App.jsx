@@ -16,7 +16,7 @@ function App() {
       <BrowserRouter>
         <Header />
 
-        <main className='flex flex-col items-center justify-center min-h-[46.5vw] pt-[6.5rem] pb-[6.5rem]'>
+        <main className='flex flex-col items-center justify-center min-h-[46.5vw] p-[6.5rem] pl-9 pr-9'>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
