@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faEnvelope } from "@fortawesome/free-regular-svg-icons"
-import { faLock, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faUser } from "@fortawesome/free-solid-svg-icons"
 
 const SignIn = () => {
   return (
@@ -14,18 +13,21 @@ const SignIn = () => {
         </div>
         <div className="flex flex-col z-10">
           <img className="w-125" src="src/assets/items/sign_in.webp" alt="Hello" />
-          <p className="ml-7">Lorem ipsum</p>
+          <p className="ml-7 text-xs w-2/3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
       </div>
 
-      <div className="flex flex-col items-center bg-white w-full md:w-2/5 p-10 pl-16 pr-16 rounded-[3rem] z-10">
-        <h1 className="monument-extra-bold text-4xl text-black mb-6 mt-14 md:mt-16 w-full md:w-10/12">
+      <div className="flex flex-col items-center w-full md:w-2/5 p-10 pl-16 pr-16 rounded-[3rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_web.webp)] bg-cover bg-center relative">
+        <Link to="/" className="absolute w-10 top-30 left-1.5 m-4">
+          <img src="src/assets/icons/back_to_home_icon.svg" alt="Back to Home" />
+        </Link>
+        <h1 className="monument-extra-bold text-4xl text-black mb-6 mt-14 md:mt-24 w-full md:w-10/12">
           Welcome <br /> Back!
         </h1>
         <form action="" className="flex flex-col w-full items-center text-[14px] md:text-[16px] md:w-10/12">
           <div className="flex items-center relative w-full">
-            <FontAwesomeIcon icon={faUser} size="xl" className="absolute text-black left-4"/>
-            <button className="bg-[#d0d0d0] text-black p-2 pt-3 pb-3 pl-16 rounded-2xl w-1/1 text-left cursor-pointer">
+            <img className="w-4.5 absolute left-5" src="src/assets/icons/user_icon.svg" alt="User icon" />
+            <button className="bg-[#d0d0d0] text-black p-2 pt-2.5 pb-2.5 pl-16 rounded-[1.25rem] w-1/1 text-left cursor-pointer">
               Sign in with email<span className="text-[var(--pink-color)] ml-1 w-fit">fpt.edu.vn</span>
             </button>
           </div>
@@ -38,32 +40,32 @@ const SignIn = () => {
 
           <div className="flex flex-col gap-0.5 mb-1 w-full">
             <div className="flex items-center relative">
-              <FontAwesomeIcon icon={faEnvelope} size="xl" className="absolute text-[#454545] left-4"/>
+              <img className="w-5 absolute left-5" src="src/assets/icons/email_icon.svg" alt="Email icon" />
               <input
                 type="email"
                 placeholder="Email Address"
-                className="p-2 pt-3 pb-3 pl-16 text-[#454545] bg-[#d0d0d0] rounded-[1rem] placeholder-[#454545] w-full"
+                className="p-2 pt-2.5 pb-2.5 pl-16 text-[#454545] bg-[#d0d0d0] rounded-[1.25rem] placeholder-[#454545] w-full focus:outline-none focus:border-[var(--pink-color)] border-2 border-transparent"
               />
             </div>
 
-            <span className="text-[var(--pink-color)] text-xs pl-4 mb-2">Email cannot be empty</span>
+            <span className="text-[var(--red-color)] text-xs pl-4 mb-2">Email cannot be empty</span>
 
             <div className="flex items-center relative">
-              <FontAwesomeIcon icon={faLock} size="xl" className="absolute text-[#454545] left-4" />
+              <img className="w-5 absolute left-5" src="src/assets/icons/lock_icon.svg" alt="Lock icon" />
               <input
                 type="password"
                 placeholder="Password"
-                className="p-2 pt-3 pb-3 pl-16 text-[#454545] bg-[#d0d0d0] rounded-[1rem] placeholder-[#454545] w-full"
+                className="p-2 pt-2.5 pb-2.5 pl-16 text-[#454545] bg-[#d0d0d0] rounded-[1.25rem] placeholder-[#454545] w-full focus:outline-none focus:border-[var(--pink-color)] border-2 border-transparent"
               />
             </div>
 
             <div className="flex justify-between">
-              <span className="text-[var(--pink-color)] text-xs pl-4 mb-2">Password cannot be empty</span>
+              <span className="text-[var(--red-color)] text-xs pl-4 mb-2">Password cannot be empty</span>
               <Link to="/forgot-password" className="mb-3 self-end text-black text-xs">Forgot Password?</Link>
             </div>
           </div>
 
-          <input type="submit" value="SIGN IN" className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-5 mb-16 shadow-white-centered font-bold cursor-pointer md:self-start"/>
+          <input type="submit" value="SIGN IN" className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-5 mb-24 shadow-white-centered font-bold cursor-pointer md:self-start"/>
         </form>
       </div>
     </div>

@@ -4,7 +4,7 @@ import { faBars, faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons
 
 const Header = () => {
   return (
-    <div className="flex justify-between items-center p-2 pl-9 pr-9 fixed w-full bg-transparent backdrop-blur-md z-50">
+    <div className="flex justify-between items-center p-2 pl-9 pr-9 fixed w-full bg-black/25 backdrop-blur-md z-50">
       <nav className="flex items-center justify-between w-[87.5%] md:w-max md:gap-7 md:justify-baseline">
         <div className="flex gap-4">
           <Link className="hover:opacity-75" to="/">
