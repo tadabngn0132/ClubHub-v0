@@ -76,3 +76,8 @@ body {
   height: 54px;
   animation: spin 1s linear infinite;
 }
+
+/* Icon */
+.svg-inline--fa {
+  width: var(--fa-width);
+}

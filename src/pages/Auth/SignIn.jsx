@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 const SignIn = () => {
   return (
-    <div className="flex justify-between bg-black w-full xl:w-10/12 rounded-[3rem] relative">
+    <div className="flex justify-between bg-black w-full md:w-9/12 xl:w-10/12 rounded-[3rem] relative">
       <div className="hidden xl:flex xl:flex-col xl:p-10 xl:pt-8 xl:justify-between">
         <video className="object-cover w-2/3 h-full absolute top-0 left-0 z-[0] rounded-[3rem] rounded-r-none opacity-75" src="src/assets/videos/flirting.webm" autoPlay loop muted></video>
         <div className="flex z-10">
@@ -15,8 +15,8 @@ const SignIn = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center w-full xl:w-2/5 p-10 pl-16 pr-16 md:rounded-[3rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_phone_dọc_full_màn.webp)] xl:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_web.webp)] bg-cover bg-center relative">
-        <Link to="/" className="absolute w-10 top-30 left-1.5 m-4">
+      <div className="flex flex-col items-center w-full xl:w-2/5 p-10 pl-16 pr-16 md:pl-28 md:pr-28 xl:pl-16 xl:pr-16 md:rounded-[3rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_phone_dọc_full_màn.webp)] md:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_tablet_dọc.webp)] xl:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_web.webp)] bg-cover bg-center relative">
+        <Link to="/" className="absolute w-10 top-30 left-1.5 md:left-4.5 xl:left-1.5 m-4">
           <img src="src/assets/icons/back_to_home_icon.svg" alt="Back to Home" />
         </Link>
         <h1 className="monument-extra-bold text-4xl text-black mb-6 mt-24 xl:mt-24 w-[87%] xl:w-10/12">

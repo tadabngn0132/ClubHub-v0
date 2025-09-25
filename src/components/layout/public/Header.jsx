@@ -4,42 +4,42 @@ import { faBars, faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons
 
 const Header = () => {
   return (
-    <div className="flex justify-between items-center p-2 pl-9 pr-9 fixed w-full bg-black/25 backdrop-blur-md z-50">
-      <nav className="flex items-center justify-between w-[87.5%] md:w-max md:gap-7 md:justify-baseline">
+    <div className="flex justify-between items-center p-3.5 pl-9 pr-9 xl:pt-2.5 xl:pb-2.5 fixed w-full bg-black/25 backdrop-blur-md z-50">
+      <nav className="flex items-center justify-between w-[87.5%] md:w-11/12 xl:w-max xl:gap-7 xl:justify-baseline">
         <div className="flex gap-4">
           <Link className="hover:opacity-75" to="/">
-            <img className="w-13.5 md:w-25" src="src/assets/logos/GDC_logo.svg" alt="GDC Logo" />
+            <img className="w-13.5 md:w-20 lg:w-22.5 xl:w-25" src="src/assets/logos/GDC_logo.svg" alt="GDC Logo" />
           </Link>
-          <img className="w-13.5 md:w-25" src="src/assets/logos/2025-Greenwich-White-Eng.png" alt="UoG Logo" />
+          <img className="w-13.5 md:w-20 lg:w-22.5 xl:w-25" src="src/assets/logos/2025-Greenwich-White-Eng.png" alt="UoG Logo" />
         </div>
 
 
-        <div className="flex">
-          <div className="flex md:hidden">
+        <div className="flex relative">
+          <div className="flex xl:hidden">
             <FontAwesomeIcon icon={faBars} size="xl" />
           </div>
-          <ul className="flex flex-col text-right absolute top-10 right-17.5 bg-[var(--pink-color)] md:flex-row md:static md:bg-transparent p-1.5 pl-3.5 pr-3.5 rounded-2xl rounded-tr-none">
-            <li className="flex monument-regular font-bold text-[14px] w-full hover:text-black cursor-pointer  md:p-4 md:pl-9 md:pr-9 md:hover:text-[var(--pink-color)]">
-              <Link className="w-full" to="/about" >ABOUT</Link>
+          <ul className="flex flex-col text-right absolute top-10 md:top-11.5 right-0 bg-[var(--pink-color)] xl:flex-row xl:static xl:bg-transparent p-1.5 pl-3.5 pr-3.5 rounded-2xl rounded-tr-none">
+            <li className="flex monument-regular font-bold text-[14px] w-full hover:text-black cursor-pointer xl:hover:text-[var(--pink-color)]">
+              <Link className="w-full xl:p-4 xl:pl-9 xl:pr-9" to="/about" >ABOUT</Link>
             </li>
-            <li className="flex monument-regular font-bold text-[14px] w-full hover:text-black cursor-pointer  md:p-4 md:pl-9 md:pr-9 md:hover:text-[var(--pink-color)]">
-              <Link className="w-full" to="/members">MEMBERS</Link>
+            <li className="flex monument-regular font-bold text-[14px] w-full hover:text-black cursor-pointer xl:hover:text-[var(--pink-color)]">
+              <Link className="w-full xl:p-4 xl:pl-9 xl:pr-9" to="/members">MEMBERS</Link>
             </li>
-            <li className="flex monument-regular font-bold text-[14px] w-full hover:text-black cursor-pointer  md:p-4 md:pl-9 md:pr-9 md:hover:text-[var(--pink-color)]">
-              <Link className="w-full" to="/activities">ACTIVITIES</Link>
+            <li className="flex monument-regular font-bold text-[14px] w-full hover:text-black cursor-pointer xl:hover:text-[var(--pink-color)]">
+              <Link className="w-full xl:p-4 xl:pl-9 xl:pr-9" to="/activities">ACTIVITIES</Link>
             </li>
-            <li className="flex monument-regular font-bold text-[14px] w-full hover:text-black cursor-pointer  md:p-4 md:pl-9 md:pr-9 md:hover:text-[var(--pink-color)]">
-              <Link className="w-full" to="/contact">CONTACT</Link>
+            <li className="flex monument-regular font-bold text-[14px] w-full hover:text-black cursor-pointer xl:hover:text-[var(--pink-color)]">
+              <Link className="w-full xl:p-4 xl:pl-9 xl:pr-9" to="/contact">CONTACT</Link>
             </li>
           </ul>
         </div>
       </nav>
 
-      <Link to="/sign-in" className="flex monument-extra-bold text-[1rem] hover:text-[#DB3F7A] cursor-pointer">
-        <div className="flex md:hidden">
+      <Link to="/sign-in" className="flex monument-extra-bold text-[1rem] hover:text-[#DB3F7A] cursor-pointer xl:pt-4 xl:pb-4">
+        <div className="flex xl:hidden">
           <FontAwesomeIcon icon={faArrowRightToBracket} size="xl"/>
         </div>
-        <span className="hidden md:block">
+        <span className="hidden xl:block">
           MEMBER PORTAL
         </span>
       </Link>
