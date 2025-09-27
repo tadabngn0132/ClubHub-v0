@@ -5,12 +5,12 @@ import { faBars, faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons
 const Header = () => {
   return (
     <div className="flex justify-between items-center p-3.5 pl-9 pr-9 xl:pt-2.5 xl:pb-2.5 fixed w-full bg-black/25 backdrop-blur-md z-50">
-      <nav className="flex items-center justify-between w-[87.5%] md:w-11/12 xl:w-max xl:gap-7 xl:justify-baseline">
+      <nav className="flex items-center justify-between w-[87.5%] sm:w-[92%] md:w-11/12 xl:w-max xl:gap-7 xl:justify-baseline">
         <div className="flex gap-4">
           <Link className="hover:opacity-75" to="/">
-            <img className="w-13.5 md:w-20 lg:w-22.5 xl:w-25" src="src/assets/logos/GDC_logo.svg" alt="GDC Logo" />
+            <img className="w-13.5 sm:w-15.5 md:w-20 lg:w-22.5 xl:w-25" src="src/assets/logos/GDC_logo.svg" alt="GDC Logo" />
           </Link>
-          <img className="w-13.5 md:w-20 lg:w-22.5 xl:w-25" src="src/assets/logos/2025-Greenwich-White-Eng.png" alt="UoG Logo" />
+          <img className="w-13.5 sm:w-15.5 md:w-20 lg:w-22.5 xl:w-25" src="src/assets/logos/2025-Greenwich-White-Eng.png" alt="UoG Logo" />
         </div>
 
 

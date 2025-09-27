@@ -15,14 +15,14 @@ const SignIn = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center w-full lg:w-9/12 xl:w-2/5 p-10 pl-16 pr-16 md:pl-28 md:pr-28 lg:pl-16 lg:pr-16 md:rounded-[3rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_phone_dọc_full_màn.webp)] md:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_tablet_dọc.webp)] lg:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_tablet_ngang.webp)] xl:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_web.webp)] bg-cover bg-center relative">
-        <Link to="/" className="absolute w-10 top-30 left-1.5 md:left-4.5 lg:left-1.5 m-4">
+      <div className="flex flex-col items-center w-full lg:w-9/12 xl:w-2/5 p-10 pl-16 pr-16 md:pl-28 md:pr-28 lg:pl-16 lg:pr-16 md:rounded-[3rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_phone_dọc_full_màn.webp)] sm:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_phone_ngang_full_màn.webp)] md:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_tablet_dọc.webp)] lg:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_tablet_ngang.webp)] xl:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_web.webp)] bg-cover bg-center relative">
+        <Link to="/" className="absolute w-10 top-30 left-1.5 sm:left-7.5 md:left-4.5 lg:left-1.5 m-4">
           <img src="src/assets/icons/back_to_home_icon.svg" alt="Back to Home" />
         </Link>
-        <h1 className="monument-extra-bold text-4xl text-black mb-6 mt-24 lg:mt-24 w-[87%] lg:w-10/12">
+        <h1 className="monument-extra-bold text-4xl text-black mb-6 mt-24 lg:mt-24 w-[87%] sm:w-1/2 lg:w-10/12">
           Welcome <br /> Back!
         </h1>
-        <form action="" className="flex flex-col w-[87%] items-center text-[15px] lg:text-[16px] lg:w-10/12">
+        <form action="" className="flex flex-col w-[87%] sm:w-1/2 items-center text-[15px] lg:text-[16px] lg:w-10/12">
           <div className="flex items-center relative w-full">
             <img className="w-4.5 absolute left-5" src="src/assets/icons/user_icon.svg" alt="User icon" />
             <button className="bg-[#d0d0d0] text-black p-2 pt-2.5 pb-2.5 pl-14 lg:pl-16 rounded-[1.25rem] w-1/1 text-left cursor-pointer">
