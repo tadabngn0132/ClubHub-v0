@@ -5,7 +5,7 @@ const SignIn = () => {
     <div className="flex justify-between bg-black w-full md:w-9/12 lg:w-full xl:w-11/12 2xl:w-10/12 rounded-[3rem] relative">
       <div className="hidden lg:flex lg:flex-col lg:p-10 lg:pt-8 lg:justify-between">
         <video
-          className="object-cover lg:w-2/3 h-full absolute top-0 left-0 z-[0] rounded-[3rem] rounded-r-none opacity-75"
+          className="object-cover lg:w-2/3 2xl:w-7/10 h-full absolute top-0 left-0 z-[0] rounded-[3rem] rounded-r-none opacity-75"
           src="src/assets/videos/flirting_1080p.webm"
           autoPlay
           loop
@@ -30,8 +30,7 @@ const SignIn = () => {
             alt="Hello"
           />
           <p className="ml-7 text-xs w-2/3">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Welcome back! Access your club dashboard to check schedules, connect with members, and stay updated on all GDC activities.
           </p>
         </div>
       </div>
@@ -39,7 +38,7 @@ const SignIn = () => {
       <div className="flex flex-col items-center w-full lg:w-9/13 xl:w-[46%] 2xl:w-2/5 p-10 pl-21 pr-21 sm:pl-51 sm:pr-51 md:pl-33 md:pr-33 lg:pl-24 lg:pr-24 xl:pl-22 xl:pr-22 md:rounded-[6rem] lg:rounded-[5rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_phone_dọc_full_màn.webp)] sm:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_phone_ngang_full_màn.webp)] md:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_tablet_dọc.webp)] lg:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_tablet_ngang.webp)] xl:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_web.webp)] bg-cover bg-center relative">
         <Link
           to="/"
-          className="absolute w-10 top-30 left-1.5 sm:left-7.5 md:left-4.5 lg:left-1.5 m-4"
+          className="absolute w-10 top-30 left-1.5 sm:left-7.5 md:left-4.5 lg:left-1.5 m-4 hover:opacity-70"
         >
           <img
             src="src/assets/icons/back_to_home_icon.svg"
@@ -122,7 +121,7 @@ const SignIn = () => {
           <input
             type="submit"
             value="SIGN IN"
-            className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-1.5 mb-52 lg:mb-20 shadow-white-centered font-bold cursor-pointer self-start"
+            className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-1.5 mb-52 lg:mb-20 shadow-white-centered font-bold cursor-pointer self-start hover:bg-[var(--dark-pink-color)] hover:text-white"
           />
         </form>
       </div>

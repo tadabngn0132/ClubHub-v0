@@ -34,16 +34,16 @@ const Footer = () => {
           <div className="flex flex-col items-start gap-1">
             <h3 className="pink-color text-xl xl:text-lg font-medium mb-1.5 lg:self-end">FOLLOW US</h3>
             <div className="">
-              <a href="https://www.facebook.com/gdcgwdance" className="hover:text-[#DB3F7A] text-2xl mr-4.5 lg:mr-0 lg:ml-4.5">
+              <a href="https://www.facebook.com/gdcgwdance" target="_blank" className="hover:text-[var(--pink-color)] text-2xl mr-4.5 lg:mr-0 lg:ml-4.5">
                 <FontAwesomeIcon icon={faFacebookF} size="lg" />
               </a>
-              <a href="https://www.instagram.com/gdc.gwhn/" className="hover:text-[#DB3F7A] text-2xl mr-4.5 lg:mr-0 lg:ml-4.5">
+              <a href="https://www.instagram.com/gdc.gwhn/" target="_blank" className="hover:text-[var(--pink-color)] text-2xl mr-4.5 lg:mr-0 lg:ml-4.5">
                 <FontAwesomeIcon icon={faInstagram} size="lg" />
               </a>
-              <a href="https://www.tiktok.com/@greenwichdancecrew" className="hover:text-[#DB3F7A] text-2xl mr-4.5 lg:mr-0 lg:ml-4.5">
+              <a href="https://www.tiktok.com/@greenwichdancecrew" target="_blank" className="hover:text-[var(--pink-color)] text-2xl mr-4.5 lg:mr-0 lg:ml-4.5">
                 <FontAwesomeIcon icon={faTiktok} size="lg" />
               </a>
-              <a href="https://www.youtube.com/@GDC-GreenwichDanceCrew" className="hover:text-[#DB3F7A] text-2xl mr-4.5 lg:mr-0 lg:ml-4.5">
+              <a href="https://www.youtube.com/@GDC-GreenwichDanceCrew" target="_blank" className="hover:text-[var(--pink-color)] text-2xl mr-4.5 lg:mr-0 lg:ml-4.5">
                 <FontAwesomeIcon icon={faYoutube} size="lg" />
               </a>
             </div>
