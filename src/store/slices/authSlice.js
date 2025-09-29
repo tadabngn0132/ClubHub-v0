@@ -1,13 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const initialState = {
-  isLoggedIn: false,
-  currentUser: null,
-  token: null,
-  isLoading: false,
-  error: null
-}
-
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (userData, thunkAPI) => {
@@ -20,8 +12,14 @@ export const loginUser = createAsyncThunk(
 );
 
 const authSlice = createSlice({
-  name: "auth",
-  initialState,
+  name: 'auth',
+  initialState: {
+    isLoggedIn: false,
+    currentUser: null,
+    token: null,
+    isLoading: false,
+    error: null
+  },
   reducers: {
     logoutAction: (state) => {
       state.currentUser = null;
@@ -39,6 +37,7 @@ const authSlice = createSlice({
 });
 
 export const { 
+  registerAction,
   loginAction, 
   logoutAction 
 } = authSlice.actions;

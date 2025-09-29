@@ -1,11 +1,32 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
+import { useDispatch } from "react-redux"
+import { loginAction } from '../../store/slices/authSlice'
+import { login } from '../../services/authService'
+
 const SignIn = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
+
+  const dispatch = useDispatch()
+  let isLoading = false
+
+  const handleLogin = async (data) => {
+    try {
+      isLoading = true
+      console.log(data)
+      const res = await login(data)
+      dispatch(loginAction(res))
+      return res
+    } catch (error) {
+      console.error(error)
+    } finally {
+      isLoading = false
+    }
+  }
 
   return (
     <div className="flex justify-between bg-black w-full md:w-9/12 lg:w-full xl:w-11/12 2xl:w-10/12 rounded-[3rem] relative">
@@ -60,7 +81,7 @@ const SignIn = () => {
         {/* Form main */}
         <form
           action=""
-          onSubmit={handleSubmit((data) => console.log(data))}
+          onSubmit={handleSubmit(handleLogin)}
           className="flex flex-col w-full items-center text-[15px] lg:text-[16px]"
         >
           {/* Login with Google buton */}
@@ -151,11 +172,22 @@ const SignIn = () => {
             }
           </div>
 
-          <input
-            type="submit"
-            value="SIGN IN"
-            className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-1.5 mb-52 lg:mb-20 shadow-white-centered font-bold cursor-pointer self-start hover:bg-[var(--dark-pink-color)] hover:text-white"
-          />
+          { isLoading && 
+            <input
+              type="submit"
+              value="SIGN IN"
+              className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-1.5 mb-52 lg:mb-20 shadow-white-centered font-bold cursor-pointer self-start hover:bg-[var(--dark-pink-color)] hover:text-white"
+              disabled
+            />
+          }
+
+          { !isLoading && 
+            <input
+              type="submit"
+              value="SIGN IN"
+              className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-1.5 mb-52 lg:mb-20 shadow-white-centered font-bold cursor-pointer self-start hover:bg-[var(--dark-pink-color)] hover:text-white"
+            />
+          }
         </form>
       </div>
     </div>
