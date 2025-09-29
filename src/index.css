@@ -81,3 +81,46 @@ body {
 .svg-inline--fa {
   width: var(--fa-width);
 }
+
+/* Animation */
+.animate-slide-left {
+  animation: slide-left 0.5s linear;
+}
+
+@keyframes slide-left {
+  from {
+    transform: translateX(50%);
+  }
+  
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-right {
+  animation: slide-right 0.5s linear;
+}
+
+@keyframes slide-right {
+  from {
+    transform: translateX(-50%);
+  }
+  
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-scale-bigger {
+  animation: scale-bigger 0.5s linear;
+}
+
+@keyframes scale-bigger {
+  from {
+    transform: scaleX(0.5);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
