@@ -1,30 +1,42 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { useDispatch } from "react-redux"
 import { loginAction } from '../../store/slices/authSlice'
 import { login } from '../../services/authService'
+import { useState } from "react"
 
 const SignIn = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+    mode: 'onChange',
+    reValidateMode: 'onChange'
+  }
+  )
 
   const dispatch = useDispatch()
-  let isLoading = false
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleLogin = async (data) => {
     try {
-      isLoading = true
+      setIsLoading(true)
       console.log(data)
       const res = await login(data)
       dispatch(loginAction(res))
+      // Handle navigate
+      navigate()
       return res
     } catch (error) {
       console.error(error)
     } finally {
-      isLoading = false
+      setIsLoading(false)
     }
   }
 
@@ -120,13 +132,19 @@ const SignIn = () => {
                   type="email"
                   placeholder="Email Address"
                   className="p-2 pt-2.5 pb-2.5 pl-14 text-[#454545] bg-[#d0d0d0] rounded-[1.25rem] placeholder-[#454545] w-full focus:outline-none focus:border-[var(--pink-color)] border-2 border-transparent"
-                  {...register('email', { required: true })}
+                  {...register('email', { 
+                    required: 'Email cannot be empty',
+                    pattern: {
+                      value: /^[A-Za-z0-9]+@fpt\.edu\.vn$/,
+                      message: 'Email must have @fpt.edu.vn tail'
+                    }
+                  })}
                 />
               </div>
               {/* Email error */}
               { errors.email &&
                 <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] pl-4">
-                  Email cannot be empty
+                  { errors.email.message }
                 </span>
               }
             </div>
@@ -143,7 +161,13 @@ const SignIn = () => {
                 type="password"
                 placeholder="Password"
                 className="p-2 pt-2.5 pb-2.5 pl-14 text-[#454545] bg-[#d0d0d0] rounded-[1.25rem] placeholder-[#454545] w-full focus:outline-none focus:border-[var(--pink-color)] border-2 border-transparent"
-                {...register('password', { required: true })}
+                {...register('password', { 
+                  required: 'Password cannot be empty',
+                  minLength: {
+                    value: 8,
+                    message: 'Password must be at least 8 characters'
+                  }
+                })}
               />
             </div>
 
@@ -151,7 +175,7 @@ const SignIn = () => {
               <div className="flex w-full justify-between">
                 {/* Password error */}
                   <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] pl-4 mb-2">
-                    Password cannot be empty
+                    { errors.password.message }
                   </span>
                 <Link
                   to="/forgot-password"
