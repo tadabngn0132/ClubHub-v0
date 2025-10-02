@@ -1,6 +1,6 @@
 const Activities = () => {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col items-center justify-center min-h-[46.5vw] m-[68px] ml-0 mr-0 w-full md:pl-9 md:pr-9">
       <div className="flex flex-col bg-[#212121] w-full h-[30rem] rounded-4xl p-10 pt-8 pb-6 justify-between">
         <span className="self-end text-end leading-5 font-light">Lorem ipsum dolor sit amet, consectetuer adipisc-<br />ing elit, sed diam nonummy nibh euismod tincidunt<br /> ut laoreet dolore magna aliquam erat volutpat. Ut<br /> wisi enim ad minim veniam</span>
 
@@ -26,10 +26,10 @@ const Activities = () => {
         </div>
 
         {/* Card 2 */}
-        <div className="flex flex-row w-full h-full bg-[#212121] col-span-3 row-span-8 rounded-4xl items-end">
+        <div className="flex flex-row w-full h-full bg-[#212121] col-span-3 row-span-9 rounded-4xl items-end">
           <div className="flex flex-col justify-between w-full h-fit bg-[#121212] rounded-4xl rounded-t-none p-5">
-            <h1 className="monument-extra-bold uppercase text-3xl/10"> Mini Project:<br /><span className="monument-regular">Twist</span></h1>
-            <div className="flex flex-row w-full h-full justify-between mt-2">
+            <h1 className="monument-extra-bold uppercase text-3xl/10"> Career Fair<br /><span className="monument-regular">2025</span></h1>
+            <div className="flex flex-row w-full h-full justify-between mt-10">
               <span className="text-[10.5px] font-light w-[36%]">Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed diam nonummy nibh e</span>
 
               <span className="text-[10.5px] font-light w-6/12">Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat laoreet dolore magna aliquam erat adipiscing ....</span>
@@ -38,13 +38,64 @@ const Activities = () => {
         </div>
 
         {/* Card 3 */}
-        <div className="flex flex-row w-full h-full bg-[#212121] col-span-4 row-span-17 rounded-4xl items-end">
+        <div className="flex flex-row w-full h-full bg-[#212121] col-span-4 row-span-22 rounded-4xl items-end">
+          <div className="flex flex-col w-full h-fit bg-[#121212] rounded-4xl rounded-t-none p-5">
+            <h1 className="monument-extra-bold uppercase text-3xl/10">Photoshoot<br /><span className="monument-regular"></span></h1>
+            <div className="flex flex-row w-3/4 h-full items-end gap-10">
+              <div className="flex flex-col gap-10 w-1/2">
+                <span className="text-[10.5px] font-light w-2/3">Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed diam nonummy nibh e</span>
+                <span className="text-[10.5px] font-light w-full">Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat laoreet dolore magna aliquam erat adipiscing</span>
+              </div>
+
+              <span className="text-[10.5px] font-light w-1/2">Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat laoreet dolore magna aliquam erat adipiscing ....</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 4 */}
+        <div className="flex flex-row w-full h-full bg-[#212121] col-span-3 row-span-14 rounded-4xl items-end">
           <div className="flex flex-col justify-between w-full h-fit bg-[#121212] rounded-4xl rounded-t-none p-5">
-            <h1 className="monument-extra-bold uppercase text-3xl/10"> Mini Project:<br /><span className="monument-regular">Twist</span></h1>
+            <h1 className="monument-extra-bold uppercase text-3xl/10">Clubfair<br /><span className="monument-regular">2025</span></h1>
             <div className="flex flex-row w-full h-full justify-between mt-2">
               <span className="text-[10.5px] font-light w-[36%]">Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed diam nonummy nibh e</span>
 
-              <span className="text-[10.5px] font-light w-6/12">Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat laoreet dolore magna aliquam erat adipiscing ....</span>
+              <span className="text-[10.5px] font-light w-6/12">Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed diam nibh euismod tincidunt ut laoreet dolore magna aliquam erat laoreet dolore magna aliquam erat adipiscing ....</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 5 */}
+        <div className="flex flex-row w-full h-full bg-[#212121] col-span-3 row-span-3 rounded-4xl items-end">
+          <div className="flex flex-row w-full h-fit bg-[#121212] rounded-4xl rounded-t-none p-5 pl-9 pr-9 items-end">
+            <div className="flex flex-col h-full justify-between gap-8">
+              <h1 className="monument-extra-bold uppercase text-3xl/10">Student Honoring Ceremony:<br /><span className="monument-regular">Sum25</span></h1>
+              
+              <span className="text-[10.5px] font-light w-9/12">Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed diam nonummy nibh e</span>
+            </div>
+            <span className="text-[10.5px] font-light w-[55%]">Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat adipi-scing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat laoreet dolore magna ali-quam erat adipiscing ....</span>
+          </div>
+        </div>
+
+        {/* Card 6 */}
+        <div className="flex flex-col w-full h-full bg-[#212121] col-span-4 row-span-2 rounded-4xl items-end">
+          <div className="flex flex-col w-[37.5%] bg-[#121212] rounded-4xl rounded-l-none p-5">
+            <h1 className="monument-extra-bold uppercase text-3xl/10">Opening Ceremony<br /><span className="monument-regular">2025</span></h1>
+            <div className="flex flex-col h-full justify-between mt-2 gap-12">
+              <span className="text-[10.5px] font-light w-10/12">Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed diam nonummy nibh e</span>
+
+              <span className="text-[10.5px] font-light">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euis-mod tincidunt ut laoreet dolore magna ali-quam erat adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat laoreet dolore magna aliquam erat adipiscing ....</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card 7 */}
+        <div className="flex flex-col w-full h-full bg-[#212121] col-span-4 row-span-1 rounded-4xl items-start">
+          <div className="flex flex-col w-[37.5%] bg-[#121212] rounded-4xl rounded-r-none p-5">
+            <h1 className="monument-extra-bold uppercase text-3xl/10">Casting Call:<br /><span className="monument-regular">Result</span></h1>
+            <div className="flex flex-col h-full justify-between mt-2 gap-24">
+              <span className="text-[10.5px] font-light w-10/12">Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed diam nonummy nibh e</span>
+
+              <span className="text-[10.5px] font-light">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euis-mod tincidunt ut laoreet dolore magna ali-quam erat adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat laoreet dolore magna aliquam erat adipiscing ....</span>
             </div>
           </div>
         </div>

@@ -16,19 +16,17 @@ function App() {
       <BrowserRouter>
         <Header />
 
-        <main className='flex flex-col items-center justify-center min-h-[46.5vw] p-[6.5rem] pl-0 pr-0 md:pl-9 md:pr-9'>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/members" element={<Members />} />
-            <Route path="/activities" element={<Activities />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="*" element={
-              <ErrorBoundary />
-            } />
-          </Routes>
-        </main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/members" element={<Members />} />
+          <Route path="/activities" element={<Activities />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="*" element={
+            <ErrorBoundary />
+          } />
+        </Routes>
 
         <Footer />
       </BrowserRouter>
