@@ -7,13 +7,16 @@
   --white-color: #FFFFFF;
   --red-color: #b22222;
   /* Bổ sung thêm biến padding, margin */
+  --pub-g-pl-pr: 40px;
+  --pub-main-min-h: 46.5vw;
+  --pub-main-mt-mb: 68px;
 }
 
 body {
   background-color: var(--black-color);
   color: var(--white-color);
   font-family: "bahnschrift", sans-serif;
-  font-weight: 400;
+  font-weight: 300;
   font-style: normal;
 }
 

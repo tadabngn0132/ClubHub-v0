@@ -8,7 +8,7 @@ import {
 
 const Footer = () => {
   return (
-    <div className="flex flex-col p-2 pl-9 pr-9 gap-6">
+    <div className="flex flex-col p-2 pl-[var(--pub-g-pl-pr)] pr-[var(--pub-g-pl-pr)] gap-6">
       <img className="w-60 xl:w-55" src="src/assets/logos/GDC_logo.svg" alt="GDC Logo" />
       <div className="flex flex-col items-start mt-3 xl:mt-1 lg:flex-row lg:justify-between lg:items-end">
         <div>

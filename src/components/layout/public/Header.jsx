@@ -16,7 +16,7 @@ const Header = () => {
   }
 
   return (
-    <div className="flex justify-between items-center p-3.5 pl-9 pr-9 xl:pt-0 xl:pb-0 fixed top-0 left-0 w-full bg-black/25 backdrop-blur-md z-50">
+    <div className="flex justify-between items-center p-3.5 pl-[var(--pub-g-pl-pr)] pr-[var(--pub-g-pl-pr)] xl:pt-0 xl:pb-0 fixed top-0 left-0 w-full bg-black/25 backdrop-blur-md z-50">
       <nav className="flex items-center justify-between w-[87.5%] sm:w-[92%] md:w-11/12 xl:w-max xl:gap-7 xl:justify-baseline">
         <div className="flex items-center gap-4">
           <Link className="hover:opacity-75" to="/">

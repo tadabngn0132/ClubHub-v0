@@ -1,6 +1,6 @@
 const Members = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[46.5vw] m-[68px] ml-0 mr-0  md:pl-9 md:pr-9">Members Page</div>
+    <div className="flex flex-col min-h-[var(--pub-main-min-h)] mt-[var(--pub-main-mt-mb)] mb-[var(--pub-main-mt-mb)] md:pl-[var(--pub-g-pl-pr)] md:pr-[var(--pub-g-pl-pr)]">Members Page</div>
   )
 }
 
