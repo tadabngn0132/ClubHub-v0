@@ -1,0 +1,63 @@
+:root[data-theme="dark"] {
+  /* Brand Colors */
+  --brand-primary: #db3f7a;
+  --brand-secondary: #6b2c51;
+
+  /* Background Colors */
+  --background-primary: #000000;
+  --background-secondary: #ffffff;
+  --background-tertiary: var(--brand-primary);
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #000000;
+  --text-tertiary: var(--brand-primary);
+
+  /* Status Colors */
+  --status-error: #b22222;
+  --status-success: #28a745;
+  --status-warning: #ffc107;
+  --status-info: #17a2b8;
+
+  /* Interactive Colors */
+  --button-primary: var(--brand-primary);
+  --button-secondary: var(--brand-secondary);
+  --link-color: var(--brand-primary);
+  --hover-color: var(--brand-secondary);
+
+  /* Border & Shadow */
+  --border-primary: var(--brand-primary);
+  --shadow-color: rgba(255, 255, 255, 0.5);
+}
+
+:root[data-theme="light"] {
+  /* Brand Colors - giữ nguyên như dark theme */
+  --brand-primary: #db3f7a;
+  --brand-secondary: #6b2c51;
+
+  /* Background Colors */
+  --background-primary: #ffffff;
+  --background-secondary: #000000;
+  --background-tertiary: var(--brand-primary);
+
+  /* Text Colors */
+  --text-primary: #000000;
+  --text-secondary: #ffffff;
+  --text-tertiary: var(--brand-primary);
+
+  /* Status Colors - giữ nguyên như dark theme */
+  --status-error: #b22222;
+  --status-success: #28a745;
+  --status-warning: #ffc107;
+  --status-info: #17a2b8;
+
+  /* Interactive Colors */
+  --button-primary: var(--brand-primary);
+  --button-secondary: var(--brand-secondary);
+  --link-color: var(--brand-primary);
+  --hover-color: var(--brand-secondary);
+
+  /* Border & Shadow */
+  --border-primary: var(--brand-primary);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+}

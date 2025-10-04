@@ -1,6 +1,6 @@
 const Activities = () => {
   return (
-    <div className="flex flex-col min-h-[var(--pub-main-min-h)] mt-[var(--pub-main-mt-mb)] mb-[var(--pub-main-mt-mb)] w-full md:pl-[var(--pub-g-pl-pr)] md:pr-[var(--pub-g-pl-pr)]">
+    <div className="flex flex-col min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] w-full md:pl-[var(--pub-container-padding-x)] md:pr-[var(--pub-container-padding-x)]">
       <div className="flex flex-col bg-[#212121] w-full h-[30rem] rounded-[3rem] p-10 pt-8 pb-6 justify-between">
         <span className="self-end text-end leading-5 font-light">Lorem ipsum dolor sit amet, consectetuer adipisc-<br />ing elit, sed diam nonummy nibh euismod tincidunt<br /> ut laoreet dolore magna aliquam erat volutpat. Ut<br /> wisi enim ad minim veniam</span>
 

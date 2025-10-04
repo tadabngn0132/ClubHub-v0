@@ -1,0 +1,32 @@
+:root {
+  /* Layout - Container & Spacing */
+  --pub-container-padding-x: 40px;
+  --pub-main-min-height: 46.5vw;
+  --pub-main-margin-y: 68px;
+  
+  /* Typography - Font Families */
+  --font-primary: "bahnschrift", sans-serif;
+  --font-display: "Monument", sans-serif;
+
+  /* Typography - Font Weights */
+  --font-light: 200;
+  --font-regular: 400;
+  --font-black: 900;
+
+  /* Typography - Font Sizes */
+  --text-xs: 10.5px;
+  --text-3xl: 1.875rem;
+  --text-6xl: 3.75rem;
+
+  /* Border Radius */
+  --radius-3xl: 3rem;
+
+  /* Components */
+  --spinner-size: 54px;
+  --spinner-border-width: 5px;
+
+  /* Animation */
+  --animation-duration: 0.5s;
+  --animation-timing: linear;
+  --slide-distance: 50%;
+}

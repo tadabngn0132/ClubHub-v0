@@ -1,4 +1,4 @@
-import axiosClient from '../config/axios.js'
+import axiosClient from './axios'
 
 export const login = async (payload) => {
   try {
