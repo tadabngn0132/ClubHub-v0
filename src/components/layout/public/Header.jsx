@@ -41,7 +41,7 @@ const Header = () => {
 
         {/* Mobile hamburger menu */}
         <div className="flex relative xl:hidden">
-          <div ref={navBarBtnRef} className="flex cursor-pointer" onClick={toggleNavBar}>
+          <div ref={navBarBtnRef} className={`flex ${ isNavBarOpen ? "text-[var(--pink-color)]" : "text-white" } cursor-pointer`} onClick={toggleNavBar}>
             <FontAwesomeIcon icon={faBars} size="xl" />
           </div>
           {isNavBarOpen && 
