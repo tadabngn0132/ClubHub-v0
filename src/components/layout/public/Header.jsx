@@ -1,16 +1,29 @@
-import { Link, NavLink } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { Link, NavLink } from "react-router-dom"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBars, faArrowRightToBracket } from "@fortawesome/free-solid-svg-icons"
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react"
 
 const Header = () => {
   const [isNavBarOpen, setIsNavBarOpen] = useState(false)
+  const navBarRef = useRef(null)
+  const navBarBtnRef = useRef(null)
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isNavBarOpen && navBarRef.current && !navBarRef.current.contains(event.target) && !navBarBtnRef.current.contains(event.target)) {
+        closeNavBar()
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [isNavBarOpen])
+  
   const toggleNavBar = () => {
     setIsNavBarOpen(!isNavBarOpen)
   }
-
+  
   const closeNavBar = () => {
     setIsNavBarOpen(false)
   }
@@ -18,6 +31,7 @@ const Header = () => {
   return (
     <div className="flex justify-between items-center p-3.5 pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)] xl:pt-0 xl:pb-0 fixed top-0 left-0 w-full bg-black/25 backdrop-blur-md z-50">
       <nav className="flex items-center justify-between w-[87.5%] sm:w-[92%] md:w-11/12 xl:w-max xl:gap-7 xl:justify-baseline">
+        {/* Logo section */}
         <div className="flex items-center gap-4">
           <Link className="hover:opacity-75" to="/">
             <img className="w-15.5 sm:w-17.5 md:w-22 lg:w-24.5" src="src/assets/logos/GDC_logo.svg" alt="GDC Logo" />
@@ -27,11 +41,11 @@ const Header = () => {
 
         {/* Mobile hamburger menu */}
         <div className="flex relative xl:hidden">
-          <div className="flex cursor-pointer" onClick={toggleNavBar}>
+          <div ref={navBarBtnRef} className="flex cursor-pointer" onClick={toggleNavBar}>
             <FontAwesomeIcon icon={faBars} size="xl" />
           </div>
           {isNavBarOpen && 
-            <ul className="flex flex-col text-right absolute top-10 md:top-11.5 right-0 bg-[var(--pink-color)] p-1.5 pl-3.5 pr-3.5 rounded-2xl rounded-tr-none">
+            <ul ref={navBarRef} className="flex flex-col text-right absolute top-10 md:top-11.5 right-0 bg-[var(--pink-color)] p-1.5 pl-3.5 pr-3.5 rounded-2xl rounded-tr-none">
               <li className="flex monument-regular font-bold text-[14px] w-full cursor-pointer">
                 <NavLink className={({ isActive }) => `w-full hover:text-black ${isActive ? "text-black" : "text-white"}`}  to="/about" onClick={closeNavBar}>ABOUT</NavLink>
               </li>
