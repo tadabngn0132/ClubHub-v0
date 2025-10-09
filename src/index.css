@@ -43,19 +43,20 @@ body {
   font-display: swap;
 }
 
+/* Khả năng phải chỉnh margin cho các loại thiết bị */
 .monument-regular {
     font-family: 'Monument', sans-serif;
     font-weight: 400;
     font-style: normal;
-    margin-top: -0.105em;
-    margin-bottom: -0.18em;
+    /* margin-top: -0.105em;
+    margin-bottom: -0.18em; */
 }
 
 .monument-extra-bold {
     font-family: 'Monument', sans-serif;
     font-weight: 900;
-    margin-top: -0.105em;
-    margin-bottom: -0.18em;
+    /* margin-top: -0.105em;
+    margin-bottom: -0.18em; */
 }
 
 /* Color */
