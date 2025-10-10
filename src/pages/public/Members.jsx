@@ -30,28 +30,15 @@ const Members = () => {
           <span className="monument-extra-bold uppercase text-[3.5rem] leading-none">Founders</span>
         </div>
 
-        {/* Card using position */}
-        {/* <div className=" flex w-full h-[32rem] bg-[url(src/assets/backgrounds/pub_members_background/founders_bg.png)] bg-cover items-center justify-center relative">
-          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-end items-start bg-[#454545] w-[20.8%] h-[17.5rem] absolute top-41.5 left-75 z-10 rotate-350 shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black">
+        {/* Card using flex box */}
+        <div className=" flex w-full h-[32rem] bg-[url(src/assets/backgrounds/pub_members_background/founders_bg.png)] bg-cover items-center justify-center p-12 pl-14 pr-14">
+          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-end items-start bg-[#454545] w-[24%] 2xl:w-[22%] h-[17.5rem] 2xl:h-[19rem] z-10 rotate-350 shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black self-end">
             <span className="monument-extra-bold uppercase text-3xl">Name</span>
           </div>
-          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-start items-start bg-[#454545] w-[20.8%] h-[17.5rem] absolute top-12.5 left-129 z-1 rotate-[3.25deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black">
+          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-start items-start bg-[#454545] w-[24%] 2xl:w-[22%] h-[17.5rem] 2xl:h-[19rem] z-1 rotate-[3.25deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black self-start">
             <span className="monument-extra-bold uppercase text-3xl">Name</span>
           </div>
-          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-end items-end bg-[#454545] w-[20.8%] h-[17.5rem] absolute top-34 left-195.5 z-10 rotate-[356.5deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black">
-            <span className="monument-extra-bold uppercase text-3xl">Name</span>
-          </div>
-        </div> */}
-
-        {/* Card using flex box (not fixed) */}
-        <div className=" flex w-full h-[32rem] bg-[url(src/assets/backgrounds/pub_members_background/founders_bg.png)] bg-cover items-center justify-center relative">
-          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-end items-start bg-[#454545] w-[20.8%] h-[17.5rem] absolute top-41.5 left-75 z-10 rotate-350 shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black">
-            <span className="monument-extra-bold uppercase text-3xl">Name</span>
-          </div>
-          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-start items-start bg-[#454545] w-[20.8%] h-[17.5rem] absolute top-12.5 left-129 z-1 rotate-[3.25deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black">
-            <span className="monument-extra-bold uppercase text-3xl">Name</span>
-          </div>
-          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-end items-end bg-[#454545] w-[20.8%] h-[17.5rem] absolute top-34 left-195.5 z-10 rotate-[356.5deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black">
+          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-end items-end bg-[#454545] w-[24%] 2xl:w-[22%] h-[17.5rem] 2xl:h-[19rem] z-10 rotate-[356.75deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black self-center">
             <span className="monument-extra-bold uppercase text-3xl">Name</span>
           </div>
         </div>
@@ -59,6 +46,43 @@ const Members = () => {
         <div className="flex justify-between md:pl-[var(--pub-container-padding-x)] md:pr-[var(--pub-container-padding-x)]">
           <span className="w-[24%]">Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat</span>
           <span className="w-[45%] text-right">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat</span>
+        </div>
+      </div>
+
+      <div>
+        <div className="flex gap-5">
+          <div className="w-[var(--pub-container-padding-x)] bg-[var(--pink-color)]"></div>
+          <span className="monument-extra-bold uppercase text-[3.5rem] leading-none">Excutive Board</span>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-8">
+        <div className="flex gap-5">
+          <div className="w-[var(--pub-container-padding-x)] bg-[var(--pink-color)]"></div>
+          <span className="monument-extra-bold uppercase text-[3.5rem] leading-none">Heads of Departments</span>
+        </div>
+
+        <div className="flex w-full h-[42rem]">
+          <div className="flex flex-col p-5 justify-end w-1/5 h-full bg-[#454545]">
+            <span className="monument-regular uppercase text-3xl">Name</span>
+            <span className="monument-extra-bold uppercase text-2xl">Head of Performance</span>
+          </div>
+          <div className="flex flex-col p-5 justify-start w-1/5 h-full bg-[#333333]">
+            <span className="monument-regular uppercase text-3xl">Name</span>
+            <span className="monument-extra-bold uppercase text-2xl">Head of Performance</span>
+          </div>
+          <div className="flex flex-col p-5 justify-end w-1/5 h-full bg-[#454545]">
+            <span className="monument-regular uppercase text-3xl">Name</span>
+            <span className="monument-extra-bold uppercase text-2xl">Head of Performance</span>
+          </div>
+          <div className="flex flex-col p-5 justify-start w-1/5 h-full bg-[#333333]">
+            <span className="monument-regular uppercase text-3xl">Name</span>
+            <span className="monument-extra-bold uppercase text-2xl">Head of Performance</span>
+          </div>
+          <div className="flex flex-col p-5 justify-end w-1/5 h-full bg-[#454545]">
+            <span className="monument-regular uppercase text-3xl">Name</span>
+            <span className="monument-extra-bold uppercase text-2xl">Head of Performance</span>
+          </div>
         </div>
       </div>
     </div>
