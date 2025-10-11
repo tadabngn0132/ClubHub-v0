@@ -31,18 +31,18 @@ const Members = () => {
         </div>
 
         {/* Card using flex box */}
-        <div className="flex w-full h-[36rem] 2xl:h-[36rem] bg-[url(src/assets/backgrounds/pub_members_background/founders_bg.png)] bg-cover items-center justify-center">
-          <div className="relative flex items-center justify-center flex-wrap gap-10">
+        <div className="flex w-full h-fit lg:h-[36rem] bg-[var(--pink-color)] items-center justify-center">
+          <div className="lg:relative flex items-center justify-center flex-wrap gap-10">
             {/* Card 1 */}
-            <div className="lg:absolute flex flex-col p-2.5 pl-5 pr-5 justify-end items-start bg-[#454545] w-[19.5rem] h-[19.5rem] z-10 -rotate-10 shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black lg:-left-[16vw] lg:top-[3.5rem]"> 
+            <div className="lg:absolute flex flex-col p-2.5 pl-5 pr-5 justify-end items-start bg-[#454545] w-[19.5rem] h-[19.5rem] z-10 -rotate-10 shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black lg:top-[3.5rem] xl:-left-[19vw] 2xl:-left-[16vw]"> 
               <span className="monument-extra-bold uppercase text-3xl">Name</span>
             </div>
-            {/* Card 2 */}
+            {/* Card 2 (Center) */}
             <div className="relative flex flex-col p-2.5 pl-5 pr-5 justify-start items-start bg-[#454545] w-[19.5rem] h-[19.5rem] z-1 rotate-[3.25deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black lg:-top-[4.5rem]">
               <span className="monument-extra-bold uppercase text-3xl">Name</span>
             </div>
             {/* Card 3 */}
-            <div className="lg:absolute flex flex-col p-2.5 pl-5 pr-5 justify-end items-end bg-[#454545] w-[19.5rem] h-[19.5rem] z-10 -rotate-[3.25deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black lg:-right-[19.5vw] lg:top-[1.5rem]">
+            <div className="lg:absolute flex flex-col p-2.5 pl-5 pr-5 justify-end items-end bg-[#454545] w-[19.5rem] h-[19.5rem] z-10 -rotate-[3.25deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black lg:top-[1.5rem] xl:-right-[23vw] 2xl:-right-[19.25vw]">
               <span className="monument-extra-bold uppercase text-3xl">Name</span>
             </div>
           </div>
@@ -54,10 +54,26 @@ const Members = () => {
         </div>
       </div>
 
-      <div>
+      <div className="flex flex-col gap-8">
         <div className="flex gap-5">
           <div className="w-[var(--pub-container-padding-x)] bg-[var(--pink-color)]"></div>
           <span className="monument-extra-bold uppercase text-[3.5rem] leading-none">Excutive Board</span>
+        </div>
+
+        <div className="relative flex items-center justify-center bg-[var(--pink-color)] bg-cover h-[44rem] 2xl:h-[54rem]">
+          <span className="absolute top-6.5 left-[27vw] 2xl:left-[30vw] w-50 text-right">Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed diam nonummy tincidunt ut laoreet dolore</span>
+          <span className="absolute top-45 left-[9.5vw] w-38 text-right">Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit,</span>
+          <span className="absolute top-[31.5rem] right-[12.5vw] w-94">Lorem ipsum dolor sit amet, consectetuer adipisc-ing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud</span>
+          <div className="relative flex w-full h-full items-center justify-center">
+            <div className="absolute flex flex-col p-5 w-[20rem] h-[27rem] bg-[#333333] justify-end shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black z-10 -rotate-7 bottom-10 left-[28vw]">
+              <span className="monument-extra-bold text-2xl 2xl:text-3xl uppercase">Name</span>
+              <span className="monument-regular text-2xl 2xl:text-3xl uppercase">President</span>
+            </div>
+            <div className="absolute flex flex-col p-5 w-[20rem] h-[27rem] bg-[#333333] justify-start shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black z-1 text-end rotate-2 top-10 right-[28vw]">
+              <span className="monument-extra-bold text-2xl 2xl:text-3xl uppercase">Name</span>
+              <span className="monument-regular text-2xl 2xl:text-3xl uppercase">President</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -69,24 +85,24 @@ const Members = () => {
 
         <div className="flex w-full h-[42rem]">
           <div className="flex flex-col p-5 justify-end w-1/5 h-full bg-[#454545]">
-            <span className="monument-regular uppercase text-3xl">Name</span>
-            <span className="monument-extra-bold uppercase text-2xl">Head of Performance</span>
+            <span className="monument-regular uppercase xl:text-2xl 2xl:text-3xl">Name</span>
+            <span className="monument-extra-bold uppercase xl:text-xl 2xl:text-2xl">Head of Performance</span>
           </div>
           <div className="flex flex-col p-5 justify-start w-1/5 h-full bg-[#333333]">
-            <span className="monument-regular uppercase text-3xl">Name</span>
-            <span className="monument-extra-bold uppercase text-2xl">Head of Performance</span>
+            <span className="monument-regular uppercase xl:text-2xl 2xl:text-3xl">Name</span>
+            <span className="monument-extra-bold uppercase xl:text-xl 2xl:text-2xl">Head of Performance</span>
           </div>
           <div className="flex flex-col p-5 justify-end w-1/5 h-full bg-[#454545]">
-            <span className="monument-regular uppercase text-3xl">Name</span>
-            <span className="monument-extra-bold uppercase text-2xl">Head of Performance</span>
+            <span className="monument-regular uppercase xl:text-2xl 2xl:text-3xl">Name</span>
+            <span className="monument-extra-bold uppercase xl:text-xl 2xl:text-2xl">Head of Performance</span>
           </div>
           <div className="flex flex-col p-5 justify-start w-1/5 h-full bg-[#333333]">
-            <span className="monument-regular uppercase text-3xl">Name</span>
-            <span className="monument-extra-bold uppercase text-2xl">Head of Performance</span>
+            <span className="monument-regular uppercase xl:text-2xl 2xl:text-3xl">Name</span>
+            <span className="monument-extra-bold uppercase xl:text-xl 2xl:text-2xl">Head of Performance</span>
           </div>
           <div className="flex flex-col p-5 justify-end w-1/5 h-full bg-[#454545]">
-            <span className="monument-regular uppercase text-3xl">Name</span>
-            <span className="monument-extra-bold uppercase text-2xl">Head of Performance</span>
+            <span className="monument-regular uppercase xl:text-2xl 2xl:text-3xl">Name</span>
+            <span className="monument-extra-bold uppercase xl:text-xl 2xl:text-2xl">Head of Performance</span>
           </div>
         </div>
       </div>

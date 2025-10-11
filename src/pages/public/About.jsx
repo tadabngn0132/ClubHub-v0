@@ -38,10 +38,10 @@ const About = () => {
             <span className="w-[74%] 2xl:w-[64%]">suscipit lobortis nisl ut aliquip ex ea commodo con-sequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros</span>
           </div>
           <div className="">
-            <img className="absolute top-0 right-89 w-[35rem] 2xl:right-112 2xl:w-[35rem]" src="src/assets/items/about-items-04.webp" alt="Main Activities" />
-            <span className="absolute top-10 left-139 w-1/9 2xl:left-155 2xl:w-1/10 text-right">Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit,</span>
-            <span className="absolute top-22 right-39 w-1/7 2xl:right-62 2xl:w-1/8">Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed diam nonummy tincidunt ut laoreet dolore</span>
-            <span className="absolute top-65 right-34 w-[28%] 2xl:right-56 2xl:w-[24%] text-right">Lorem ipsum dolor sit amet, consectetuer adipisc-ing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud</span>
+            <img className="absolute top-0 right-77 w-[35rem] 2xl:right-112 2xl:w-[35rem]" src="src/assets/items/about-items-04.webp" alt="Main Activities" />
+            <span className="absolute top-10 left-126 w-1/8 2xl:left-155 2xl:w-1/10 text-right">Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit,</span>
+            <span className="absolute top-22 right-30 w-1/7 2xl:right-62 2xl:w-1/8">Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed diam nonummy tincidunt ut laoreet dolore</span>
+            <span className="absolute top-65 right-20 w-[29%] 2xl:right-56 2xl:w-[24%] text-right">Lorem ipsum dolor sit amet, consectetuer adipisc-ing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud</span>
           </div>
           <div className="bg-[#212121] col-span-4 col-start-1 row-span-3 row-end-10 w-full h-full"></div>
           <div className="flex flex-col bg-[#212121] p-5 col-span-5 row-span-4 row-end-10 w-full h-full text-right items-end justify-end leading-5">
