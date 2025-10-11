@@ -31,15 +31,20 @@ const Members = () => {
         </div>
 
         {/* Card using flex box */}
-        <div className=" flex w-full h-[32rem] bg-[url(src/assets/backgrounds/pub_members_background/founders_bg.png)] bg-cover items-center justify-center p-12 pl-14 pr-14">
-          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-end items-start bg-[#454545] w-[24%] 2xl:w-[22%] h-[17.5rem] 2xl:h-[19rem] z-10 rotate-350 shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black self-end">
-            <span className="monument-extra-bold uppercase text-3xl">Name</span>
-          </div>
-          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-start items-start bg-[#454545] w-[24%] 2xl:w-[22%] h-[17.5rem] 2xl:h-[19rem] z-1 rotate-[3.25deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black self-start">
-            <span className="monument-extra-bold uppercase text-3xl">Name</span>
-          </div>
-          <div className="flex flex-col p-2.5 pl-5 pr-5 justify-end items-end bg-[#454545] w-[24%] 2xl:w-[22%] h-[17.5rem] 2xl:h-[19rem] z-10 rotate-[356.75deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black self-center">
-            <span className="monument-extra-bold uppercase text-3xl">Name</span>
+        <div className="flex w-full h-[36rem] 2xl:h-[36rem] bg-[url(src/assets/backgrounds/pub_members_background/founders_bg.png)] bg-cover items-center justify-center">
+          <div className="relative flex items-center justify-center flex-wrap gap-10">
+            {/* Card 1 */}
+            <div className="lg:absolute flex flex-col p-2.5 pl-5 pr-5 justify-end items-start bg-[#454545] w-[19.5rem] h-[19.5rem] z-10 -rotate-10 shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black lg:-left-[16vw] lg:top-[3.5rem]"> 
+              <span className="monument-extra-bold uppercase text-3xl">Name</span>
+            </div>
+            {/* Card 2 */}
+            <div className="relative flex flex-col p-2.5 pl-5 pr-5 justify-start items-start bg-[#454545] w-[19.5rem] h-[19.5rem] z-1 rotate-[3.25deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black lg:-top-[4.5rem]">
+              <span className="monument-extra-bold uppercase text-3xl">Name</span>
+            </div>
+            {/* Card 3 */}
+            <div className="lg:absolute flex flex-col p-2.5 pl-5 pr-5 justify-end items-end bg-[#454545] w-[19.5rem] h-[19.5rem] z-10 -rotate-[3.25deg] shadow-[0_0_50px_-12px_rgba(0,0,0,0.25)] shadow-black lg:-right-[19.5vw] lg:top-[1.5rem]">
+              <span className="monument-extra-bold uppercase text-3xl">Name</span>
+            </div>
           </div>
         </div>
 
