@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux"
 import { loginAction } from '../../store/slices/authSlice'
 import { login } from '../../services/authService'
 import { useState } from "react"
+import Dashboard from "../admin/Dashboard"
 
 const SignIn = () => {
   const {
@@ -31,7 +32,7 @@ const SignIn = () => {
       const res = await login(data)
       dispatch(loginAction(res))
       // Handle navigate
-      navigate()
+      navigate('/dashboard')
       return res
     } catch (error) {
       console.error(error)

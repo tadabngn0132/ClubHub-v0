@@ -57,6 +57,7 @@ axiosClient.interceptors.response.use(
         break
       case 401:
         // Handle unauthorized access, e.g., redirect to login
+        alert('Error 401: Unauthorized access')
         break
       case 403:
         // Handle forbidden access
