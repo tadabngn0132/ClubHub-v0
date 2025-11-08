@@ -1,36 +1,39 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import SignIn from './pages/auth/SignIn'
-import Header from './components/layout/public/Header'
-import Footer from './components/layout/public/Footer'
 import ErrorBoundary from './components/layout/public/ErrorBoundary'
-import Home from './pages/public/Home'
-import About from './pages/public/About'
-import Members from './pages/public/Members'
-import Activities from './pages/public/Activities'
-import Contact from './pages/public/Contact'
+
+import {
+  publicRoutes,
+  memberRoutes,
+  moderatorRoutes,
+  adminRoutes
+} from './routes'
 
 function App() {
 
   return (
-    <>
-      <BrowserRouter>
-        <Header />
+    <BrowserRouter basename='/'>
+      <Routes>
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="*" element={<ErrorBoundary />} />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/members" element={<Members />} />
-          <Route path="/activities" element={<Activities />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="*" element={
-            <ErrorBoundary />
-          } />
-        </Routes>
+        {publicRoutes.map(({ path, element}, index) => {
+          return <Route key={index} path={path} element={element} />
+        })}
 
-        <Footer />
-      </BrowserRouter>
-    </>
+        {memberRoutes.map(({ path, element}, index) => {
+          return <Route key={index} path={path} element={element} />
+        })}
+
+        {moderatorRoutes.map(({ path, element}, index) => {
+          return <Route key={index} path={path} element={element} />
+        })}
+
+        {adminRoutes.map(({ path, element}, index) => {
+          return <Route key={index} path={path} element={element} />
+        })}
+      </Routes>
+    </BrowserRouter>
   )
 }
 
