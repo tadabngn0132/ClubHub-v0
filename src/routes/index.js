@@ -4,7 +4,7 @@ import {
   memberRoutes,
   moderatorRoutes,
   adminRoutes 
-} from "./privateRoutes";
+} from "./private_routes";
 
 export {
   publicRoutes,
