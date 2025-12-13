@@ -35,12 +35,15 @@ axiosClient.interceptors.response.use(
     switch (response.status) {
       case 200:
         // Handle success
+        alert('Request successful!')
         break
       case 201:
         // Handle resource created
+        alert('Resource created successfully!')
         break
       case 204:
         // Handle no content
+        alert('No content available.')
         break
       default:
         break
@@ -54,6 +57,7 @@ axiosClient.interceptors.response.use(
     switch (error.response?.status) {
       case 400:
         // Handle bad request
+        alert('Error 400: Bad Request')
         break
       case 401:
         // Handle unauthorized access, e.g., redirect to login
@@ -61,18 +65,23 @@ axiosClient.interceptors.response.use(
         break
       case 403:
         // Handle forbidden access
+        alert('Error 403: Forbidden access')
         break
       case 404:
         // Handle resource not found
+        alert('Error 404: Resource not found')
         break
       case 500:
         // Handle server error
+        alert('Error 500: Server error')
         break
       case 502:
         // Handle bad gateway
+        alert('Error 502: Bad Gateway')
         break
       case 504:
         // Handle gateway timeout
+        alert('Error 504: Gateway Timeout')
         break
       default:
         break

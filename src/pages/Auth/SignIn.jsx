@@ -30,7 +30,7 @@ const SignIn = () => {
       setIsLoading(true)
       console.log(data)
       const res = await login(data)
-      dispatch(loginAction(res))
+      dispatch(loginAction(res.data))
       // Handle navigate
       navigate('/dashboard')
       return res
