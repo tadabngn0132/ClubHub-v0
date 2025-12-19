@@ -1,21 +1,10 @@
-import Header from "../components/layout/public/Header"
-import Footer from "../components/layout/public/Footer"
+import PublicLayout from "../components/layout/public/PublicLayout.jsx"
+import Home from "../pages/public/Home.jsx"
+import About from "../pages/public/About.jsx"
+import Members from "../pages/public/Members.jsx"
+import Activities from "../pages/public/Activities.jsx"
+import Contact from "../pages/public/Contact.jsx"
 
-import Home from "../pages/public/Home"
-import About from "../pages/public/About"
-import Members from "../pages/public/Members"
-import Activities from "../pages/public/Activities"
-import Contact from "../pages/public/Contact"
-
-const PublicLayout = ({ children }) => {
-  return (
-    <>
-      <Header />
-      { children }
-      <Footer />
-    </>
-  )
-}
 export const publicRoutes = [
   {
     path: "/",

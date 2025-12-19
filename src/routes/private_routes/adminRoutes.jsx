@@ -1,16 +1,11 @@
-import ProtectedRoute from '../../components/auth/ProtectedRoute'
+import AdminLayout from '../../components/layout/admin/AdminLayout.jsx'
+import AdminDashboard from '../../pages/private/admin/AdminDashboard.jsx'
+import AdminActivities from '../../pages/private/admin/AdminActivities.jsx'
+import AdminSchedule from '../../pages/private/admin/AdminSchedule.jsx'
+import AdminTasks from '../../pages/private/admin/AdminTasks.jsx'
+import AdminSquare from '../../pages/private/admin/AdminSquare.jsx'
+import AdminProfile from '../../pages/private/admin/AdminProfile.jsx'
 
-const AdminLayout = ({ children }) => {
-  return (
-    <>
-    <ProtectedRoute>
-      <AdminHeader />
-      { children }
-      <AdminFooter />
-    </ProtectedRoute>
-    </>
-  )
-}
 export const adminRoutes = [
   {
     path: '/admin/dashboard',

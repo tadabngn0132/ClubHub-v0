@@ -1,16 +1,11 @@
-import ProtectedRoute from '../../components/auth/ProtectedRoute'
+import ModeratorLayout from '../../components/layout/moderator/ModeratorLayout.jsx'
+import ModeratorDashboard from '../../pages/private/moderator/ModeratorDashboard.jsx'
+import ModeratorActivities from '../../pages/private/moderator/ModeratorActivities.jsx'
+import ModeratorSchedule from '../../pages/private/moderator/ModeratorSchedule.jsx'
+import ModeratorTasks from '../../pages/private/moderator/ModeratorTasks.jsx'
+import ModeratorSquare from '../../pages/private/moderator/ModeratorSquare.jsx'
+import ModeratorProfile from '../../pages/private/moderator/ModeratorProfile.jsx'
 
-const ModeratorLayout = ({ children }) => {
-  return (
-    <>
-    <ProtectedRoute>
-      <ModeratorHeader />
-      { children }
-      <ModeratorFooter />
-    </ProtectedRoute>
-    </>
-  )
-}
 export const moderatorRoutes = [
   {
     path: '/moderator/dashboard',

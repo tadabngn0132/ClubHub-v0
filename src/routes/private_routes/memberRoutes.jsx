@@ -1,16 +1,11 @@
-import ProtectedRoute from '../../components/auth/ProtectedRoute'
+import MemberLayout from '../../components/layout/member/MemberLayout.jsx'
+import MemberDashboard from '../../pages/private/member/MemberDashboard.jsx'
+import MemberActivities from '../../pages/private/member/MemberActivities.jsx'
+import MemberSchedule from '../../pages/private/member/MemberSchedule.jsx'
+import MemberTasks from '../../pages/private/member/MemberTasks.jsx'
+import MemberSquare from '../../pages/private/member/MemberSquare.jsx'
+import MemberProfile from '../../pages/private/member/MemberProfile.jsx'
 
-const MemberLayout = ({ children }) => {
-  return (
-    <>
-      <ProtectedRoute>
-        <MemberHeader />
-        { children }
-        <MemberFooter />
-      </ProtectedRoute>
-    </>
-  )
-}
 export const memberRoutes = [
   {
     path: '/member/dashboard',
