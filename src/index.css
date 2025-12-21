@@ -10,8 +10,10 @@
   --red-color: #b22222;
   /* Bổ sung thêm biến padding, margin */
   --pub-g-pl-pr: 40px;
-  --pub-main-min-h: 46.5vw;
+  --pub-main-min-h: 100vh;
   --pub-main-mt-mb: 68px;
+  --sign-in-pt-pb: 20px;
+  --sign-in-form-min-h: 90vh;
 }
 
 body {
