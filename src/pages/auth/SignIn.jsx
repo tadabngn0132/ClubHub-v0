@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux"
 import { loginAction } from '../../store/slices/authSlice'
 import { login } from '../../services/authService'
 import { useState } from "react"
-import Dashboard from "../admin/Dashboard"
+import Dashboard from "../private/admin/AdminDashboard.jsx"
 
 const SignIn = () => {
   const {
