@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux"
 import { loginAction } from '../../store/slices/authSlice'
 import { login } from '../../services/authService'
 import { useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons"
 
 const SignIn = () => {
   const {
@@ -23,6 +25,7 @@ const SignIn = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const handleLogin = async (data) => {
     try {
@@ -37,6 +40,12 @@ const SignIn = () => {
       console.error(error)
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handlePasswordView = () => {
+    return () => {
+      setIsPasswordVisible(!isPasswordVisible)
     }
   }
 
@@ -161,7 +170,7 @@ const SignIn = () => {
                   alt="Lock icon"
                 />
                 <input
-                  type="password"
+                  type={isPasswordVisible ? 'text' : 'password'}
                   placeholder="Password"
                   className="p-2 pt-2.5 pb-2.5 pl-14 text-[#454545] bg-[#d0d0d0] rounded-[1.25rem] placeholder-[#454545] w-full focus:outline-none focus:border-[var(--pink-color)] border-2 border-transparent"
                   {...register('password', { 
@@ -172,12 +181,15 @@ const SignIn = () => {
                     }
                   })}
                 />
+                <span onClick={handlePasswordView()} className="flex items-center-safe justify-center-safe absolute right-5 text-[var(--pink-color)] p-1 cursor-pointer hover:opacity-70">
+                  <FontAwesomeIcon icon={isPasswordVisible ? faEyeSlash : faEye} />
+                </span>
               </div>
 
               { errors.password &&
-                <div className="flex w-full justify-between">
+                <div className="flex flex-col w-full justify-between">
                   {/* Password error */}
-                    <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] pl-4 mb-2">
+                    <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] pl-4">
                       { errors.password.message }
                     </span>
                   <Link
