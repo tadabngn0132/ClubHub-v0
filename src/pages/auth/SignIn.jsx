@@ -41,8 +41,8 @@ const SignIn = () => {
   }
 
   return (
-    <div className="flex w-full min-h-[var(--pub-main-min-h)] items-center-safe justify-center-safe md:pl-[var(--pub-container-padding-x)] md:pr-[var(--pub-container-padding-x)]">
-      <div className="flex justify-between bg-black w-full md:w-9/12 lg:w-full xl:w-11/12 2xl:w-10/12 rounded-[3rem] relative">
+    <div className="flex w-full min-h-[var(--pub-main-min-h)] items-center-safe justify-center-safe lg:pl-[var(--pub-container-padding-x)] lg:pr-[var(--pub-container-padding-x)]">
+      <div className="flex justify-between bg-black w-full xl:w-11/12 2xl:w-10/12 rounded-[3rem] relative">
         <div className="hidden lg:flex lg:flex-col lg:p-10 lg:pt-8 lg:justify-between">
           <video
             className="object-cover lg:w-2/3 2xl:w-7/10 h-full absolute top-0 left-0 z-[0] rounded-[3rem] rounded-r-none opacity-75 animate-scale-bigger animate-slide-left"
@@ -75,7 +75,7 @@ const SignIn = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center-safe w-full min-h-[var(--sign-in-form-min-h)] lg:w-9/13 xl:w-[46%] 2xl:w-2/5 p-10 pl-21 pr-21 sm:pl-51 sm:pr-51 md:pl-33 md:pr-33 lg:pl-24 lg:pr-24 xl:pl-22 xl:pr-22 md:rounded-[6rem] lg:rounded-[5rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_phone_dọc_full_màn.webp)] sm:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_phone_ngang_full_màn.webp)] md:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_tablet_dọc.webp)] lg:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_tablet_ngang.webp)] xl:bg-[url(src/assets/backgrounds/sign_in_background/GDC_background_web.webp)] bg-cover bg-center relative animate-slide-right">
+        <div className="flex flex-col items-center justify-center-safe w-full min-h-[var(--sign-in-form-min-h)] lg:w-6/12 xl:w-[46%] 2xl:w-2/5 p-10 pl-21 pr-21 sm:pl-51 sm:pr-51 md:pl-66 md:pr-66 lg:pl-24 lg:pr-24 xl:pl-22 xl:pr-22 lg:rounded-[5rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background.webp)] bg-auto md:bg-size-[auto_1920px] lg:bg-auto bg-current bg-center relative animate-slide-right">
           
           {/* Form header */}
           <div className="flex mb-6 w-full relative">
