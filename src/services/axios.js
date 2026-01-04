@@ -4,10 +4,11 @@ import { getToken } from '../utils/helper'
 // Create an axios instance
 const axiosClient = axios.create({
   baseURL: 'http://localhost:5995/api',
-  timeout: 10000,
+  timeout: 5000,
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  withCredentials: true
 })
 
 // Add a request interceptor
