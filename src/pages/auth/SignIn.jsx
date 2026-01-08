@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { loginAction } from '../../store/slices/authSlice'
 import { login } from '../../services/authService'
 import { useState } from "react"
@@ -24,22 +24,18 @@ const SignIn = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [isLoading, setIsLoading] = useState(false)
+  const { isLoading, error } = useSelector((state) => state.auth)
+  // Error handling later
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   const handleLogin = async (data) => {
     try {
-      setIsLoading(true)
       console.log(data)
-      const res = await login(data)
-      dispatch(loginAction(res.data))
+      await dispatch(loginUser(data)).unwrap()
       // Handle navigate
       navigate('/dashboard')
-      return res
     } catch (error) {
       console.error(error)
-    } finally {
-      setIsLoading(false)
     }
   }
 
