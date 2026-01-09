@@ -1,12 +1,11 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import { loginAction } from '../../store/slices/authSlice'
-import { login } from '../../services/authService'
 import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons"
-
+import { loginUser } from "../../store/slices/authSlice"
+import toast, { Toaster } from "react-hot-toast"
 const SignIn = () => {
   const {
     register,
@@ -28,12 +27,21 @@ const SignIn = () => {
   // Error handling later
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
-  const handleLogin = async (data) => {
+  const handleLogin = async (formData) => {
     try {
-      console.log(data)
-      await dispatch(loginUser(data)).unwrap()
-      // Handle navigate
-      navigate('/dashboard')
+      console.log(formData)
+      const resData = await dispatch(loginUser(formData)).unwrap()
+      toast.success(resData.message || 'Login successful!')
+      
+      if (resData.data.necessaryUserData.role === 'admin') {
+        navigate('/admin/dashboard')
+      } else if (resData.data.necessaryUserData.role === 'moderator') {
+        navigate('/moderator/dashboard')
+      } else if (resData.data.necessaryUserData.role === 'member') {
+        navigate('/member/dashboard')
+      } else {
+        navigate('/')
+      }
     } catch (error) {
       console.error(error)
     }
@@ -47,6 +55,7 @@ const SignIn = () => {
 
   return (
     <div className="flex w-full min-h-[var(--pub-main-min-h)] items-center-safe justify-center-safe lg:pl-[var(--pub-container-padding-x)] lg:pr-[var(--pub-container-padding-x)]">
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="flex justify-between bg-black w-full xl:w-11/12 2xl:w-10/12 rounded-[3rem] relative">
         <div className="hidden lg:flex lg:flex-col lg:p-10 lg:pt-8 lg:justify-between">
           <video
@@ -182,7 +191,7 @@ const SignIn = () => {
                 </span>
               </div>
 
-              { errors.password &&
+              { errors.password ? (
                 <div className="flex flex-col w-full justify-between">
                   {/* Password error */}
                     <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] pl-4">
@@ -195,34 +204,23 @@ const SignIn = () => {
                     Forgot Password?
                   </Link>
                 </div>
-              }
-
-              { !errors.password && 
+              ) : (
                 <Link
                   to="/forgot-password"
                   className="mb-3 w-full self-end text-black text-[10px] lg:text-[11px] text-end"
                 >
                   Forgot Password?
                 </Link>
+              )
               }
             </div>
 
-            { isLoading && 
-              <input
-                type="submit"
-                value="SIGN IN"
-                className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-1.5 mb-52 lg:mb-20 shadow-white-centered font-bold cursor-pointer self-start hover:bg-[var(--dark-pink-color)] hover:text-white"
-                disabled
+            <input
+              type="submit"
+              value={ isLoading ? "SIGNING IN..." : "SIGN IN" }
+              className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-1.5 shadow-white-centered font-bold cursor-pointer self-start hover:bg-[var(--dark-pink-color)] hover:text-white"
+              disabled={isLoading}
               />
-            }
-
-            { !isLoading && 
-              <input
-                type="submit"
-                value="SIGN IN"
-                className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-1.5 shadow-white-centered font-bold cursor-pointer self-start hover:bg-[var(--dark-pink-color)] hover:text-white"
-              />
-            }
           </form>
         </div>
       </div>

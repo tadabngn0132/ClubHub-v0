@@ -6,12 +6,6 @@ export const login = async (payload) => {
   return res.data
 }
 
-export const register = async (payload) => {
-  console.log(payload)
-  const res = await axiosClient.post('/auth/register', payload)
-  return res.data
-}
-
 export const logout = async (payload) => {
   console.log(payload)
   const res = await axiosClient.post('/auth/logout', payload)

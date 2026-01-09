@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { 
   login, 
-  register, 
   logout,
   changePassword,
   forgotPassword,
@@ -15,12 +14,28 @@ export const loginUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const data = await login(userData)
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
       return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
-);
+)
+
+export const logoutUser = createAsyncThunk(
+  'auth/logoutUser',
+  async (_, thunkAPI) => {
+    try {
+      await logout()
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+)
 
 const authSlice = createSlice({
   name: 'auth',
@@ -40,13 +55,10 @@ const authSlice = createSlice({
       state.currentUser = action.payload.user;
       state.token = action.payload.token;
     },
-    registerAction: (state, action) => {
-      state.currentUser = action.payload.user;
-      state.token = action.payload.token;
-    }
   },
   extraReducers: (builder) => {
     builder
+      // Login User
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true
         state.error = null
@@ -60,6 +72,13 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+
+      // Logout User
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isLoggedIn = false;
+        state.currentUser = null;
+        state.token = null;
       })
   }
 });

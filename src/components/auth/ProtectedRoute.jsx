@@ -1,16 +1,18 @@
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const ProtectedRoute = () => {
-  let navigate = useNavigate()
+  const navigate = useNavigate()
+  const { token } = useSelector((state) => state.auth)
 
-  if (!localStorage.getItem('token')) {
-    navigate('/login')
+  if (!token || token === null) {
+    navigate('/sign-in')
   }
 
   const role = localStorage.getItem('role')
 
-  if (role !== 'admin' && role !== 'moderator' && role !== 'moderator') {
-    navigate('/login')
+  if (role !== 'admin' && role !== 'moderator' && role !== 'member') {
+    navigate('/sign-in')
   }
 
   if (role === 'admin') {
