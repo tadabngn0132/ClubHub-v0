@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { 
   login, 
   logout,
@@ -7,7 +7,8 @@ import {
   resetPassword,
   googleAuth,
   googleAuthCallback  
-} from "../../services/authService";
+} from "../../services/authService"
+import helper from "../../utils/helper"
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
@@ -16,12 +17,12 @@ export const loginUser = createAsyncThunk(
       const data = await login(userData)
 
       if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message);
+        return thunkAPI.rejectWithValue(data.message)
       }
 
       return data
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data)
     }
   }
 )
@@ -32,7 +33,7 @@ export const logoutUser = createAsyncThunk(
     try {
       await logout()
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data)
     }
   }
 )
@@ -66,19 +67,23 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false
         state.isLoggedIn = true
-        state.currentUser = action.payload.necessaryUserData
-        state.token = action.payload.accessToken
+        state.currentUser = action.payload.data.necessaryUserData
+        state.token = action.payload.data.accessToken
+        helper.setToken(action.payload.data.accessToken)
+        helper.setCurrentUser(action.payload.data.necessaryUserData)
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
+        state.isLoading = false
+        state.error = action.payload.data
       })
 
       // Logout User
       .addCase(logoutUser.fulfilled, (state) => {
-        state.isLoggedIn = false;
-        state.currentUser = null;
-        state.token = null;
+        state.isLoggedIn = false
+        state.currentUser = null
+        state.token = null
+        helper.removeToken()
+        helper.removeCurrentUser()
       })
   }
 });
@@ -87,5 +92,5 @@ export const {
   registerAction,
   loginAction, 
   logoutAction 
-} = authSlice.actions;
-export default authSlice.reducer;
+} = authSlice.actions
+export default authSlice.reducer

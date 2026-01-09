@@ -1,30 +1,26 @@
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate()
-  const { token } = useSelector((state) => state.auth)
+  const { token, currentUser } = useSelector((state) => state.auth)
 
   if (!token || token === null) {
     navigate('/sign-in')
   }
 
-  const role = localStorage.getItem('role')
+  const role = currentUser?.role
 
   if (role !== 'admin' && role !== 'moderator' && role !== 'member') {
     navigate('/sign-in')
   }
 
-  if (role === 'admin') {
-    navigate('/admin/dashboard')
-  }
-
-  if (role === 'moderator') {
-    navigate('moderator/dashboard')
-  }
-
-  if (role === 'member') {
-    navigate('member/dashboard')
+  if (role === 'admin' || role === 'moderator' || role === 'member') {
+    return (
+      <>
+        { children }
+      </>
+    )
   }
 }
 
