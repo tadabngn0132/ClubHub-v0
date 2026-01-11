@@ -8,7 +8,12 @@ import {
   googleAuth,
   googleAuthCallback  
 } from "../../services/authService"
-import helper from "../../utils/helper"
+import {
+  setToken,
+  removeToken,
+  setCurrentUser,
+  removeCurrentUser
+} from "../../utils/helper"
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
@@ -69,8 +74,8 @@ const authSlice = createSlice({
         state.isLoggedIn = true
         state.currentUser = action.payload.data.necessaryUserData
         state.token = action.payload.data.accessToken
-        helper.setToken(action.payload.data.accessToken)
-        helper.setCurrentUser(action.payload.data.necessaryUserData)
+        setToken(action.payload.data.accessToken)
+        setCurrentUser(action.payload.data.necessaryUserData)
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false
@@ -82,8 +87,8 @@ const authSlice = createSlice({
         state.isLoggedIn = false
         state.currentUser = null
         state.token = null
-        helper.removeToken()
-        helper.removeCurrentUser()
+        removeToken()
+        removeCurrentUser()
       })
   }
 });
