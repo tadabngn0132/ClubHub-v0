@@ -1,12 +1,76 @@
-# React + Vite
+# ClubHub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Student club management system - Frontend application built with React + Vite.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React 19** - UI library
+- **Vite** - Build tool & dev server
+- **TailwindCSS 4** - Utility-first CSS framework
+- **Redux Toolkit** - State management
+- **React Router 7** - Routing
+- **Axios** - HTTP client
+- **React Hook Form** - Form handling
+- **FontAwesome** - Icon library
+- **React Hot Toast** - Notifications
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Node.js (v18 or higher)
+- npm or yarn
+
+## Getting Started
+
+### Installation
+```bash
+npm install
+```
+
+### Development
+```bash
+npm run dev
+```
+
+App runs at `http://localhost:5173`
+
+### Build
+```bash
+npm run build
+```
+
+Builds the app for production to the `dist/` folder.
+
+### Preview Production Build
+```bash
+npm run preview
+```
+
+### Linting
+```bash
+npm run lint
+```
+
+## Project Structure
+```
+src/
+├── assets/        # Static assets (images, fonts, icons)
+├── components/    # Reusable components
+├── pages/         # Page components
+├── store/         # Redux store configuration
+├── hooks/         # Custom React hooks
+├── utils/         # Utility functions
+└── main.jsx       # Application entry point
+```
+
+## Features
+
+- 🎨 Modern UI with TailwindCSS
+- 🔐 Authentication & Authorization
+- 📱 Responsive design
+- 🚀 Fast HMR with Vite
+- 🎯 Type-safe forms with React Hook Form
+- 🔄 Global state management with Redux
+
+## License
+
+Private
