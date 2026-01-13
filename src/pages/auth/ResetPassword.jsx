@@ -1,11 +1,15 @@
-import React from 'react'
 import { useForm } from "react-hook-form"
+import { resetPasswordUser } from '../../store/slices/authSlice'
+import { useDispatch } from 'react-redux'
+import toast, { Toaster } from "react-hot-toast"
 
 const ResetPassword = () => {
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm({
     defaultValues: {
       newPassword: '',
@@ -15,12 +19,27 @@ const ResetPassword = () => {
     reValidateMode: 'onChange'
   })
 
-  const handleResetPassword = (data) => {
-    // Handle reset password logic here
+  const handleResetPassword = async (data) => {
+    try {
+      if (data.newPassword !== data.confirmNewPassword) {
+        toast.error('New Password and Confirm New Password do not match')
+        return
+      }
+
+      console.log(data)
+      const resData = await dispatch(resetPasswordUser(data)).unwrap()
+      console.log(resData)
+      toast.success("Password reset successful!")
+    } catch (error) {
+      toast.error(error.message)
+      console.error(error)
+      return
+    }
   }
   
   return (
     <div>
+      <Toaster position="top-right" reverseOrder={false} />
       <h1>Reset Password</h1>
       <form onSubmit={handleSubmit(handleResetPassword)}>
         <label htmlFor="new-password">New Password <span className="text-red-500">*</span></label>
@@ -43,7 +62,8 @@ const ResetPassword = () => {
           minLength: {
             value: 8,
             message: 'Password must be at least 8 characters'
-          }
+          },
+          validate: (value) => value === watch('newPassword') || 'Passwords do not match'
         })} />
         {/* Confirm New Password error */}
         { errors.confirmNewPassword &&

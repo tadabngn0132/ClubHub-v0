@@ -1,11 +1,14 @@
-import React from 'react'
+import { useDispatch } from "react-redux"
 import { useForm } from "react-hook-form"
+import { changePasswordUser } from '../../store/slices/authSlice'
 
 const ChangePassword = () => {
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm({
     defaultValues: {
       currentPassword: '',
@@ -16,8 +19,10 @@ const ChangePassword = () => {
     reValidateMode: 'onChange'
   })
 
-  const handleChangePassword = (data) => {
-    // Handle change password logic here
+  const handleChangePassword = async (data) => {
+    console.log(data)
+    const resData = await dispatch(changePasswordUser(data)).unwrap()
+    console.log(resData)
   }
 
   return (
@@ -58,7 +63,8 @@ const ChangePassword = () => {
           minLength: {
             value: 8,
             message: 'Password must be at least 8 characters'
-          }
+          },
+          validate: (value) => value === watch('newPassword') || 'Passwords do not match'
         })} />
         {/* Confirm New Password error */}
         { errors.confirmNewPassword &&

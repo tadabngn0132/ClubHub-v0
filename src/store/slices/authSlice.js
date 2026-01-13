@@ -43,7 +43,7 @@ export const logoutUser = createAsyncThunk(
   }
 )
 
-export const handleChangePassword = createAsyncThunk(
+export const changePasswordUser = createAsyncThunk(
   'auth/changePassword',
   async (passwordData, thunkAPI) => {
     try {
@@ -60,7 +60,7 @@ export const handleChangePassword = createAsyncThunk(
   }
 )
 
-export const handleForgotPassword = createAsyncThunk(
+export const forgotPasswordUser = createAsyncThunk(
   'auth/forgotPassword',
   async (emailData, thunkAPI) => {
     try {
@@ -77,7 +77,7 @@ export const handleForgotPassword = createAsyncThunk(
   }
 )
 
-export const handleResetPassword = createAsyncThunk(
+export const resetPasswordUser = createAsyncThunk(
   'auth/resetPassword',
   async (passwordData, thunkAPI) => {
     try {
@@ -143,40 +143,40 @@ const authSlice = createSlice({
       })
 
       // Change Password
-      .addCase(handleChangePassword.pending, (state) => {
+      .addCase(changePasswordUser.pending, (state) => {
         state.isLoading = true
         state.error = null
       })
-      .addCase(handleChangePassword.fulfilled, (state) => {
+      .addCase(changePasswordUser.fulfilled, (state) => {
         state.isLoading = false
       })
-      .addCase(handleChangePassword.rejected, (state, action) => {
+      .addCase(changePasswordUser.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload.data
       })
 
       // Forgot Password
-      .addCase(handleForgotPassword.pending, (state) => {
+      .addCase(forgotPasswordUser.pending, (state) => {
         state.isLoading = true
         state.error = null
       })
-      .addCase(handleForgotPassword.fulfilled, (state) => {
+      .addCase(forgotPasswordUser.fulfilled, (state) => {
         state.isLoading = false
       })
-      .addCase(handleForgotPassword.rejected, (state, action) => {
+      .addCase(forgotPasswordUser.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload.data
       })
 
       // Reset Password
-      .addCase(handleResetPassword.pending, (state) => {
+      .addCase(resetPasswordUser.pending, (state) => {
         state.isLoading = true
         state.error = null
       })
-      .addCase(handleResetPassword.fulfilled, (state) => {
+      .addCase(resetPasswordUser.fulfilled, (state) => {
         state.isLoading = false
       })
-      .addCase(handleResetPassword.rejected, (state, action) => {
+      .addCase(resetPasswordUser.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload.data
       })
