@@ -8,8 +8,10 @@ const MemberLayout = ({ children }) => {
     <>
       <ProtectedRoute>
         <MemberHeader />
-        <MemberSideBar />
-        { children }
+        <main className='flex'>
+          <MemberSideBar />
+          { children }
+        </main>
         <MemberFooter />
       </ProtectedRoute>
     </>

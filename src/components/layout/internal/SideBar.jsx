@@ -3,12 +3,12 @@ import { NavLink } from 'react-router-dom'
 const SideBar = ({ sideBarItemList }) => {
   return (
     <div>
-      <aside className="w-64 bg-gray-200 min-h-screen p-4">
+      <aside className="w-64 bg-[var(--black-color)] min-h-screen p-2">
         <nav>
           <ul>
             {sideBarItemList.map((item, index) => (
-              <li key={index} className="mb-4">
-                <NavLink to={item.link} className={({ isActive }) => `block p-2 rounded hover:bg-gray-300 ${isActive ? 'bg-gray-400 font-bold' : 'font-normal'}`}>
+              <li key={index}>
+                <NavLink to={item.link} className={({ isActive }) => `flex p-2.5 pl-2 rounded-xl hover:text-[var(--pink-color)] text-md/tight ${isActive ? 'text-[var(--pink-color)] font-bold' : 'font-normal'}`}>
                   {item.name}
                 </NavLink>
               </li>

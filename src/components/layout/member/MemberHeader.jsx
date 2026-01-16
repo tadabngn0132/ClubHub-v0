@@ -1,8 +1,8 @@
-import React from 'react'
+import Header from '../../layout/internal/Header.jsx'
 
 const MemberHeader = () => {
   return (
-    <div>MemberHeader</div>
+    <Header role="Member" />
   )
 }
 
