@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
   createAnUser,
-  getUserById,
+  getAnUserById,
   getAllUsers,
   updateAnUser,
   deleteAnUser
@@ -28,7 +28,7 @@ export const getUserById = createAsyncThunk(
   'user/getUserById',
   async (id, thunkAPI) => {
     try {
-      const data = await getUserById(id)
+      const data = await getAnUserById(id)
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message)

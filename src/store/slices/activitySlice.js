@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import {
   createAnActivity,
-  getActivityById,
+  getAnActivityById,
   getAllActivities,
-  getActivitiesBySlug,
+  getAllActivitiesBySlug,
   updateAnActivity,
   deleteAnActivity
 } from '../../services/activityService'
@@ -29,7 +29,7 @@ export const getActivityById = createAsyncThunk(
   'activity/getActivityById',
   async (id, thunkAPI) => {
     try {
-      const data = await getActivityById(id)
+      const data = await getAnActivityById(id)
       
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message)
@@ -63,7 +63,7 @@ export const getActivitiesBySlug = createAsyncThunk(
   'activity/getActivitiesBySlug',
   async (slug, thunkAPI) => {
     try {
-      const data = await getActivitiesBySlug(slug)
+      const data = await getAllActivitiesBySlug(slug)
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message)

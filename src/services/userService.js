@@ -5,7 +5,7 @@ export const createAnUser = async (data) => {
   return res.data
 }
 
-export const getUserById = async (id) => {
+export const getAnUserById = async (id) => {
   const res = await axiosClient.get(`/users/${id}`)
   return res.data
 }

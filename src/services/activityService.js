@@ -5,7 +5,7 @@ export const createAnActivity = async (data) => {
   return res.data
 }
 
-export const getActivityById = async (id) => {
+export const getAnActivityById = async (id) => {
   const res = await axiosClient.get(`/activities/${id}`)
   return res.data
 }
@@ -15,7 +15,7 @@ export const getAllActivities = async () => {
   return res.data
 }
 
-export const getActivitiesBySlug = async (slug) => {
+export const getAllActivitiesBySlug = async (slug) => {
   const res = await axiosClient.get(`/activities/${slug}`)
   return res.data
 }
