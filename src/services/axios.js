@@ -11,6 +11,11 @@ const axiosClient = axios.create({
   withCredentials: true
 })
 
+// TODO: Implement queue mechanism for handling 401 responses
+// TODO: Implement global variables for queueing
+
+// TODO: Implement queue functions
+
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   (config) => {
@@ -57,7 +62,7 @@ axiosClient.interceptors.response.use(
         // Handle bad request
         break
       case 401:
-        // Handle unauthorized access, e.g., redirect to login
+        // TODO: Handle refresh token expiration or unauthorized access in queue function
         break
       case 403:
         // Handle forbidden access

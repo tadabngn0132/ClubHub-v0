@@ -6,7 +6,8 @@ import {
   forgotPassword,
   resetPassword,
   googleAuth,
-  googleAuthCallback  
+  googleAuthCallback,
+  refreshAccessToken
 } from "../../services/authService"
 import {
   setToken,
@@ -88,6 +89,23 @@ export const resetPasswordUser = createAsyncThunk(
   async (passwordData, thunkAPI) => {
     try {
       const data = await resetPassword(passwordData)
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message)
+      }
+
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
+  }
+)
+
+export const refreshAccessTokenUser = createAsyncThunk(
+  'auth/refreshAccessToken',
+  async (_, thunkAPI) => {
+    try {
+      const data = await refreshAccessToken()
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message)
@@ -192,6 +210,21 @@ const authSlice = createSlice({
         state.isLoading = false
       })
       .addCase(resetPasswordUser.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload.data
+      })
+
+      // Refresh Access Token
+      .addCase(refreshAccessTokenUser.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(refreshAccessTokenUser.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.token = action.payload.data.newAccessToken
+        setToken(action.payload.data.newAccessToken)
+      })
+      .addCase(refreshAccessTokenUser.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload.data
       })

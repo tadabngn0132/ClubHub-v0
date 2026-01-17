@@ -6,6 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons"
 import { loginUser } from "../../store/slices/authSlice"
 import toast, { Toaster } from "react-hot-toast"
+import gdcLogo from "../../assets/logos/GDC_logo.svg"
+import uogLogo from "../../assets/logos/2025-Greenwich-White-Eng.png"
+
 const SignIn = () => {
   const {
     register,
@@ -47,9 +50,7 @@ const SignIn = () => {
   }
 
   const handlePasswordView = () => {
-    return () => {
-      setIsPasswordVisible(!isPasswordVisible)
-    }
+    setIsPasswordVisible(!isPasswordVisible)
   }
 
   return (
@@ -67,12 +68,12 @@ const SignIn = () => {
           <div className="flex z-10 animate-slide-left">
             <img
               className="w-25 ml-7"
-              src="src/assets/logos/GDC_logo.svg"
+              src={gdcLogo}
               alt="GDC Logo"
             />
             <img
               className="w-25"
-              src="src/assets/logos/2025-Greenwich-White-Eng.png"
+              src={uogLogo}
               alt="UoG Logo"
             />
           </div>
@@ -119,7 +120,7 @@ const SignIn = () => {
                 src="src/assets/icons/user_icon.svg"
                 alt="User icon"
               />
-              <button type="submit" className="bg-[#d0d0d0] text-black p-2 pt-2.5 pb-2.5 pl-14 rounded-[1.25rem] w-1/1 text-left cursor-pointer">
+              <button type="button" className="bg-[#d0d0d0] text-black p-2 pt-2.5 pb-2.5 pl-14 rounded-[1.25rem] w-1/1 text-left cursor-pointer">
                 Signin with email
                 <span className="text-[var(--pink-color)] ml-1 w-fit">
                   fpt.edu.vn
@@ -185,7 +186,7 @@ const SignIn = () => {
                     }
                   })}
                 />
-                <span onClick={handlePasswordView()} className="flex items-center-safe justify-center-safe absolute right-5 text-[var(--pink-color)] p-1 cursor-pointer hover:opacity-70">
+                <span onClick={handlePasswordView} className="flex items-center-safe justify-center-safe absolute right-5 text-[var(--pink-color)] p-1 cursor-pointer hover:opacity-70">
                   <FontAwesomeIcon icon={isPasswordVisible ? faEyeSlash : faEye} />
                 </span>
               </div>

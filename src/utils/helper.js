@@ -1,3 +1,5 @@
+import { jwtDecode } from 'jwt-decode'
+
 // Token helper functions
 const getToken = () => {
   return localStorage.getItem('accessToken')
@@ -25,11 +27,34 @@ const removeCurrentUser = () => {
   localStorage.removeItem('currentUser')
 }
 
+const decodeAccessToken = (token) => {
+  if (!token) return null
+
+  try {
+    const decodedAccessToken = jwtDecode(token)
+    return decodedAccessToken
+  } catch (error) {
+    console.error('Error decoding token:', error)
+    return null
+  }
+}
+
+const isTokenNeedToRefresh = (decodedToken) => {
+  if (!decodedToken) return false
+
+  const currentTime = Date.now()
+  const expirationTime = decodedToken.exp * 1000
+  const remainingTime = expirationTime - currentTime
+  return remainingTime <= 180000 // 3 minutes 
+}
+
 export { 
   getToken, 
   setToken, 
   removeToken,
   getCurrentUser,
   setCurrentUser,
-  removeCurrentUser
+  removeCurrentUser,
+  decodeAccessToken,
+  isTokenNeedToRefresh
 }
