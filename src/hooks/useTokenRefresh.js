@@ -14,9 +14,9 @@ export const useTokenRefresh = () => {
   const isRefreshing = useRef(false)
 
   useEffect(() => {
-    const checkAndRefreshToken = async () => {
-      if (!accessToken) return
+    if (!accessToken) return
 
+    const checkAndRefreshToken = async () => {
       const decodedToken = decodeAccessToken(accessToken)
 
       if (isTokenNeedToRefresh(decodedToken) && !isRefreshing.current) {

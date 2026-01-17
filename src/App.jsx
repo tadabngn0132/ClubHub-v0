@@ -9,7 +9,10 @@ import {
   adminRoutes
 } from './routes'
 
+import { useTokenRefresh } from './hooks/useTokenRefresh'
+
 function App() {
+  useTokenRefresh()
 
   return (
     <BrowserRouter basename='/'>
