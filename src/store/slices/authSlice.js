@@ -36,7 +36,13 @@ export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
   async (_, thunkAPI) => {
     try {
-      await logout()
+      const data = await logout()
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message)
+      }
+
+      return data
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data)
     }
@@ -134,12 +140,21 @@ const authSlice = createSlice({
       })
 
       // Logout User
+      .addCase(logoutUser.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
       .addCase(logoutUser.fulfilled, (state) => {
+        state.isLoading = false
         state.isLoggedIn = false
         state.currentUser = null
         state.token = null
         removeToken()
         removeCurrentUser()
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload.data
       })
 
       // Change Password

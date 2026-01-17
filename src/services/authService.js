@@ -1,14 +1,12 @@
 import axiosClient from './axios'
 
 export const login = async (payload) => {
-  console.log(payload)
   const res = await axiosClient.post('/auth/login', payload)
   return res.data
 }
 
-export const logout = async (payload) => {
-  console.log(payload)
-  const res = await axiosClient.post('/auth/logout', payload)
+export const logout = async () => {
+  const res = await axiosClient.post('/auth/logout')
   return res.data
 }
 

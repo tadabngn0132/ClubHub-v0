@@ -29,7 +29,6 @@ const SignIn = () => {
 
   const handleLogin = async (formData) => {
     try {
-      console.log(formData)
       const resData = await dispatch(loginUser(formData)).unwrap()
       toast.success(resData.message || 'Login successful!')
       

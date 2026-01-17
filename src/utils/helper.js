@@ -1,14 +1,14 @@
 // Token helper functions
 const getToken = () => {
-  return localStorage.getItem('token')
+  return localStorage.getItem('accessToken')
 }
 
 const setToken = (token) => {
-  localStorage.setItem('token', token)
+  localStorage.setItem('accessToken', token)
 }
 
 const removeToken = () => {
-  localStorage.removeItem('token')
+  localStorage.removeItem('accessToken')
 }
 
 // User helper functions
