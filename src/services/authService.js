@@ -12,19 +12,19 @@ export const logout = async () => {
 
 export const changePassword = async (payload) => {
   console.log(payload)
-  const res = await axiosClient.put('/auth/changePassword', payload)
+  const res = await axiosClient.put('/auth/change-password', payload)
   return res.data
 }
 
 export const forgotPassword = async (payload) => {
   console.log(payload)
-  const res = await axiosClient.post('/auth/forgotPassword', payload)
+  const res = await axiosClient.post('/auth/forgot-password', payload)
   return res.data
 }
 
 export const resetPassword = async (payload) => {
   console.log(payload)
-  const res = await axiosClient.put('/auth/resetPassword', payload)
+  const res = await axiosClient.put(`/auth/reset-password?email=${payload.email}&token=${payload.resetToken}`, payload)
   return res.data
 }
 

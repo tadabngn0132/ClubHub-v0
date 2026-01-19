@@ -2,9 +2,14 @@ import { useForm } from "react-hook-form"
 import { resetPasswordUser } from '../../store/slices/authSlice'
 import { useDispatch } from 'react-redux'
 import toast, { Toaster } from "react-hot-toast"
+import { useSearchParams } from 'react-router-dom'
 
 const ResetPassword = () => {
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
+  const email = searchParams.get('email')
+  const resetToken = searchParams.get('token')
+
   const {
     register,
     handleSubmit,
@@ -26,8 +31,14 @@ const ResetPassword = () => {
         return
       }
 
-      console.log(data)
-      const resData = await dispatch(resetPasswordUser(data)).unwrap()
+      const resetData = {
+        email: email,
+        resetToken: resetToken,
+        newPassword: data.newPassword
+      }
+
+      console.log(resetData)
+      const resData = await dispatch(resetPasswordUser(resetData)).unwrap()
       console.log(resData)
       toast.success("Password reset successful!")
     } catch (error) {

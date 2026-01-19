@@ -86,9 +86,9 @@ export const forgotPasswordUser = createAsyncThunk(
 
 export const resetPasswordUser = createAsyncThunk(
   'auth/resetPassword',
-  async (passwordData, thunkAPI) => {
+  async (resetData, thunkAPI) => {
     try {
-      const data = await resetPassword(passwordData)
+      const data = await resetPassword(resetData)
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message)
