@@ -5,6 +5,7 @@ import AdminSchedule from '../../pages/private/admin/AdminSchedule.jsx'
 import AdminTasks from '../../pages/private/admin/AdminTasks.jsx'
 import AdminSquare from '../../pages/private/admin/AdminSquare.jsx'
 import AdminProfile from '../../pages/private/admin/AdminProfile.jsx'
+import AdminMembers from '../../pages/private/admin/AdminMembers.jsx'
 
 export const adminRoutes = [
   {
@@ -55,4 +56,12 @@ export const adminRoutes = [
       </AdminLayout>
     )
   },
+  {
+    path: '/admin/members',
+    element: (
+      <AdminLayout>
+        <AdminMembers />
+      </AdminLayout>
+    )
+  }
 ]

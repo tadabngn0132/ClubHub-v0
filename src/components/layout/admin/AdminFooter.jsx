@@ -1,8 +1,8 @@
-import React from 'react'
+import Footer from "../internal/Footer.jsx"
 
 const AdminFooter = () => {
   return (
-    <div>AdminFooter</div>
+    <Footer />
   )
 }
 

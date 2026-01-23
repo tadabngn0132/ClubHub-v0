@@ -8,8 +8,10 @@ const AdminLayout = ({ children }) => {
     <>
       <ProtectedRoute>
         <AdminHeader />
-        <AdminSideBar />
-        { children }
+        <main className="flex">
+          <AdminSideBar />
+          { children }
+        </main>
         <AdminFooter />
       </ProtectedRoute>
     </>

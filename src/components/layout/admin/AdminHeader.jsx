@@ -1,8 +1,8 @@
-import React from 'react'
+import Header from "../internal/Header.jsx"
 
 const AdminHeader = () => {
   return (
-    <div>AdminHeader</div>
+    <Header role="admin" />
   )
 }
 

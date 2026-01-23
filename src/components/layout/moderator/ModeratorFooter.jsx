@@ -1,8 +1,8 @@
-import React from 'react'
+import Footer from "../internal/Footer"
 
 const ModeratorFooter = () => {
   return (
-    <div>ModeratorFooter</div>
+    <Footer />
   )
 }
 
