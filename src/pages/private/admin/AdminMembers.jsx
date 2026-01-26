@@ -1,12 +1,28 @@
 import { Link } from 'react-router-dom'
+import {
+  createUser,
+  getUserById,
+  getUsersList,
+  updateUserById,
+  deleteUserById
+} from '../../../store/slices/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 const AdminMembers = () => {
+  const dispatch = useDispatch()
+  const { usersList, isLoading, isError, message } = useSelector((state) => state.user)
+  
+  useEffect(() => {
+    dispatch(getUsersList())
+  }, [dispatch])
+
   return (
     <div className="w-full p-4">
       <div className="flex items-center-safe justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold mb-1">Members</h1>
-          <p className="text-sm text-gray-500">50 members</p> {/* Hardcoded member count */}
+          <p className="text-sm text-gray-500">{usersList ? usersList.length : 0} members</p> {/* Dynamic member count */}
         </div>
         
         <span>
@@ -20,10 +36,23 @@ const AdminMembers = () => {
             <th className="px-4 py-2">Name</th>
             <th className="px-4 py-2">Email</th>
             <th className="px-4 py-2">Role</th>
+            <th className="px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody className="text-center">
-          {/* Member rows will be populated here */}
+          {usersList && usersList.map((user) => (
+            <tr key={user.id} className="border-b border-gray-200">
+              <td className="px-4 py-2">{user.id}</td>
+              <td className="px-4 py-2">{user.name}</td>
+              <td className="px-4 py-2">{user.email}</td>
+              <td className="px-4 py-2">{user.role}</td>
+              <td className="px-4 py-2">
+                <Link to={`/admin/members/view/${user.id}`} className="text-green-500 hover:underline mr-2">View</Link>
+                <Link to={`/admin/members/edit/${user.id}`} className="text-blue-500 hover:underline mr-2">Edit</Link>
+                <button className="text-red-500 hover:underline">Delete</button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
