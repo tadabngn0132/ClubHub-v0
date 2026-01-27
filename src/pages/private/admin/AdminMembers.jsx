@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom'
 import {
-  createUser,
   getUserById,
   getUsersList,
-  updateUserById,
   deleteUserById
 } from '../../../store/slices/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
