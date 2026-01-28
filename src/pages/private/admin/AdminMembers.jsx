@@ -15,6 +15,10 @@ const AdminMembers = () => {
     dispatch(getUsersList())
   }, [dispatch])
 
+  const handleDelete = (userId) => {
+    dispatch(deleteUserById(userId))
+  }
+
   return (
     <div className="w-full p-4">
       <div className="flex items-center-safe justify-between mb-6">
@@ -47,7 +51,7 @@ const AdminMembers = () => {
               <td className="px-4 py-2">
                 <Link to={`/admin/members/view/${user.id}`} className="text-green-500 hover:underline mr-2">View</Link>
                 <Link to={`/admin/members/edit/${user.id}`} className="text-blue-500 hover:underline mr-2">Edit</Link>
-                <button className="text-red-500 hover:underline">Delete</button>
+                <button onClick={() => handleDelete(user.id)} className="text-red-500 hover:underline">Delete</button>
               </td>
             </tr>
           ))}

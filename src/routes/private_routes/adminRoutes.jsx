@@ -8,6 +8,8 @@ import AdminProfile from '../../pages/private/admin/AdminProfile.jsx'
 import AdminMembers from '../../pages/private/admin/AdminMembers.jsx'
 import AdminEditMember from '../../pages/private/admin/AdminEditMember.jsx'
 import AdminViewMember from '../../pages/private/admin/AdminViewMember.jsx'
+import AdminEditActivity from '../../pages/private/admin/AdminEditActivity.jsx'
+import AdminViewActivity from '../../pages/private/admin/AdminViewActivity.jsx'
 
 export const adminRoutes = [
   {
@@ -79,6 +81,22 @@ export const adminRoutes = [
     element: (
       <AdminLayout>
         <AdminEditMember />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/activities/edit/:activityId',
+    element: (
+      <AdminLayout>
+        <AdminEditActivity />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/activities/view/:activityId',
+    element: (
+      <AdminLayout>
+        <AdminViewActivity />
       </AdminLayout>
     )
   }
