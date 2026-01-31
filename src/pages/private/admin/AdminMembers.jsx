@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
 import {
-  getUserById,
   getUsersList,
   deleteUserById,
 } from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { mockUsers } from "../../../data/sampleMemberData";
-import BulkActionBar from "../../../components/admin/BulkActionBar.jsx";
+import BulkActionBar from "../../../components/internal/BulkActionBar.jsx";
 import Pagination from "../../../components/internal/Pagination.jsx";
 
 const AdminMembers = () => {
