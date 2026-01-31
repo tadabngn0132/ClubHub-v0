@@ -8,7 +8,7 @@ const AdminLayout = ({ children }) => {
     <>
       <ProtectedRoute>
         <AdminHeader />
-        <main className="flex">
+        <main className="flex mt-[61.2px]">
           <AdminSideBar />
           { children }
         </main>

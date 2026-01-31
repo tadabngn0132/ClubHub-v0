@@ -25,7 +25,7 @@ const Header = ({ role }) => {
   }
 
   return (
-    <div className="flex items-center justify-between p-4 pt-3 pb-3 shadow-md">
+    <div className="flex items-center justify-between p-4 pt-3 pb-3 shadow-md fixed top-0 left-0 w-full z-1000 bg-black">
       <div className="flex items-center space-x-4">
         <FontAwesomeIcon icon={faBars} size="lg" />
         {/* Logo */}
