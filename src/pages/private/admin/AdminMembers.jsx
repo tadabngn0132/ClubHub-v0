@@ -7,6 +7,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { mockUsers } from "../../../data/sampleMemberData";
+import BulkActionBar from "../../../components/admin/BulkActionBar.jsx";
+import Pagination from "../../../components/internal/Pagination.jsx";
 
 const AdminMembers = () => {
   const dispatch = useDispatch();
@@ -22,8 +24,43 @@ const AdminMembers = () => {
     dispatch(deleteUserById(userId));
   };
 
+  // TODO: Implement sorting functionality here
+  const handleSort = (field) => {
+    // Sorting logic will be implemented here
+    // Asc, Desc and Default states
+  };
+
+  const displayStatusBadge = (status) => {
+    switch (status) {
+      case "Active":
+        return "text-green-600 font-medium";
+      case "Inactive":
+        return "text-gray-600 font-medium";
+      case "Alumni":
+        return "text-blue-600 font-medium";
+      case "Pending":
+        return "text-yellow-600 font-medium";
+      default:
+        return "";
+    }
+  };
+
+  const displayRoleBadge = (role) => {
+    switch (role) {
+      case "Admin":
+        return "bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-semibold";
+      case "Moderator":
+        return "bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-semibold";
+      case "Member":
+        return "bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold";
+      default:
+        return "";
+    }
+  };
+
   return (
     <div className="w-full p-4">
+      {/* TODO: Implement loading state using spinner or skeleton */}
       <div className="flex items-center-safe justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold mb-1">Members</h1>
@@ -42,15 +79,29 @@ const AdminMembers = () => {
           </Link>
         </span>
       </div>
+
+      <BulkActionBar />
+
+      {/* TODO: Implement card view for tablet and mobile responsiveness */}
       <table className="w-full border-collapse table-auto overflow-auto">
         <thead className="sticky top-[60px] text-white z-10 w-full bg-[var(--black-color)]">
           <tr className="border border-gray-200">
-            <th className="px-2 py-2 w-8"></th>
+            {/* TODO: Implement checkbox for selecting all members */}
+            <th className="px-2 py-2 w-8">
+              <input type="checkbox" name="" id="" />
+            </th>
             <th className="px-2 py-2">ID</th>
             <th className="px-2 py-2 w-16">Avatar</th>
-            <th className="px-3 py-2">Name</th>
-            <th className="px-3 py-2">Email</th>
-            <th className="px-2 py-2">Gen</th>
+            {/* TODO: Implement clickable for name, email, and gen here with sorting indicators and related icon */}
+            <th className="px-3 py-2" onClick={() => handleSort("name")}>
+              Name
+            </th>
+            <th className="px-3 py-2" onClick={() => handleSort("email")}>
+              Email
+            </th>
+            <th className="px-2 py-2" onClick={() => handleSort("gen")}>
+              Gen
+            </th>
             <th className="px-2 py-2">Major</th>
             <th className="px-2 py-2">Dept</th>
             <th className="px-2 py-2">Role</th>
@@ -59,7 +110,21 @@ const AdminMembers = () => {
           </tr>
         </thead>
         <tbody className="text-center border border-gray-200">
-          {mockUsers &&
+          {mockUsers.length === 0 ? (
+            <tr>
+              <td colSpan="11" className="py-4">
+                No members found.
+                <span>
+                  <Link
+                    to="/admin/members/add"
+                    className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+                  >
+                    Add Member
+                  </Link>
+                </span>
+              </td>
+            </tr>
+          ) : (
             mockUsers.map((user) => (
               <tr
                 key={user.id}
@@ -74,6 +139,7 @@ const AdminMembers = () => {
                 </td>
                 <td className="px-2 py-2 text-xs">{user.id}</td>
                 <td className="px-2 py-2 w-16">
+                  {/* TODO: Implement lazy loading for avatars */}
                   <img
                     src={user.avatar}
                     alt={user.name}
@@ -105,10 +171,23 @@ const AdminMembers = () => {
                 >
                   {user.department}
                 </td>
-                <td className="px-2 py-2 text-sm">{user.role}</td>
-                <td className="px-2 py-2 text-sm">{user.status}</td>
-                <td className="px-2 py-2 w-24">
-                  <div className="flex justify-center items-center gap-1 text-xs">
+                <td className="px-2 py-2 text-sm">
+                  {user.role && (
+                    <p className={displayRoleBadge(user.role)}>{user.role}</p>
+                  )}
+                </td>
+                <td className="px-2 py-2 text-sm">
+                  {user.status && (
+                    <p className={displayStatusBadge(user.status)}>
+                      {user.status}
+                    </p>
+                  )}
+                </td>
+                <td className="px-2 py-2 w-24 relative">
+                  {/* TODO: Use fontawesome vertical three dots instead of current horizontal dots */}
+                  <p className="cursor-pointer">...</p>
+                  {/* TODO: Click on vertical three dots or outside to close action menu*/}
+                  <div className="flex justify-center items-center gap-1 text-xs absolute top-10 bg-white p-2 rounded-md shadow-md">
                     <Link
                       to={`/admin/members/view/${user.id}`}
                       className="text-green-500 hover:underline"
@@ -130,9 +209,11 @@ const AdminMembers = () => {
                   </div>
                 </td>
               </tr>
-            ))}
+            ))
+          )}
         </tbody>
       </table>
+      <Pagination role="admin" content="members" />
     </div>
   );
 };

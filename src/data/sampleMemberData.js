@@ -7,7 +7,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Kỹ thuật phần mềm",
     department: "Khoa CNTT",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -18,7 +18,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Toán học",
     department: "Khoa Toán",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -29,7 +29,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Kỹ thuật điện tử",
     department: "Khoa Điện tử",
-    role: "Giảng viên",
+    role: "moderator",
     status: "Hoạt động",
   },
   {
@@ -40,7 +40,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Kinh tế",
     department: "Khoa Kinh tế",
-    role: "Sinh viên",
+    role: "member",
     status: "Không hoạt động",
   },
   {
@@ -51,7 +51,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Kỹ thuật phần mềm",
     department: "Khoa CNTT",
-    role: "Quản trị viên",
+    role: "admin",
     status: "Hoạt động",
   },
   {
@@ -62,7 +62,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Tâm lý học",
     department: "Khoa Xã hội",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -73,7 +73,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Hóa học",
     department: "Khoa Hóa",
-    role: "Giảng viên",
+    role: "moderator",
     status: "Hoạt động",
   },
   {
@@ -84,7 +84,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Sinh vật",
     department: "Khoa Sinh",
-    role: "Sinh viên",
+    role: "member",
     status: "Chờ xét duyệt",
   },
   {
@@ -95,7 +95,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Vật lý",
     department: "Khoa Vật lý",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -106,7 +106,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Kỹ thuật phần mềm",
     department: "Khoa CNTT",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -117,7 +117,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Kỹ thuật môi trường",
     department: "Khoa Môi trường",
-    role: "Giảng viên",
+    role: "moderator",
     status: "Hoạt động",
   },
   {
@@ -128,7 +128,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Văn học",
     department: "Khoa Văn",
-    role: "Sinh viên",
+    role: "member",
     status: "Không hoạt động",
   },
   {
@@ -139,7 +139,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Kiến trúc",
     department: "Khoa Kiến trúc",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -150,7 +150,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Toán học",
     department: "Khoa Toán",
-    role: "Quản trị viên",
+    role: "admin",
     status: "Hoạt động",
   },
   {
@@ -161,7 +161,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Kỹ thuật điện tử",
     department: "Khoa Điện tử",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -172,7 +172,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Dược khoa",
     department: "Khoa Dược",
-    role: "Sinh viên",
+    role: "member",
     status: "Chờ xét duyệt",
   },
   {
@@ -183,7 +183,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Y khoa",
     department: "Khoa Y",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -194,7 +194,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Tâm lý học",
     department: "Khoa Xã hội",
-    role: "Giảng viên",
+    role: "moderator",
     status: "Hoạt động",
   },
   {
@@ -205,7 +205,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Kỹ thuật phần mềm",
     department: "Khoa CNTT",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -216,7 +216,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Kinh tế",
     department: "Khoa Kinh tế",
-    role: "Sinh viên",
+    role: "member",
     status: "Không hoạt động",
   },
   {
@@ -227,7 +227,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Hóa học",
     department: "Khoa Hóa",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -238,7 +238,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Sinh vật",
     department: "Khoa Sinh",
-    role: "Giảng viên",
+    role: "moderator",
     status: "Hoạt động",
   },
   {
@@ -249,7 +249,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Vật lý",
     department: "Khoa Vật lý",
-    role: "Sinh viên",
+    role: "member",
     status: "Chờ xét duyệt",
   },
   {
@@ -260,7 +260,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Văn học",
     department: "Khoa Văn",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -271,7 +271,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Kiến trúc",
     department: "Khoa Kiến trúc",
-    role: "Quản trị viên",
+    role: "admin",
     status: "Hoạt động",
   },
   {
@@ -282,7 +282,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Kỹ thuật phần mềm",
     department: "Khoa CNTT",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -293,7 +293,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Toán học",
     department: "Khoa Toán",
-    role: "Giảng viên",
+    role: "moderator",
     status: "Không hoạt động",
   },
   {
@@ -304,7 +304,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Kỹ thuật điện tử",
     department: "Khoa Điện tử",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -315,7 +315,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Dược khoa",
     department: "Khoa Dược",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -326,7 +326,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Y khoa",
     department: "Khoa Y",
-    role: "Sinh viên",
+    role: "member",
     status: "Chờ xét duyệt",
   },
   {
@@ -337,7 +337,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Kỹ thuật môi trường",
     department: "Khoa Môi trường",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -348,7 +348,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Tâm lý học",
     department: "Khoa Xã hội",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -359,7 +359,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Vật lý",
     department: "Khoa Vật lý",
-    role: "Giảng viên",
+    role: "moderator",
     status: "Hoạt động",
   },
   {
@@ -370,7 +370,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Hóa học",
     department: "Khoa Hóa",
-    role: "Sinh viên",
+    role: "member",
     status: "Không hoạt động",
   },
   {
@@ -381,7 +381,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Kinh tế",
     department: "Khoa Kinh tế",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -392,7 +392,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Văn học",
     department: "Khoa Văn",
-    role: "Quản trị viên",
+    role: "admin",
     status: "Hoạt động",
   },
   {
@@ -403,7 +403,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Kỹ thuật phần mềm",
     department: "Khoa CNTT",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -414,7 +414,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Sinh vật",
     department: "Khoa Sinh",
-    role: "Sinh viên",
+    role: "member",
     status: "Chờ xét duyệt",
   },
   {
@@ -425,7 +425,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Kiến trúc",
     department: "Khoa Kiến trúc",
-    role: "Giảng viên",
+    role: "moderator",
     status: "Hoạt động",
   },
   {
@@ -436,7 +436,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Toán học",
     department: "Khoa Toán",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -447,7 +447,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Dược khoa",
     department: "Khoa Dược",
-    role: "Sinh viên",
+    role: "member",
     status: "Không hoạt động",
   },
   {
@@ -458,7 +458,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Y khoa",
     department: "Khoa Y",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -469,7 +469,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Kỹ thuật điện tử",
     department: "Khoa Điện tử",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -480,7 +480,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Kỹ thuật môi trường",
     department: "Khoa Môi trường",
-    role: "Giảng viên",
+    role: "moderator",
     status: "Hoạt động",
   },
   {
@@ -491,7 +491,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Kinh tế",
     department: "Khoa Kinh tế",
-    role: "Sinh viên",
+    role: "member",
     status: "Chờ xét duyệt",
   },
   {
@@ -502,7 +502,7 @@ export const mockUsers = [
     gen: "Gen 1",
     major: "Tâm lý học",
     department: "Khoa Xã hội",
-    role: "Quản trị viên",
+    role: "admin",
     status: "Hoạt động",
   },
   {
@@ -513,7 +513,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Hóa học",
     department: "Khoa Hóa",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -524,7 +524,7 @@ export const mockUsers = [
     gen: "Gen 3",
     major: "Sinh vật",
     department: "Khoa Sinh",
-    role: "Sinh viên",
+    role: "member",
     status: "Không hoạt động",
   },
   {
@@ -535,7 +535,7 @@ export const mockUsers = [
     gen: "Gen 4",
     major: "Vật lý",
     department: "Khoa Vật lý",
-    role: "Sinh viên",
+    role: "member",
     status: "Hoạt động",
   },
   {
@@ -546,7 +546,7 @@ export const mockUsers = [
     gen: "Gen 2",
     major: "Văn học",
     department: "Khoa Văn",
-    role: "Giảng viên",
+    role: "moderator",
     status: "Hoạt động",
   },
 ];
