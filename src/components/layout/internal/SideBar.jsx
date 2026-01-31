@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 const SideBar = ({ sideBarItemList }) => {
   return (
     <div>
-      <aside className="w-64 bg-[var(--black-color)] min-h-screen p-2">
+      <aside className="w-48 bg-[var(--black-color)] min-h-screen p-2">
         <nav>
           <ul>
             {sideBarItemList.map((item, index) => (

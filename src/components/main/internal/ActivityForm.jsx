@@ -6,7 +6,7 @@ import {
 } from '../../../store/slices/activitySlice'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
-const { useForm } = require('react-hook-form')
+import { useForm } from 'react-hook-form'
 
 const ActivityForm = ({ type }) => {
   const dispatch = useDispatch()

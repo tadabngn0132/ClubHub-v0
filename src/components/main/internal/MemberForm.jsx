@@ -1,6 +1,6 @@
 import {
-  CreateUser,
-  UpdateUserById,
+  createUser,
+  updateUserById,
   getUserById
 } from '../../../store/slices/userSlice'
 import { useDispatch } from 'react-redux'
@@ -37,10 +37,10 @@ const MemberForm = ({ mode }) => {
     // Handle form submission for both add and edit modes
     if (mode === 'add') {
       // Dispatch create user action
-      dispatch(CreateUser(data))
+      dispatch(createUser(data))
     } else if (mode === 'edit') {
       // Dispatch update user action
-      dispatch(UpdateUserById(data))
+      dispatch(updateUserById(data))
     }
   }
 
