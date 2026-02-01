@@ -29,3 +29,8 @@ export const deleteAnActivity = async (id) => {
   const res = await axiosClient.delete(`/activities/${id}`)
   return res.data
 }
+
+export const getAllActivitiesByUserId = async (userId) => {
+  const res = await axiosClient.get(`/activities/user/${userId}`)
+  return res.data
+}
