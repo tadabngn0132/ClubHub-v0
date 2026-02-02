@@ -3,6 +3,16 @@ import { useFormContext } from 'react-hook-form'
 
 const ClubInfoTab = () => {
   const { register, formState: { errors } } = useFormContext()
+  const departmentList = [
+    { id: 1, name: 'Dance' },
+    { id: 2, name: 'Communication' },
+    { id: 3, name: 'Design' },
+    { id: 4, name: 'Human Resources' },
+    { id: 5, name: 'Logistics' },
+    { id: 6, name: 'Content' },
+    { id: 7, name: 'Media' }
+  ]
+  
   return (
     <div>
       <label htmlFor="generation">Generation <span className='text-red-500'>*</span></label>
@@ -10,21 +20,44 @@ const ClubInfoTab = () => {
       {errors.generation && <p className="text-red-500 text-sm">{errors.generation.message}</p>}
 
       <label htmlFor="department">Department <span className='text-red-500'>*</span></label>
-      <input type="checkbox" name="department" id="dance" {...register("department", { required: 'Department cannot be empty' })} />
-      <label htmlFor="dance">Dance</label>
-      <input type="checkbox" name="department" id="communication" {...register("department", { required: 'Department cannot be empty' })} />
-      <label htmlFor="communication">Communication</label>
-      <input type="checkbox" name="department" id="design" {...register("department", { required: 'Department cannot be empty' })} />
-      <label htmlFor="design">Design</label>
-      <input type="checkbox" name="department" id="hr" {...register("department", { required: 'Department cannot be empty' })} />
-      <label htmlFor="hr">Human Resources</label>
-      <input type="checkbox" name="department" id="logistics" {...register("department", { required: 'Department cannot be empty' })} />
-      <label htmlFor="logistics">Logistics</label>
-      <input type="checkbox" name="department" id="content" {...register("department", { required: 'Department cannot be empty' })} />
-      <label htmlFor="content">Content</label>
-      <input type="checkbox" name="department" id="media" {...register("department", { required: 'Department cannot be empty' })} />
-      <label htmlFor="media">Media</label>
+      {departmentList.map((department) => (
+        <React.Fragment key={department.id}>
+          <input
+            type="checkbox"
+            name="department"
+            id={department.name.toLowerCase().replace(/\s+/g, '')}
+            {...register("department", { required: 'Department cannot be empty' })}
+          />
+          <label htmlFor={department.name.toLowerCase().replace(/\s+/g, '')}>{department.name}</label>
+        </React.Fragment>
+      ))}
       {errors.department && <p className="text-red-500 text-sm">{errors.department.message}</p>}
+
+      <label htmlFor="position">Position <span className='text-red-500'>*</span></label>
+      {departmentList.map((department) => (
+        <React.Fragment key={department.id}>
+          <input
+            type="checkbox"
+            name="position"
+            id={department.name.toLowerCase().replace(/\s+/g, '') + 'member'}
+            {...register("position", { required: 'Position cannot be empty' })}
+          />
+          <label htmlFor={department.name.toLowerCase().replace(/\s+/g, '') + 'member'}>Member of {department.name}</label>
+        </React.Fragment>
+      ))}
+
+      {departmentList.map((department) => (
+        <React.Fragment key={department.id}>
+          <input
+            type="checkbox"
+            name="position"
+            id={department.name.toLowerCase().replace(/\s+/g, '') + 'head'}
+            {...register("position", { required: 'Position cannot be empty' })}
+          />
+          <label htmlFor={department.name.toLowerCase().replace(/\s+/g, '') + 'head'}>Head of {department.name}</label>
+        </React.Fragment>
+      ))}
+      {errors.position && <p className="text-red-500 text-sm">{errors.position.message}</p>}
 
       <label htmlFor="role">Role <span className='text-red-500'>*</span></label>
       <select name="role" id="role" {...register("role") }>

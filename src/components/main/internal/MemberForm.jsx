@@ -1,25 +1,82 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm, FormProvider } from "react-hook-form";
 import BasicInfoTab from "../internal/BasicInfoTab.jsx";
 import ClubInfoTab from "../internal/ClubInfoTab.jsx";
 import ProfileInfoTab from "../internal/ProfileInfoTab.jsx";
+import { 
+  getUserById,
+  createUser,
+  updateUserById 
+} from "../../../store/slices/userSlice.js";
+import { Toaster } from "react-hot-toast";
 
-const MemberForm = ({ mode }) => {
+const MemberForm = ({ mode, memberId }) => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
 
+  const userData = useSelector((state) =>
+    state.user.usersList.find((user) => user.id === memberId),
+  );
+
   const methods = useForm({
     defaultValues: {
-      email: "",
-      password: "",
       name: "",
+      email: "",
+      phoneNumber: "",
+      dateOfBirth: "",
+      gender: "",
+      major: "",
+      generation: "",
+      department: "",
+      position: "",
       role: "",
+      joinDate: "",
+      status: "",
+      avatar: null,
+      bio: "",
     },
     mode: "onChange",
   });
 
   const { isValid } = methods.formState;
+
+  useEffect(() => {
+    if (mode === "edit" && memberId) {
+      if (userData) {
+        methods.reset({
+          name: userData.name || "",
+          email: userData.email || "",
+          phoneNumber: userData.phoneNumber || "",
+          role: userData.role || "",
+          avatar: userData.avatar || null,
+          bio: userData.bio || "",
+        });
+      } else {
+        resData = dispatch(getUserById(memberId));
+        
+        if (res.payload) {
+          methods.reset({
+            name: res.payload.name || "",
+            email: res.payload.email || "",
+            phoneNumber: res.payload.phoneNumber || "",
+            role: res.payload.role || "",
+            avatar: res.payload.avatar || null,
+            bio: res.payload.bio || "",
+          });
+        }
+      }
+    } else if (mode === "add") {
+      methods.reset({
+        name: "",
+        email: "",
+        phoneNumber: "",
+        role: "",
+        avatar: null,
+        bio: "",
+      });
+    }
+  }, [mode, memberId, userData, methods]);
 
   const tabs = [
     { name: "Basic Info", component: BasicInfoTab },
@@ -37,6 +94,7 @@ const MemberForm = ({ mode }) => {
 
   return (
     <div>
+      <Toaster position="top-right" reverseOrder={false} />
       <h2 className="text-2xl font-bold mb-4">
         {mode === "add" ? "Add New Member" : "Edit Member"}
       </h2>
