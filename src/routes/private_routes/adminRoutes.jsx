@@ -10,6 +10,8 @@ import AdminEditMember from '../../pages/private/admin/AdminEditMember.jsx'
 import AdminViewMember from '../../pages/private/admin/AdminViewMember.jsx'
 import AdminEditActivity from '../../pages/private/admin/AdminEditActivity.jsx'
 import AdminViewActivity from '../../pages/private/admin/AdminViewActivity.jsx'
+import AdminAddActivity from '../../pages/private/admin/AdminAddActivity.jsx'
+import AdminAddMember from '../../pages/private/admin/AdminAddMember.jsx'
 
 export const adminRoutes = [
   {
@@ -97,6 +99,22 @@ export const adminRoutes = [
     element: (
       <AdminLayout>
         <AdminViewActivity />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/activities/add',
+    element: (
+      <AdminLayout>
+        <AdminAddActivity />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/members/add',
+    element: (
+      <AdminLayout>
+        <AdminAddMember />
       </AdminLayout>
     )
   }

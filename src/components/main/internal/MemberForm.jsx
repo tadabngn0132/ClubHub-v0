@@ -15,10 +15,6 @@ const MemberForm = ({ mode, memberId }) => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
 
-  const userData = useSelector((state) =>
-    state.user.usersList.find((user) => user.id === memberId),
-  );
-
   const methods = useForm({
     defaultValues: {
       name: "",
@@ -43,17 +39,7 @@ const MemberForm = ({ mode, memberId }) => {
 
   useEffect(() => {
     if (mode === "edit" && memberId) {
-      if (userData) {
-        methods.reset({
-          name: userData.name || "",
-          email: userData.email || "",
-          phoneNumber: userData.phoneNumber || "",
-          role: userData.role || "",
-          avatar: userData.avatar || null,
-          bio: userData.bio || "",
-        });
-      } else {
-        resData = dispatch(getUserById(memberId));
+      resData = dispatch(getUserById(memberId));
         
         if (res.payload) {
           methods.reset({
@@ -65,7 +51,6 @@ const MemberForm = ({ mode, memberId }) => {
             bio: res.payload.bio || "",
           });
         }
-      }
     } else if (mode === "add") {
       methods.reset({
         name: "",
@@ -76,7 +61,7 @@ const MemberForm = ({ mode, memberId }) => {
         bio: "",
       });
     }
-  }, [mode, memberId, userData, methods]);
+  }, [mode, memberId, methods]);
 
   const tabs = [
     { name: "Basic Info", component: BasicInfoTab },
@@ -120,7 +105,7 @@ const MemberForm = ({ mode, memberId }) => {
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(handleSaveData)}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8"
+          className="shadow-md rounded px-4 py-2 mb-4"
         >
           {/* Render active tab */}
           {tabs.map((tab, index) => (
@@ -132,7 +117,7 @@ const MemberForm = ({ mode, memberId }) => {
             </div>
           ))}
 
-          <div className="flex items-center justify-between mt-6">
+          <div className="flex items-center justify-between my-6">
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

@@ -4,12 +4,12 @@ import { useFormContext } from 'react-hook-form'
 const ProfileInfoTab = () => {
   const { register } = useFormContext()
   return (
-    <div>
-      <label htmlFor="avatar">Avatar</label>
-      <input type="file" id="avatar" accept="image/*" {...register("avatar")} />
+    <div className="flex flex-col">
+      <label htmlFor="avatar" className='mt-3'>Avatar</label>
+      <input type="file" id="avatar" accept="image/*" className='mt-2' {...register("avatar")} />
 
-      <label htmlFor="bio">Bio</label>
-      <textarea id="bio" placeholder='A short bio about the member...' {...register("bio")} />
+      <label htmlFor="bio" className='mt-3'>Bio</label>
+      <textarea id="bio" placeholder='A short bio about the member...' className='mt-2' {...register("bio")} />
     </div>
   )
 }

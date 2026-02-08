@@ -5,6 +5,7 @@ import {
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { sampleActivityData } from '../../../data/sampleActivityData'
 
 const ActivitiesCardView = () => {
   const dispatch = useDispatch()
@@ -19,13 +20,13 @@ const ActivitiesCardView = () => {
   }
 
   return (
-    <div className="w-full p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {activitiesState.activities.map((activity) => (
-        <div key={activity.id} className="border border-gray-200 rounded-lg p-4 flex flex-col">
+    <div className="w-full p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
+      {sampleActivityData.map((activity) => (
+        <div key={activity.id} className="rounded-lg p-4 flex flex-col">
           <img
             src={activity.thumbnailUrl}
             alt={activity.name}
-            className="w-full h-40 object-cover mb-4 rounded"
+            className="w-full h-40 object-cover mb-4 rounded-t-2xl"
           />
           {/* TODO: Styling type badge */}
           <p className="text-sm text-gray-600 mb-1">{activity.type}</p>

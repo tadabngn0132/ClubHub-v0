@@ -5,6 +5,7 @@ import {
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { sampleActivityData } from '../../../data/sampleActivityData'
 
 const ActivitiesTableView = () => {
   const dispatch = useDispatch()
@@ -19,11 +20,11 @@ const ActivitiesTableView = () => {
   }
 
   return (
-    <div className="w-full p-4">
-      <table className="min-w-full border-collapse border border-gray-200">
+    <div className="w-full overflow-auto">
+      <table className="min-w-full border-collapse border border-gray-200 mb-10">
         <thead className="">
           <tr className="border-b border-gray-200">
-            <th><input type="checkbox" name="" id="" /></th>
+            <th className="px-4 py-2"><input type="checkbox" name="" id="" /></th>
             <th className="px-4 py-2">Activity ID</th>
             <th className="px-4 py-2">Thumbnail</th>
             <th className="px-4 py-2">Title</th>
@@ -36,7 +37,7 @@ const ActivitiesTableView = () => {
           </tr>
         </thead>
         <tbody>
-          {activitiesState.activities.map((activity) => (
+          {sampleActivityData.map((activity) => (
             <tr key={activity.id}>
               <td className="px-4 py-2"><input type="checkbox" name="" id="" /></td>
               <td className="px-4 py-2">{activity.id}</td>
@@ -54,9 +55,14 @@ const ActivitiesTableView = () => {
               <td className="px-4 py-2">{activity.status}</td>
               <td className="px-4 py-2">{activity.registrationsCount}</td>
               <td className="px-4 py-2">
-                <Link to={`/admin/activities/view/${activity.id}`}>View</Link>
-                <Link to={`/admin/activities/edit/${activity.id}`}>Edit</Link>
-                <button onClick={() => handleDelete(activity.id)}>Delete</button>
+                <Link to={`/activities/${activity.id}`} className="text-blue-500 hover:underline">View</Link>
+                <Link to={`/admin/activities/edit/${activity.id}`} className="text-green-500 hover:underline">Edit</Link>
+                <button
+                  onClick={() => handleDelete(activity.id)}
+                  className="text-red-500 hover:underline"
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

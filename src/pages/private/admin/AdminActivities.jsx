@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ActivitiesCardView from '../../../components/main/internal/ActivitiesCardView'
 import ActivitiesTableView from '../../../components/main/internal/ActivitiesTableView'
+import { sampleActivityData } from '../../../data/sampleActivityData'
 
 const AdminActivities = () => {
   const dispatch = useDispatch()
@@ -20,15 +21,22 @@ const AdminActivities = () => {
   }, [dispatch])
 
   return (
-    <div>
-      <div className="flex items-center-safe justify-between mb-6">
-        <h1 className="text-2xl font-bold">Activities</h1>
-        <p className="text-gray-600">{activitiesState.activities.length} activities</p>
-      </div>
+    <div className="px-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+        <div className="">
+          <h1 className="text-3xl font-bold mb-1">Activities</h1>
+          <p className="text-sm text-gray-500">{sampleActivityData.length} activities</p>
+        </div>
 
-      <span className="mb-4 inline-block">
-        <Link to="/admin/activities/create">Create New Activity</Link>
-      </span>
+        <span>
+          <Link
+            to="/admin/activities/create"
+            className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+          >
+            Create New Activity
+          </Link>
+        </span>
+      </div>
 
       <div className="flex border-b mb-4">
         {tabs.map((tab, index) => (
@@ -40,6 +48,7 @@ const AdminActivities = () => {
                 : "text-gray-500"
             }`}
             type='button'
+            onClick={() => setActiveTab(index)}
           >
             { tab.name }
           </button>

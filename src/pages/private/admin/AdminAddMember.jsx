@@ -1,10 +1,8 @@
-import MemberForm from "../../../components/main/internal/MemberForm"
+import MemberForm from "../../../components/main/internal/MemberForm.jsx";
 
 const AdminAddMember = () => {
   return (
-    <div>
-      <MemberForm mode="add" />
-    </div>
+    <MemberForm mode="add" />
   )
 }
 
