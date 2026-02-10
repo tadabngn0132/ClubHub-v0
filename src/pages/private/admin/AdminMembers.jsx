@@ -4,7 +4,7 @@ import {
   deleteUserById,
 } from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { mockUsers } from "../../../data/sampleMemberData";
 import BulkActionBar from "../../../components/internal/BulkActionBar.jsx";
 import Pagination from "../../../components/internal/Pagination.jsx";
@@ -14,6 +14,7 @@ const AdminMembers = () => {
   const { usersList, isLoading, isError, message } = useSelector(
     (state) => state.user,
   );
+  const [selectedMembers, setSelectedMembers] = useState([]);
 
   useEffect(() => {
     dispatch(getUsersList());
@@ -79,7 +80,7 @@ const AdminMembers = () => {
         </span>
       </div>
 
-      <BulkActionBar />
+      {selectedMembers.length > 0 && <BulkActionBar selectedMembers={selectedMembers} />}
 
       {/* TODO: Implement card view for tablet and mobile responsiveness */}
       <table className="w-full border-collapse table-auto overflow-auto">
@@ -87,7 +88,7 @@ const AdminMembers = () => {
           <tr className="border border-gray-200">
             {/* TODO: Implement checkbox for selecting all members */}
             <th className="px-2 py-2 w-8">
-              <input type="checkbox" name="" id="" />
+              {/* <input type="checkbox" name="" id="" /> */}
             </th>
             <th className="px-2 py-2">ID</th>
             <th className="px-2 py-2 w-16">Avatar</th>
@@ -134,6 +135,15 @@ const AdminMembers = () => {
                     type="checkbox"
                     name={`select-${user.id}`}
                     id={`select-${user.id}`}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedMembers([...selectedMembers, user.id]);
+                      } else {
+                        setSelectedMembers(
+                          selectedMembers.filter((id) => id !== user.id),
+                        );
+                      }
+                    }}
                   />
                 </td>
                 <td className="px-2 py-2 text-xs">{user.id}</td>

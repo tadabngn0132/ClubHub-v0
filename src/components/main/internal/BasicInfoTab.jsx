@@ -131,6 +131,21 @@ const BasicInfoTab = () => {
       {errors.major && (
         <p className="text-red-500 text-sm">{errors.major.message}</p>
       )}
+
+      {/* Student ID field */}
+      <label htmlFor="studentId" className="mt-3">
+        Student ID <span className="text-red-500">*</span>
+      </label>
+      <input
+        type="text"
+        id="studentId"
+        placeholder="GDH234567"
+        className="mt-2"
+        {...register("studentId", { required: "Student ID cannot be empty" })}
+      />
+      {errors.studentId && (
+        <p className="text-red-500 text-sm">{errors.studentId.message}</p>
+      )}
     </div>
   );
 };
