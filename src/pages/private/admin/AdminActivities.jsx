@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import ActivitiesCardView from '../../../components/main/internal/ActivitiesCardView'
 import ActivitiesTableView from '../../../components/main/internal/ActivitiesTableView'
 import { sampleActivityData } from '../../../data/sampleActivityData'
+import ActivitiesBulkActionBar from '../../../components/main/internal/ActivitiesBulkActionBar'
 
 const AdminActivities = () => {
   const dispatch = useDispatch()
@@ -37,6 +38,15 @@ const AdminActivities = () => {
           </Link>
         </span>
       </div>
+
+      <select name="sort" id="sort">
+        <option value="newest">Date (Newest)</option>
+        <option value="oldest">Date (Oldest)</option>
+        <option value="a-z">Name (A-Z)</option>
+        <option value="z-a">Name (Z-A)</option>
+        <option value="registration-desc">Registration (Maximum)</option>
+        <option value="registration-asc">Registration (Minimum)</option>
+      </select>
 
       <div className="flex border-b mb-4">
         {tabs.map((tab, index) => (
