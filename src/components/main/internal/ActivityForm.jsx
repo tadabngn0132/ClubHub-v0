@@ -21,7 +21,27 @@ const ActivityForm = ({ mode, activityId }) => {
     defaultValues: {
       title: '',
       description: '',
-      date: ''
+      shortDescription: '',
+      slug: '',
+      startDate: '',
+      endDate: '',
+      isOnline: false,
+      location: '',
+      meetLink: '',
+      createdAt: '',
+      updatedAt: '',
+      type: '',
+      status: '',
+      thumbnailUrl: '',
+      images: [],
+      videos: [],
+      maxParticipants: null,
+      registrationDeadline: '',
+      requireRegistration: false,
+      organizerId: null,
+      isPublic: true,
+      isFeatured: false,
+      priority: 0
     },
     mode: 'onChange',
     reValidateMode: 'onChange'
@@ -37,14 +57,44 @@ const ActivityForm = ({ mode, activityId }) => {
         methods.reset({
           title: resData.payload.title || '',
           description: resData.payload.description || '',
-          date: resData.payload.date || ''
+          shortDescription: resData.payload.shortDescription || '',
+          slug: resData.payload.slug || '',
+          startDate: resData.payload.startDate || '',
+          endDate: resData.payload.endDate || '',
+          isOnline: resData.payload.isOnline || false,
+          location: resData.payload.location || '',
+          meetLink: resData.payload.meetLink || '',
+          createdAt: resData.payload.createdAt || '',
+          updatedAt: resData.payload.updatedAt || '',
+          type: resData.payload.type || '',
+          status: resData.payload.status || '',
+          thumbnailUrl: resData.payload.thumbnailUrl || '',
+          images: resData.payload.images || [],
+          videos: resData.payload.videos || [],
+          maxParticipants: resData.payload.maxParticipants || null,
+          registrationDeadline: resData.payload.registrationDeadline || ''
         })
       }
     } else if (mode === 'add') {
       methods.reset({
         title: '',
         description: '',
-        date: ''
+        shortDescription: '',
+        slug: '',
+        startDate: '',
+        endDate: '',
+        isOnline: false,
+        location: '',
+        meetLink: '',
+        createdAt: '',
+        updatedAt: '',
+        type: '',
+        status: '',
+        thumbnailUrl: '',
+        images: [],
+        videos: [],
+        maxParticipants: null,
+        registrationDeadline: ''
       })
     }
   }, [mode, activityId, methods])

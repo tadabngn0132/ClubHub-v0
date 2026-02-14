@@ -9,13 +9,13 @@ const ActivityBasicInfoSection = () => {
 
   return (
     <div className='flex flex-col'>
-      <label htmlFor="name">Activity Name <span className="text-red-500">*</span></label>
-      <input type="text" id='name' {...register("name", {
-        required: "Activity name cannot be empty.",
+      <label htmlFor="title">Activity Title <span className="text-red-500">*</span></label>
+      <input type="text" id='title' {...register("title", {
+        required: "Activity title cannot be empty.",
         maxLength: 200
       })}/>
-      {errors.name && (
-        <p className="text-red-500 text-sm">{ errors.name.message}</p>
+      {errors.title && (
+        <p className="text-red-500 text-sm">{ errors.title.message}</p>
       )}
 
       <label htmlFor="activity_type">Activity Type</label>

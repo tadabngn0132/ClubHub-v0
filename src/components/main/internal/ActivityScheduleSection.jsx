@@ -10,19 +10,19 @@ const ActivityScheduleSection = () => {
   return (
     <div className='flex flex-col'>
       <label htmlFor="start_date_time">Activity Start Date/Time <span className='text-red-500'>*</span></label>
-      <input type="datetime-local" name="start_date_time" id="start_date_time" {...register("start_date", {
+      <input type="datetime-local" name="start_date_time" id="start_date_time" {...register("startDate", {
         required: "Activity start date/time cannot be empty"
       })} />
-      {errors.start_date && (
-        <p className="text-red-500 text-sm">{errors.start_date.message}</p>
+      {errors.startDate && (
+        <p className="text-red-500 text-sm">{errors.startDate.message}</p>
       )}
 
       <label htmlFor="end_date_time">Activity End Date/Time <span className='text-red-500'>*</span></label>
-      <input type="datetime-local" name="end_date_time" id="end_date_time" {...register("end_date", {
+      <input type="datetime-local" name="end_date_time" id="end_date_time" {...register("endDate", {
         required: "Activity end date/time cannot be empty"
       })} />
-      {errors.end_date && (
-        <p className="text-red-500 text-sm">{errors.end_date.message}</p>
+      {errors.endDate && (
+        <p className="text-red-500 text-sm">{errors.endDate.message}</p>
       )}
 
       {/* Future implement */}
