@@ -15,20 +15,28 @@ const ActivityLocationSection = () => {
   }
 
   return (
-    <div>
+    <div className='flex flex-col'>
       <label htmlFor="location_type">Location Type <span className='text-red-500'>*</span></label>
-      <input type="radio" name="location_type" id="online" {...register("location_type", {
-        required: "Location type cannot be empty"
-      })} onChange={handleLocationTypeChange} />
-      <label htmlFor="online">Online</label>
-      <input type="radio" name="location_type" id="in_person" {...register("location_type", {
-        required: "Location type cannot be empty"
-      })} onChange={handleLocationTypeChange} />
-      <label htmlFor="in_person">In-person</label>
-      <input type="radio" name="location_type" id="hybrid" {...register("location_type", {
-        required: "Location type cannot be empty"
-      })} onChange={handleLocationTypeChange} />
-      <label htmlFor="hybrid">Hybrid</label>
+      <div className='flex items-center gap-1'>
+        <input type="radio" name="location_type" id="online" {...register("location_type", {
+          required: "Location type cannot be empty"
+        })} onChange={handleLocationTypeChange} />
+        <label htmlFor="online">Online</label>
+      </div>
+
+      <div className='flex items-center gap-1'>
+        <input type="radio" name="location_type" id="in_person" {...register("location_type", {
+          required: "Location type cannot be empty"
+        })} onChange={handleLocationTypeChange} />
+        <label htmlFor="in_person">In-person</label>
+      </div>
+
+      <div className='flex items-center gap-1'>
+        <input type="radio" name="location_type" id="hybrid" {...register("location_type", {
+          required: "Location type cannot be empty"
+        })} onChange={handleLocationTypeChange} />
+        <label htmlFor="hybrid">Hybrid</label>
+      </div>
       {errors.location_type && <p className='text-red-500'>{errors.location_type.message}</p>}
 
       {/* Need to implement more based on condition of location type */}

@@ -3,7 +3,7 @@ import ActivityForm from "../../../components/main/internal/ActivityForm"
 const AdminEditActivity = () => {
   return (
     <div>
-      <ActivityForm type="edit" />
+      <ActivityForm mode="edit" />
     </div>
   )
 }

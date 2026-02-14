@@ -39,18 +39,18 @@ const MemberForm = ({ mode, memberId }) => {
 
   useEffect(() => {
     if (mode === "edit" && memberId) {
-      resData = dispatch(getUserById(memberId));
+      const resData = dispatch(getUserById(memberId));
         
-        if (res.payload) {
-          methods.reset({
-            name: res.payload.name || "",
-            email: res.payload.email || "",
-            phoneNumber: res.payload.phoneNumber || "",
-            role: res.payload.role || "",
-            avatar: res.payload.avatar || null,
-            bio: res.payload.bio || "",
-          });
-        }
+      if (resData && resData.payload) {
+        methods.reset({
+          name: resData.payload.name || "",
+          email: resData.payload.email || "",
+          phoneNumber: resData.payload.phoneNumber || "",
+          role: resData.payload.role || "",
+          avatar: resData.payload.avatar || null,
+          bio: resData.payload.bio || "",
+        });
+      }
     } else if (mode === "add") {
       methods.reset({
         name: "",

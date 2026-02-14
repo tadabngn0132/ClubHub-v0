@@ -8,9 +8,9 @@ const ActivityScheduleSection = () => {
   } = useFormContext();
 
   return (
-    <div>
+    <div className='flex flex-col'>
       <label htmlFor="start_date_time">Activity Start Date/Time <span className='text-red-500'>*</span></label>
-      <input type="datetime" name="start_date_time" id="start_date_time" {...register("start_date", {
+      <input type="datetime-local" name="start_date_time" id="start_date_time" {...register("start_date", {
         required: "Activity start date/time cannot be empty"
       })} />
       {errors.start_date && (
@@ -18,7 +18,7 @@ const ActivityScheduleSection = () => {
       )}
 
       <label htmlFor="end_date_time">Activity End Date/Time <span className='text-red-500'>*</span></label>
-      <input type="datetime" name="end_date_time" id="end_date_time" {...register("end_date", {
+      <input type="datetime-local" name="end_date_time" id="end_date_time" {...register("end_date", {
         required: "Activity end date/time cannot be empty"
       })} />
       {errors.end_date && (

@@ -31,7 +31,7 @@ const AdminActivities = () => {
 
         <span>
           <Link
-            to="/admin/activities/create"
+            to="/admin/activities/add"
             className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
           >
             Create New Activity

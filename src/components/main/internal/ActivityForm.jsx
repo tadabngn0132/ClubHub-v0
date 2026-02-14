@@ -1,21 +1,23 @@
 import {
   createActivity,
   getActivityById,
-  getActivitiesList,
-  deleteActivityById
+  updateActivityById
 } from '../../../store/slices/activitySlice'
 import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { useForm, FormProvider } from 'react-hook-form'
+import { Toaster } from 'react-hot-toast'
+import ActivityBasicInfoSection from './ActivityBasicInfoSection.jsx'
+import ActivityLocationSection from './ActivityLocationSection.jsx'
+import ActivityDescriptionSection from './ActivityDescriptionSection.jsx'
+import ActivityScheduleSection from './ActivityScheduleSection.jsx'
 
-const ActivityForm = ({ type }) => {
+
+const ActivityForm = ({ mode, activityId }) => {
   const dispatch = useDispatch()
+  const [activeTab, setActiveTab] = useState(0)
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
+  const methods = useForm({
     defaultValues: {
       title: '',
       description: '',
@@ -25,37 +27,93 @@ const ActivityForm = ({ type }) => {
     reValidateMode: 'onChange'
   })
 
+  const { isValid } = methods.formState
+
   useEffect(() => {
-    // If editing, fetch activity data here
-  }, [])
+    if (mode === 'edit') {
+      const resData = dispatch(getActivityById(activityId))
+      if (resData && resData.payload) {
+        // Reset form with fetched activity data
+        methods.reset({
+          title: resData.payload.title || '',
+          description: resData.payload.description || '',
+          date: resData.payload.date || ''
+        })
+      }
+    } else if (mode === 'add') {
+      methods.reset({
+        title: '',
+        description: '',
+        date: ''
+      })
+    }
+  }, [mode, activityId, methods])
+
+  const tabs = [
+    { name: 'Basic Info', component: ActivityBasicInfoSection },
+    { name: 'Location', component: ActivityLocationSection },
+    { name: 'Description', component: ActivityDescriptionSection },
+    { name: 'Schedule', component: ActivityScheduleSection }
+  ]
 
   const handleSaveData = (data) => {
     // Handle form submission for both add and edit modes
-    if (type === "add") {
+    if (mode === "add") {
       dispatch(createActivity(data))
-    } else if (type === "edit") {
-      // Dispatch update action here
+    } else if (mode === "edit") {
+      dispatch(updateActivityById(data))
     }
   }
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Add / Edit Activity</h2>
-      {/* Form fields will go here */}
-      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit(handleSaveData)}>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            {...register('title', { required: 'Title is required' })}
-            className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.title ? 'border-red-500' : ''}`}
-          />
-          {errors.title && <p className="text-red-500 text-xs italic mt-2">{errors.title.message}</p>}
-        </div>
-      </form>
+      <Toaster position="top-right" reverseOrder={false} />
+      <h2 className="text-2xl font-bold mb-4">{mode === "add" ? "Add New Activity" : "Edit Activity"}</h2>
+      
+      {/* Tab navigation */}
+      <div className="flex border-b mb-4">
+        {tabs.map((tab, index) => (
+          <button
+            key={index}
+            className={`py-2 px-4 ${
+              activeTab === index
+                ? "border-b-2 border-blue-500 text-blue-500"
+                : "text-gray-500"
+            }`}
+            onClick={() => setActiveTab(index)}
+            type="button"
+          >
+            {tab.name}
+          </button>
+        ))}
+      </div>
+
+      <FormProvider {...methods}>
+        <form 
+          onSubmit={methods.handleSubmit(handleSaveData)}
+          className="shadow-md rounded px-4 py-2 mb-4"
+        >
+          {/* Render active tab content */}
+          {tabs.map((tab, index) => (
+            <div
+              key={index}
+              style={{ display: activeTab === index ? "flex" : "none" }}
+            >
+              <tab.component />
+            </div>
+          ))}
+
+          <div className="flex items-center justify-between my-6">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              disabled={!isValid}
+            >
+              {mode === "add" ? "Add Activity" : "Update Activity"}
+            </button>
+          </div>
+        </form>
+      </FormProvider>
     </div>
   )
 }

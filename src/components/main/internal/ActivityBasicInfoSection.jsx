@@ -8,7 +8,7 @@ const ActivityBasicInfoSection = () => {
   } = useFormContext();
 
   return (
-    <div>
+    <div className='flex flex-col'>
       <label htmlFor="name">Activity Name <span className="text-red-500">*</span></label>
       <input type="text" id='name' {...register("name", {
         required: "Activity name cannot be empty.",
