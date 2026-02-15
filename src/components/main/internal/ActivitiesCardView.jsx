@@ -9,11 +9,6 @@ import { sampleActivityData } from '../../../data/sampleActivityData'
 
 const ActivitiesCardView = () => {
   const dispatch = useDispatch()
-  const activitiesState = useSelector((state) => state.activity)
-
-  useEffect(() => {
-    dispatch(getActivitiesList())
-  }, [dispatch])
 
   const handleDelete = (activityId) => {
     dispatch(deleteActivityById(activityId))

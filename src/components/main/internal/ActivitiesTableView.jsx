@@ -13,10 +13,6 @@ const ActivitiesTableView = () => {
   const activitiesState = useSelector((state) => state.activity)
   const [selectedActivities, setSelectedActivities] = useState([])
 
-  useEffect(() => {
-    dispatch(getActivitiesList())
-  }, [dispatch])
-
   const handleDelete = (activityId) => {
     dispatch(deleteActivityById(activityId))
   }

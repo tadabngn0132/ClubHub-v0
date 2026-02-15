@@ -3,7 +3,7 @@ import {
   getActivityById,
   updateActivityById
 } from '../../../store/slices/activitySlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { Toaster } from 'react-hot-toast'
@@ -16,7 +16,8 @@ import ActivityScheduleSection from './ActivityScheduleSection.jsx'
 const ActivityForm = ({ mode, activityId }) => {
   const dispatch = useDispatch()
   const [activeTab, setActiveTab] = useState(0)
-
+  const { currentUser } = useSelector((state) => state.auth)
+  
   const methods = useForm({
     defaultValues: {
       title: '',
@@ -28,8 +29,6 @@ const ActivityForm = ({ mode, activityId }) => {
       isOnline: false,
       location: '',
       meetLink: '',
-      createdAt: '',
-      updatedAt: '',
       type: '',
       status: '',
       thumbnailUrl: '',
@@ -38,7 +37,7 @@ const ActivityForm = ({ mode, activityId }) => {
       maxParticipants: null,
       registrationDeadline: '',
       requireRegistration: false,
-      organizerId: null,
+      organizerId: userId || null,
       isPublic: true,
       isFeatured: false,
       priority: 0
