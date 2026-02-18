@@ -37,7 +37,7 @@ const ActivityForm = ({ mode, activityId }) => {
       maxParticipants: null,
       registrationDeadline: '',
       requireRegistration: false,
-      organizerId: currentUser?.id || null,
+      organizerId: currentUser.id,
       isPublic: true,
       isFeatured: false,
       priority: 0
@@ -142,6 +142,9 @@ const ActivityForm = ({ mode, activityId }) => {
           onSubmit={methods.handleSubmit(handleSaveData)}
           className="shadow-md rounded px-4 py-2 mb-4"
         >
+          {/* Hidden field để giữ organizerId */}
+          <input type="hidden" {...methods.register('organizerId')} value={currentUser.id} />
+          
           {/* Render active tab content */}
           {tabs.map((tab, index) => (
             <div
