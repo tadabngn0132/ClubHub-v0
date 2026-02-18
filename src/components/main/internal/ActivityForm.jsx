@@ -37,7 +37,7 @@ const ActivityForm = ({ mode, activityId }) => {
       maxParticipants: null,
       registrationDeadline: '',
       requireRegistration: false,
-      organizerId: userId || null,
+      organizerId: currentUser?.id || null,
       isPublic: true,
       isFeatured: false,
       priority: 0
