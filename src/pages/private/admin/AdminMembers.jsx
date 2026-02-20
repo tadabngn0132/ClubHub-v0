@@ -11,9 +11,7 @@ import Pagination from "../../../components/internal/Pagination.jsx";
 
 const AdminMembers = () => {
   const dispatch = useDispatch();
-  const { usersList, isLoading, isError, message } = useSelector(
-    (state) => state.user,
-  );
+  const { users, isLoading, isError, message } = useSelector((state) => state.user);
   const [selectedMembers, setSelectedMembers] = useState([]);
 
   useEffect(() => {
@@ -65,7 +63,7 @@ const AdminMembers = () => {
         <div>
           <h1 className="text-3xl font-bold mb-1">Members</h1>
           <p className="text-sm text-gray-500">
-            {mockUsers ? mockUsers.length : 0} members
+            {users ? users.length : 0} members
           </p>{" "}
           {/* Dynamic member count */}
         </div>
@@ -110,7 +108,7 @@ const AdminMembers = () => {
           </tr>
         </thead>
         <tbody className="text-center border border-gray-200">
-          {mockUsers.length === 0 ? (
+          {users && users.length === 0 ? (
             <tr>
               <td colSpan="11" className="py-4">
                 No members found.
@@ -125,7 +123,7 @@ const AdminMembers = () => {
               </td>
             </tr>
           ) : (
-            mockUsers.map((user) => (
+            users.map((user) => (
               <tr
                 key={user.id}
                 className="border-b border-gray-200 odd-child:bg-white even-child:bg-gray-50"

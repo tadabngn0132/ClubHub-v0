@@ -124,7 +124,7 @@ const userSlice = createSlice({
       })
       .addCase(getUserById.fulfilled, (state, action) => {
         state.isLoading = false
-        state.user = action.payload.user
+        state.user = action.payload.data
       })
       .addCase(getUserById.rejected, (state, action) => {
         state.isLoading = false
@@ -138,7 +138,7 @@ const userSlice = createSlice({
       })
       .addCase(getUsersList.fulfilled, (state, action) => {
         state.isLoading = false
-        state.users = action.payload.users
+        state.users = action.payload.data
       })
       .addCase(getUsersList.rejected, (state, action) => {
         state.isLoading = false
@@ -152,9 +152,9 @@ const userSlice = createSlice({
       })
       .addCase(updateUserById.fulfilled, (state, action) => {
         state.isLoading = false
-        const index = state.users.findIndex(user => user.id === action.payload.user.id)
+        const index = state.users.findIndex(user => user.id === action.payload.data.id)
         if (index !== -1) {
-          state.users[index] = action.payload.user
+          state.users[index] = action.payload.data
         }
       })
       .addCase(updateUserById.rejected, (state, action) => {

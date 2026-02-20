@@ -14,10 +14,11 @@ import { Toaster } from "react-hot-toast";
 const MemberForm = ({ mode, memberId }) => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
+  const { user } = useSelector((state) => state.user);
 
   const methods = useForm({
     defaultValues: {
-      name: "",
+      fullName: "",
       email: "",
       phoneNumber: "",
       dateOfBirth: "",
@@ -38,25 +39,41 @@ const MemberForm = ({ mode, memberId }) => {
   const { isValid } = methods.formState;
 
   useEffect(() => {
-    if (mode === "edit" && memberId) {
-      const resData = dispatch(getUserById(memberId));
+    if (mode === "edit") {
+      dispatch(getUserById(memberId));
         
-      if (resData && resData.payload) {
+      if (user) {
         methods.reset({
-          name: resData.payload.name || "",
-          email: resData.payload.email || "",
-          phoneNumber: resData.payload.phoneNumber || "",
-          role: resData.payload.role || "",
-          avatar: resData.payload.avatar || null,
-          bio: resData.payload.bio || "",
+          fullName: user.fullname || "",
+          email: user.email || "",
+          phoneNumber: user.phoneNumber || "",
+          dateOfBirth: user.dateOfBirth || "",
+          gender: user.gender || "",
+          major: user.major || "",
+          generation: user.generation || "",
+          department: user.department || "",
+          position: user.position || "",
+          role: user.role || "",
+          joinDate: user.joinDate || "",
+          status: user.status || "",
+          avatar: user.avatar || null,
+          bio: user.bio || "",
         });
       }
     } else if (mode === "add") {
       methods.reset({
-        name: "",
+        fullName: "",
         email: "",
         phoneNumber: "",
+        dateOfBirth: "",
+        gender: "",
+        major: "",
+        generation: "",
+        department: "",
+        position: "",
         role: "",
+        joinDate: "",
+        status: "",
         avatar: null,
         bio: "",
       });
