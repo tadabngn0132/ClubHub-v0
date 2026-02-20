@@ -24,7 +24,7 @@ const ActivityLocationSection = () => {
           type="radio"
           value="online"
           id="online"
-          {...register("location_type", {
+          {...register("locationType", {
             required: "Location type cannot be empty",
           })}
           onChange={handleLocationTypeChange}
@@ -37,7 +37,7 @@ const ActivityLocationSection = () => {
           type="radio"
           value="in_person"
           id="in_person"
-          {...register("location_type", {
+          {...register("locationType", {
             required: "Location type cannot be empty",
           })}
           onChange={handleLocationTypeChange}
@@ -50,15 +50,15 @@ const ActivityLocationSection = () => {
           type="radio"
           value="hybrid"
           id="hybrid"
-          {...register("location_type", {
+          {...register("locationType", {
             required: "Location type cannot be empty",
           })}
           onChange={handleLocationTypeChange}
         />
         <label htmlFor="hybrid">Hybrid</label>
       </div>
-      {errors.location_type && (
-        <p className="text-red-500">{errors.location_type.message}</p>
+      {errors.locationType && (
+        <p className="text-red-500">{errors.locationType.message}</p>
       )}
 
       {/* Need to implement more based on condition of location type */}
@@ -70,7 +70,7 @@ const ActivityLocationSection = () => {
           <select
             name="meeting_platform"
             id="meeting_platform"
-            {...register("meeting_platform", {
+            {...register("meetingPlatform", {
               required: "Meeting platform cannot be empty",
             })}
           >
@@ -79,8 +79,8 @@ const ActivityLocationSection = () => {
             <option value="Microsoft Teams">Microsoft Teams</option>
             <option value="Other">Other</option>
           </select>
-          {errors.meeting_platform && (
-            <p className="text-red-500">{errors.meeting_platform.message}</p>
+          {errors.meetingPlatform && (
+            <p className="text-red-500">{errors.meetingPlatform.message}</p>
           )}
 
           <label htmlFor="meeting_link">
@@ -90,12 +90,12 @@ const ActivityLocationSection = () => {
             type="text"
             name="meeting_link"
             id="meeting_link"
-            {...register("meeting_link", {
+            {...register("meetingLink", {
               required: "Meeting link cannot be empty",
             })}
           />
-          {errors.meeting_link && (
-            <p className="text-red-500">{errors.meeting_link.message}</p>
+          {errors.meetingLink && (
+            <p className="text-red-500">{errors.meetingLink.message}</p>
           )}
 
           <label htmlFor="meeting_id">
@@ -105,20 +105,20 @@ const ActivityLocationSection = () => {
             type="text"
             name="meeting_id"
             id="meeting_id"
-            {...register("meeting_id")}
+            {...register("meetingId")}
           />
 
-          <label htmlFor="meeting_passcode">Meeting Password</label>
+          <label htmlFor="meeting_password">Meeting Password</label>
           <input
             type="text"
-            name="meeting_passcode"
-            id="meeting_passcode"
-            {...register("meeting_passcode")}
+            name="meeting_password"
+            id="meeting_password"
+            {...register("meetingPassword")}
           />
         </>
       )}
 
-      {(locationType === "in-person" || locationType === "hybrid") && (
+      {(locationType === "in_person" || locationType === "hybrid") && (
         <>
           <label htmlFor="venue_name">
             Venue Name <span className="text-red-500">*</span>
@@ -127,12 +127,12 @@ const ActivityLocationSection = () => {
             type="text"
             name="venue_name"
             id="venue_name"
-            {...register("venue_name", {
+            {...register("venueName", {
               required: "Venue name cannot be empty",
             })}
           />
-          {errors.venue_name && (
-            <p className="text-red-500">{errors.venue_name.message}</p>
+          {errors.venueName && (
+            <p className="text-red-500">{errors.venueName.message}</p>
           )}
 
           <label htmlFor="venue_address">
@@ -142,12 +142,12 @@ const ActivityLocationSection = () => {
             type="text"
             name="venue_address"
             id="venue_address"
-            {...register("venue_address", {
+            {...register("venueAddress", {
               required: "Venue address cannot be empty",
             })}
           />
-          {errors.venue_address && (
-            <p className="text-red-500">{errors.venue_address.message}</p>
+          {errors.venueAddress && (
+            <p className="text-red-500">{errors.venueAddress.message}</p>
           )}
 
           <label htmlFor="room_number">Room Number</label>
@@ -155,7 +155,7 @@ const ActivityLocationSection = () => {
             type="text"
             name="room_number"
             id="room_number"
-            {...register("room_number")}
+            {...register("roomNumber")}
           />
 
           {/* TODO: Implement additional field when implemented Google Maps integration */}
