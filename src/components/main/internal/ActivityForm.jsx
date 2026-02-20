@@ -17,6 +17,9 @@ const ActivityForm = ({ mode, activityId }) => {
   const dispatch = useDispatch()
   const [activeTab, setActiveTab] = useState(0)
   const { currentUser } = useSelector((state) => state.auth)
+  console.log('Activity ID:', activityId);
+  
+  const { activity } = useSelector((state) => state.activity)
   
   const methods = useForm({
     defaultValues: {
@@ -37,7 +40,7 @@ const ActivityForm = ({ mode, activityId }) => {
       maxParticipants: null,
       registrationDeadline: '',
       requireRegistration: false,
-      organizerId: currentUser.id,
+      organizerId: currentUser?.id,
       isPublic: true,
       isFeatured: false,
       priority: 0
@@ -50,28 +53,28 @@ const ActivityForm = ({ mode, activityId }) => {
 
   useEffect(() => {
     if (mode === 'edit') {
-      const resData = dispatch(getActivityById(activityId))
-      if (resData && resData.payload) {
+      dispatch(getActivityById(activityId))
+      if (activity) {
         // Reset form with fetched activity data
         methods.reset({
-          title: resData.payload.title || '',
-          description: resData.payload.description || '',
-          shortDescription: resData.payload.shortDescription || '',
-          slug: resData.payload.slug || '',
-          startDate: resData.payload.startDate || '',
-          endDate: resData.payload.endDate || '',
-          isOnline: resData.payload.isOnline || false,
-          location: resData.payload.location || '',
-          meetLink: resData.payload.meetLink || '',
-          createdAt: resData.payload.createdAt || '',
-          updatedAt: resData.payload.updatedAt || '',
-          type: resData.payload.type || '',
-          status: resData.payload.status || '',
-          thumbnailUrl: resData.payload.thumbnailUrl || '',
-          images: resData.payload.images || [],
-          videos: resData.payload.videos || [],
-          maxParticipants: resData.payload.maxParticipants || null,
-          registrationDeadline: resData.payload.registrationDeadline || ''
+          title: activity.title || '',
+          description: activity.description || '',
+          shortDescription: activity.shortDescription || '',
+          slug: activity.slug || '',
+          startDate: activity.startDate || '',
+          endDate: activity.endDate || '',
+          isOnline: activity.isOnline || false,
+          location: activity.location || '',
+          meetLink: activity.meetLink || '',
+          createdAt: activity.createdAt || '',
+          updatedAt: activity.updatedAt || '',
+          type: activity.type || '',
+          status: activity.status || '',
+          thumbnailUrl: activity.thumbnailUrl || '',
+          images: activity.images || [],
+          videos: activity.videos || [],
+          maxParticipants: activity.maxParticipants || null,
+          registrationDeadline: activity.registrationDeadline || ''
         })
       }
     } else if (mode === 'add') {
@@ -143,7 +146,7 @@ const ActivityForm = ({ mode, activityId }) => {
           className="shadow-md rounded px-4 py-2 mb-4"
         >
           {/* Hidden field để giữ organizerId */}
-          <input type="hidden" {...methods.register('organizerId')} value={currentUser.id} />
+          <input type="hidden" {...methods.register('organizerId')} value={currentUser?.id} />
           
           {/* Render active tab content */}
           {tabs.map((tab, index) => (

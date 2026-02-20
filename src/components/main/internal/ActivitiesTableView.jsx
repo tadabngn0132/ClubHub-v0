@@ -10,7 +10,7 @@ import ActivitiesBulkActionBar from './ActivitiesBulkActionBar'
 
 const ActivitiesTableView = () => {
   const dispatch = useDispatch()
-  const activitiesState = useSelector((state) => state.activity)
+  const { activities } = useSelector((state) => state.activity)
   const [selectedActivities, setSelectedActivities] = useState([])
 
   const handleDelete = (activityId) => {
@@ -40,7 +40,7 @@ const ActivitiesTableView = () => {
             </tr>
           </thead>
           <tbody>
-            {sampleActivityData.map((activity) => (
+            {activities.map((activity) => (
               <tr key={activity.id}>
                 <td className="px-4 py-2">
                   <input 

@@ -9,6 +9,7 @@ import { sampleActivityData } from '../../../data/sampleActivityData'
 
 const ActivitiesCardView = () => {
   const dispatch = useDispatch()
+  const { activities } = useSelector((state) => state.activity)
 
   const handleDelete = (activityId) => {
     dispatch(deleteActivityById(activityId))
@@ -16,7 +17,7 @@ const ActivitiesCardView = () => {
 
   return (
     <div className="w-full p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
-      {sampleActivityData.map((activity) => (
+      {activities.map((activity) => (
         <div key={activity.id} className="rounded-lg p-4 flex flex-col">
           <img
             src={activity.thumbnailUrl}
