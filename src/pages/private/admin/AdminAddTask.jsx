@@ -1,8 +1,10 @@
-import React from 'react'
+import TaskForm from "../../../components/main/internal/TaskForm"
 
 const AdminAddTask = () => {
   return (
-    <div>AdminAddTask</div>
+    <div>
+      <TaskForm mode="add" />
+    </div>
   )
 }
 

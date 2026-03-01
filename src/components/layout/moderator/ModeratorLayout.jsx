@@ -10,7 +10,9 @@ const ModeratorLayout = ({ children }) => {
       <ModeratorHeader />
       <main className="flex">
         <ModeratorSideBar />
-        { children }
+        <div className="flex-1">
+          { children }
+        </div>
       </main>
       <ModeratorFooter />
     </ProtectedRoute>

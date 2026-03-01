@@ -10,7 +10,9 @@ const MemberLayout = ({ children }) => {
         <MemberHeader />
         <main className='flex'>
           <MemberSideBar />
-          { children }
+          <div className="flex-1">
+            { children }
+          </div>
         </main>
         <MemberFooter />
       </ProtectedRoute>
