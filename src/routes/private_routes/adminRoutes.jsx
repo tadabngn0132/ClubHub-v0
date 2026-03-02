@@ -12,6 +12,9 @@ import AdminEditActivity from '../../pages/private/admin/AdminEditActivity.jsx'
 import AdminViewActivity from '../../pages/private/admin/AdminViewActivity.jsx'
 import AdminAddActivity from '../../pages/private/admin/AdminAddActivity.jsx'
 import AdminAddMember from '../../pages/private/admin/AdminAddMember.jsx'
+import AdminEditTask from '../../pages/private/admin/AdminEditTask.jsx'
+import AdminViewTask from '../../pages/private/admin/AdminViewTask.jsx'
+import AdminAddTask from '../../pages/private/admin/AdminAddTask.jsx'
 
 export const adminRoutes = [
   {
@@ -27,6 +30,30 @@ export const adminRoutes = [
     element: (
       <AdminLayout>
         <AdminActivities />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/activities/edit/:activityId',
+    element: (
+      <AdminLayout>
+        <AdminEditActivity />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/activities/view/:activityId',
+    element: (
+      <AdminLayout>
+        <AdminViewActivity />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/activities/add',
+    element: (
+      <AdminLayout>
+        <AdminAddActivity />
       </AdminLayout>
     )
   },
@@ -47,10 +74,26 @@ export const adminRoutes = [
     )
   },
   {
-    path: '/admin/square',
+    path: '/admin/tasks/edit/:taskId',
     element: (
       <AdminLayout>
-        <AdminSquare />
+        <AdminEditTask />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/tasks/view/:taskId',
+    element: (
+      <AdminLayout>
+        <AdminViewTask />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/tasks/add',
+    element: (
+      <AdminLayout>
+        <AdminAddTask />
       </AdminLayout>
     )
   },
@@ -83,30 +126,6 @@ export const adminRoutes = [
     element: (
       <AdminLayout>
         <AdminEditMember />
-      </AdminLayout>
-    )
-  },
-  {
-    path: '/admin/activities/edit/:activityId',
-    element: (
-      <AdminLayout>
-        <AdminEditActivity />
-      </AdminLayout>
-    )
-  },
-  {
-    path: '/admin/activities/view/:activityId',
-    element: (
-      <AdminLayout>
-        <AdminViewActivity />
-      </AdminLayout>
-    )
-  },
-  {
-    path: '/admin/activities/add',
-    element: (
-      <AdminLayout>
-        <AdminAddActivity />
       </AdminLayout>
     )
   },

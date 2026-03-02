@@ -40,14 +40,6 @@ export const memberRoutes = [
     )
   },
   {
-    path: '/member/square',
-    element: (
-      <MemberLayout>
-        <MemberSquare />
-      </MemberLayout>
-    )
-  },
-  {
     path: '/member/profile',
     element: (
       <MemberLayout>

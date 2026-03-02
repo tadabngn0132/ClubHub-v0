@@ -40,14 +40,6 @@ export const moderatorRoutes = [
     )
   },
   {
-    path: '/moderator/square',
-    element: (
-      <ModeratorLayout>
-        <ModeratorSquare />
-      </ModeratorLayout>
-    )
-  },
-  {
     path: '/moderator/profile',
     element: (
       <ModeratorLayout>
