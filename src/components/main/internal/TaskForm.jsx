@@ -1,9 +1,80 @@
-import React from 'react'
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const TaskForm = ({ mode, taskId }) => {
-  return (
-    <div>TaskForm</div>
-  )
-}
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      taskName: "",
+      taskDescription: "",
+      isCompleteTask: false,
+      taskDueDate: "",
+    },
+    mode: "onChange",
+  });
 
-export default TaskForm
+  const handleSaveData = (data) => {
+    if (mode === "add") {
+      dispatch(createUser(data));
+    } else if (mode === "edit") {
+      dispatch(updateUserById(data));
+    }
+  };
+
+  return (
+    <div>
+      <h1>{mode === "create" ? "Create Task" : "Edit Task"}</h1>
+
+      <form action="" onSubmit={handleSubmit(handleSaveData)}>
+        <label htmlFor="taskName">Task Name</label>
+        <input
+          type="text"
+          id="taskName"
+          name="taskName"
+          {...register("taskName", { required: "Task name is required" })}
+        />
+        {errors.taskName && (
+          <p className="text-red-500">{errors.taskName.message}</p>
+        )}
+
+        <label htmlFor="taskDescription">Task Description</label>
+        <textarea
+          id="taskDescription"
+          name="taskDescription"
+          {...register("taskDescription", {
+            required: "Task description is required",
+          })}
+        ></textarea>
+        {errors.taskDescription && (
+          <p className="text-red-500">{errors.taskDescription.message}</p>
+        )}
+
+        <label htmlFor="isCompleteTask">Is Complete</label>
+        <input
+          type="checkbox"
+          id="isCompleteTask"
+          name="isCompleteTask"
+          {...register("isCompleteTask")}
+        />
+
+        <label htmlFor="taskDueDate">Task Due Date</label>
+        <input
+          type="date"
+          id="taskDueDate"
+          name="taskDueDate"
+          {...register("taskDueDate")}
+        />
+
+        <button type="submit">
+          {mode === "create" ? "Create" : "Update"} Task
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default TaskForm;

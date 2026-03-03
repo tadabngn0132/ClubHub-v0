@@ -1,17 +1,10 @@
 import React from 'react'
 import { useFormContext } from 'react-hook-form'
+import { DEPARTMENTS } from '../../../utils/constants'
 
 const ClubInfoTab = () => {
   const { register, formState: { errors } } = useFormContext()
-  const departmentList = [
-    { id: 1, name: 'Dance' },
-    { id: 2, name: 'Communication' },
-    { id: 3, name: 'Design' },
-    { id: 4, name: 'Human Resources' },
-    { id: 5, name: 'Logistics' },
-    { id: 6, name: 'Content' },
-    { id: 7, name: 'Media' }
-  ]
+  const departmentList =  DEPARTMENTS
   
   return (
     <div className="flex flex-col">

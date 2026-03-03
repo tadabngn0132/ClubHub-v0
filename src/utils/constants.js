@@ -18,3 +18,13 @@ export const ACTIVITY_STATUSES = {
   CANCELLED: "CANCELLED",
   POSTPONED: "POSTPONED"
 }
+
+export const DEPARTMENTS = [
+    { id: 1, name: 'Dance' },
+    { id: 2, name: 'Communication' },
+    { id: 3, name: 'Design' },
+    { id: 4, name: 'Human Resources' },
+    { id: 5, name: 'Logistics' },
+    { id: 6, name: 'Content' },
+    { id: 7, name: 'Media' }
+  ]
