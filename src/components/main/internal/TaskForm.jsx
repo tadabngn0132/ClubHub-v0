@@ -1,11 +1,17 @@
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  createNewTask,
+  updateTaskById,
+  getTaskDetails
+} from "../../store/slices/taskSlice";
 
 const TaskForm = ({ mode, taskId }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -17,11 +23,37 @@ const TaskForm = ({ mode, taskId }) => {
     mode: "onChange",
   });
 
+  const dispatch = useDispatch();
+  const { taskDetails } = useSelector((state) => state.task);
+  useEffect(() => {
+    if (mode === "edit" && taskId) {
+      dispatch(getTaskDetails(taskId));
+
+      if (taskDetails) {
+        reset({
+          taskName: taskDetails.name,
+          taskDescription: taskDetails.description,
+          isCompleteTask: taskDetails.isComplete,
+          taskDueDate: taskDetails.dueDate
+            ? new Date(taskDetails.dueDate).toISOString().split("T")[0]
+            : "",
+        });
+      }
+    } else {
+      reset({
+        taskName: "",
+        taskDescription: "",
+        isCompleteTask: false,
+        taskDueDate: "",
+      });
+    }
+  }, [mode, taskId, reset]);
+
   const handleSaveData = (data) => {
     if (mode === "add") {
-      dispatch(createUser(data));
+      dispatch(createNewTask(data));
     } else if (mode === "edit") {
-      dispatch(updateUserById(data));
+      dispatch(updateTaskById({ id: taskId, ...data }));
     }
   };
 
