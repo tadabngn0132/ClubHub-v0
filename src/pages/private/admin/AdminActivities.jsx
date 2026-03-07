@@ -1,5 +1,5 @@
 import { getActivitiesList } from '../../../store/slices/activitySlice'
-import { act, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ActivitiesCardView from '../../../components/main/internal/ActivitiesCardView'

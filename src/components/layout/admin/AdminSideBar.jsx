@@ -7,7 +7,6 @@ const AdminSideBar = () => {
     { name: 'Members', link: '/admin/members' },
     { name: 'Schedule', link: '/admin/schedule' },
     { name: 'Tasks', link: '/admin/tasks' },
-    { name: 'Square', link: '/admin/square' },
     { name: 'Profile', link: '/admin/profile' },
   ]
 

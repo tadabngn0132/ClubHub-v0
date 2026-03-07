@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createNewTask,
   updateTaskById,
-  getTaskDetails
+  getTaskDetails,
 } from "../../../store/slices/taskSlice";
 
 const TaskForm = ({ mode, taskId }) => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -23,17 +24,17 @@ const TaskForm = ({ mode, taskId }) => {
     mode: "onChange",
   });
 
-  const dispatch = useDispatch();
   const { taskDetails } = useSelector((state) => state.task);
+
   useEffect(() => {
     if (mode === "edit" && taskId) {
       dispatch(getTaskDetails(taskId));
 
       if (taskDetails) {
         reset({
-          taskName: taskDetails.name,
+          taskName: taskDetails.title,
           taskDescription: taskDetails.description,
-          isCompleteTask: taskDetails.isComplete,
+          isCompleteTask: taskDetails.isCompleted || false,
           taskDueDate: taskDetails.dueDate
             ? new Date(taskDetails.dueDate).toISOString().split("T")[0]
             : "",
@@ -58,40 +59,54 @@ const TaskForm = ({ mode, taskId }) => {
   };
 
   return (
-    <div>
-      <h1>{mode === "create" ? "Create Task" : "Edit Task"}</h1>
+    <div className="px-4">
+      <form
+        action=""
+        onSubmit={handleSubmit(handleSaveData)}
+        className="flex flex-col gap-4"
+      >
+        <h1 className="text-3xl font-bold mb-4">
+          {mode === "add" ? "Add New Task" : "Edit Task"}
+        </h1>
 
-      <form action="" onSubmit={handleSubmit(handleSaveData)}>
-        <label htmlFor="taskName">Task Name</label>
+        <label htmlFor="taskName">
+          Task Name <span className="text-red-500">*</span>
+        </label>
         <input
           type="text"
           id="taskName"
           name="taskName"
           {...register("taskName", { required: "Task name is required" })}
+          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors.taskName && (
           <p className="text-red-500">{errors.taskName.message}</p>
         )}
 
-        <label htmlFor="taskDescription">Task Description</label>
+        <label htmlFor="taskDescription">
+          Task Description <span className="text-red-500">*</span>
+        </label>
         <textarea
           id="taskDescription"
           name="taskDescription"
           {...register("taskDescription", {
             required: "Task description is required",
           })}
+          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         ></textarea>
         {errors.taskDescription && (
           <p className="text-red-500">{errors.taskDescription.message}</p>
         )}
 
-        <label htmlFor="isCompleteTask">Is Complete</label>
-        <input
-          type="checkbox"
-          id="isCompleteTask"
-          name="isCompleteTask"
-          {...register("isCompleteTask")}
-        />
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="isCompleteTask"
+            name="isCompleteTask"
+            {...register("isCompleteTask")}
+          />
+          <label htmlFor="isCompleteTask">Is Complete</label>
+        </div>
 
         <label htmlFor="taskDueDate">Task Due Date</label>
         <input
@@ -99,10 +114,14 @@ const TaskForm = ({ mode, taskId }) => {
           id="taskDueDate"
           name="taskDueDate"
           {...register("taskDueDate")}
+          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
-        <button type="submit">
-          {mode === "create" ? "Create" : "Update"} Task
+        <button
+          type="submit"
+          className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+        >
+          {mode === "add" ? "Add" : "Update"} Task
         </button>
       </form>
     </div>
