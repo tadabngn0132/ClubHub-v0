@@ -5,7 +5,7 @@ import {
   createNewTask,
   updateTaskById,
   getTaskDetails
-} from "../../store/slices/taskSlice";
+} from "../../../store/slices/taskSlice";
 
 const TaskForm = ({ mode, taskId }) => {
   const {

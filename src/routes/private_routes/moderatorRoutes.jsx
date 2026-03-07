@@ -3,7 +3,6 @@ import ModeratorDashboard from '../../pages/private/moderator/ModeratorDashboard
 import ModeratorActivities from '../../pages/private/moderator/ModeratorActivities.jsx'
 import ModeratorSchedule from '../../pages/private/moderator/ModeratorSchedule.jsx'
 import ModeratorTasks from '../../pages/private/moderator/ModeratorTasks.jsx'
-import ModeratorSquare from '../../pages/private/moderator/ModeratorSquare.jsx'
 import ModeratorProfile from '../../pages/private/moderator/ModeratorProfile.jsx'
 
 export const moderatorRoutes = [
