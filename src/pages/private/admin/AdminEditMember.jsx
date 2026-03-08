@@ -1,14 +1,14 @@
-import MemberForm from "../../../components/main/internal/MemberForm"
+import UserForm from "../../../components/main/internal/UserForm.jsx"
 import { useParams } from "react-router-dom"
 
-const AdminEditMember = () => {
+const AdminEditUser = () => {
   const { userId } = useParams();
   
   return (
     <div>
-      <MemberForm mode="edit" memberId={userId} />
+      <UserForm mode="edit" userId={userId} />
     </div>
   )
 }
 
-export default AdminEditMember
+export default AdminEditUser

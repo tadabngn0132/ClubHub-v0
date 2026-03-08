@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm, FormProvider } from "react-hook-form";
-import BasicInfoTab from "../internal/BasicInfoTab.jsx";
-import ClubInfoTab from "../internal/ClubInfoTab.jsx";
-import ProfileInfoTab from "../internal/ProfileInfoTab.jsx";
+import BasicInfoTab from "./BasicInfoTab.jsx";
+import ClubInfoTab from "./ClubInfoTab.jsx";
+import ProfileInfoTab from "./ProfileInfoTab.jsx";
 import { 
   getUserById,
   createUser,
@@ -11,14 +11,14 @@ import {
 } from "../../../store/slices/userSlice.js";
 import { Toaster } from "react-hot-toast";
 
-const MemberForm = ({ mode, memberId }) => {
+const UserForm = ({ mode, userId }) => {
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
   const { user } = useSelector((state) => state.user);
 
   const methods = useForm({
     defaultValues: {
-      fullName: "",
+      fullname: "",
       email: "",
       phoneNumber: "",
       dateOfBirth: "",
@@ -28,9 +28,10 @@ const MemberForm = ({ mode, memberId }) => {
       department: "",
       position: "",
       role: "",
-      joinDate: "",
+      joinedAt: "",
       status: "",
-      avatar: null,
+      studentId: "",
+      avatarUrl: null,
       bio: "",
     },
     mode: "onChange",
@@ -40,11 +41,11 @@ const MemberForm = ({ mode, memberId }) => {
 
   useEffect(() => {
     if (mode === "edit") {
-      dispatch(getUserById(memberId));
+      dispatch(getUserById(userId));
         
       if (user) {
         methods.reset({
-          fullName: user.fullname || "",
+          fullname: user.fullname || "",
           email: user.email || "",
           phoneNumber: user.phoneNumber || "",
           dateOfBirth: user.dateOfBirth || "",
@@ -54,15 +55,16 @@ const MemberForm = ({ mode, memberId }) => {
           department: user.department || "",
           position: user.position || "",
           role: user.role || "",
-          joinDate: user.joinDate || "",
+          joinedAt: user.joinedAt || "",
           status: user.status || "",
-          avatar: user.avatar || null,
+          studentId: user.studentId || "",
+          avatarUrl: user.avatarUrl || null,
           bio: user.bio || "",
         });
       }
     } else if (mode === "add") {
       methods.reset({
-        fullName: "",
+        fullname: "",
         email: "",
         phoneNumber: "",
         dateOfBirth: "",
@@ -72,13 +74,14 @@ const MemberForm = ({ mode, memberId }) => {
         department: "",
         position: "",
         role: "",
-        joinDate: "",
+        joinedAt: "",
         status: "",
-        avatar: null,
+        studentId: "",
+        avatarUrl: null,
         bio: "",
       });
     }
-  }, [mode, memberId, methods]);
+  }, [mode, userId, methods]);
 
   const tabs = [
     { name: "Basic Info", component: BasicInfoTab },
@@ -98,7 +101,7 @@ const MemberForm = ({ mode, memberId }) => {
     <div>
       <Toaster position="top-right" reverseOrder={false} />
       <h2 className="text-2xl font-bold mb-4">
-        {mode === "add" ? "Add New Member" : "Edit Member"}
+        {mode === "add" ? "Add New User" : "Edit User"}
       </h2>
 
       {/* Tab Navigation */}
@@ -140,7 +143,7 @@ const MemberForm = ({ mode, memberId }) => {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               disabled={!isValid}
             >
-              {mode === "add" ? "Add Member" : "Update Member"}
+              {mode === "add" ? "Add User" : "Update User"}
             </button>
           </div>
         </form>
@@ -149,4 +152,4 @@ const MemberForm = ({ mode, memberId }) => {
   );
 };
 
-export default MemberForm;
+export default UserForm;

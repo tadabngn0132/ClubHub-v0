@@ -80,6 +80,7 @@ export const updateTaskById = createAsyncThunk(
   "task/updateTaskById",
   async ({ id, taskData }, thunkAPI) => {
     try {
+      console.log("Updating task with ID:", id, "and data:", taskData);
       const data = await updateTask(id, taskData);
 
       if (!data.success) {

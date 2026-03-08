@@ -16,10 +16,10 @@ const TaskForm = ({ mode, taskId }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      taskName: "",
-      taskDescription: "",
-      isCompleteTask: false,
-      taskDueDate: "",
+      title: "",
+      description: "",
+      isCompleted: false,
+      dueDate: "",
     },
     mode: "onChange",
   });
@@ -32,20 +32,20 @@ const TaskForm = ({ mode, taskId }) => {
 
       if (taskDetails) {
         reset({
-          taskName: taskDetails.title,
-          taskDescription: taskDetails.description,
-          isCompleteTask: taskDetails.isCompleted || false,
-          taskDueDate: taskDetails.dueDate
+          title: taskDetails.title,
+          description: taskDetails.description,
+          isCompleted: taskDetails.isCompleted || false,
+          dueDate: taskDetails.dueDate
             ? new Date(taskDetails.dueDate).toISOString().split("T")[0]
             : "",
         });
       }
     } else {
       reset({
-        taskName: "",
-        taskDescription: "",
-        isCompleteTask: false,
-        taskDueDate: "",
+        title: "",
+        description: "",
+        isCompleted: false,
+        dueDate: "",
       });
     }
   }, [mode, taskId, reset]);
@@ -54,7 +54,7 @@ const TaskForm = ({ mode, taskId }) => {
     if (mode === "add") {
       dispatch(createNewTask(data));
     } else if (mode === "edit") {
-      dispatch(updateTaskById({ id: taskId, ...data }));
+      dispatch(updateTaskById({ id: taskId, taskData: data }));
     }
   };
 
@@ -69,51 +69,51 @@ const TaskForm = ({ mode, taskId }) => {
           {mode === "add" ? "Add New Task" : "Edit Task"}
         </h1>
 
-        <label htmlFor="taskName">
+        <label htmlFor="title">
           Task Name <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
-          id="taskName"
-          name="taskName"
-          {...register("taskName", { required: "Task name is required" })}
+          id="title"
+          name="title"
+          {...register("title", { required: "Task name is required" })}
           className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        {errors.taskName && (
-          <p className="text-red-500">{errors.taskName.message}</p>
+        {errors.title && (
+          <p className="text-red-500">{errors.title.message}</p>
         )}
 
-        <label htmlFor="taskDescription">
+        <label htmlFor="description">
           Task Description <span className="text-red-500">*</span>
         </label>
         <textarea
-          id="taskDescription"
-          name="taskDescription"
-          {...register("taskDescription", {
+          id="description"
+          name="description"
+          {...register("description", {
             required: "Task description is required",
           })}
           className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         ></textarea>
-        {errors.taskDescription && (
-          <p className="text-red-500">{errors.taskDescription.message}</p>
+        {errors.description && (
+          <p className="text-red-500">{errors.description.message}</p>
         )}
 
         <div className="flex items-center gap-2">
           <input
             type="checkbox"
-            id="isCompleteTask"
-            name="isCompleteTask"
-            {...register("isCompleteTask")}
+            id="isCompleted"
+            name="isCompleted"
+            {...register("isCompleted")}
           />
-          <label htmlFor="isCompleteTask">Is Complete</label>
+          <label htmlFor="isCompleted">Is Complete</label>
         </div>
 
-        <label htmlFor="taskDueDate">Task Due Date</label>
+        <label htmlFor="dueDate">Task Due Date</label>
         <input
           type="date"
-          id="taskDueDate"
-          name="taskDueDate"
-          {...register("taskDueDate")}
+          id="dueDate"
+          name="dueDate"
+          {...register("dueDate")}
           className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 

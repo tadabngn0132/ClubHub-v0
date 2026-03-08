@@ -10,18 +10,18 @@ const BasicInfoTab = () => {
   return (
     <div className="flex flex-col">
       {/* Full Name field */}
-      <label htmlFor="fullName">
+      <label htmlFor="fullname">
         Full name <span className="text-red-500">*</span>
       </label>
       <input
         type="text"
-        id="fullName"
+        id="fullname"
         placeholder="Nguyen Van Hai"
         className="mt-2"
-        {...register("fullName", { required: "Full name cannot be empty" })}
+        {...register("fullname", { required: "Full name cannot be empty" })}
       />
-      {errors.fullName && (
-        <p className="text-red-500 text-sm">{errors.fullName.message}</p>
+      {errors.fullname && (
+        <p className="text-red-500 text-sm">{errors.fullname.message}</p>
       )}
 
       {/* Email field */}
