@@ -1,18 +1,17 @@
 import { Link } from "react-router-dom";
-import {
-  getUsersList,
-  deleteUserById,
-} from "../../../store/slices/userSlice";
+import { getUsersList, deleteUserById } from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { mockUsers } from "../../../data/sampleMemberData";
 import BulkActionBar from "../../../components/internal/BulkActionBar.jsx";
 import Pagination from "../../../components/internal/Pagination.jsx";
 
-const AdminMembers = () => {
+const MemberUsers = () => {
   const dispatch = useDispatch();
-  const { users, isLoading, isError, message } = useSelector((state) => state.user);
-  const [selectedMembers, setSelectedMembers] = useState([]);
+  const { users, isLoading, isError, message } = useSelector(
+    (state) => state.user,
+  );
+  const [selectedUsers, setSelectedUsers] = useState([]);
 
   useEffect(() => {
     dispatch(getUsersList());
@@ -67,18 +66,11 @@ const AdminMembers = () => {
           </p>{" "}
           {/* Dynamic member count */}
         </div>
-
-        <span>
-          <Link
-            to="/admin/members/add"
-            className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
-          >
-            Add Member
-          </Link>
-        </span>
       </div>
 
-      {selectedMembers.length > 0 && <BulkActionBar selectedMembers={selectedMembers} />}
+      {selectedUsers.length > 0 && (
+        <BulkActionBar selectedUsers={selectedUsers} />
+      )}
 
       {/* TODO: Implement card view for tablet and mobile responsiveness */}
       <table className="w-full border-collapse table-auto overflow-auto">
@@ -112,14 +104,6 @@ const AdminMembers = () => {
             <tr>
               <td colSpan="11" className="py-4">
                 No members found.
-                <span>
-                  <Link
-                    to="/admin/members/add"
-                    className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
-                  >
-                    Add Member
-                  </Link>
-                </span>
               </td>
             </tr>
           ) : (
@@ -135,10 +119,10 @@ const AdminMembers = () => {
                     id={`select-${user.id}`}
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedMembers([...selectedMembers, user.id]);
+                        setSelectedUsers([...selectedUsers, user.id]);
                       } else {
-                        setSelectedMembers(
-                          selectedMembers.filter((id) => id !== user.id),
+                        setSelectedUsers(
+                          selectedUsers.filter((id) => id !== user.id),
                         );
                       }
                     }}
@@ -191,28 +175,13 @@ const AdminMembers = () => {
                   )}
                 </td>
                 <td className="px-2 py-2 w-24 relative">
-                  {/* TODO: Use fontawesome vertical three dots instead of current horizontal dots */}
-                  <p className="cursor-pointer">...</p>
-                  {/* TODO: Click on vertical three dots or outside to close action menu*/}
                   <div className="flex justify-center items-center gap-1 text-xs absolute top-10 bg-white p-2 rounded-md shadow-md">
                     <Link
-                      to={`/admin/members/view/${user.id}`}
+                      to={`/member/users/view/${user.id}`}
                       className="text-green-500 hover:underline"
                     >
                       View
                     </Link>
-                    <Link
-                      to={`/admin/members/edit/${user.id}`}
-                      className="text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(user.id)}
-                      className="text-red-500 hover:underline"
-                    >
-                      Del
-                    </button>
                   </div>
                 </td>
               </tr>
@@ -220,9 +189,9 @@ const AdminMembers = () => {
           )}
         </tbody>
       </table>
-      <Pagination role="admin" content="members" />
+      <Pagination role="member" content="users" />
     </div>
   );
 };
 
-export default AdminMembers;
+export default MemberUsers;

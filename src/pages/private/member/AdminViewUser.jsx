@@ -9,7 +9,7 @@ import {
 import toast, { Toaster } from 'react-hot-toast'
 import { getActivitiesByUserId } from '../../../store/slices/activitySlice'
 
-const AdminViewMember = () => {
+const MemberViewUser = () => {
   const { memberId } = useParams()
   const dispatch = useDispatch()
   const { currentMember, loading, error } = useSelector((state) => state.user)
@@ -41,8 +41,6 @@ const AdminViewMember = () => {
         <p>{currentMember.role}</p>
         <p>{currentMember.email}</p>
         <p>{currentMember.phoneNumber}</p>
-        <Link to={`/admin/members/${memberId}/edit`}>Edit Member</Link>
-        <button onClick={() => handleDelete()}>Delete Member</button>
       </header>
 
       <section id='basic-info'>
@@ -116,4 +114,4 @@ const AdminViewMember = () => {
   )
 }
 
-export default AdminViewMember
+export default MemberViewUser

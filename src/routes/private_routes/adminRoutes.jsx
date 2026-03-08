@@ -5,8 +5,8 @@ import AdminSchedule from '../../pages/private/admin/AdminSchedule.jsx'
 import AdminTasks from '../../pages/private/admin/AdminTasks.jsx'
 import AdminProfile from '../../pages/private/admin/AdminProfile.jsx'
 import AdminMembers from '../../pages/private/admin/AdminMembers.jsx'
-import AdminEditMember from '../../pages/private/admin/AdminEditMember.jsx'
-import AdminViewMember from '../../pages/private/admin/AdminViewMember.jsx'
+import AdminEditMember from '../../pages/private/admin/AdminEditUser.jsx'
+import AdminViewMember from '../../pages/private/admin/AdminViewUser.jsx'
 import AdminEditActivity from '../../pages/private/admin/AdminEditActivity.jsx'
 import AdminViewActivity from '../../pages/private/admin/AdminViewActivity.jsx'
 import AdminAddActivity from '../../pages/private/admin/AdminAddActivity.jsx'
@@ -105,7 +105,7 @@ export const adminRoutes = [
     )
   },
   {
-    path: '/admin/members',
+    path: '/admin/users',
     element: (
       <AdminLayout>
         <AdminMembers />
@@ -113,7 +113,7 @@ export const adminRoutes = [
     )
   },
   {
-    path: '/admin/members/view/:userId',
+    path: '/admin/users/view/:userId',
     element: (
       <AdminLayout>
         <AdminViewMember />
@@ -121,7 +121,7 @@ export const adminRoutes = [
     )
   },
   {
-    path: '/admin/members/edit/:userId',
+    path: '/admin/users/edit/:userId',
     element: (
       <AdminLayout>
         <AdminEditMember />
@@ -129,7 +129,7 @@ export const adminRoutes = [
     )
   },
   {
-    path: '/admin/members/add',
+    path: '/admin/users/add',
     element: (
       <AdminLayout>
         <AdminAddMember />

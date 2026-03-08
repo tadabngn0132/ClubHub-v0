@@ -1,8 +1,11 @@
-import React from 'react'
+import MemberApplicationForm from "../../components/member/MemberApplicationForm";
 
 const AddMemberApplication = () => {
   return (
-    <div>AddMemberApplication</div>
+    <div>
+      <h1>Apply to Join Our Club</h1>
+      <MemberApplicationForm />
+    </div>
   )
 }
 
