@@ -1,9 +1,12 @@
 import { useForm } from "react-hook-form"
 import { DEPARTMENTS } from "../../../utils/constants"
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
+import {
+  submitMemberApplication
+} from "../../../store/slices/memberApplicationSlice"
 
-const ApplicationForm = () => {
+const ApplicationForm = ({ mode, applicationId }) => {
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
@@ -25,53 +28,28 @@ const ApplicationForm = () => {
 
   const departmentList = DEPARTMENTS
 
-  useEffect(() => {
-      if (mode === "edit") {
-        dispatch(getApplicationById(applicationId));
-          
-        if (applicationId) {
-          reset({
-            fullName: applicationId.fullName || "",
-            email: applicationId.email || "",
-            phoneNumber: applicationId.phoneNumber || "",
-            department: applicationId.department || "",
-            dateOfBirth: applicationId.dateOfBirth || "",
-            gender: applicationId.gender || "",
-            major: applicationId.major || "",
-            studentId: applicationId.studentId || ""
-          });
-        }
-      } else if (mode === "add") {
-        reset({
-          fullname: '',
-          email: '',
-          phoneNumber: '',
-          department: [],
-          dateOfBirth: '',
-          gender: '',
-          major: '',
-          studentId: ''
-        });
-      }
-    }, [mode, applicationIdId, reset]);
+  const handleSaveApplication = (data) => {
+    dispatch(submitMemberApplication(data))
+    reset()
+  }
 
   return (
-    <div>
-      <h1>Application Form</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="max-w-2xl mx-auto p-4">
+      <form onSubmit={handleSubmit} className="flex flex-col">
+        <h1>Application Form</h1>
         {/* Full Name field */}
-        <label htmlFor="fullName">
+        <label htmlFor="fullname">
           Full name <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
-          id="fullName"
+          id="fullname"
           placeholder="Nguyen Van Hai"
           className="mt-2"
-          {...register("fullName", { required: "Full name cannot be empty" })}
+          {...register("fullname", { required: "Full name cannot be empty" })}
         />
-        {errors.fullName && (
-          <p className="text-red-500 text-sm">{errors.fullName.message}</p>
+        {errors.fullname && (
+          <p className="text-red-500 text-sm">{errors.fullname.message}</p>
         )}
 
         {/* Email field */}
