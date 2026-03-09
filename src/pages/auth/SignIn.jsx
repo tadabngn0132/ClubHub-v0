@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons"
-import { loginUser } from "../../store/slices/authSlice"
+import {
+  loginUser,
+  googleAuthUser
+} from "../../store/slices/authSlice"
 import toast, { Toaster } from "react-hot-toast"
 import gdcLogo from "../../assets/logos/GDC_logo.svg"
 import uogLogo from "../../assets/logos/2025-Greenwich-White-Eng.png"
@@ -120,7 +123,7 @@ const SignIn = () => {
                 src="src/assets/icons/user_icon.svg"
                 alt="User icon"
               />
-              <button type="button" className="bg-[#d0d0d0] text-black p-2 pt-2.5 pb-2.5 pl-14 rounded-[1.25rem] w-1/1 text-left cursor-pointer">
+              <button type="button" onClick={dispatch(googleAuthUser())} className="bg-[#d0d0d0] text-black p-2 pt-2.5 pb-2.5 pl-14 rounded-[1.25rem] w-1/1 text-left cursor-pointer">
                 Signin with email
                 <span className="text-[var(--pink-color)] ml-1 w-fit">
                   fpt.edu.vn

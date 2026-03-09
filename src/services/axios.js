@@ -4,6 +4,8 @@ import { logoutUser } from '../store/slices/authSlice'
 import { useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
 
+const dispatch = useDispatch()
+
 // Create an axios instance
 const axiosClient = axios.create({
   baseURL: 'http://localhost:5995/api',
@@ -71,7 +73,6 @@ axiosClient.interceptors.response.use(
       case 401:
         // TODO: Handle refresh token expiration or unauthorized access in queue function
         toast.error('Session expired. Please log in again.')
-        const dispatch = useDispatch()
         dispatch(logoutUser())
         break
       case 403:

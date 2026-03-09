@@ -6,7 +6,6 @@ import {
   forgotPassword,
   resetPassword,
   googleAuth,
-  googleAuthCallback,
   refreshAccessToken
 } from "../../services/authService"
 import {
@@ -106,6 +105,23 @@ export const refreshAccessTokenUser = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const data = await refreshAccessToken()
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message)
+      }
+
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
+  }
+)
+
+export const googleAuthUser = createAsyncThunk(
+  'auth/googleAuth',
+  async (googleData, thunkAPI) => {
+    try {
+      const data = await googleAuth(googleData)
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message)
@@ -228,12 +244,31 @@ const authSlice = createSlice({
         state.isLoading = false
         state.error = action.payload.data
       })
+
+      // Google Auth
+      .addCase(googleAuthUser.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(googleAuthUser.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isLoggedIn = true
+        state.currentUser = action.payload.data.necessaryUserData
+        state.token = action.payload.data.accessToken
+        setToken(action.payload.data.accessToken)
+        setCurrentUser(action.payload.data.necessaryUserData)
+      })
+      .addCase(googleAuthUser.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload.data
+      })
   }
 });
 
 export const { 
   registerAction,
   loginAction, 
-  logoutAction 
+  logoutAction,
+  googleAuthAction
 } = authSlice.actions
 export default authSlice.reducer
