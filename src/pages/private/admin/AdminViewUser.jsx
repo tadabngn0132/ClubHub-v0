@@ -33,7 +33,7 @@ const AdminViewUser = () => {
     <div>
       <Toaster position="top-right" reverseOrder={false} />
 
-      <Link to="/admin/members">Back to Members List</Link>
+      <Link to="/admin/users">Back to Members List</Link>
 
       <header>
         <img src={currentMember.avatarUrl} alt="Avatar" />
@@ -41,7 +41,7 @@ const AdminViewUser = () => {
         <p>{currentMember.role}</p>
         <p>{currentMember.email}</p>
         <p>{currentMember.phoneNumber}</p>
-        <Link to={`/admin/members/${memberId}/edit`}>Edit Member</Link>
+        <Link to={`/admin/users/${memberId}/edit`}>Edit Member</Link>
         <button onClick={() => handleDelete()}>Delete Member</button>
       </header>
 

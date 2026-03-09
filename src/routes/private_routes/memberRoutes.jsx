@@ -4,6 +4,8 @@ import MemberActivities from '../../pages/private/member/MemberActivities.jsx'
 import MemberSchedule from '../../pages/private/member/MemberSchedule.jsx'
 import MemberTasks from '../../pages/private/member/MemberTasks.jsx'
 import MemberProfile from '../../pages/private/member/MemberProfile.jsx'
+import MemberViewActivity from '../../pages/private/member/MemberViewActivity.jsx'
+import MemberViewTask from '../../pages/private/member/MemberViewTask.jsx'
 
 export const memberRoutes = [
   {
@@ -23,6 +25,14 @@ export const memberRoutes = [
     )
   },
   {
+    path: '/member/activities/view/:activityId',
+    element: (
+      <MemberLayout>
+        <MemberViewActivity />
+      </MemberLayout>
+    )
+  },
+  {
     path: '/member/schedule',
     element: (
       <MemberLayout>
@@ -35,6 +45,14 @@ export const memberRoutes = [
     element: (
       <MemberLayout>
         <MemberTasks />
+      </MemberLayout>
+    )
+  },
+  {
+    path: '/member/tasks/view/:taskId',
+    element: (
+      <MemberLayout>
+        <MemberViewTask />
       </MemberLayout>
     )
   },

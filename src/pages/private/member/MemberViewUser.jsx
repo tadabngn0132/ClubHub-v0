@@ -33,7 +33,7 @@ const MemberViewUser = () => {
     <div>
       <Toaster position="top-right" reverseOrder={false} />
 
-      <Link to="/admin/members">Back to Members List</Link>
+      <Link to="/member/users">Back to Members List</Link>
 
       <header>
         <img src={currentMember.avatarUrl} alt="Avatar" />
