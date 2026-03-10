@@ -192,7 +192,7 @@ const AdminUsers = () => {
                   )}
                 </td>
                 <td className="px-2 py-2 w-24 relative">
-                  <div className="flex justify-center items-center gap-1 text-xs absolute top-10 bg-white p-2 rounded-md shadow-md">
+                  <div className="flex justify-center items-center gap-1 text-xs bg-white p-2 rounded-md">
                     <Link
                       to={`/admin/users/view/${user.id}`}
                       className="text-green-500 hover:underline"
@@ -218,7 +218,7 @@ const AdminUsers = () => {
           )}
         </tbody>
       </table>
-      <Pagination role="admin" content="users" />
+      <Pagination currentPage={5} totalPages={10} onPageChange={() => {}} />
     </div>
   );
 };
