@@ -17,15 +17,25 @@ const MemberViewTask = ({ taskId }) => {
   return (
     <div>
       <Link to="/member/tasks">Back to Tasks</Link>
-      <h1>Task Details</h1>
-      <Link to={`/member/tasks/edit/${taskId}`}>Edit Task</Link>
-      <button onClick={() => dispatch(deleteTaskById(taskId))}>
-        Delete Task
-      </button>
-      <p>Name: {task?.name}</p>
+      <div className="flex items-center justify-between">
+        <h1>{task?.title}</h1>
+        
+        <Link to={`/member/tasks/edit/${taskId}`}>Edit Task</Link>
+      </div>
+
+      <div>
+        <p>Created At: {task?.createdAt}</p>
+        <p>Updated At: {task?.updatedAt}</p>
+      </div>
+
       <p>Description: {task?.description}</p>
       <p>Due Date: {task?.dueDate}</p>
-      <p>Assigned To: {task?.assignedTo}</p>
+      {/* <p>Assigned To: {task?.assignedTo}</p> */}
+      {task?.isCompleted ? (
+        <p>Status: Completed</p>
+      ) : (
+        <p>Status: Incomplete</p>
+      )}
     </div>
   )
 }
