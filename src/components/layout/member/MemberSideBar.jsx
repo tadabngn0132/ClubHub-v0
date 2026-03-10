@@ -4,6 +4,7 @@ const MemberSideBar = () => {
   const memberSideBarItems = [
     { name: 'Dashboard', link: '/member/dashboard' },
     { name: 'Activities', link: '/member/activities' },
+    { name: 'Members', link: '/member/users' },
     { name: 'Schedule', link: '/member/schedule' },
     { name: 'Tasks', link: '/member/tasks' },
     { name: 'Square', link: '/member/square' },

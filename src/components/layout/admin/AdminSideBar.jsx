@@ -4,7 +4,7 @@ const AdminSideBar = () => {
   const adminSideBarItems = [
     { name: 'Dashboard', link: '/admin/dashboard' },
     { name: 'Activities', link: '/admin/activities' },
-    { name: 'Members', link: '/admin/members' },
+    { name: 'Members', link: '/admin/users' },
     { name: 'Schedule', link: '/admin/schedule' },
     { name: 'Tasks', link: '/admin/tasks' },
     { name: 'Profile', link: '/admin/profile' },

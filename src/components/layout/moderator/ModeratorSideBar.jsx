@@ -4,6 +4,7 @@ const ModeratorSideBar = () => {
   const moderatorSideBarItems = [
     { name: 'Dashboard', link: '/moderator/dashboard' },
     { name: 'Activities', link: '/moderator/activities' },
+    { name: 'Members', link: '/moderator/users' },
     { name: 'Schedule', link: '/moderator/schedule' },
     { name: 'Tasks', link: '/moderator/tasks' },
     { name: 'Square', link: '/moderator/square' },

@@ -5,7 +5,6 @@ import {
   changePassword,
   forgotPassword,
   resetPassword,
-  googleAuth,
   refreshAccessToken
 } from "../../services/authService"
 import {
