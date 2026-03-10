@@ -24,3 +24,9 @@ dist-ssr
 *.sw?
 
 src/assets/fonts
+
+*.env
+*.env.local
+*.env.development
+*.env.test
+*.env.production

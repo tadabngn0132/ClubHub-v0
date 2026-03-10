@@ -28,16 +28,6 @@ export const resetPassword = async (payload) => {
   return res.data
 }
 
-export const googleAuth = async () => {
-  const res = await axiosClient.get('auth/google-auth')
-  return res.data
-}
-
-export const googleAuthCallback = async () => {
-  const res = await axiosClient.get('auth/google-auth/callback')
-  return res.data
-}
-
 export const refreshAccessToken = async () => {
   const res = await axiosClient.post('/auth/refresh-access-token')
   return res.data
