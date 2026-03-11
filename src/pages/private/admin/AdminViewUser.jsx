@@ -9,16 +9,24 @@ import {
 import toast, { Toaster } from 'react-hot-toast'
 import { getActivitiesByUserId } from '../../../store/slices/activitySlice'
 import Loading from '../../../components/layout/internal/Loading.jsx'
+import { useNavigate } from 'react-router-dom'
+import { resetStatus } from '../../../store/slices/userSlice'
 
 const AdminViewUser = () => {
   const { memberId } = useParams()
   const dispatch = useDispatch()
-  const { currentMember, loading, error } = useSelector((state) => state.user)
+  const navigate = useNavigate()
+  const { currentMember, loading, error, status } = useSelector((state) => state.user)
   const { userActivities, isLoading: activitiesLoading, error: activitiesError } = useSelector((state) => state.activity)
 
   const handleDelete = () => {
     // Dispatch delete action here
     dispatch(deleteUserById(memberId))
+    
+    if (status === 'fulfilled') {
+      navigate('/admin/users');
+      dispatch(resetStatus());
+    }
   }
 
   useEffect(() => {

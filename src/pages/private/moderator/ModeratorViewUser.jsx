@@ -10,17 +10,15 @@ import toast, { Toaster } from 'react-hot-toast'
 import { getActivitiesByUserId } from '../../../store/slices/activitySlice'
 import Loading from '../../../components/layout/internal/Loading.jsx'
 import toast, { Toaster } from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
+import { resetStatus } from '../../../store/slices/userSlice'
 
 const ModeratorViewUser = () => {
   const { memberId } = useParams()
   const dispatch = useDispatch()
-  const { currentMember, isLoading, error } = useSelector((state) => state.user)
+  const navigate = useNavigate()
+  const { currentMember, isLoading, error, status } = useSelector((state) => state.user)
   const { userActivities, isLoading: activitiesLoading, error: activitiesError } = useSelector((state) => state.activity)
-
-  const handleDelete = () => {
-    // Dispatch delete action here
-    dispatch(deleteUserById(memberId))
-  }
 
   useEffect(() => {
     dispatch(getUserById(memberId))
@@ -37,6 +35,15 @@ const ModeratorViewUser = () => {
   
   if (!currentMember) return <p>No member found.</p>
 
+  const handleDelete = () => {
+    dispatch(deleteUserById(memberId))
+
+    if (status === 'fulfilled') {
+      navigate('/moderator/members');
+      dispatch(resetStatus());
+    }
+  }
+
   return (
     <div>
       <Toaster position="top-right" reverseOrder={false} />
@@ -50,7 +57,7 @@ const ModeratorViewUser = () => {
         <p>{currentMember.email}</p>
         <p>{currentMember.phoneNumber}</p>
         <Link to={`/moderator/members/${memberId}/edit`}>Edit Member</Link>
-        <button onClick={() => handleDelete()}>Delete Member</button>
+        <button onClick={handleDelete}>Delete Member</button>
       </header>
 
       <section id='basic-info'>

@@ -7,10 +7,13 @@ import {
 import { Link } from "react-router-dom"
 import Loading from "../../../components/layout/internal/Loading.jsx"
 import toast, { Toaster } from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
+import { resetStatus } from "../../../store/slices/taskSlice"
 
 const ModeratorViewTask = ({ taskId }) => {
   const dispatch = useDispatch()
-  const { task, isLoading, error } = useSelector((state) => state.task)
+  const navigate = useNavigate()
+  const { task, isLoading, error, status } = useSelector((state) => state.task)
 
   useEffect(() => {
     dispatch(getTaskDetails(taskId))
@@ -24,6 +27,15 @@ const ModeratorViewTask = ({ taskId }) => {
     toast.error(error);
   }
 
+  const handleDelete = () => {
+    dispatch(deleteTaskById(taskId));
+
+    if (status === 'fulfilled') {
+      navigate('/moderator/tasks');
+      dispatch(resetStatus());
+    }
+  };
+
   return (
     <div>
       <Toaster position="top-right" reverseOrder={false} />
@@ -33,7 +45,7 @@ const ModeratorViewTask = ({ taskId }) => {
         
         <div>
           <Link to={`/moderator/tasks/edit/${taskId}`}>Edit Task</Link>
-          <button onClick={() => dispatch(deleteTaskById(taskId))}>
+          <button onClick={handleDelete}>
             Delete Task
           </button>
         </div>
