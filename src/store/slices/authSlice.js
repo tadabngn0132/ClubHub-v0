@@ -13,7 +13,6 @@ import {
   setCurrentUser,
   removeCurrentUser
 } from "../../utils/helper"
-import { resetStatus } from "./activitySlice"
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
