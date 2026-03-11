@@ -56,7 +56,7 @@ const SignIn = () => {
   }
 
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.SERVER_URL}/auth/google`
+    window.location.href = `http://localhost:5995/api/auth/google-auth`
   }
 
   return (
