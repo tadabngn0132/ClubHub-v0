@@ -134,74 +134,93 @@ const activitySlice = createSlice({
     activities: [],
     activity: null,
     isLoading: false,
-    error: null
+    error: null,
+    status: 'idle'
   },
-  reducers: {},
+  reducers: {
+    resetStatus: (state) => {
+      state.status = 'idle'
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Create Activity
       .addCase(createActivity.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(createActivity.fulfilled, (state, action) => {
         state.isLoading = false
         state.activities.push(action.payload.data)
+        state.status = 'fulfilled'
       })
       .addCase(createActivity.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload || action.error.message
+        state.status = 'rejected'
       })
 
       // Get Activity By ID
       .addCase(getActivityById.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(getActivityById.fulfilled, (state, action) => {
         state.isLoading = false
         state.activity = action.payload.data
+        state.status = 'fulfilled'
       })
       .addCase(getActivityById.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload || action.error.message
+        state.status = 'rejected'
       })
 
       // Get Activities List
       .addCase(getActivitiesList.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(getActivitiesList.fulfilled, (state, action) => {
         state.isLoading = false
         state.activities = action.payload.data
+        state.status = 'fulfilled'
       })
       .addCase(getActivitiesList.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload || action.error.message
+        state.status = 'rejected'
       })
 
       // Get Activities By Slug
       .addCase(getActivitiesBySlug.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(getActivitiesBySlug.fulfilled, (state, action) => {
         state.isLoading = false
         state.activities = action.payload.data
+        state.status = 'fulfilled'
       })
       .addCase(getActivitiesBySlug.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload || action.error.message
+        state.status = 'rejected'
       })
 
       // Update Activity By ID
       .addCase(updateActivityById.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(updateActivityById.fulfilled, (state, action) => {
         state.isLoading = false
+        state.status = 'fulfilled'
         const index = state.activities.findIndex(
           (activity) => activity.id === action.payload.data.id
         )
@@ -212,39 +231,46 @@ const activitySlice = createSlice({
       .addCase(updateActivityById.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload || action.error.message
+        state.status = 'rejected'
       })
 
       // Delete Activity By ID
       .addCase(deleteActivityById.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(deleteActivityById.fulfilled, (state, action) => {
         state.isLoading = false
         state.activities = state.activities.filter(
           (activity) => activity.id !== action.payload.data.id
         )
+        state.status = 'fulfilled'
       })
       .addCase(deleteActivityById.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload || action.error.message
+        state.status = 'rejected'
       })
 
       // Get Activities By User ID
       .addCase(getActivitiesByUserId.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(getActivitiesByUserId.fulfilled, (state, action) => {
         state.isLoading = false
         state.activities = action.payload.data
+        state.status = 'fulfilled'
       })
       .addCase(getActivitiesByUserId.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload || action.error.message
+        state.status = 'rejected'
       })
   }
 })
 
-export const {} = activitySlice.actions
+export const { resetStatus } = activitySlice.actions
 export default activitySlice.reducer

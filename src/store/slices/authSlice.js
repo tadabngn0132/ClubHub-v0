@@ -13,6 +13,7 @@ import {
   setCurrentUser,
   removeCurrentUser
 } from "../../utils/helper"
+import { resetStatus } from "./activitySlice"
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
@@ -123,17 +124,13 @@ const authSlice = createSlice({
     currentUser: null,
     token: null,
     isLoading: false,
-    error: null
+    error: null,
+    status: "idle",
   },
   reducers: {
-    logoutAction: (state) => {
-      state.currentUser = null;
-      state.token = null;
-    },
-    loginAction: (state, action) => {
-      state.currentUser = action.payload.user;
-      state.token = action.payload.token;
-    },
+    resetStatus: (state) => {
+      state.status = "idle";
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -141,9 +138,11 @@ const authSlice = createSlice({
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false
+        state.status = 'fulfilled'
         state.isLoggedIn = true
         state.currentUser = action.payload.data.necessaryUserData
         state.token = action.payload.data.accessToken
@@ -153,85 +152,97 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload.data
+        state.status = 'rejected'
       })
 
       // Logout User
       .addCase(logoutUser.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.isLoading = false
         state.isLoggedIn = false
         state.currentUser = null
         state.token = null
+        state.status = 'fulfilled'
         removeToken()
         removeCurrentUser()
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload.data
+        state.status = 'rejected'
       })
 
       // Change Password
       .addCase(changePasswordUser.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(changePasswordUser.fulfilled, (state) => {
         state.isLoading = false
+        state.status = 'fulfilled'
       })
       .addCase(changePasswordUser.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload.data
+        state.status = 'rejected'
       })
 
       // Forgot Password
       .addCase(forgotPasswordUser.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(forgotPasswordUser.fulfilled, (state) => {
         state.isLoading = false
+        state.status = 'fulfilled'
       })
       .addCase(forgotPasswordUser.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload.data
+        state.status = 'rejected'
       })
 
       // Reset Password
       .addCase(resetPasswordUser.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(resetPasswordUser.fulfilled, (state) => {
         state.isLoading = false
+        state.status = 'fulfilled'
       })
       .addCase(resetPasswordUser.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload.data
+        state.status = 'rejected'
       })
 
       // Refresh Access Token
       .addCase(refreshAccessTokenUser.pending, (state) => {
         state.isLoading = true
         state.error = null
+        state.status = 'pending'
       })
       .addCase(refreshAccessTokenUser.fulfilled, (state, action) => {
         state.isLoading = false
         state.token = action.payload.data.newAccessToken
         setToken(action.payload.data.newAccessToken)
+        state.status = 'fulfilled'
       })
       .addCase(refreshAccessTokenUser.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload.data
+        state.status = 'rejected'
       })
   }
 });
 
-export const { 
-  registerAction,
-  loginAction, 
-  logoutAction,
-} = authSlice.actions
+export const { resetStatus } = authSlice.actions
 export default authSlice.reducer

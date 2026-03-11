@@ -7,6 +7,7 @@ import {
   approveMemberApplication,
   rejectMemberApplication,
 } from "../../services/memberApplicationService";
+import { resetStatus } from "./activitySlice";
 
 export const submitMemberApplication = createAsyncThunk(
   "memberApplication/submitMemberApplication",
@@ -117,70 +118,89 @@ const memberApplicationSlice = createSlice({
     applicationDetails: null,
     isLoading: false,
     error: null,
+    status: "idle",
   },
-  reducers: {},
+  reducers: {
+    resetStatus: (state) => {
+      state.status = "idle";
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Submit Member Application
       .addCase(submitMemberApplication.pending, (state) => {
         state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(submitMemberApplication.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.status = 'fulfilled';
         state.applications.push(action.payload.application);
       })
       .addCase(submitMemberApplication.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       })
 
       // Handle getAllMemberApplicationsList
       .addCase(getAllMemberApplicationsList.pending, (state) => {
         state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(getAllMemberApplicationsList.fulfilled, (state, action) => {
         state.isLoading = false;
         state.applications = action.payload.applications;
+        state.status = 'fulfilled';
       })
       .addCase(getAllMemberApplicationsList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       })
 
       // Handle getMemberApplicationDetails
       .addCase(getMemberApplicationDetails.pending, (state) => {
         state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(getMemberApplicationDetails.fulfilled, (state, action) => {
         state.isLoading = false;
         state.applicationDetails = action.payload.application;
+        state.status = 'fulfilled';
       })
       .addCase(getMemberApplicationDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       })
 
       // Handle deleteMemberApplicationById
       .addCase(deleteMemberApplicationById.pending, (state) => {
         state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(deleteMemberApplicationById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.applications = state.applications.filter(
           (app) => app._id !== action.payload.applicationId,
         );
+        state.status = 'fulfilled';
       })
       .addCase(deleteMemberApplicationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       })
 
       // Handle approveMemberApplicationById
       .addCase(approveMemberApplicationById.pending, (state) => {
         state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(approveMemberApplicationById.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.status = 'fulfilled';
         const index = state.applications.findIndex(
           (app) => app._id === action.payload.applicationId,
         );
@@ -191,14 +211,17 @@ const memberApplicationSlice = createSlice({
       .addCase(approveMemberApplicationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       })
 
       // Handle rejectMemberApplicationById
       .addCase(rejectMemberApplicationById.pending, (state) => {
         state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(rejectMemberApplicationById.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.status = 'fulfilled';
         const index = state.applications.findIndex(
           (app) => app._id === action.payload.applicationId,
         );
@@ -209,9 +232,10 @@ const memberApplicationSlice = createSlice({
       .addCase(rejectMemberApplicationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       });
   },
 });
 
-export const {} = memberApplicationSlice.actions;
+export const { resetStatus } = memberApplicationSlice.actions;
 export default memberApplicationSlice.reducer;

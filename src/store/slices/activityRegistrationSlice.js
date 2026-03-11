@@ -133,89 +133,111 @@ const activityRegistrationSlice = createSlice({
   initialState: {
     registrations: [],
     registration: null,
-    loading: false,
+    isLoading: false,
     error: null,
+    status: "idle",
   },
-  reducers: {},
+  reducers: {
+    resetStatus: (state) => {
+      state.status = "idle";
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Handle registerActivity
       .addCase(registerActivity.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(registerActivity.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.registrations.push(action.payload.data);
+        state.status = 'fulfilled';
       })
       .addCase(registerActivity.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       })
 
       // Handle getAllActivityRegistrations
       .addCase(getAllActivityRegistrations.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(getAllActivityRegistrations.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.registrations = action.payload.data;
+        state.status = 'fulfilled';
       })
       .addCase(getAllActivityRegistrations.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       })
 
       // Handle getActivityRegistrationById
       .addCase(getActivityRegistrationById.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(getActivityRegistrationById.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.registration = action.payload.data;
+        state.status = 'fulfilled';
       })
       .addCase(getActivityRegistrationById.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       })
 
       // Handle getActivityRegistrationsByActivityId
       .addCase(getActivityRegistrationsByActivityId.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(
         getActivityRegistrationsByActivityId.fulfilled,
         (state, action) => {
-          state.loading = false;
+          state.isLoading = false;
           state.registrations = action.payload.data;
+          state.status = 'fulfilled';
         },
       )
       .addCase(
         getActivityRegistrationsByActivityId.rejected,
         (state, action) => {
-          state.loading = false;
+          state.isLoading = false;
           state.error = action.payload;
+          state.status = 'rejected';
         },
       )
 
       // Handle getActivityRegistrationsByUserId
       .addCase(getActivityRegistrationsByUserId.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(getActivityRegistrationsByUserId.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.registrations = action.payload.data;
+        state.status = 'fulfilled';
       })
       .addCase(getActivityRegistrationsByUserId.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       })
 
       // Handle updateActivityRegistrationStatus
       .addCase(updateActivityRegistrationStatus.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(updateActivityRegistrationStatus.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
+        state.status = 'fulfilled';
         const index = state.registrations.findIndex(
           (reg) => reg.id === action.payload.data.id,
         );
@@ -224,26 +246,30 @@ const activityRegistrationSlice = createSlice({
         }
       })
       .addCase(updateActivityRegistrationStatus.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       })
 
       // Handle deleteActivityRegistration
       .addCase(deleteActivityRegistration.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
+        state.status = 'pending';
       })
       .addCase(deleteActivityRegistration.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
+        state.status = 'fulfilled';
         state.registrations = state.registrations.filter(
           (reg) => reg.id !== action.payload.data.id,
         );
       })
       .addCase(deleteActivityRegistration.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
+        state.status = 'rejected';
       });
   },
 });
 
-export const {} = activityRegistrationSlice.actions;
+export const { resetStatus } = activityRegistrationSlice.actions;
 export default activityRegistrationSlice.reducer;
