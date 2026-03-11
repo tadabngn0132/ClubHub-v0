@@ -5,14 +5,15 @@ import {
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import Loading from "../../../components/layout/internal/Loading.jsx";
+import toast, { Toaster } from "react-hot-toast";
 
 const ModeratorTasks = () => {
   const dispatch = useDispatch();
   const {
-    tasks = [],
-    isLoading = false,
-    isError = false,
-    message = "",
+    tasks,
+    isLoading,
+    error
   } = useSelector((state) => state.task);
   const [selectedTasks, setSelectedTasks] = useState([]);
 
@@ -24,8 +25,17 @@ const ModeratorTasks = () => {
     dispatch(deleteTaskById(taskId));
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
+
   return (
     <div className="px-4">
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold mb-1">Tasks</h1>

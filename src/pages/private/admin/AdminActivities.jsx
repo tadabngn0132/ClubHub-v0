@@ -6,10 +6,12 @@ import ActivitiesCardView from '../../../components/main/internal/ActivitiesCard
 import ActivitiesTableView from '../../../components/main/internal/ActivitiesTableView'
 import { sampleActivityData } from '../../../data/sampleActivityData'
 import ActivitiesBulkActionBar from '../../../components/main/internal/ActivitiesBulkActionBar'
+import Loading from '../../../components/layout/internal/Loading.jsx'
+import toast, { Toaster } from 'react-hot-toast'
 
 const AdminActivities = () => {
   const dispatch = useDispatch()
-  const { activities } = useSelector((state) => state.activity)
+  const { activities, isLoading, error } = useSelector((state) => state.activity)
   const [activeTab, setActiveTab] = useState(0);
 
   const tabs = [
@@ -21,8 +23,17 @@ const AdminActivities = () => {
     dispatch(getActivitiesList())
   }, [dispatch])
 
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (error) {
+    toast.error(error)
+  }
+
   return (
     <div className="px-4">
+      <Toaster position='top-right' reverseOrder={false} />
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div className="">
           <h1 className="text-3xl font-bold mb-1">Activities</h1>

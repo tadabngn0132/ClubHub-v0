@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 import { mockUsers } from "../../../data/sampleMemberData";
 import BulkActionBar from "../../../components/internal/BulkActionBar.jsx";
 import Pagination from "../../../components/internal/Pagination.jsx";
+import Loading from "../../../components/layout/internal/Loading.jsx";
 
 const AdminUsers = () => {
   const dispatch = useDispatch();
-  const { users, isLoading, isError, message } = useSelector(
+  const { users, isLoading, error } = useSelector(
     (state) => state.user,
   );
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -54,6 +55,10 @@ const AdminUsers = () => {
         return "";
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="w-full p-4">

@@ -8,11 +8,12 @@ import {
 } from '../../../store/slices/userSlice'
 import toast, { Toaster } from 'react-hot-toast'
 import { getActivitiesByUserId } from '../../../store/slices/activitySlice'
+import Loading from '../../../components/layout/internal/Loading.jsx'
 
 const MemberViewUser = () => {
   const { memberId } = useParams()
   const dispatch = useDispatch()
-  const { currentMember, loading, error } = useSelector((state) => state.user)
+  const { currentMember, isLoading, error } = useSelector((state) => state.user)
   const { userActivities, isLoading: activitiesLoading, error: activitiesError } = useSelector((state) => state.activity)
 
   const handleDelete = () => {
@@ -25,8 +26,14 @@ const MemberViewUser = () => {
     dispatch(getActivitiesByUserId(memberId))
   }, [dispatch, memberId])
 
-  if (loading) return <p>Loading...</p>
-  if (error) toast.error(error)
+  if (loading) {
+    return <Loading />
+  }
+
+  if (error) {
+    toast.error(error)
+  }
+
   if (!currentMember) return <p>No member found.</p>
 
   return (

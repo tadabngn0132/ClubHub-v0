@@ -5,10 +5,12 @@ import {
 } from "../../../store/slices/memberApplicationSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import Loading from "../../../components/layout/internal/Loading.jsx";
+import toast, { Toaster } from "react-hot-toast";
 
 const AdminMemberApplication = () => {
   const dispatch = useDispatch();
-  const { memberApplications, isLoading, isError, message } = useSelector((state) => state.memberApplication);
+  const { memberApplications, isLoading, error } = useSelector((state) => state.memberApplication);
   const [selectedMemberApplications, setSelectedMemberApplications] = useState([]);
 
   useEffect(() => {
@@ -19,8 +21,17 @@ const AdminMemberApplication = () => {
     dispatch(deleteMemberApplicationById(applicationId));
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
+
   return (
     <div>
+      <Toaster position="top-right" reverseOrder={false} />
       <h1>Member Applications</h1>
       <p>{memberApplications.length} member applications</p>
 

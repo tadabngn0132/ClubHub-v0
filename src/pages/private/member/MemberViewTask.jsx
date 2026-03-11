@@ -5,17 +5,28 @@ import {
   deleteTaskById
 } from "../../../store/slices/taskSlice"
 import { Link } from "react-router-dom"
+import Loading from "../../../components/layout/internal/Loading.jsx"
+import toast, { Toaster } from "react-hot-toast"
 
 const MemberViewTask = ({ taskId }) => {
   const dispatch = useDispatch()
-  const task = useSelector((state) => state.tasks.currentTask)
+  const { task, isLoading, error } = useSelector((state) => state.task)
 
   useEffect(() => {
     dispatch(getTaskDetails(taskId))
   }, [dispatch, taskId])
 
+  if (isLoading) {
+    return <Loading />
+  }
+
+  if (error) {
+    toast.error(error)
+  }
+
   return (
     <div>
+      <Toaster position="top-right" reverseOrder={false} />
       <Link to="/member/tasks">Back to Tasks</Link>
       <div className="flex items-center justify-between">
         <h1>{task?.title}</h1>

@@ -115,7 +115,7 @@ const memberApplicationSlice = createSlice({
   initialState: {
     applications: [],
     applicationDetails: null,
-    loading: false,
+    isLoading: false,
     error: null,
   },
   reducers: {},
@@ -123,64 +123,64 @@ const memberApplicationSlice = createSlice({
     builder
       // Submit Member Application
       .addCase(submitMemberApplication.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(submitMemberApplication.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.applications.push(action.payload.application);
       })
       .addCase(submitMemberApplication.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle getAllMemberApplicationsList
       .addCase(getAllMemberApplicationsList.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(getAllMemberApplicationsList.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.applications = action.payload.applications;
       })
       .addCase(getAllMemberApplicationsList.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle getMemberApplicationDetails
       .addCase(getMemberApplicationDetails.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(getMemberApplicationDetails.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.applicationDetails = action.payload.application;
       })
       .addCase(getMemberApplicationDetails.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle deleteMemberApplicationById
       .addCase(deleteMemberApplicationById.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(deleteMemberApplicationById.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.applications = state.applications.filter(
           (app) => app._id !== action.payload.applicationId,
         );
       })
       .addCase(deleteMemberApplicationById.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle approveMemberApplicationById
       .addCase(approveMemberApplicationById.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(approveMemberApplicationById.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         const index = state.applications.findIndex(
           (app) => app._id === action.payload.applicationId,
         );
@@ -189,16 +189,16 @@ const memberApplicationSlice = createSlice({
         }
       })
       .addCase(approveMemberApplicationById.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle rejectMemberApplicationById
       .addCase(rejectMemberApplicationById.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
       })
       .addCase(rejectMemberApplicationById.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         const index = state.applications.findIndex(
           (app) => app._id === action.payload.applicationId,
         );
@@ -207,7 +207,7 @@ const memberApplicationSlice = createSlice({
         }
       })
       .addCase(rejectMemberApplicationById.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       });
   },

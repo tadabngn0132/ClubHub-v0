@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 import { mockUsers } from "../../../data/sampleMemberData";
 import BulkActionBar from "../../../components/internal/BulkActionBar.jsx";
 import Pagination from "../../../components/internal/Pagination.jsx";
+import Loading from "../../../components/layout/internal/Loading.jsx";
+import toast, { Toaster } from "react-hot-toast";
 
 const ModeratorUsers = () => {
   const dispatch = useDispatch();
-  const { users, isLoading, isError, message } = useSelector(
+  const { users, isLoading, error } = useSelector(
     (state) => state.user,
   );
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -55,9 +57,17 @@ const ModeratorUsers = () => {
     }
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
+
   return (
     <div className="w-full p-4">
-      {/* TODO: Implement loading state using spinner or skeleton */}
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="flex items-center-safe justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold mb-1">Members</h1>

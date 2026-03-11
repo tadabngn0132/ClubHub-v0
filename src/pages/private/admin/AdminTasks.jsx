@@ -5,14 +5,14 @@ import {
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import Loading from "../../../components/layout/internal/Loading.jsx";
 
 const AdminTasks = () => {
   const dispatch = useDispatch();
   const {
-    tasks = [],
-    isLoading = false,
-    isError = false,
-    message = "",
+    tasks,
+    isLoading,
+    error
   } = useSelector((state) => state.task);
   const [selectedTasks, setSelectedTasks] = useState([]);
 
@@ -23,6 +23,10 @@ const AdminTasks = () => {
   const handleDelete = (taskId) => {
     dispatch(deleteTaskById(taskId));
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="px-4">

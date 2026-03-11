@@ -5,17 +5,28 @@ import {
   deleteActivityById
 } from "../../../store/slices/activitySlice"
 import { Link } from "react-router-dom"
+import Loading from "../../../components/layout/internal/Loading.jsx"
+import toast, { Toaster } from "react-hot-toast"
 
 const MemberViewActivity = ({ activityId }) => {
   const dispatch = useDispatch()
-  const activity = useSelector((state) => state.activities.currentActivity)
+  const { activity, isLoading, error } = useSelector((state) => state.activity)
 
   useEffect(() => {
     dispatch(getActivityById(activityId))
   }, [dispatch, activityId])
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
+
   return (
     <div className="flex flex-col space-y-4 p-4">
+      <Toaster position="top-right" reverseOrder={false} />
       <img src={activity?.thumbnailUrl} alt={activity?.title} />
       <Link to="/member/activities">Back to Activities</Link>
       

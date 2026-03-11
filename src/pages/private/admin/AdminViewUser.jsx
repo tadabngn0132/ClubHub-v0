@@ -8,6 +8,7 @@ import {
 } from '../../../store/slices/userSlice'
 import toast, { Toaster } from 'react-hot-toast'
 import { getActivitiesByUserId } from '../../../store/slices/activitySlice'
+import Loading from '../../../components/layout/internal/Loading.jsx'
 
 const AdminViewUser = () => {
   const { memberId } = useParams()
@@ -25,8 +26,14 @@ const AdminViewUser = () => {
     dispatch(getActivitiesByUserId(memberId))
   }, [dispatch, memberId])
 
-  if (loading) return <p>Loading...</p>
-  if (error) toast.error(error)
+  if (loading) {
+    return <Loading />
+  }
+
+  if (error) {
+    toast.error(error)
+  }
+
   if (!currentMember) return <p>No member found.</p>
 
   return (

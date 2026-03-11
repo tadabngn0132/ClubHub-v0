@@ -40,16 +40,18 @@ const Header = ({ role }) => {
       {/* Global search bar - Hiện tại chưa triển khai */}
 
       {/* Notifications, messages, user menu dropdown */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center gap-4">
         {/* Notification icon */}
-        <FontAwesomeIcon icon={faBell} />
+        <FontAwesomeIcon icon={faBell} className="cursor-pointer"/>
         {/* Messages icon */}
-        <FontAwesomeIcon icon={faInbox} />
+        <FontAwesomeIcon icon={faInbox} className="cursor-pointer"/>
         {/* Help icon */}
-        <FontAwesomeIcon icon={faInfoCircle} />
+        <FontAwesomeIcon icon={faInfoCircle} className="cursor-pointer"/>
 
         {/* User menu dropdown - Hiện tại chưa triển khai */}
-        <div onClick={toggleDropdown}>Avatar</div>
+        <div onClick={toggleDropdown} className="cursor-pointer rounded-full overflow-hidden">
+          <img className="w-8 h-8" src="" alt="Avatar" />
+        </div>
         <Dropdown visible={isDropdownVisible} />
       </div>
     </div>
