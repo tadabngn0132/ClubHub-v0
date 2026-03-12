@@ -14,6 +14,14 @@ import AdminAddUser from '../../pages/private/admin/AdminAddUser.jsx'
 import AdminEditTask from '../../pages/private/admin/AdminEditTask.jsx'
 import AdminViewTask from '../../pages/private/admin/AdminViewTask.jsx'
 import AdminAddTask from '../../pages/private/admin/AdminAddTask.jsx'
+import AdminDepartments from '../../pages/private/admin/AdminDepartments.jsx'
+import AdminAddDepartment from '../../pages/private/admin/AdminAddDepartment.jsx'
+import AdminEditDepartment from '../../pages/private/admin/AdminEditDepartment.jsx'
+import AdminViewDepartment from '../../pages/private/admin/AdminViewDepartment.jsx'
+import AdminPositions from '../../pages/private/admin/AdminPositions.jsx'
+import AdminAddPosition from '../../pages/private/admin/AdminAddPosition.jsx'
+import AdminEditPosition from '../../pages/private/admin/AdminEditPosition.jsx'
+import AdminViewPosition from '../../pages/private/admin/AdminViewPosition.jsx'
 
 export const adminRoutes = [
   {
@@ -133,6 +141,70 @@ export const adminRoutes = [
     element: (
       <AdminLayout>
         <AdminAddUser />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/departments',
+    element: (
+      <AdminLayout>
+        <AdminDepartments />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/departments/add',
+    element: (
+      <AdminLayout>
+        <AdminAddDepartment />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/departments/edit/:departmentId',
+    element: (
+      <AdminLayout>
+        <AdminEditDepartment />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/departments/view/:departmentId',
+    element: (
+      <AdminLayout>
+        <AdminViewDepartment />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/positions',
+    element: (
+      <AdminLayout>
+        <AdminPositions />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/positions/add',
+    element: (
+      <AdminLayout>
+        <AdminAddPosition />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/positions/edit/:positionId',
+    element: (
+      <AdminLayout>
+        <AdminEditPosition />
+      </AdminLayout>
+    )
+  },
+  {
+    path: '/admin/positions/view/:positionId',
+    element: (
+      <AdminLayout>
+        <AdminViewPosition />
       </AdminLayout>
     )
   }
