@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
-import { getUsersList, deleteUserById } from "../../../store/slices/userSlice";
+import {
+  getUsersList,
+  softDeleteUserById,
+  hardDeleteUserById
+} from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { mockUsers } from "../../../data/sampleMemberData";
@@ -19,8 +23,23 @@ const AdminUsers = () => {
   }, [dispatch]);
 
   const handleDelete = (userId) => {
-    dispatch(deleteUserById(userId));
-  };
+  const softConfirmed = window.confirm(
+    "Do you want to deactivate this user?"
+  );
+
+  if (softConfirmed) {
+    dispatch(softDeleteUserById(userId));
+    return;
+  }
+
+  const hardConfirmed = window.confirm(
+    "Do you want to permanently delete this user? This action cannot be undone."
+  );
+
+  if (hardConfirmed) {
+    dispatch(hardDeleteUserById(userId));
+  }
+};
 
   // TODO: Implement sorting functionality here
   const handleSort = (field) => {

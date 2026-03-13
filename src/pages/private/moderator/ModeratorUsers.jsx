@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { getUsersList, deleteUserById } from "../../../store/slices/userSlice";
+import { getUsersList, softDeleteUserById } from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { mockUsers } from "../../../data/sampleMemberData";
@@ -20,7 +20,9 @@ const ModeratorUsers = () => {
   }, [dispatch]);
 
   const handleDelete = (userId) => {
-    dispatch(deleteUserById(userId));
+    if (window.confirm("Are you sure you want to deactivate this user?")) {
+      dispatch(softDeleteUserById(userId));
+    }
   };
 
   // TODO: Implement sorting functionality here

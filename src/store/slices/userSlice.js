@@ -4,7 +4,8 @@ import {
   getAnUserById,
   getAllUsers,
   updateAnUser,
-  deleteAnUser
+  softDeleteAnUser,
+  hardDeleteAnUser
 } from '../../services/userService'
 
 export const createUser = createAsyncThunk(
@@ -75,11 +76,28 @@ export const updateUserById = createAsyncThunk(
   }
 )
 
-export const deleteUserById = createAsyncThunk(
-  'user/deleteUserById',
+export const softDeleteUserById = createAsyncThunk(
+  'user/softDeleteUserById',
   async (id, thunkAPI) => {
     try {
-      const data = await deleteAnUser(id)
+      const data = await softDeleteAnUser(id)
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message)
+      }
+
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
+  }
+)
+  
+export const hardDeleteUserById = createAsyncThunk(
+  'user/hardDeleteUserById',
+  async (id, thunkAPI) => {
+    try {
+      const data = await hardDeleteAnUser(id)
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message)
@@ -179,18 +197,35 @@ const userSlice = createSlice({
         state.status = 'rejected'
       })
       
-      // Delete User By ID
-      .addCase(deleteUserById.pending, (state) => {
+      // Soft Delete User By ID
+      .addCase(softDeleteUserById.pending, (state) => {
         state.isLoading = true
         state.error = null
         state.status = 'pending'
       })
-      .addCase(deleteUserById.fulfilled, (state, action) => {
+      .addCase(softDeleteUserById.fulfilled, (state, action) => {
         state.isLoading = false
         state.users = state.users.filter(user => user.id !== action.payload.user.id)
         state.status = 'fulfilled'
       })
-      .addCase(deleteUserById.rejected, (state, action) => {
+      .addCase(softDeleteUserById.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload
+        state.status = 'rejected'
+      })
+
+      // Hard Delete User By ID
+      .addCase(hardDeleteUserById.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+        state.status = 'pending'
+      })
+      .addCase(hardDeleteUserById.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.users = state.users.filter(user => user.id !== action.payload.user.id)
+        state.status = 'fulfilled'
+      })
+      .addCase(hardDeleteUserById.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload
         state.status = 'rejected'

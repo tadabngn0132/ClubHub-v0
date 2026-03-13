@@ -20,7 +20,12 @@ export const updateAnUser = async (id, data) => {
   return res.data
 }
 
-export const deleteAnUser = async (id) => {
-  const res = await axiosClient.delete(`/users/${id}`)
+export const softDeleteAnUser = async (id) => {
+  const res = await axiosClient.delete(`/users/${id}/soft`)
+  return res.data
+}
+
+export const hardDeleteAnUser = async (id) => {
+  const res = await axiosClient.delete(`/users/${id}/hard`)
   return res.data
 }
