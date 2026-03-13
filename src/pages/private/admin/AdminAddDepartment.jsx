@@ -1,8 +1,25 @@
-import React from 'react'
+import DepartmentForm from "../../../components/main/internal/DepartmentForm"
+import { useDispatch, useSelector } from "react-redux"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { resetStatus } from "../../../store/slices/departmentSlice"
 
 const AdminAddDepartment = () => {
+  const dispatch = useDispatch()
+  const { status } = useSelector((state) => state.department)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (status === 'fulfilled') {
+      navigate('/admin/departments')
+    }
+    dispatch(resetStatus())
+  }, [status, navigate, dispatch])
+
   return (
-    <div>AdminAddDepartment</div>
+    <div>
+      <DepartmentForm mode="add" />
+    </div>
   )
 }
 

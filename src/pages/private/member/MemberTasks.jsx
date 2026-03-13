@@ -21,10 +21,6 @@ const MemberTasks = () => {
     dispatch(getAllTasksList());
   }, [dispatch]);
 
-  const handleDelete = (taskId) => {
-    dispatch(deleteTaskById(taskId));
-  };
-
   if (isLoading) {
     return <Loading />;
   }
