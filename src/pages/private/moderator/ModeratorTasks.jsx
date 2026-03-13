@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import {
   getAllTasksList,
-  deleteTaskById,
+  softDeleteTaskById,
+  hardDeleteTaskById
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -22,7 +23,22 @@ const ModeratorTasks = () => {
   }, [dispatch]);
 
   const handleDelete = (taskId) => {
-    dispatch(deleteTaskById(taskId));
+    const softConfirmed = window.confirm(
+      "Do you want to deactivate this task?"
+    );
+
+    if (softConfirmed) {
+      dispatch(softDeleteTaskById(taskId));
+      return;
+    }
+
+    const hardConfirmed = window.confirm(
+      "Do you want to permanently delete this task? This action cannot be undone."
+    );
+
+    if (hardConfirmed) {
+      dispatch(hardDeleteTaskById(taskId));
+    }
   };
 
   if (isLoading) {

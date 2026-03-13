@@ -25,7 +25,12 @@ export const updateTask = async (id, data) => {
   return res.data;
 };
 
-export const deleteTask = async (id) => {
-  const res = await axiosClient.delete(`/tasks/${id}`);
+export const softDeleteTask = async (id) => {
+  const res = await axiosClient.delete(`/tasks/${id}/soft`);
+  return res.data;
+};
+
+export const hardDeleteTask = async (id) => {
+  const res = await axiosClient.delete(`/tasks/${id}/hard`);
   return res.data;
 };

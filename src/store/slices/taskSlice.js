@@ -5,7 +5,8 @@ import {
   getAllTasks,
   getTasksByUserId,
   updateTask,
-  deleteTask,
+  softDeleteTask,
+  hardDeleteTask,
 } from "../../services/taskService";
 
 export const createNewTask = createAsyncThunk(
@@ -94,11 +95,28 @@ export const updateTaskById = createAsyncThunk(
   },
 );
 
-export const deleteTaskById = createAsyncThunk(
-  "task/deleteTaskById",
+export const softDeleteTaskById = createAsyncThunk(
+  "task/softDeleteTaskById",
   async (id, thunkAPI) => {
     try {
-      const data = await deleteTask(id);
+      const data = await softDeleteTask(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const hardDeleteTaskById = createAsyncThunk(
+  "task/hardDeleteTaskById",
+  async (id, thunkAPI) => {
+    try {
+      const data = await hardDeleteTask(id);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -217,20 +235,39 @@ const taskSlice = createSlice({
         state.status = 'rejected';
       })
 
-      // Delete Task
-      .addCase(deleteTaskById.pending, (state) => {
+      // Soft Delete Task
+      .addCase(softDeleteTaskById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
         state.status = 'pending';
       })
-      .addCase(deleteTaskById.fulfilled, (state, action) => {
+      .addCase(softDeleteTaskById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tasks = state.tasks.filter(
           (task) => task.id !== action.payload.data.id,
         );
         state.status = 'fulfilled';
       })
-      .addCase(deleteTaskById.rejected, (state, action) => {
+      .addCase(softDeleteTaskById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = 'rejected';
+      })
+
+      // Hard Delete Task
+      .addCase(hardDeleteTaskById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.status = 'pending';
+      })
+      .addCase(hardDeleteTaskById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.tasks = state.tasks.filter(
+          (task) => task.id !== action.payload.data.id,
+        );
+        state.status = 'fulfilled';
+      })
+      .addCase(hardDeleteTaskById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         state.status = 'rejected';

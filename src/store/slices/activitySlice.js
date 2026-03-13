@@ -5,7 +5,8 @@ import {
   getAllActivities,
   getAllActivitiesBySlug,
   updateAnActivity,
-  deleteAnActivity,
+  softDeleteAnActivity,
+  hardDeleteAnActivity,
   getAllActivitiesByUserId
 } from '../../services/activityService'
 
@@ -94,11 +95,28 @@ export const updateActivityById = createAsyncThunk(
   }
 )
 
-export const deleteActivityById = createAsyncThunk(
-  'activity/deleteActivityById',
+export const softDeleteActivityById = createAsyncThunk(
+  'activity/softDeleteActivityById',
   async (id, thunkAPI) => {
     try {
-      const data = await deleteAnActivity(id)
+      const data = await softDeleteAnActivity(id)
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message)
+      }
+
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data)
+    }
+  }
+)
+
+export const hardDeleteActivityById = createAsyncThunk(
+  'activity/hardDeleteActivityById',
+  async (id, thunkAPI) => {
+    try {
+      const data = await hardDeleteAnActivity(id)
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message)
@@ -234,20 +252,39 @@ const activitySlice = createSlice({
         state.status = 'rejected'
       })
 
-      // Delete Activity By ID
-      .addCase(deleteActivityById.pending, (state) => {
+      // Soft Delete Activity By ID
+      .addCase(softDeleteActivityById.pending, (state) => {
         state.isLoading = true
         state.error = null
         state.status = 'pending'
       })
-      .addCase(deleteActivityById.fulfilled, (state, action) => {
+      .addCase(softDeleteActivityById.fulfilled, (state, action) => {
         state.isLoading = false
         state.activities = state.activities.filter(
           (activity) => activity.id !== action.payload.data.id
         )
         state.status = 'fulfilled'
       })
-      .addCase(deleteActivityById.rejected, (state, action) => {
+      .addCase(softDeleteActivityById.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload || action.error.message
+        state.status = 'rejected'
+      })
+
+      // Hard Delete Activity By ID
+      .addCase(hardDeleteActivityById.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+        state.status = 'pending'
+      })
+      .addCase(hardDeleteActivityById.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.activities = state.activities.filter(
+          (activity) => activity.id !== action.payload.data.id
+        )
+        state.status = 'fulfilled'
+      })
+      .addCase(hardDeleteActivityById.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload || action.error.message
         state.status = 'rejected'

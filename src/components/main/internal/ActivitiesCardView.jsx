@@ -1,18 +1,31 @@
 import {
-  getActivitiesList,
-  deleteActivityById
+  softDeleteActivityById,
+  hardDeleteActivityById
 } from '../../../store/slices/activitySlice'
-import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { sampleActivityData } from '../../../data/sampleActivityData'
 
 const ActivitiesCardView = () => {
   const dispatch = useDispatch()
   const { activities } = useSelector((state) => state.activity)
 
   const handleDelete = (activityId) => {
-    dispatch(deleteActivityById(activityId))
+    const softConfirmed = window.confirm(
+      "Do you want to deactivate this activity?"
+    );
+
+    if (softConfirmed) {
+      dispatch(softDeleteActivityById(activityId));
+      return;
+    }
+
+    const hardConfirmed = window.confirm(
+      "Do you want to permanently delete this activity? This action cannot be undone."
+    );
+
+    if (hardConfirmed) {
+      dispatch(hardDeleteActivityById(activityId));
+    }
   }
 
   return (
