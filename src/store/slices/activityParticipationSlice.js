@@ -1,0 +1,275 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createActivityParticipation,
+  getAllParticipations,
+  getParticipationById,
+  getParticipationsByActivityId,
+  getParticipationsByUserId,
+  updateParticipationById,
+  deleteParticipation,
+} from "../../services/activityParticipationService";
+
+export const createNewActivityParticipation = createAsyncThunk(
+  "createNewActivityParticipation",
+  async (participationData, thunkAPI) => {
+    try {
+      const data = await createActivityParticipation(participationData);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const getAllActivityParticipations = createAsyncThunk(
+  "getAllActivityParticipations",
+  async (_, thunkAPI) => {
+    try {
+      const data = await getAllParticipations();
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const getActivityParticipationById = createAsyncThunk(
+  "getActivityParticipationById",
+  async (id, thunkAPI) => {
+    try {
+      const data = await getParticipationById(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const getActivityParticipationsByActivityId = createAsyncThunk(
+  "getActivityParticipationsByActivityId",
+  async (activityId, thunkAPI) => {
+    try {
+      const data = await getParticipationsByActivityId(activityId);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const getActivityParticipationsByUserId = createAsyncThunk(
+  "getActivityParticipationsByUserId",
+  async (userId, thunkAPI) => {
+    try {
+      const data = await getParticipationsByUserId(userId);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const updateActivityParticipationById = createAsyncThunk(
+  "updateActivityParticipationById",
+  async ({ id, ...participationData }, thunkAPI) => {
+    try {
+      const data = await updateParticipationById(id, participationData);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const deleteActivityParticipation = createAsyncThunk(
+  "deleteActivityParticipation",
+  async (id, thunkAPI) => {
+    try {
+      const data = await deleteParticipation(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+const activityParticipationSlice = createSlice({
+  name: "activityParticipation",
+  initialState: {
+    registrations: [],
+    registration: null,
+    isLoading: false,
+    error: null,
+    status: "idle",
+  },
+  reducers: {
+    resetStatus: (state) => {
+      state.status = "idle";
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      // Handle createActivityParticipation
+      .addCase(createNewActivityParticipation.pending, (state) => {
+        state.isLoading = true;
+        state.status = "pending";
+      })
+      .addCase(createNewActivityParticipation.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.registrations.push(action.payload.data);
+        state.status = "fulfilled";
+      })
+      .addCase(createNewActivityParticipation.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
+      })
+
+      // Handle getAllActivityParticipations
+      .addCase(getAllActivityParticipations.pending, (state) => {
+        state.isLoading = true;
+        state.status = "pending";
+      })
+      .addCase(getAllActivityParticipations.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.registrations = action.payload.data;
+        state.status = "fulfilled";
+      })
+      .addCase(getAllActivityParticipations.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
+      })
+
+      // Handle getActivityParticipationById
+      .addCase(getActivityParticipationById.pending, (state) => {
+        state.isLoading = true;
+        state.status = "pending";
+      })
+      .addCase(getActivityParticipationById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.registration = action.payload.data;
+        state.status = "fulfilled";
+      })
+      .addCase(getActivityParticipationById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
+      })
+
+      // Handle getActivityParticipationsByActivityId
+      .addCase(getActivityParticipationsByActivityId.pending, (state) => {
+        state.isLoading = true;
+        state.status = "pending";
+      })
+      .addCase(
+        getActivityParticipationsByActivityId.fulfilled,
+        (state, action) => {
+          state.isLoading = false;
+          state.registrations = action.payload.data;
+          state.status = "fulfilled";
+        },
+      )
+      .addCase(
+        getActivityParticipationsByActivityId.rejected,
+        (state, action) => {
+          state.isLoading = false;
+          state.error = action.payload;
+          state.status = "rejected";
+        },
+      )
+
+      // Handle getActivityParticipationsByUserId
+      .addCase(getActivityParticipationsByUserId.pending, (state) => {
+        state.isLoading = true;
+        state.status = "pending";
+      })
+      .addCase(getActivityParticipationsByUserId.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.registrations = action.payload.data;
+        state.status = "fulfilled";
+      })
+      .addCase(getActivityParticipationsByUserId.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
+      })
+
+      // Handle updateActivityParticipationById
+      .addCase(updateActivityParticipationById.pending, (state) => {
+        state.isLoading = true;
+        state.status = "pending";
+      })
+      .addCase(updateActivityParticipationById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.status = "fulfilled";
+        const index = state.registrations.findIndex(
+          (reg) => reg.id === action.payload.data.id,
+        );
+        if (index !== -1) {
+          state.registrations[index] = action.payload.data;
+        }
+      })
+      .addCase(updateActivityParticipationById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
+      })
+
+      // Handle deleteActivityParticipation
+      .addCase(deleteActivityParticipation.pending, (state) => {
+        state.isLoading = true;
+        state.status = "pending";
+      })
+      .addCase(deleteActivityParticipation.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.status = "fulfilled";
+        state.registrations = state.registrations.filter(
+          (reg) => reg.id !== action.payload.data.id,
+        );
+      })
+      .addCase(deleteActivityParticipation.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
+      });
+  },
+});
+
+export const { resetStatus } = activityParticipationSlice.actions;
+export default activityParticipationSlice.reducer;

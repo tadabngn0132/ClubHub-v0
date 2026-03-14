@@ -15,17 +15,36 @@ export const getMemberApplicationById = async (id) => {
   return res.data;
 };
 
-export const deleteMemberApplication = async (id) => {
-  const res = await axiosClient.delete(`/member-applications/${id}`);
+export const softDeleteMemberApplication = async (id) => {
+  const res = await axiosClient.put(`/member-applications/${id}/soft`);
   return res.data;
 };
 
-export const approveMemberApplication = async (id) => {
-  const res = await axiosClient.post(`/member-applications/${id}/approve`);
+export const hardDeleteMemberApplication = async (id) => {
+  const res = await axiosClient.delete(`/member-applications/${id}/hard`);
   return res.data;
 };
 
-export const rejectMemberApplication = async (id) => {
-  const res = await axiosClient.post(`/member-applications/${id}/reject`);
+export const createMemberApplicationCVReviewDetail = async (id, data) => {
+  const res = await axiosClient.post(
+    `/member-applications/${id}/cv-review`,
+    data,
+  );
+  return res.data;
+};
+
+export const createMemberApplicationInterviewDetail = async (id, data) => {
+  const res = await axiosClient.post(
+    `/member-applications/${id}/interview`,
+    data,
+  );
+  return res.data;
+};
+
+export const createMemberApplicationFinalReviewDetail = async (id, data) => {
+  const res = await axiosClient.post(
+    `/member-applications/${id}/final-review`,
+    data,
+  );
   return res.data;
 };

@@ -3,9 +3,11 @@ import {
   createMemberApplication,
   getAllMemberApplications,
   getMemberApplicationById,
-  deleteMemberApplication,
-  approveMemberApplication,
-  rejectMemberApplication,
+  softDeleteMemberApplication,
+  hardDeleteMemberApplication,
+  createMemberApplicationCVReviewDetail,
+  createMemberApplicationInterviewDetail,
+  createMemberApplicationFinalReviewDetail,
 } from "../../services/memberApplicationService";
 import { resetStatus } from "./activitySlice";
 
@@ -60,11 +62,11 @@ export const getMemberApplicationDetails = createAsyncThunk(
   },
 );
 
-export const deleteMemberApplicationById = createAsyncThunk(
-  "memberApplication/deleteMemberApplicationById",
+export const softDeleteMemberApplicationById = createAsyncThunk(
+  "memberApplication/softDeleteMemberApplicationById",
   async (id, thunkAPI) => {
     try {
-      const data = await deleteMemberApplication(id);
+      const data = await softDeleteMemberApplication(id);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -77,11 +79,11 @@ export const deleteMemberApplicationById = createAsyncThunk(
   },
 );
 
-export const approveMemberApplicationById = createAsyncThunk(
-  "memberApplication/approveMemberApplicationById",
+export const hardDeleteMemberApplicationById = createAsyncThunk(
+  "memberApplication/hardDeleteMemberApplicationById",
   async (id, thunkAPI) => {
     try {
-      const data = await approveMemberApplication(id);
+      const data = await hardDeleteMemberApplication(id);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -94,11 +96,54 @@ export const approveMemberApplicationById = createAsyncThunk(
   },
 );
 
-export const rejectMemberApplicationById = createAsyncThunk(
-  "memberApplication/rejectMemberApplicationById",
-  async (id, thunkAPI) => {
+export const createMemberApplicationCVReview = createAsyncThunk(
+  "memberApplication/createMemberApplicationCVReview",
+  async ({ id, cvReviewData }, thunkAPI) => {
     try {
-      const data = await rejectMemberApplication(id);
+      const data = await createMemberApplicationCVReviewDetail(
+        id,
+        cvReviewData,
+      );
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const createMemberApplicationInterview = createAsyncThunk(
+  "memberApplication/createMemberApplicationInterview",
+  async ({ id, interviewData }, thunkAPI) => {
+    try {
+      const data = await createMemberApplicationInterviewDetail(
+        id,
+        interviewData,
+      );
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const createMemberApplicationFinalReview = createAsyncThunk(
+  "memberApplication/createMemberApplicationFinalReview",
+  async ({ id, finalReviewData }, thunkAPI) => {
+    try {
+      const data = await createMemberApplicationFinalReviewDetail(
+        id,
+        finalReviewData,
+      );
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -123,116 +168,161 @@ const memberApplicationSlice = createSlice({
   reducers: {
     resetStatus: (state) => {
       state.status = "idle";
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
       // Submit Member Application
       .addCase(submitMemberApplication.pending, (state) => {
         state.isLoading = true;
-        state.status = 'pending';
+        state.status = "pending";
       })
       .addCase(submitMemberApplication.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.status = 'fulfilled';
+        state.status = "fulfilled";
         state.applications.push(action.payload.application);
       })
       .addCase(submitMemberApplication.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = 'rejected';
+        state.status = "rejected";
       })
 
       // Handle getAllMemberApplicationsList
       .addCase(getAllMemberApplicationsList.pending, (state) => {
         state.isLoading = true;
-        state.status = 'pending';
+        state.status = "pending";
       })
       .addCase(getAllMemberApplicationsList.fulfilled, (state, action) => {
         state.isLoading = false;
         state.applications = action.payload.applications;
-        state.status = 'fulfilled';
+        state.status = "fulfilled";
       })
       .addCase(getAllMemberApplicationsList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = 'rejected';
+        state.status = "rejected";
       })
 
       // Handle getMemberApplicationDetails
       .addCase(getMemberApplicationDetails.pending, (state) => {
         state.isLoading = true;
-        state.status = 'pending';
+        state.status = "pending";
       })
       .addCase(getMemberApplicationDetails.fulfilled, (state, action) => {
         state.isLoading = false;
         state.applicationDetails = action.payload.application;
-        state.status = 'fulfilled';
+        state.status = "fulfilled";
       })
       .addCase(getMemberApplicationDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = 'rejected';
+        state.status = "rejected";
       })
 
-      // Handle deleteMemberApplicationById
-      .addCase(deleteMemberApplicationById.pending, (state) => {
+      // Handle softDeleteMemberApplicationById
+      .addCase(softDeleteMemberApplicationById.pending, (state) => {
         state.isLoading = true;
-        state.status = 'pending';
+        state.status = "pending";
       })
-      .addCase(deleteMemberApplicationById.fulfilled, (state, action) => {
+      .addCase(softDeleteMemberApplicationById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.applications = state.applications.filter(
           (app) => app._id !== action.payload.applicationId,
         );
-        state.status = 'fulfilled';
+        state.status = "fulfilled";
       })
-      .addCase(deleteMemberApplicationById.rejected, (state, action) => {
+      .addCase(softDeleteMemberApplicationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = 'rejected';
+        state.status = "rejected";
       })
 
-      // Handle approveMemberApplicationById
-      .addCase(approveMemberApplicationById.pending, (state) => {
+      // Handle hardDeleteMemberApplicationById
+      .addCase(hardDeleteMemberApplicationById.pending, (state) => {
         state.isLoading = true;
-        state.status = 'pending';
+        state.status = "pending";
       })
-      .addCase(approveMemberApplicationById.fulfilled, (state, action) => {
+      .addCase(hardDeleteMemberApplicationById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.status = 'fulfilled';
-        const index = state.applications.findIndex(
-          (app) => app._id === action.payload.applicationId,
+        state.applications = state.applications.filter(
+          (app) => app._id !== action.payload.applicationId,
         );
-        if (index !== -1) {
-          state.applications[index].status = "approved";
-        }
+        state.status = "fulfilled";
       })
-      .addCase(approveMemberApplicationById.rejected, (state, action) => {
+      .addCase(hardDeleteMemberApplicationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = 'rejected';
+        state.status = "rejected";
       })
 
-      // Handle rejectMemberApplicationById
-      .addCase(rejectMemberApplicationById.pending, (state) => {
+      // Handle createMemberApplicationCVReview
+      .addCase(createMemberApplicationCVReview.pending, (state) => {
         state.isLoading = true;
-        state.status = 'pending';
+        state.status = "pending";
       })
-      .addCase(rejectMemberApplicationById.fulfilled, (state, action) => {
+      .addCase(createMemberApplicationCVReview.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.status = 'fulfilled';
-        const index = state.applications.findIndex(
-          (app) => app._id === action.payload.applicationId,
-        );
-        if (index !== -1) {
-          state.applications[index].status = "rejected";
+        if (
+          state.applicationDetails &&
+          state.applicationDetails._id === action.payload.applicationId
+        ) {
+          state.applicationDetails.cvReviewDetail =
+            action.payload.cvReviewDetail;
         }
+        state.status = "fulfilled";
       })
-      .addCase(rejectMemberApplicationById.rejected, (state, action) => {
+      .addCase(createMemberApplicationCVReview.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = 'rejected';
+        state.status = "rejected";
+      })
+
+      // Handle createMemberApplicationInterview
+      .addCase(createMemberApplicationInterview.pending, (state) => {
+        state.isLoading = true;
+        state.status = "pending";
+      })
+      .addCase(createMemberApplicationInterview.fulfilled, (state, action) => {
+        state.isLoading = false;
+        if (
+          state.applicationDetails &&
+          state.applicationDetails._id === action.payload.applicationId
+        ) {
+          state.applicationDetails.interviewDetail =
+            action.payload.interviewDetail;
+        }
+        state.status = "fulfilled";
+      })
+      .addCase(createMemberApplicationInterview.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
+      })
+
+      // Handle createMemberApplicationFinalReview
+      .addCase(createMemberApplicationFinalReview.pending, (state) => {
+        state.isLoading = true;
+        state.status = "pending";
+      })
+      .addCase(
+        createMemberApplicationFinalReview.fulfilled,
+        (state, action) => {
+          state.isLoading = false;
+          if (
+            state.applicationDetails &&
+            state.applicationDetails._id === action.payload.applicationId
+          ) {
+            state.applicationDetails.finalReviewDetail =
+              action.payload.finalReviewDetail;
+          }
+          state.status = "fulfilled";
+        },
+      )
+      .addCase(createMemberApplicationFinalReview.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
       });
   },
 });
