@@ -25,24 +25,16 @@ export const hardDeleteMemberApplication = async (id) => {
   return res.data;
 };
 
-export const createMemberApplicationCVReviewDetail = async (id, data) => {
-  const res = await axiosClient.post(
+export const updateMemberApplicationCVReviewDetail = async (id, data) => {
+  const res = await axiosClient.put(
     `/member-applications/${id}/cv-review`,
     data,
   );
   return res.data;
 };
 
-export const createMemberApplicationInterviewDetail = async (id, data) => {
-  const res = await axiosClient.post(
-    `/member-applications/${id}/interview`,
-    data,
-  );
-  return res.data;
-};
-
-export const createMemberApplicationFinalReviewDetail = async (id, data) => {
-  const res = await axiosClient.post(
+export const updateMemberApplicationFinalReviewDetail = async (id, data) => {
+  const res = await axiosClient.put(
     `/member-applications/${id}/final-review`,
     data,
   );

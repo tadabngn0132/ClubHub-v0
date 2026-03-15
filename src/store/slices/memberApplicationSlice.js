@@ -5,9 +5,8 @@ import {
   getMemberApplicationById,
   softDeleteMemberApplication,
   hardDeleteMemberApplication,
-  createMemberApplicationCVReviewDetail,
-  createMemberApplicationInterviewDetail,
-  createMemberApplicationFinalReviewDetail,
+  updateMemberApplicationCVReviewDetail,
+  updateMemberApplicationFinalReviewDetail,
 } from "../../services/memberApplicationService";
 
 export const submitMemberApplication = createAsyncThunk(
@@ -95,11 +94,11 @@ export const hardDeleteMemberApplicationById = createAsyncThunk(
   },
 );
 
-export const createMemberApplicationCVReview = createAsyncThunk(
-  "memberApplication/createMemberApplicationCVReview",
+export const updateMemberApplicationCVReview = createAsyncThunk(
+  "memberApplication/updateMemberApplicationCVReview",
   async ({ id, cvReviewData }, thunkAPI) => {
     try {
-      const data = await createMemberApplicationCVReviewDetail(
+      const data = await updateMemberApplicationCVReviewDetail(
         id,
         cvReviewData,
       );
@@ -115,31 +114,11 @@ export const createMemberApplicationCVReview = createAsyncThunk(
   },
 );
 
-export const createMemberApplicationInterview = createAsyncThunk(
-  "memberApplication/createMemberApplicationInterview",
-  async ({ id, interviewData }, thunkAPI) => {
-    try {
-      const data = await createMemberApplicationInterviewDetail(
-        id,
-        interviewData,
-      );
-
-      if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message);
-      }
-
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  },
-);
-
-export const createMemberApplicationFinalReview = createAsyncThunk(
-  "memberApplication/createMemberApplicationFinalReview",
+export const updateMemberApplicationFinalReview = createAsyncThunk(
+  "memberApplication/updateMemberApplicationFinalReview",
   async ({ id, finalReviewData }, thunkAPI) => {
     try {
-      const data = await createMemberApplicationFinalReviewDetail(
+      const data = await updateMemberApplicationFinalReviewDetail(
         id,
         finalReviewData,
       );
@@ -159,7 +138,7 @@ const memberApplicationSlice = createSlice({
   name: "memberApplication",
   initialState: {
     applications: [],
-    applicationDetails: null,
+    application: null,
     isLoading: false,
     error: null,
     status: "idle",
@@ -210,7 +189,7 @@ const memberApplicationSlice = createSlice({
       })
       .addCase(getMemberApplicationDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.applicationDetails = action.payload.application;
+        state.application = action.payload.application;
         state.status = "fulfilled";
       })
       .addCase(getMemberApplicationDetails.rejected, (state, action) => {
@@ -255,70 +234,47 @@ const memberApplicationSlice = createSlice({
         state.status = "rejected";
       })
 
-      // Handle createMemberApplicationCVReview
-      .addCase(createMemberApplicationCVReview.pending, (state) => {
+      // Handle updateMemberApplicationCVReview
+      .addCase(updateMemberApplicationCVReview.pending, (state) => {
         state.isLoading = true;
         state.status = "pending";
       })
-      .addCase(createMemberApplicationCVReview.fulfilled, (state, action) => {
+      .addCase(updateMemberApplicationCVReview.fulfilled, (state, action) => {
         state.isLoading = false;
         if (
-          state.applicationDetails &&
-          state.applicationDetails._id === action.payload.applicationId
+          state.application &&
+          state.application._id === action.payload.applicationId
         ) {
-          state.applicationDetails.cvReviewDetail =
-            action.payload.cvReviewDetail;
+          state.application.cvReviewDetail = action.payload.cvReviewDetail;
         }
         state.status = "fulfilled";
       })
-      .addCase(createMemberApplicationCVReview.rejected, (state, action) => {
+      .addCase(updateMemberApplicationCVReview.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         state.status = "rejected";
       })
 
-      // Handle createMemberApplicationInterview
-      .addCase(createMemberApplicationInterview.pending, (state) => {
-        state.isLoading = true;
-        state.status = "pending";
-      })
-      .addCase(createMemberApplicationInterview.fulfilled, (state, action) => {
-        state.isLoading = false;
-        if (
-          state.applicationDetails &&
-          state.applicationDetails._id === action.payload.applicationId
-        ) {
-          state.applicationDetails.interviewDetail =
-            action.payload.interviewDetail;
-        }
-        state.status = "fulfilled";
-      })
-      .addCase(createMemberApplicationInterview.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.status = "rejected";
-      })
-
-      // Handle createMemberApplicationFinalReview
-      .addCase(createMemberApplicationFinalReview.pending, (state) => {
+      // Handle updateMemberApplicationFinalReview
+      .addCase(updateMemberApplicationFinalReview.pending, (state) => {
         state.isLoading = true;
         state.status = "pending";
       })
       .addCase(
-        createMemberApplicationFinalReview.fulfilled,
+        updateMemberApplicationFinalReview.fulfilled,
         (state, action) => {
           state.isLoading = false;
           if (
-            state.applicationDetails &&
-            state.applicationDetails._id === action.payload.applicationId
+            state.application &&
+            state.application._id === action.payload.applicationId
           ) {
-            state.applicationDetails.finalReviewDetail =
+            state.application.finalReviewDetail =
               action.payload.finalReviewDetail;
           }
           state.status = "fulfilled";
         },
       )
-      .addCase(createMemberApplicationFinalReview.rejected, (state, action) => {
+      .addCase(updateMemberApplicationFinalReview.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         state.status = "rejected";
