@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const ActivityActionsDropdown = () => {
   return (
@@ -11,7 +11,7 @@ const ActivityActionsDropdown = () => {
       <button>View Registrations</button>
       <button>Export Attendees</button>
     </div>
-  )
-}
+  );
+};
 
-export default ActivityActionsDropdown
+export default ActivityActionsDropdown;

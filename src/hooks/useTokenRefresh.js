@@ -1,46 +1,46 @@
-import { useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getToken,
   isTokenNeedToRefresh,
-  decodeAccessToken
-} from '../utils/helper'
-import { logoutUser, refreshAccessTokenUser } from '../store/slices/authSlice'
+  decodeAccessToken,
+} from "../utils/helper";
+import { logoutUser, refreshAccessTokenUser } from "../store/slices/authSlice";
 
 export const useTokenRefresh = () => {
-  const dispatch = useDispatch()
-  const { token } = useSelector((state) => state.auth)
-  const accessToken = token || getToken()
-  const isRefreshing = useRef(false)
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
+  const accessToken = token || getToken();
+  const isRefreshing = useRef(false);
 
   useEffect(() => {
-    if (!accessToken) return
+    if (!accessToken) return;
 
     const checkAndRefreshToken = async () => {
-      const decodedToken = decodeAccessToken(accessToken)
+      const decodedToken = decodeAccessToken(accessToken);
 
       if (isTokenNeedToRefresh(decodedToken) && !isRefreshing.current) {
-        isRefreshing.current = true
+        isRefreshing.current = true;
 
         try {
-          await dispatch(refreshAccessTokenUser()).unwrap()
+          await dispatch(refreshAccessTokenUser()).unwrap();
         } catch (error) {
           if (error.response && error.response.status === 401) {
-            console.warn('Refresh token expired. Logging out...')
-            await dispatch(logoutUser()).unwrap()
+            console.warn("Refresh token expired. Logging out...");
+            await dispatch(logoutUser()).unwrap();
           } else {
-            console.error('Error refreshing token:', error)
+            console.error("Error refreshing token:", error);
           }
         } finally {
-          isRefreshing.current = false
+          isRefreshing.current = false;
         }
       }
-    }
+    };
 
-    checkAndRefreshToken()
+    checkAndRefreshToken();
 
-    const intervalId = setInterval(checkAndRefreshToken, 30000) // Check every 30 seconds
+    const intervalId = setInterval(checkAndRefreshToken, 30000); // Check every 30 seconds
 
-    return () => clearInterval(intervalId)
-  }, [accessToken, dispatch])
-}
+    return () => clearInterval(intervalId);
+  }, [accessToken, dispatch]);
+};

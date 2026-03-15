@@ -7,8 +7,8 @@ export const ACTIVITY_TYPES = {
   PERFORMANCE: "PERFORMANCE",
   COMPETITION: "COMPETITION",
   SOCIAL: "SOCIAL",
-  VOLUNTEER: "VOLUNTEER"
-}
+  VOLUNTEER: "VOLUNTEER",
+};
 
 export const ACTIVITY_STATUSES = {
   DRAFT: "DRAFT",
@@ -16,15 +16,15 @@ export const ACTIVITY_STATUSES = {
   ONGOING: "ONGOING",
   COMPLETED: "COMPLETED",
   CANCELLED: "CANCELLED",
-  POSTPONED: "POSTPONED"
-}
+  POSTPONED: "POSTPONED",
+};
 
 export const DEPARTMENTS = [
-    { id: 1, name: 'Dance' },
-    { id: 2, name: 'Communication' },
-    { id: 3, name: 'Design' },
-    { id: 4, name: 'Human Resources' },
-    { id: 5, name: 'Logistics' },
-    { id: 6, name: 'Content' },
-    { id: 7, name: 'Media' }
-  ]
+  { id: 1, name: "Dance" },
+  { id: 2, name: "Communication" },
+  { id: 3, name: "Design" },
+  { id: 4, name: "Human Resources" },
+  { id: 5, name: "Logistics" },
+  { id: 6, name: "Content" },
+  { id: 7, name: "Media" },
+];

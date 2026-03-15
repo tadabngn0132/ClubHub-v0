@@ -1,9 +1,7 @@
-import Footer from "../internal/Footer.jsx"
+import Footer from "../internal/Footer.jsx";
 
 const AdminFooter = () => {
-  return (
-    <Footer />
-  )
-}
+  return <Footer />;
+};
 
-export default AdminFooter
+export default AdminFooter;

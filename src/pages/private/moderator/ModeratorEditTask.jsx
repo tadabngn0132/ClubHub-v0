@@ -1,8 +1,8 @@
-import TaskForm from "../../../components/main/internal/TaskForm"
-import { useParams, useNavigate } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
-import { resetStatus } from "../../../store/slices/taskSlice"
+import TaskForm from "../../../components/main/internal/TaskForm";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { resetStatus } from "../../../store/slices/taskSlice";
 
 const ModeratorEditTask = () => {
   const { taskId } = useParams();
@@ -11,8 +11,8 @@ const ModeratorEditTask = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (status === 'fulfilled') {
-      navigate('/moderator/tasks');
+    if (status === "fulfilled") {
+      navigate("/moderator/tasks");
     }
     dispatch(resetStatus());
   }, [status, navigate, dispatch]);
@@ -21,7 +21,7 @@ const ModeratorEditTask = () => {
     <div>
       <TaskForm mode="edit" taskId={taskId} />
     </div>
-  )
-}
+  );
+};
 
-export default ModeratorEditTask
+export default ModeratorEditTask;

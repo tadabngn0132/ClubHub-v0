@@ -1,17 +1,17 @@
 import {
   softDeleteActivityById,
-  hardDeleteActivityById
-} from '../../../store/slices/activitySlice'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+  hardDeleteActivityById,
+} from "../../../store/slices/activitySlice";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const ActivitiesCardView = () => {
-  const dispatch = useDispatch()
-  const { activities } = useSelector((state) => state.activity)
+  const dispatch = useDispatch();
+  const { activities } = useSelector((state) => state.activity);
 
   const handleDelete = (activityId) => {
     const softConfirmed = window.confirm(
-      "Do you want to deactivate this activity?"
+      "Do you want to deactivate this activity?",
     );
 
     if (softConfirmed) {
@@ -20,13 +20,13 @@ const ActivitiesCardView = () => {
     }
 
     const hardConfirmed = window.confirm(
-      "Do you want to permanently delete this activity? This action cannot be undone."
+      "Do you want to permanently delete this activity? This action cannot be undone.",
     );
 
     if (hardConfirmed) {
       dispatch(hardDeleteActivityById(activityId));
     }
-  }
+  };
 
   return (
     <div className="w-full p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
@@ -45,13 +45,27 @@ const ActivitiesCardView = () => {
           {/* TODO: Styling status badge */}
           <p className="text-sm text-gray-600 mb-1">{activity.status}</p>
           {/* TODO: Replace text "Location: " with an icon */}
-          <p className="text-sm text-gray-600 mb-1">Location: {activity.location}</p>
-          <p className="text-sm text-gray-600 mb-4">{activity.registrationsCount} participants</p>
+          <p className="text-sm text-gray-600 mb-1">
+            Location: {activity.location}
+          </p>
+          <p className="text-sm text-gray-600 mb-4">
+            {activity.registrationsCount} participants
+          </p>
           <div className="mt-auto flex space-x-2">
             {/* TODO: Replace text "View" with an icon */}
-            <Link to={`/activities/${activity.id}`} className="text-blue-500 hover:underline">View</Link>
+            <Link
+              to={`/activities/${activity.id}`}
+              className="text-blue-500 hover:underline"
+            >
+              View
+            </Link>
             {/* TODO: Replace text "Edit" with an icon */}
-            <Link to={`/admin/activities/edit/${activity.id}`} className="text-green-500 hover:underline">Edit</Link>
+            <Link
+              to={`/admin/activities/edit/${activity.id}`}
+              className="text-green-500 hover:underline"
+            >
+              Edit
+            </Link>
             {/* TODO: Replace text "Delete" with an icon */}
             <button
               onClick={() => handleDelete(activity.id)}
@@ -63,7 +77,7 @@ const ActivitiesCardView = () => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default ActivitiesCardView
+export default ActivitiesCardView;

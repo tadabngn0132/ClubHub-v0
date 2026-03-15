@@ -1,12 +1,10 @@
-import { useForm } from "react-hook-form"
-import { DEPARTMENTS } from "../../../utils/constants"
-import { useDispatch } from "react-redux"
-import {
-  submitMemberApplication
-} from "../../../store/slices/memberApplicationSlice"
+import { useForm } from "react-hook-form";
+import { DEPARTMENTS } from "../../../utils/constants";
+import { useDispatch } from "react-redux";
+import { submitMemberApplication } from "../../../store/slices/memberApplicationSlice";
 
 const ApplicationForm = ({ mode, applicationId }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -14,24 +12,24 @@ const ApplicationForm = ({ mode, applicationId }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      fullname: '',
-      email: '',
-      phoneNumber: '',
+      fullname: "",
+      email: "",
+      phoneNumber: "",
       department: [],
-      dateOfBirth: '',
-      gender: '',
-      major: '',
-      studentId: ''
+      dateOfBirth: "",
+      gender: "",
+      major: "",
+      studentId: "",
     },
-    mode: 'onChange'
-  })
+    mode: "onChange",
+  });
 
-  const departmentList = DEPARTMENTS
+  const departmentList = DEPARTMENTS;
 
   const handleSaveApplication = (data) => {
-    dispatch(submitMemberApplication(data))
-    reset()
-  }
+    dispatch(submitMemberApplication(data));
+    reset();
+  };
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -102,10 +100,16 @@ const ApplicationForm = ({ mode, applicationId }) => {
               <input
                 type="checkbox"
                 name="department"
-                id={department.name.toLowerCase().replace(/\s+/g, '')}
-                {...register("department", { required: "Department cannot be empty" })}
+                id={department.name.toLowerCase().replace(/\s+/g, "")}
+                {...register("department", {
+                  required: "Department cannot be empty",
+                })}
               />
-              <label htmlFor={department.name.toLowerCase().replace(/\s+/g, '')}>{department.name}</label>
+              <label
+                htmlFor={department.name.toLowerCase().replace(/\s+/g, "")}
+              >
+                {department.name}
+              </label>
             </div>
           </React.Fragment>
         ))}
@@ -199,7 +203,7 @@ const ApplicationForm = ({ mode, applicationId }) => {
         <button type="submit">Submit Application</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default ApplicationForm
+export default ApplicationForm;

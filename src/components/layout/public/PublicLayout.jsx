@@ -1,14 +1,14 @@
-import Header from "./Header"
-import Footer from "./Footer"
+import Header from "./Header";
+import Footer from "./Footer";
 
 const PublicLayout = ({ children }) => {
   return (
     <>
       <Header />
-      { children }
+      {children}
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default PublicLayout
+export default PublicLayout;

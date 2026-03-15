@@ -1,237 +1,243 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createAnUser,
   getAnUserById,
   getAllUsers,
   updateAnUser,
   softDeleteAnUser,
-  hardDeleteAnUser
-} from '../../services/userService'
+  hardDeleteAnUser,
+} from "../../services/userService";
 
 export const createUser = createAsyncThunk(
-  'user/createUser',
+  "user/createUser",
   async (userData, thunkAPI) => {
     try {
-      const data = await createAnUser(userData)
-      
+      const data = await createAnUser(userData);
+
       if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message)
+        return thunkAPI.rejectWithValue(data.message);
       }
-      
-      return data
+
+      return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data)
+      return thunkAPI.rejectWithValue(error.response.data);
     }
-  }
-)
+  },
+);
 
 export const getUserById = createAsyncThunk(
-  'user/getUserById',
+  "user/getUserById",
   async (id, thunkAPI) => {
     try {
-      const data = await getAnUserById(id)
+      const data = await getAnUserById(id);
 
       if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message)
+        return thunkAPI.rejectWithValue(data.message);
       }
 
-      return data
+      return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data)
+      return thunkAPI.rejectWithValue(error.response.data);
     }
-  }
-)
+  },
+);
 
 export const getUsersList = createAsyncThunk(
-  'user/getUsersList',
+  "user/getUsersList",
   async (_, thunkAPI) => {
     try {
-      const data = await getAllUsers()
+      const data = await getAllUsers();
 
       if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message)
+        return thunkAPI.rejectWithValue(data.message);
       }
 
-      return data
+      return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data)
+      return thunkAPI.rejectWithValue(error.response.data);
     }
-  }
-)
+  },
+);
 
 export const updateUserById = createAsyncThunk(
-  'user/updateUserById',
+  "user/updateUserById",
   async ({ id, userData }, thunkAPI) => {
     try {
-      const data = await updateAnUser(id, userData)
-      
+      const data = await updateAnUser(id, userData);
+
       if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message)
+        return thunkAPI.rejectWithValue(data.message);
       }
 
-      return data
+      return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data)
+      return thunkAPI.rejectWithValue(error.response.data);
     }
-  }
-)
+  },
+);
 
 export const softDeleteUserById = createAsyncThunk(
-  'user/softDeleteUserById',
+  "user/softDeleteUserById",
   async (id, thunkAPI) => {
     try {
-      const data = await softDeleteAnUser(id)
+      const data = await softDeleteAnUser(id);
 
       if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message)
+        return thunkAPI.rejectWithValue(data.message);
       }
 
-      return data
+      return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data)
+      return thunkAPI.rejectWithValue(error.response.data);
     }
-  }
-)
-  
+  },
+);
+
 export const hardDeleteUserById = createAsyncThunk(
-  'user/hardDeleteUserById',
+  "user/hardDeleteUserById",
   async (id, thunkAPI) => {
     try {
-      const data = await hardDeleteAnUser(id)
+      const data = await hardDeleteAnUser(id);
 
       if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message)
+        return thunkAPI.rejectWithValue(data.message);
       }
 
-      return data
+      return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data)
+      return thunkAPI.rejectWithValue(error.response.data);
     }
-  }
-)
+  },
+);
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState: {
     users: [],
     user: null,
     isLoading: false,
     error: null,
-    status: 'idle'
+    status: "idle",
   },
   reducers: {
     resetStatus: (state) => {
-      state.status = 'idle';
-    }
+      state.status = "idle";
+    },
   },
   extraReducers: (builder) => {
     builder
       // Create User
       .addCase(createUser.pending, (state) => {
-        state.isLoading = true
-        state.error = null
-        state.status = 'pending'
+        state.isLoading = true;
+        state.error = null;
+        state.status = "pending";
       })
       .addCase(createUser.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.users.push(action.payload.user)
-        state.status = 'fulfilled'
+        state.isLoading = false;
+        state.users.push(action.payload.user);
+        state.status = "fulfilled";
       })
       .addCase(createUser.rejected, (state, action) => {
-        state.isLoading = false
-        state.error = action.payload
-        state.status = 'rejected'
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
       })
 
       // Get User By ID
       .addCase(getUserById.pending, (state) => {
-        state.isLoading = true
-        state.error = null
-        state.status = 'pending'
+        state.isLoading = true;
+        state.error = null;
+        state.status = "pending";
       })
       .addCase(getUserById.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.user = action.payload.data
-        state.status = 'fulfilled'
+        state.isLoading = false;
+        state.user = action.payload.data;
+        state.status = "fulfilled";
       })
       .addCase(getUserById.rejected, (state, action) => {
-        state.isLoading = false
-        state.error = action.payload
-        state.status = 'rejected'
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
       })
 
       // Get Users List
       .addCase(getUsersList.pending, (state) => {
-        state.isLoading = true
-        state.error = null
-        state.status = 'pending'
+        state.isLoading = true;
+        state.error = null;
+        state.status = "pending";
       })
       .addCase(getUsersList.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.users = action.payload.data
-        state.status = 'fulfilled'
+        state.isLoading = false;
+        state.users = action.payload.data;
+        state.status = "fulfilled";
       })
       .addCase(getUsersList.rejected, (state, action) => {
-        state.isLoading = false
-        state.error = action.payload
-        state.status = 'rejected'
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
       })
-      
+
       // Update User By ID
       .addCase(updateUserById.pending, (state) => {
-        state.isLoading = true
-        state.error = null
-        state.status = 'pending'
+        state.isLoading = true;
+        state.error = null;
+        state.status = "pending";
       })
       .addCase(updateUserById.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.status = 'fulfilled'
-        const index = state.users.findIndex(user => user.id === action.payload.data.id)
+        state.isLoading = false;
+        state.status = "fulfilled";
+        const index = state.users.findIndex(
+          (user) => user.id === action.payload.data.id,
+        );
         if (index !== -1) {
-          state.users[index] = action.payload.data
+          state.users[index] = action.payload.data;
         }
       })
       .addCase(updateUserById.rejected, (state, action) => {
-        state.isLoading = false
-        state.error = action.payload
-        state.status = 'rejected'
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
       })
-      
+
       // Soft Delete User By ID
       .addCase(softDeleteUserById.pending, (state) => {
-        state.isLoading = true
-        state.error = null
-        state.status = 'pending'
+        state.isLoading = true;
+        state.error = null;
+        state.status = "pending";
       })
       .addCase(softDeleteUserById.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.users = state.users.filter(user => user.id !== action.payload.user.id)
-        state.status = 'fulfilled'
+        state.isLoading = false;
+        state.users = state.users.filter(
+          (user) => user.id !== action.payload.user.id,
+        );
+        state.status = "fulfilled";
       })
       .addCase(softDeleteUserById.rejected, (state, action) => {
-        state.isLoading = false
-        state.error = action.payload
-        state.status = 'rejected'
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
       })
 
       // Hard Delete User By ID
       .addCase(hardDeleteUserById.pending, (state) => {
-        state.isLoading = true
-        state.error = null
-        state.status = 'pending'
+        state.isLoading = true;
+        state.error = null;
+        state.status = "pending";
       })
       .addCase(hardDeleteUserById.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.users = state.users.filter(user => user.id !== action.payload.user.id)
-        state.status = 'fulfilled'
+        state.isLoading = false;
+        state.users = state.users.filter(
+          (user) => user.id !== action.payload.user.id,
+        );
+        state.status = "fulfilled";
       })
       .addCase(hardDeleteUserById.rejected, (state, action) => {
-        state.isLoading = false
-        state.error = action.payload
-        state.status = 'rejected'
-      })
-  }
-})
+        state.isLoading = false;
+        state.error = action.payload;
+        state.status = "rejected";
+      });
+  },
+});
 
-export const { resetStatus } = userSlice.actions
-export default userSlice.reducer
+export const { resetStatus } = userSlice.actions;
+export default userSlice.reducer;

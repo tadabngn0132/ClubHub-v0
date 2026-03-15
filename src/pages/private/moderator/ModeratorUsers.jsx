@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
-import { getUsersList, softDeleteUserById } from "../../../store/slices/userSlice";
+import {
+  getUsersList,
+  softDeleteUserById,
+} from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { mockUsers } from "../../../data/sampleMemberData";
@@ -10,9 +13,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const ModeratorUsers = () => {
   const dispatch = useDispatch();
-  const { users, isLoading, error } = useSelector(
-    (state) => state.user,
-  );
+  const { users, isLoading, error } = useSelector((state) => state.user);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   useEffect(() => {

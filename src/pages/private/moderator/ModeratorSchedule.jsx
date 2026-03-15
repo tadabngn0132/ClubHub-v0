@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const ModeratorSchedule = () => {
-  return (
-    <div>ModeratorSchedule</div>
-  )
-}
+  return <div>ModeratorSchedule</div>;
+};
 
-export default ModeratorSchedule
+export default ModeratorSchedule;

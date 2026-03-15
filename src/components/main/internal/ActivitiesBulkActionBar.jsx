@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const ActivitiesBulkActionBar = ({ eventCount }) => {
   return (
@@ -7,9 +7,9 @@ const ActivitiesBulkActionBar = ({ eventCount }) => {
       <button>Cancel</button>
       <button>Delete</button>
       <button>Export CSV</button>
-      <p>{ eventCount } events selected</p>
+      <p>{eventCount} events selected</p>
     </div>
-  )
-}
+  );
+};
 
-export default ActivitiesBulkActionBar
+export default ActivitiesBulkActionBar;

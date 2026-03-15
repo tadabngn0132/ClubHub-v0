@@ -4,10 +4,10 @@ import { useForm, FormProvider } from "react-hook-form";
 import BasicInfoTab from "./BasicInfoTab.jsx";
 import ClubInfoTab from "./ClubInfoTab.jsx";
 import ProfileInfoTab from "./ProfileInfoTab.jsx";
-import { 
+import {
   getUserById,
   createUser,
-  updateUserById 
+  updateUserById,
 } from "../../../store/slices/userSlice.js";
 import { Toaster } from "react-hot-toast";
 
@@ -42,7 +42,7 @@ const UserForm = ({ mode, userId }) => {
   useEffect(() => {
     if (mode === "edit") {
       dispatch(getUserById(userId));
-        
+
       if (user) {
         methods.reset({
           fullname: user.fullname || "",

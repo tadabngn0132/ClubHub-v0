@@ -84,7 +84,6 @@ const Pagination = ({
         >
           First
         </button>
-
         {/* Previous Button */}
         <button
           onClick={handlePrevious}
@@ -100,7 +99,6 @@ const Pagination = ({
         >
           Previous
         </button>
-
         Page Numbers
         <div className="flex items-center gap-1">
           {pageNumbers.map((page, index) => (
@@ -123,7 +121,6 @@ const Pagination = ({
             </button>
           ))}
         </div>
-
         {/* Next Button */}
         <button
           onClick={handleNext}
@@ -139,7 +136,6 @@ const Pagination = ({
         >
           Next
         </button>
-
         {/* Go To Last Button */}
         <button
           onClick={() => onPageChange(totalPages)}

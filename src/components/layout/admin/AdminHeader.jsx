@@ -1,9 +1,7 @@
-import Header from "../internal/Header.jsx"
+import Header from "../internal/Header.jsx";
 
 const AdminHeader = () => {
-  return (
-    <Header role="admin" />
-  )
-}
+  return <Header role="admin" />;
+};
 
-export default AdminHeader
+export default AdminHeader;

@@ -1,20 +1,20 @@
 import {
   softDeleteActivityById,
-  hardDeleteActivityById
-} from '../../../store/slices/activitySlice'
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import ActivitiesBulkActionBar from './ActivitiesBulkActionBar'
+  hardDeleteActivityById,
+} from "../../../store/slices/activitySlice";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import ActivitiesBulkActionBar from "./ActivitiesBulkActionBar";
 
 const ActivitiesTableView = () => {
-  const dispatch = useDispatch()
-  const { activities } = useSelector((state) => state.activity)
-  const [selectedActivities, setSelectedActivities] = useState([])
+  const dispatch = useDispatch();
+  const { activities } = useSelector((state) => state.activity);
+  const [selectedActivities, setSelectedActivities] = useState([]);
 
   const handleDelete = (activityId) => {
     const softConfirmed = window.confirm(
-      "Do you want to deactivate this activity?"
+      "Do you want to deactivate this activity?",
     );
 
     if (softConfirmed) {
@@ -23,7 +23,7 @@ const ActivitiesTableView = () => {
     }
 
     const hardConfirmed = window.confirm(
-      "Do you want to permanently delete this activity? This action cannot be undone."
+      "Do you want to permanently delete this activity? This action cannot be undone.",
     );
 
     if (hardConfirmed) {
@@ -41,7 +41,9 @@ const ActivitiesTableView = () => {
         <table className="min-w-full border-collapse border border-gray-200 mb-10">
           <thead className="">
             <tr className="border-b border-gray-200">
-              <th className="px-4 py-2"><input type="checkbox" name="" id="" /></th>
+              <th className="px-4 py-2">
+                <input type="checkbox" name="" id="" />
+              </th>
               <th className="px-4 py-2">Activity ID</th>
               <th className="px-4 py-2">Thumbnail</th>
               <th className="px-4 py-2">Title</th>
@@ -57,17 +59,20 @@ const ActivitiesTableView = () => {
             {activities.map((activity) => (
               <tr key={activity.id}>
                 <td className="px-4 py-2">
-                  <input 
+                  <input
                     type="checkbox"
                     name=""
                     id=""
                     onChange={(e) => {
                       if (e.target.checked) {
-                        setSelectedActivities([...selectedActivities, activity.id])
+                        setSelectedActivities([
+                          ...selectedActivities,
+                          activity.id,
+                        ]);
                       } else {
                         setSelectedActivities(
-                          selectedActivities.filter(id => id !== activity.id)
-                        )
+                          selectedActivities.filter((id) => id !== activity.id),
+                        );
                       }
                     }}
                   />
@@ -87,8 +92,18 @@ const ActivitiesTableView = () => {
                 <td className="px-4 py-2">{activity.status}</td>
                 <td className="px-4 py-2">{activity.registrationsCount}</td>
                 <td className="px-4 py-2">
-                  <Link to={`/activities/${activity.id}`} className="text-blue-500 hover:underline">View</Link>
-                  <Link to={`/admin/activities/edit/${activity.id}`} className="text-green-500 hover:underline">Edit</Link>
+                  <Link
+                    to={`/activities/${activity.id}`}
+                    className="text-blue-500 hover:underline"
+                  >
+                    View
+                  </Link>
+                  <Link
+                    to={`/admin/activities/edit/${activity.id}`}
+                    className="text-green-500 hover:underline"
+                  >
+                    Edit
+                  </Link>
                   <button
                     onClick={() => handleDelete(activity.id)}
                     className="text-red-500 hover:underline"
@@ -102,7 +117,7 @@ const ActivitiesTableView = () => {
         </table>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ActivitiesTableView
+export default ActivitiesTableView;

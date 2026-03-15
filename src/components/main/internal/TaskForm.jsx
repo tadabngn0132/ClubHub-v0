@@ -79,9 +79,7 @@ const TaskForm = ({ mode, taskId }) => {
           {...register("title", { required: "Task name is required" })}
           className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        {errors.title && (
-          <p className="text-red-500">{errors.title.message}</p>
-        )}
+        {errors.title && <p className="text-red-500">{errors.title.message}</p>}
 
         <label htmlFor="description">
           Task Description <span className="text-red-500">*</span>

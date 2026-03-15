@@ -1,26 +1,26 @@
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
-import {
-  getDepartmentDetails
-} from "../../../store/slices/departmentSlice"
-import Loading from "../../../components/layout/internal/Loading"
-import toast, {Toaster} from "react-hot-toast"
-import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getDepartmentDetails } from "../../../store/slices/departmentSlice";
+import Loading from "../../../components/layout/internal/Loading";
+import toast, { Toaster } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const MemberViewDepartment = ({ departmentId }) => {
-  const dispatch = useDispatch()
-  const { department, isLoading, error } = useSelector((state) => state.department)
+  const dispatch = useDispatch();
+  const { department, isLoading, error } = useSelector(
+    (state) => state.department,
+  );
 
   useEffect(() => {
-    dispatch(getDepartmentDetails(departmentId))
-  }, [dispatch, departmentId])
+    dispatch(getDepartmentDetails(departmentId));
+  }, [dispatch, departmentId]);
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   if (error) {
-    toast.error(error)
+    toast.error(error);
   }
 
   return (
@@ -39,7 +39,7 @@ const MemberViewDepartment = ({ departmentId }) => {
       <p>Description: {department?.description}</p>
       <p>Status: {department?.isActive ? "Active" : "Inactive"}</p>
     </div>
-  )
-}
+  );
+};
 
-export default MemberViewDepartment
+export default MemberViewDepartment;

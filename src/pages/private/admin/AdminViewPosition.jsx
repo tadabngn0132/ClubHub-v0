@@ -1,41 +1,43 @@
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getPositionDetails,
   deletePositionById,
-  resetStatus
-} from "../../../store/slices/positionSlice"
-import Loading from "../../../components/layout/internal/Loading"
-import toast, {Toaster} from "react-hot-toast"
-import { Link } from "react-router-dom"
+  resetStatus,
+} from "../../../store/slices/positionSlice";
+import Loading from "../../../components/layout/internal/Loading";
+import toast, { Toaster } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
-const AdminViewPosition = ({ positionId}) => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { position, isLoading, error, status } = useSelector((state) => state.position)
+const AdminViewPosition = ({ positionId }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { position, isLoading, error, status } = useSelector(
+    (state) => state.position,
+  );
 
   useEffect(() => {
-    dispatch(getPositionDetails(positionId))
-  }, [dispatch, positionId])
+    dispatch(getPositionDetails(positionId));
+  }, [dispatch, positionId]);
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this position?")) {
-      dispatch(deletePositionById(positionId))
-      
-      if (status === 'fulfilled') {
-        navigate('/admin/positions')
+      dispatch(deletePositionById(positionId));
+
+      if (status === "fulfilled") {
+        navigate("/admin/positions");
       }
-      dispatch(resetStatus())
+      dispatch(resetStatus());
     }
-  }
+  };
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   if (error) {
-    toast.error(error)
+    toast.error(error);
   }
 
   return (
@@ -43,13 +45,13 @@ const AdminViewPosition = ({ positionId}) => {
       <Toaster position="top-right" reverseOrder={false} />
       <Link to="/admin/positions">Back to Positions</Link>
       <div>
-        <h1>{position?.name || 'Position Details'}</h1>
+        <h1>{position?.name || "Position Details"}</h1>
 
         <div>
-          <Link to={`/admin/positions/edit/${position?.id}`}>Edit Position</Link>
-          <button onClick={handleDelete}>
-            Delete Position
-          </button>
+          <Link to={`/admin/positions/edit/${position?.id}`}>
+            Edit Position
+          </Link>
+          <button onClick={handleDelete}>Delete Position</button>
         </div>
       </div>
 
@@ -61,7 +63,7 @@ const AdminViewPosition = ({ positionId}) => {
       <p>{position?.level}</p>
       <p>{position?.systemRole}</p>
     </div>
-  )
-}
+  );
+};
 
-export default AdminViewPosition
+export default AdminViewPosition;

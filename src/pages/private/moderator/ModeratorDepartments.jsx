@@ -1,50 +1,50 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
-import {
-  getDepartmentsList
-} from "../../../store/slices/departmentSlice"
-import toast, { Toaster } from 'react-hot-toast'
-import Loading from "../../../components/layout/internal/Loading"
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getDepartmentsList } from "../../../store/slices/departmentSlice";
+import toast, { Toaster } from "react-hot-toast";
+import Loading from "../../../components/layout/internal/Loading";
+import { Link } from "react-router-dom";
 
 const ModeratorDepartments = () => {
-  const dispatch = useDispatch()
-  const { departments, isLoading, error } = useSelector((state) => state.department)
+  const dispatch = useDispatch();
+  const { departments, isLoading, error } = useSelector(
+    (state) => state.department,
+  );
 
   useEffect(() => {
-    dispatch(getDepartmentsList())
-  }, [dispatch])
+    dispatch(getDepartmentsList());
+  }, [dispatch]);
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   if (error) {
-    toast.error(error)
+    toast.error(error);
   }
 
   const handleStatusLabel = (status) => {
     switch (status) {
-      case 'active':
-        return 'Active'
-      case 'inactive':
-        return 'Inactive'
+      case "active":
+        return "Active";
+      case "inactive":
+        return "Inactive";
       default:
-        return 'Unknown'
+        return "Unknown";
     }
-  }
+  };
 
   return (
     <div>
-      <Toaster position='top-right' reverseOrder={false} />
-      <div className='flex flex-col md:flex-row md:items-center md:justify-between mb-6'>
+      <Toaster position="top-right" reverseOrder={false} />
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
-          <h1 className='text-2xl font-bold'>Departments</h1>
-          <p className='text-gray-600'>{departments.length} departments</p>
+          <h1 className="text-2xl font-bold">Departments</h1>
+          <p className="text-gray-600">{departments.length} departments</p>
         </div>
       </div>
 
-      <table className='w-full border-collapse border border-gray-300'>
+      <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr>
             <th>Name</th>
@@ -55,12 +55,15 @@ const ModeratorDepartments = () => {
         </thead>
         <tbody>
           {departments.map((department) => (
-            <tr key={department.id} className='border-t border-gray-300'>
+            <tr key={department.id} className="border-t border-gray-300">
               <td>{department.name}</td>
               <td>{department.description}</td>
               <td>{handleStatusLabel(department.status)}</td>
               <td>
-                <Link to={`/moderator/departments/view/${department.id}`} className='text-blue-500 hover:text-blue-700 mr-2'>
+                <Link
+                  to={`/moderator/departments/view/${department.id}`}
+                  className="text-blue-500 hover:text-blue-700 mr-2"
+                >
                   View
                 </Link>
               </td>
@@ -69,7 +72,7 @@ const ModeratorDepartments = () => {
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default ModeratorDepartments
+export default ModeratorDepartments;

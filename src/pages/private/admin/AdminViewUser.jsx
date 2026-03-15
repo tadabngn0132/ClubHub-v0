@@ -1,48 +1,51 @@
-import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
-import {
-  getUserById,
-  deleteUserById
-} from '../../../store/slices/userSlice'
-import toast, { Toaster } from 'react-hot-toast'
-import { getActivitiesByUserId } from '../../../store/slices/activitySlice'
-import Loading from '../../../components/layout/internal/Loading.jsx'
-import { useNavigate } from 'react-router-dom'
-import { resetStatus } from '../../../store/slices/userSlice'
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { getUserById, deleteUserById } from "../../../store/slices/userSlice";
+import toast, { Toaster } from "react-hot-toast";
+import { getActivitiesByUserId } from "../../../store/slices/activitySlice";
+import Loading from "../../../components/layout/internal/Loading.jsx";
+import { useNavigate } from "react-router-dom";
+import { resetStatus } from "../../../store/slices/userSlice";
 
 const AdminViewUser = () => {
-  const { memberId } = useParams()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { currentMember, loading, error, status } = useSelector((state) => state.user)
-  const { userActivities, isLoading: activitiesLoading, error: activitiesError } = useSelector((state) => state.activity)
+  const { memberId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { currentMember, loading, error, status } = useSelector(
+    (state) => state.user,
+  );
+  const {
+    userActivities,
+    isLoading: activitiesLoading,
+    error: activitiesError,
+  } = useSelector((state) => state.activity);
 
   const handleDelete = () => {
     // Dispatch delete action here
-    dispatch(deleteUserById(memberId))
-    
-    if (status === 'fulfilled') {
-      navigate('/admin/users');
+    dispatch(deleteUserById(memberId));
+
+    if (status === "fulfilled") {
+      navigate("/admin/users");
       dispatch(resetStatus());
     }
-  }
+  };
 
   useEffect(() => {
-    dispatch(getUserById(memberId))
-    dispatch(getActivitiesByUserId(memberId))
-  }, [dispatch, memberId])
+    dispatch(getUserById(memberId));
+    dispatch(getActivitiesByUserId(memberId));
+  }, [dispatch, memberId]);
 
   if (loading) {
-    return <Loading />
+    return <Loading />;
   }
 
   if (error) {
-    toast.error(error)
+    toast.error(error);
   }
 
-  if (!currentMember) return <p>No member found.</p>
+  if (!currentMember) return <p>No member found.</p>;
 
   return (
     <div>
@@ -60,38 +63,69 @@ const AdminViewUser = () => {
         <button onClick={() => handleDelete()}>Delete Member</button>
       </header>
 
-      <section id='basic-info'>
+      <section id="basic-info">
         <h2>Basic Informations</h2>
-        <p><strong>Email:</strong> {currentMember.email}</p>
-        <p><strong>Phone Number:</strong> {currentMember.phoneNumber}</p>
-        <p><strong>Date of Birth:</strong> {currentMember.dateOfBirth}</p>
-        <p><strong>Gender:</strong> {currentMember.gender}</p>
-        <p><strong>Major:</strong> {currentMember.major}</p>
+        <p>
+          <strong>Email:</strong> {currentMember.email}
+        </p>
+        <p>
+          <strong>Phone Number:</strong> {currentMember.phoneNumber}
+        </p>
+        <p>
+          <strong>Date of Birth:</strong> {currentMember.dateOfBirth}
+        </p>
+        <p>
+          <strong>Gender:</strong> {currentMember.gender}
+        </p>
+        <p>
+          <strong>Major:</strong> {currentMember.major}
+        </p>
       </section>
 
-      <section id='club-info'>
+      <section id="club-info">
         <h2>Club's Member Information</h2>
-        <p><strong>Gen:</strong> {currentMember.gen}</p>
-        <p><strong>Department:</strong> {currentMember.department}</p>
-        <p><strong>Role:</strong> {currentMember.role}</p>
-        <p><strong>Joined Date:</strong> {currentMember.joinedDate}</p>
-        <p><strong>Status:</strong> {currentMember.status}</p>
+        <p>
+          <strong>Gen:</strong> {currentMember.gen}
+        </p>
+        <p>
+          <strong>Department:</strong> {currentMember.department}
+        </p>
+        <p>
+          <strong>Role:</strong> {currentMember.role}
+        </p>
+        <p>
+          <strong>Joined Date:</strong> {currentMember.joinedDate}
+        </p>
+        <p>
+          <strong>Status:</strong> {currentMember.status}
+        </p>
       </section>
 
-      <section id='profile-info'>
+      <section id="profile-info">
         <h2>Profile Information</h2>
         <p>{currentMember.bio}</p>
       </section>
 
-      <section id='activity-summary'>
+      <section id="activity-summary">
         <h2>Activity Summary</h2>
-        <p><strong>Events Participated:</strong> {userActivities.length}</p>
-        <p><strong>Meetings Attended:</strong> {userActivities.filter(activity => activity.type === 'meeting').length}</p>
+        <p>
+          <strong>Events Participated:</strong> {userActivities.length}
+        </p>
+        <p>
+          <strong>Meetings Attended:</strong>{" "}
+          {
+            userActivities.filter((activity) => activity.type === "meeting")
+              .length
+          }
+        </p>
         {/* Get tasks from server instead of current task type activities later */}
-        <p><strong>Tasks Completed:</strong> {userActivities.filter(activity => activity.type === 'task').length}</p>
+        <p>
+          <strong>Tasks Completed:</strong>{" "}
+          {userActivities.filter((activity) => activity.type === "task").length}
+        </p>
       </section>
 
-      <section id='recent-activities-list'>
+      <section id="recent-activities-list">
         <h2>Recent Activities</h2>
         {activitiesLoading ? (
           <p>Loading activities...</p>
@@ -103,7 +137,10 @@ const AdminViewUser = () => {
               <li key={activity.id}>
                 <h3>{activity.title}</h3>
                 <p>{activity.description}</p>
-                <p><strong>Date:</strong> {new Date(activity.date).toLocaleDateString()}</p>
+                <p>
+                  <strong>Date:</strong>{" "}
+                  {new Date(activity.date).toLocaleDateString()}
+                </p>
               </li>
             ))}
           </ul>
@@ -121,14 +158,17 @@ const AdminViewUser = () => {
               <li key={activity.id}>
                 <h3>{activity.title}</h3>
                 <p>{activity.description}</p>
-                <p><strong>Date:</strong> {new Date(activity.date).toLocaleDateString()}</p>
+                <p>
+                  <strong>Date:</strong>{" "}
+                  {new Date(activity.date).toLocaleDateString()}
+                </p>
               </li>
             ))}
           </ul>
         )}
-      </section>  
+      </section>
     </div>
-  )
-}
+  );
+};
 
-export default AdminViewUser
+export default AdminViewUser;

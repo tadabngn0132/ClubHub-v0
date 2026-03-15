@@ -16,7 +16,10 @@ export const getDepartmentById = async (id) => {
 };
 
 export const updateDepartment = async (id, departmentData) => {
-  const response = await axiosClient.put(`/api/departments/${id}`, departmentData);
+  const response = await axiosClient.put(
+    `/api/departments/${id}`,
+    departmentData,
+  );
   return response.data;
 };
 

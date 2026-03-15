@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import {
   getAllTasksList,
   softDeleteTaskById,
-  hardDeleteTaskById
+  hardDeleteTaskById,
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -10,11 +10,7 @@ import Loading from "../../../components/layout/internal/Loading.jsx";
 
 const AdminTasks = () => {
   const dispatch = useDispatch();
-  const {
-    tasks,
-    isLoading,
-    error
-  } = useSelector((state) => state.task);
+  const { tasks, isLoading, error } = useSelector((state) => state.task);
   const [selectedTasks, setSelectedTasks] = useState([]);
 
   useEffect(() => {
@@ -23,7 +19,7 @@ const AdminTasks = () => {
 
   const handleDelete = (taskId) => {
     const softConfirmed = window.confirm(
-      "Do you want to deactivate this task?"
+      "Do you want to deactivate this task?",
     );
 
     if (softConfirmed) {
@@ -32,7 +28,7 @@ const AdminTasks = () => {
     }
 
     const hardConfirmed = window.confirm(
-      "Do you want to permanently delete this task? This action cannot be undone."
+      "Do you want to permanently delete this task? This action cannot be undone.",
     );
 
     if (hardConfirmed) {
@@ -85,10 +81,16 @@ const AdminTasks = () => {
               <td>{task.dueDate}</td>
               <td>{task.status}</td>
               <td className="text-center">
-                <Link to={`/admin/tasks/view/${task.id}`} className="text-blue-500 hover:underline mr-2">
+                <Link
+                  to={`/admin/tasks/view/${task.id}`}
+                  className="text-blue-500 hover:underline mr-2"
+                >
                   View
                 </Link>
-                <Link to={`/admin/tasks/edit/${task.id}`} className="text-green-500 hover:underline mr-2">
+                <Link
+                  to={`/admin/tasks/edit/${task.id}`}
+                  className="text-green-500 hover:underline mr-2"
+                >
                   Edit
                 </Link>
                 <button

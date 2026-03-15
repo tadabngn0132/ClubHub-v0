@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const MemberDashboard = () => {
-  const dispatch = useDispatch()
-  const { currentMember } = useSelector((state) => state.user)
-  
-  return (
-    <div>MemberDashboard</div>
-  )
-}
+  const dispatch = useDispatch();
+  const { currentMember } = useSelector((state) => state.user);
 
-export default MemberDashboard
+  return <div>MemberDashboard</div>;
+};
+
+export default MemberDashboard;

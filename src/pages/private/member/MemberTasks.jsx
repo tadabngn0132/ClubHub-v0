@@ -10,11 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const MemberTasks = () => {
   const dispatch = useDispatch();
-  const {
-    tasks,
-    isLoading,
-    error
-  } = useSelector((state) => state.task);
+  const { tasks, isLoading, error } = useSelector((state) => state.task);
   const [selectedTasks, setSelectedTasks] = useState([]);
 
   useEffect(() => {
@@ -38,7 +34,7 @@ const MemberTasks = () => {
           <p className="text-sm text-gray-500">{tasks.length} tasks</p>
         </div>
       </div>
-      
+
       <table className="w-full border-collapse border border-gray-300">
         <thead>
           <tr>
@@ -63,10 +59,16 @@ const MemberTasks = () => {
               <td>{task.dueDate}</td>
               <td>{task.status}</td>
               <td className="text-center">
-                <Link to={`/member/tasks/view/${task.id}`} className="text-blue-500 hover:underline mr-2">
+                <Link
+                  to={`/member/tasks/view/${task.id}`}
+                  className="text-blue-500 hover:underline mr-2"
+                >
                   View
                 </Link>
-                <Link to={`/member/tasks/edit/${task.id}`} className="text-green-500 hover:underline mr-2">
+                <Link
+                  to={`/member/tasks/edit/${task.id}`}
+                  className="text-green-500 hover:underline mr-2"
+                >
                   Edit
                 </Link>
               </td>

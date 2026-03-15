@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const ModeratorProfile = () => {
-  return (
-    <div>ModeratorProfile</div>
-  )
-}
+  return <div>ModeratorProfile</div>;
+};
 
-export default ModeratorProfile
+export default ModeratorProfile;

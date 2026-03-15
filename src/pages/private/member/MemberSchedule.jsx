@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const MemberSchedule = () => {
-  return (
-    <div>MemberSchedule</div>
-  )
-}
+  return <div>MemberSchedule</div>;
+};
 
-export default MemberSchedule
+export default MemberSchedule;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const BulkActionBar = () => {
   // TODO: Implement bulk action bar functionality
@@ -6,13 +6,13 @@ const BulkActionBar = () => {
 
   return (
     <div className="p-3 bg-gray-100 flex space-x-4">
-      <button className='p-2.5 bg-[var(--pink-color)]'>Export Selected</button>
-      <button className='p-2.5 bg-[var(--pink-color)]'>Change Status</button>
-      <button className='p-2.5 bg-[var(--pink-color)]'>Send Emails</button>
-      <button className='p-2.5 bg-[var(--pink-color)]'>Delete Selected</button>
-      <button className='p-2.5 bg-[var(--pink-color)]'>Deselect All</button>
+      <button className="p-2.5 bg-[var(--pink-color)]">Export Selected</button>
+      <button className="p-2.5 bg-[var(--pink-color)]">Change Status</button>
+      <button className="p-2.5 bg-[var(--pink-color)]">Send Emails</button>
+      <button className="p-2.5 bg-[var(--pink-color)]">Delete Selected</button>
+      <button className="p-2.5 bg-[var(--pink-color)]">Deselect All</button>
     </div>
-  )
-}
+  );
+};
 
-export default BulkActionBar
+export default BulkActionBar;

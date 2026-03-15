@@ -1,23 +1,23 @@
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import {
   getTaskDetails,
-  deleteTaskById
-} from "../../../store/slices/taskSlice"
-import { Link } from "react-router-dom"
-import Loading from "../../../components/layout/internal/Loading.jsx"
-import toast, { Toaster } from "react-hot-toast"
-import { useNavigate } from "react-router-dom"
-import { resetStatus } from "../../../store/slices/taskSlice"
+  deleteTaskById,
+} from "../../../store/slices/taskSlice";
+import { Link } from "react-router-dom";
+import Loading from "../../../components/layout/internal/Loading.jsx";
+import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { resetStatus } from "../../../store/slices/taskSlice";
 
 const ModeratorViewTask = ({ taskId }) => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { task, isLoading, error, status } = useSelector((state) => state.task)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { task, isLoading, error, status } = useSelector((state) => state.task);
 
   useEffect(() => {
-    dispatch(getTaskDetails(taskId))
-  }, [dispatch, taskId])
+    dispatch(getTaskDetails(taskId));
+  }, [dispatch, taskId]);
 
   if (isLoading) {
     return <Loading />;
@@ -30,8 +30,8 @@ const ModeratorViewTask = ({ taskId }) => {
   const handleDelete = () => {
     dispatch(deleteTaskById(taskId));
 
-    if (status === 'fulfilled') {
-      navigate('/moderator/tasks');
+    if (status === "fulfilled") {
+      navigate("/moderator/tasks");
       dispatch(resetStatus());
     }
   };
@@ -42,12 +42,10 @@ const ModeratorViewTask = ({ taskId }) => {
       <Link to="/moderator/tasks">Back to Tasks</Link>
       <div className="flex items-center justify-between">
         <h1>{task?.title}</h1>
-        
+
         <div>
           <Link to={`/moderator/tasks/edit/${taskId}`}>Edit Task</Link>
-          <button onClick={handleDelete}>
-            Delete Task
-          </button>
+          <button onClick={handleDelete}>Delete Task</button>
         </div>
       </div>
 
@@ -59,13 +57,9 @@ const ModeratorViewTask = ({ taskId }) => {
       <p>Description: {task?.description}</p>
       <p>Due Date: {task?.dueDate}</p>
       {/* <p>Assigned To: {task?.assignedTo}</p> */}
-      {task?.isCompleted ? (
-        <p>Status: Completed</p>
-      ) : (
-        <p>Status: Incomplete</p>
-      )}
+      {task?.isCompleted ? <p>Status: Completed</p> : <p>Status: Incomplete</p>}
     </div>
-  )
-}
+  );
+};
 
-export default ModeratorViewTask
+export default ModeratorViewTask;

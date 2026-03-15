@@ -3,10 +3,10 @@
 @import "./styles/variables.css";
 
 :root {
-  --pink-color: #DB3F7A;
-  --dark-pink-color: #6B2C51;
+  --pink-color: #db3f7a;
+  --dark-pink-color: #6b2c51;
   --black-color: #000000;
-  --white-color: #FFFFFF;
+  --white-color: #ffffff;
   --red-color: #b22222;
   /* Bổ sung thêm biến padding, margin */
   --pub-g-pl-pr: 40px;
@@ -26,20 +26,22 @@ body {
 
 /* Font */
 @font-face {
-  font-family: 'Monument';
-  src: url('src/assets/fonts/MonumentExtended-Regular.woff2') format('woff2'),
-      url('src/assets/fonts/MonumentExtended-Regular.woff') format('woff'),
-      url('src/assets/fonts/MonumentExtended-Regular.otf') format('opentype');
+  font-family: "Monument";
+  src:
+    url("src/assets/fonts/MonumentExtended-Regular.woff2") format("woff2"),
+    url("src/assets/fonts/MonumentExtended-Regular.woff") format("woff"),
+    url("src/assets/fonts/MonumentExtended-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Monument';
-  src: url('src/assets/fonts/MonumentExtended-UltraBold.woff2') format('woff2'),
-      url('src/assets/fonts/MonumentExtended-UltraBold.woff') format('woff'),
-      url('src/assets/fonts/MonumentExtended-UltraBold.otf') format('opentype');
+  font-family: "Monument";
+  src:
+    url("src/assets/fonts/MonumentExtended-UltraBold.woff2") format("woff2"),
+    url("src/assets/fonts/MonumentExtended-UltraBold.woff") format("woff"),
+    url("src/assets/fonts/MonumentExtended-UltraBold.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -47,27 +49,27 @@ body {
 
 /* Khả năng phải chỉnh margin cho các loại thiết bị */
 .monument-regular {
-    font-family: 'Monument', sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    /* margin-top: -0.105em;
+  font-family: "Monument", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  /* margin-top: -0.105em;
     margin-bottom: -0.18em; */
 }
 
 .monument-extra-bold {
-    font-family: 'Monument', sans-serif;
-    font-weight: 900;
-    /* margin-top: -0.105em;
+  font-family: "Monument", sans-serif;
+  font-weight: 900;
+  /* margin-top: -0.105em;
     margin-bottom: -0.18em; */
 }
 
 /* Color */
 .pink-color {
-  color: #DB3F7A;
+  color: #db3f7a;
 }
 
 .pink-bg-color {
-  background-color: #DB3F7A;
+  background-color: #db3f7a;
 }
 
 /* Shadow */
@@ -82,8 +84,8 @@ body {
 
 /* Spinner */
 .spinner {
-  border: 5px solid #DB3F7A;
-  border-right-color: #6B2C51;
+  border: 5px solid #db3f7a;
+  border-right-color: #6b2c51;
   border-radius: 50%;
   width: 54px;
   height: 54px;
@@ -104,7 +106,7 @@ body {
   from {
     transform: translateX(50%);
   }
-  
+
   to {
     transform: translateX(0);
   }
@@ -118,7 +120,7 @@ body {
   from {
     transform: translateX(-50%);
   }
-  
+
   to {
     transform: translateX(0);
   }

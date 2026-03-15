@@ -1,9 +1,7 @@
-import Footer from "../internal/Footer.jsx"
+import Footer from "../internal/Footer.jsx";
 
 const MemberFooter = () => {
-  return (
-    <Footer />
-  )
-}
+  return <Footer />;
+};
 
-export default MemberFooter
+export default MemberFooter;

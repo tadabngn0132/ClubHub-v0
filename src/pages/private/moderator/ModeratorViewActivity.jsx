@@ -1,23 +1,25 @@
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import {
   getActivityById,
-  deleteActivityById
-} from "../../../store/slices/activitySlice"
-import { Link } from "react-router-dom"
-import Loading from "../../../components/layout/internal/Loading.jsx"
-import toast, { Toaster } from "react-hot-toast"
-import { useNavigate } from "react-router-dom"
-import { resetStatus } from "../../../store/slices/activitySlice"
+  deleteActivityById,
+} from "../../../store/slices/activitySlice";
+import { Link } from "react-router-dom";
+import Loading from "../../../components/layout/internal/Loading.jsx";
+import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { resetStatus } from "../../../store/slices/activitySlice";
 
 const ModeratorViewActivity = ({ activityId }) => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { activity, isLoading, error, status } = useSelector((state) => state.activity)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { activity, isLoading, error, status } = useSelector(
+    (state) => state.activity,
+  );
 
   useEffect(() => {
-    dispatch(getActivityById(activityId))
-  }, [dispatch, activityId])
+    dispatch(getActivityById(activityId));
+  }, [dispatch, activityId]);
 
   if (isLoading) {
     return <Loading />;
@@ -30,8 +32,8 @@ const ModeratorViewActivity = ({ activityId }) => {
   const handleDelete = () => {
     dispatch(deleteActivityById(activityId));
 
-    if (status === 'fulfilled') {
-      navigate('/moderator/activities');
+    if (status === "fulfilled") {
+      navigate("/moderator/activities");
       dispatch(resetStatus());
     }
   };
@@ -41,15 +43,15 @@ const ModeratorViewActivity = ({ activityId }) => {
       <Toaster position="top-right" reverseOrder={false} />
       <img src={activity?.thumbnailUrl} alt={activity?.title} />
       <Link to="/moderator/activities">Back to Activities</Link>
-      
+
       <div className="flex items-center justify-between">
         <h1>Name: {activity?.title}</h1>
-        
+
         <div className="flex space-x-4">
-          <Link to={`/moderator/activities/edit/${activityId}`}>Edit Activity</Link>
-          <button onClick={handleDelete}>
-            Delete Activity
-          </button>
+          <Link to={`/moderator/activities/edit/${activityId}`}>
+            Edit Activity
+          </Link>
+          <button onClick={handleDelete}>Delete Activity</button>
         </div>
       </div>
 
@@ -64,7 +66,8 @@ const ModeratorViewActivity = ({ activityId }) => {
       <p>End Date: {activity?.endDate}</p>
       <p>Location Type: {activity?.locationType}</p>
 
-      {(activity?.locationType === "online" || activity?.locationType === "hybrid") && (
+      {(activity?.locationType === "online" ||
+        activity?.locationType === "hybrid") && (
         <>
           <p>Meeting Platform: {activity?.meetingPlatform}</p>
           <p>Meeting Link: {activity?.meetingLink}</p>
@@ -73,7 +76,8 @@ const ModeratorViewActivity = ({ activityId }) => {
         </>
       )}
 
-      {(activity?.locationType === "in-person" || activity?.locationType === "hybrid") && (
+      {(activity?.locationType === "in-person" ||
+        activity?.locationType === "hybrid") && (
         <>
           <p>Venue Name: {activity?.venueName}</p>
           <p>Venue Address: {activity?.venueAddress}</p>
@@ -83,13 +87,18 @@ const ModeratorViewActivity = ({ activityId }) => {
 
       <p>Activity Type: {activity?.activityType}</p>
       <p>Activity Status: {activity?.status}</p>
-      
+
       <p>Max Participants: {activity?.maxParticipants}</p>
       <p>Current Participants: {activity?.activityParticipants?.length || 0}</p>
       <p>Registration Deadline: {activity?.registrationDeadline}</p>
-      {activity?.requireRegistration === true ? (<p>Registration is required for this activity.</p>) : (<p>Registration is not required for this activity.</p>)}
+      {activity?.requireRegistration === true ? (
+        <p>Registration is required for this activity.</p>
+      ) : (
+        <p>Registration is not required for this activity.</p>
+      )}
 
-      {activity?.activityParticipants && activity?.activityParticipants.length > 0 ? (
+      {activity?.activityParticipants &&
+      activity?.activityParticipants.length > 0 ? (
         activity?.activityParticipants.map((participant) => (
           <div key={participant.id}>
             <p>Participant Name: {participant.name}</p>
@@ -100,15 +109,27 @@ const ModeratorViewActivity = ({ activityId }) => {
         <p>No participants registered for this activity.</p>
       )}
 
-      {activity?.isPublic === true ? (<p>This activity is public.</p>) : (<p>This activity is private.</p>)}
+      {activity?.isPublic === true ? (
+        <p>This activity is public.</p>
+      ) : (
+        <p>This activity is private.</p>
+      )}
 
-      {activity?.isFeatured === true ? (<p>This activity is featured.</p>) : (<p>This activity is not featured.</p>)}
-      
+      {activity?.isFeatured === true ? (
+        <p>This activity is featured.</p>
+      ) : (
+        <p>This activity is not featured.</p>
+      )}
+
       <p>Priority: {activity?.priority}</p>
 
       {activity?.images && activity?.images.length > 0 ? (
         activity?.images.map((image, index) => (
-          <img key={index} src={image.url} alt={`Activity Image ${index + 1}`} />
+          <img
+            key={index}
+            src={image.url}
+            alt={`Activity Image ${index + 1}`}
+          />
         ))
       ) : (
         <p>No images available for this activity.</p>
@@ -125,7 +146,7 @@ const ModeratorViewActivity = ({ activityId }) => {
         <p>No videos available for this activity.</p>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ModeratorViewActivity
+export default ModeratorViewActivity;

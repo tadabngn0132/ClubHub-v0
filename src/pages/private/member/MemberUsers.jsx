@@ -10,9 +10,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const MemberUsers = () => {
   const dispatch = useDispatch();
-  const { users, isLoading, error } = useSelector(
-    (state) => state.user,
-  );
+  const { users, isLoading, error } = useSelector((state) => state.user);
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   useEffect(() => {

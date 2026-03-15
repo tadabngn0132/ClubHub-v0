@@ -1,15 +1,13 @@
-import { Link, useNavigate } from "react-router-dom"
-import { useForm } from "react-hook-form"
-import { useDispatch, useSelector } from "react-redux"
-import { useState } from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import {faEye, faEyeSlash} from "@fortawesome/free-solid-svg-icons"
-import {
-  loginUser
-} from "../../store/slices/authSlice"
-import toast, { Toaster } from "react-hot-toast"
-import gdcLogo from "../../assets/logos/GDC_logo.svg"
-import uogLogo from "../../assets/logos/2025-Greenwich-White-Eng.png"
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { loginUser } from "../../store/slices/authSlice";
+import toast, { Toaster } from "react-hot-toast";
+import gdcLogo from "../../assets/logos/GDC_logo.svg";
+import uogLogo from "../../assets/logos/2025-Greenwich-White-Eng.png";
 
 const SignIn = () => {
   const {
@@ -18,46 +16,45 @@ const SignIn = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: '',
-      password: ''
+      email: "",
+      password: "",
     },
-    mode: 'onChange',
-    reValidateMode: 'onChange'
-  }
-  )
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
 
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { isLoading, error } = useSelector((state) => state.auth)
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLoading, error } = useSelector((state) => state.auth);
   // Error handling later
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleLogin = async (formData) => {
     try {
-      const resData = await dispatch(loginUser(formData)).unwrap()
-      toast.success(resData.message || 'Login successful!')
-      
-      if (resData.data.necessaryUserData.role === 'admin') {
-        navigate('/admin/dashboard')
-      } else if (resData.data.necessaryUserData.role === 'moderator') {
-        navigate('/moderator/dashboard')
-      } else if (resData.data.necessaryUserData.role === 'member') {
-        navigate('/member/dashboard')
+      const resData = await dispatch(loginUser(formData)).unwrap();
+      toast.success(resData.message || "Login successful!");
+
+      if (resData.data.necessaryUserData.role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (resData.data.necessaryUserData.role === "moderator") {
+        navigate("/moderator/dashboard");
+      } else if (resData.data.necessaryUserData.role === "member") {
+        navigate("/member/dashboard");
       } else {
-        navigate('/')
+        navigate("/");
       }
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
 
   const handlePasswordView = () => {
-    setIsPasswordVisible(!isPasswordVisible)
-  }
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   const handleGoogleLogin = () => {
-    window.location.href = `http://localhost:5995/api/auth/google-auth`
-  }
+    window.location.href = `http://localhost:5995/api/auth/google-auth`;
+  };
 
   return (
     <div className="flex w-full min-h-[var(--pub-main-min-h)] items-center-safe justify-center-safe lg:pl-[var(--pub-container-padding-x)] lg:pr-[var(--pub-container-padding-x)]">
@@ -72,16 +69,8 @@ const SignIn = () => {
             muted
           ></video>
           <div className="flex z-10 animate-slide-left">
-            <img
-              className="w-25 ml-7"
-              src={gdcLogo}
-              alt="GDC Logo"
-            />
-            <img
-              className="w-25"
-              src={uogLogo}
-              alt="UoG Logo"
-            />
+            <img className="w-25 ml-7" src={gdcLogo} alt="GDC Logo" />
+            <img className="w-25" src={uogLogo} alt="UoG Logo" />
           </div>
           <div className="flex flex-col z-10 animate-slide-left">
             <img
@@ -90,13 +79,13 @@ const SignIn = () => {
               alt="Hello"
             />
             <p className="ml-7 text-xs w-2/3">
-              Access Greenwich Dance Club member portal to check schedules, connect with members, and stay updated on all GDC activities.
+              Access Greenwich Dance Club member portal to check schedules,
+              connect with members, and stay updated on all GDC activities.
             </p>
           </div>
         </div>
 
         <div className="flex flex-col items-center justify-center-safe w-full min-h-[var(--sign-in-form-min-h)] lg:w-6/12 xl:w-[46%] 2xl:w-2/5 p-10 pl-21 pr-21 sm:pl-51 sm:pr-51 md:pl-66 md:pr-66 lg:pl-24 lg:pr-24 xl:pl-22 xl:pr-22 lg:rounded-[5rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background.webp)] bg-auto md:bg-size-[auto_1920px] lg:bg-auto bg-current bg-center relative animate-slide-right">
-          
           {/* Form header */}
           <div className="flex mb-6 w-full relative">
             <Link
@@ -126,7 +115,11 @@ const SignIn = () => {
                 src="src/assets/icons/user_icon.svg"
                 alt="User icon"
               />
-              <button type="button" onClick={handleGoogleLogin} className="bg-[#d0d0d0] text-black p-2 pt-2.5 pb-2.5 pl-14 rounded-[1.25rem] w-1/1 text-left cursor-pointer">
+              <button
+                type="button"
+                onClick={handleGoogleLogin}
+                className="bg-[#d0d0d0] text-black p-2 pt-2.5 pb-2.5 pl-14 rounded-[1.25rem] w-1/1 text-left cursor-pointer"
+              >
                 Signin with email
                 <span className="text-[var(--pink-color)] ml-1 w-fit">
                   fpt.edu.vn
@@ -155,23 +148,22 @@ const SignIn = () => {
                     type="email"
                     placeholder="Email Address"
                     className="p-2 pt-2.5 pb-2.5 pl-14 text-[#454545] bg-[#d0d0d0] rounded-[1.25rem] placeholder-[#454545] w-full focus:outline-none focus:border-[var(--pink-color)] border-2 border-transparent"
-                    {...register('email', { 
-                      required: 'Email cannot be empty',
+                    {...register("email", {
+                      required: "Email cannot be empty",
                       pattern: {
                         value: /^[A-Za-z0-9]+@fpt\.edu\.vn$/,
-                        message: 'Email must have @fpt.edu.vn tail'
-                      }
+                        message: "Email must have @fpt.edu.vn tail",
+                      },
                     })}
                   />
                 </div>
                 {/* Email error */}
-                { errors.email &&
+                {errors.email && (
                   <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] pl-4">
-                    { errors.email.message }
+                    {errors.email.message}
                   </span>
-                }
+                )}
               </div>
-              
 
               {/* Password field */}
               <div className="flex items-center relative">
@@ -181,28 +173,33 @@ const SignIn = () => {
                   alt="Lock icon"
                 />
                 <input
-                  type={isPasswordVisible ? 'text' : 'password'}
+                  type={isPasswordVisible ? "text" : "password"}
                   placeholder="Password"
                   className="p-2 pt-2.5 pb-2.5 pl-14 text-[#454545] bg-[#d0d0d0] rounded-[1.25rem] placeholder-[#454545] w-full focus:outline-none focus:border-[var(--pink-color)] border-2 border-transparent"
-                  {...register('password', { 
-                    required: 'Password cannot be empty',
+                  {...register("password", {
+                    required: "Password cannot be empty",
                     minLength: {
                       value: 8,
-                      message: 'Password must be at least 8 characters'
-                    }
+                      message: "Password must be at least 8 characters",
+                    },
                   })}
                 />
-                <span onClick={handlePasswordView} className="flex items-center-safe justify-center-safe absolute right-5 text-[var(--pink-color)] p-1 cursor-pointer hover:opacity-70">
-                  <FontAwesomeIcon icon={isPasswordVisible ? faEyeSlash : faEye} />
+                <span
+                  onClick={handlePasswordView}
+                  className="flex items-center-safe justify-center-safe absolute right-5 text-[var(--pink-color)] p-1 cursor-pointer hover:opacity-70"
+                >
+                  <FontAwesomeIcon
+                    icon={isPasswordVisible ? faEyeSlash : faEye}
+                  />
                 </span>
               </div>
 
-              { errors.password ? (
+              {errors.password ? (
                 <div className="flex flex-col w-full justify-between">
                   {/* Password error */}
-                    <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] pl-4">
-                      { errors.password.message }
-                    </span>
+                  <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] pl-4">
+                    {errors.password.message}
+                  </span>
                   <Link
                     to="/forgot-password"
                     className="mb-3 self-end text-black text-[10px] lg:text-[11px]"
@@ -217,16 +214,15 @@ const SignIn = () => {
                 >
                   Forgot Password?
                 </Link>
-              )
-              }
+              )}
             </div>
 
             <input
               type="submit"
-              value={ isLoading ? "SIGNING IN..." : "SIGN IN" }
+              value={isLoading ? "SIGNING IN..." : "SIGN IN"}
               className="monument-regular text-[var(--black-color)] bg-[var(--pink-color)] w-fit pt-[6px] pb-1 pl-8 pr-8 rounded-2xl mt-1.5 shadow-white-centered font-bold cursor-pointer self-start hover:bg-[var(--dark-pink-color)] hover:text-white"
               disabled={isLoading}
-              />
+            />
           </form>
         </div>
       </div>

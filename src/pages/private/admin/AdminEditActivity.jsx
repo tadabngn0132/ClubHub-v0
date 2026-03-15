@@ -11,8 +11,8 @@ const AdminEditActivity = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (status === 'fulfilled') {
-      navigate('/admin/activities');
+    if (status === "fulfilled") {
+      navigate("/admin/activities");
     }
     dispatch(resetStatus());
   }, [status, navigate, dispatch]);

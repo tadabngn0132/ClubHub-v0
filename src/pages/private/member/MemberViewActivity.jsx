@@ -1,20 +1,20 @@
-import { useDispatch, useSelector } from "react-redux"
-import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import {
   getActivityById,
-  deleteActivityById
-} from "../../../store/slices/activitySlice"
-import { Link } from "react-router-dom"
-import Loading from "../../../components/layout/internal/Loading.jsx"
-import toast, { Toaster } from "react-hot-toast"
+  deleteActivityById,
+} from "../../../store/slices/activitySlice";
+import { Link } from "react-router-dom";
+import Loading from "../../../components/layout/internal/Loading.jsx";
+import toast, { Toaster } from "react-hot-toast";
 
 const MemberViewActivity = ({ activityId }) => {
-  const dispatch = useDispatch()
-  const { activity, isLoading, error } = useSelector((state) => state.activity)
+  const dispatch = useDispatch();
+  const { activity, isLoading, error } = useSelector((state) => state.activity);
 
   useEffect(() => {
-    dispatch(getActivityById(activityId))
-  }, [dispatch, activityId])
+    dispatch(getActivityById(activityId));
+  }, [dispatch, activityId]);
 
   if (isLoading) {
     return <Loading />;
@@ -29,7 +29,7 @@ const MemberViewActivity = ({ activityId }) => {
       <Toaster position="top-right" reverseOrder={false} />
       <img src={activity?.thumbnailUrl} alt={activity?.title} />
       <Link to="/member/activities">Back to Activities</Link>
-      
+
       <h1>Name: {activity?.title}</h1>
 
       <div className="flex flex-col space-y-2">
@@ -43,7 +43,8 @@ const MemberViewActivity = ({ activityId }) => {
       <p>End Date: {activity?.endDate}</p>
       <p>Location Type: {activity?.locationType}</p>
 
-      {(activity?.locationType === "online" || activity?.locationType === "hybrid") && (
+      {(activity?.locationType === "online" ||
+        activity?.locationType === "hybrid") && (
         <>
           <p>Meeting Platform: {activity?.meetingPlatform}</p>
           <p>Meeting Link: {activity?.meetingLink}</p>
@@ -52,7 +53,8 @@ const MemberViewActivity = ({ activityId }) => {
         </>
       )}
 
-      {(activity?.locationType === "in-person" || activity?.locationType === "hybrid") && (
+      {(activity?.locationType === "in-person" ||
+        activity?.locationType === "hybrid") && (
         <>
           <p>Venue Name: {activity?.venueName}</p>
           <p>Venue Address: {activity?.venueAddress}</p>
@@ -63,7 +65,8 @@ const MemberViewActivity = ({ activityId }) => {
       <p>Activity Type: {activity?.activityType}</p>
       <p>Activity Status: {activity?.status}</p>
 
-      {activity?.activityParticipants && activity?.activityParticipants.length > 0 ? (
+      {activity?.activityParticipants &&
+      activity?.activityParticipants.length > 0 ? (
         activity?.activityParticipants.map((participant) => (
           <div key={participant.id}>
             <p>Participant Name: {participant.name}</p>
@@ -76,7 +79,11 @@ const MemberViewActivity = ({ activityId }) => {
 
       {activity?.images && activity?.images.length > 0 ? (
         activity?.images.map((image, index) => (
-          <img key={index} src={image.url} alt={`Activity Image ${index + 1}`} />
+          <img
+            key={index}
+            src={image.url}
+            alt={`Activity Image ${index + 1}`}
+          />
         ))
       ) : (
         <p>No images available for this activity.</p>
@@ -93,7 +100,7 @@ const MemberViewActivity = ({ activityId }) => {
         <p>No videos available for this activity.</p>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default MemberViewActivity
+export default MemberViewActivity;

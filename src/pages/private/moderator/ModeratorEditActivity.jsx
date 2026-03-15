@@ -11,8 +11,8 @@ const ModeratorEditActivity = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (status === 'fulfilled') {
-      navigate('/moderator/activities');
+    if (status === "fulfilled") {
+      navigate("/moderator/activities");
     }
     dispatch(resetStatus());
   }, [status, navigate, dispatch]);

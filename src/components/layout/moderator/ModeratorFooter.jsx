@@ -1,9 +1,7 @@
-import Footer from "../internal/Footer"
+import Footer from "../internal/Footer";
 
 const ModeratorFooter = () => {
-  return (
-    <Footer />
-  )
-}
+  return <Footer />;
+};
 
-export default ModeratorFooter
+export default ModeratorFooter;

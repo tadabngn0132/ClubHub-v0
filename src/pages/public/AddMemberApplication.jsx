@@ -6,7 +6,7 @@ const AddMemberApplication = () => {
       <h1>Apply to Join Our Club</h1>
       {/* <MemberApplicationForm /> */}
     </div>
-  )
-}
+  );
+};
 
-export default AddMemberApplication
+export default AddMemberApplication;

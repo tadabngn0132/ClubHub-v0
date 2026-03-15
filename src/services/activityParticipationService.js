@@ -28,7 +28,10 @@ export const getParticipationsByUserId = async (userId) => {
 };
 
 export const updateParticipationById = async (id, participationData) => {
-  const res = await axiosClient.put(`/activity-participations/${id}`, participationData);
+  const res = await axiosClient.put(
+    `/activity-participations/${id}`,
+    participationData,
+  );
   return res.data;
 };
 

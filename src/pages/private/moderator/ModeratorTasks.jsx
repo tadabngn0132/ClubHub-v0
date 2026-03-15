@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import {
   getAllTasksList,
   softDeleteTaskById,
-  hardDeleteTaskById
+  hardDeleteTaskById,
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -11,11 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const ModeratorTasks = () => {
   const dispatch = useDispatch();
-  const {
-    tasks,
-    isLoading,
-    error
-  } = useSelector((state) => state.task);
+  const { tasks, isLoading, error } = useSelector((state) => state.task);
   const [selectedTasks, setSelectedTasks] = useState([]);
 
   useEffect(() => {
@@ -24,7 +20,7 @@ const ModeratorTasks = () => {
 
   const handleDelete = (taskId) => {
     const softConfirmed = window.confirm(
-      "Do you want to deactivate this task?"
+      "Do you want to deactivate this task?",
     );
 
     if (softConfirmed) {
@@ -33,7 +29,7 @@ const ModeratorTasks = () => {
     }
 
     const hardConfirmed = window.confirm(
-      "Do you want to permanently delete this task? This action cannot be undone."
+      "Do you want to permanently delete this task? This action cannot be undone.",
     );
 
     if (hardConfirmed) {
@@ -91,10 +87,16 @@ const ModeratorTasks = () => {
               <td>{task.dueDate}</td>
               <td>{task.status}</td>
               <td className="text-center">
-                <Link to={`/moderator/tasks/view/${task.id}`} className="text-blue-500 hover:underline mr-2">
+                <Link
+                  to={`/moderator/tasks/view/${task.id}`}
+                  className="text-blue-500 hover:underline mr-2"
+                >
                   View
                 </Link>
-                <Link to={`/moderator/tasks/edit/${task.id}`} className="text-green-500 hover:underline mr-2">
+                <Link
+                  to={`/moderator/tasks/edit/${task.id}`}
+                  className="text-green-500 hover:underline mr-2"
+                >
                   Edit
                 </Link>
                 <button

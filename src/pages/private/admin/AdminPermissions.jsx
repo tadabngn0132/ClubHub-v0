@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const AdminPermissions = () => {
   return (
@@ -17,12 +17,10 @@ const AdminPermissions = () => {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          {/* Implement the user permissions rows here */}
-        </tbody>
+        <tbody>{/* Implement the user permissions rows here */}</tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default AdminPermissions
+export default AdminPermissions;

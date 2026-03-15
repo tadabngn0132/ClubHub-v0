@@ -1,9 +1,7 @@
-import Header from '../../layout/internal/Header.jsx'
+import Header from "../../layout/internal/Header.jsx";
 
 const MemberHeader = () => {
-  return (
-    <Header role="Member" />
-  )
-}
+  return <Header role="Member" />;
+};
 
-export default MemberHeader
+export default MemberHeader;
