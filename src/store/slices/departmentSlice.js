@@ -6,7 +6,6 @@ import {
   updateDepartment,
   deleteDepartment,
 } from "../../services/departmentService.js";
-import { resetStatus } from "./authSlice";
 
 export const createNewDepartment = createAsyncThunk(
   "department/createNewDepartment",

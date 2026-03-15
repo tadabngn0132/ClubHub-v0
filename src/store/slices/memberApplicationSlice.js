@@ -9,7 +9,6 @@ import {
   createMemberApplicationInterviewDetail,
   createMemberApplicationFinalReviewDetail,
 } from "../../services/memberApplicationService";
-import { resetStatus } from "./activitySlice";
 
 export const submitMemberApplication = createAsyncThunk(
   "memberApplication/submitMemberApplication",
