@@ -96,7 +96,7 @@ const ActivityForm = ({ mode, activityId }) => {
         endDate: "",
         locationType: "",
         meetingPlatform: "",
-        meetLink: "",
+        meetingLink: "",
         meetingId: "",
         meetingPassword: "",
         venueName: "",
@@ -113,7 +113,7 @@ const ActivityForm = ({ mode, activityId }) => {
         registrationDeadline: "",
       });
     }
-  }, [mode, activityId, methods]);
+  }, [mode, activityId, methods, dispatch, activity]);
 
   const tabs = [
     { name: "Basic Info", component: ActivityBasicInfoSection },
@@ -127,7 +127,7 @@ const ActivityForm = ({ mode, activityId }) => {
     if (mode === "add") {
       dispatch(createActivity(data));
     } else if (mode === "edit") {
-      dispatch(updateActivityById(data));
+      dispatch(updateActivityById(activityId, data));
     }
   };
 

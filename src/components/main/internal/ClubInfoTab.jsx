@@ -1,13 +1,23 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import { DEPARTMENTS } from "../../../utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllDepartmentsList } from "../../../store/slices/departmentSlice";
+import { getAllPositionsList } from "../../../store/slices/positionSlice";
+import { useEffect } from "react";
 
 const ClubInfoTab = () => {
+  const dispatch = useDispatch();
   const {
     register,
     formState: { errors },
   } = useFormContext();
-  const departmentList = DEPARTMENTS;
+  const { departments } = useSelector((state) => state.department);
+  const { positions } = useSelector((state) => state.position);
+
+  useEffect(() => {
+    dispatch(getAllDepartmentsList());
+    dispatch(getAllPositionsList());
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col">
@@ -25,98 +35,6 @@ const ClubInfoTab = () => {
       {errors.generation && (
         <p className="text-red-500 text-sm">{errors.generation.message}</p>
       )}
-
-      {/* Department field */}
-      <label htmlFor="department" className="mt-3">
-        Department <span className="text-red-500">*</span>
-      </label>
-      {departmentList.map((department) => (
-        <React.Fragment key={department.id}>
-          <div className="flex items-center-safe gap-1 mt-1">
-            <input
-              type="checkbox"
-              name="department"
-              id={department.name.toLowerCase().replace(/\s+/g, "")}
-              {...register("department", {
-                required: "Department cannot be empty",
-              })}
-            />
-            <label htmlFor={department.name.toLowerCase().replace(/\s+/g, "")}>
-              {department.name}
-            </label>
-          </div>
-        </React.Fragment>
-      ))}
-      {errors.department && (
-        <p className="text-red-500 text-sm">{errors.department.message}</p>
-      )}
-
-      {/* Position field */}
-      <label htmlFor="position" className="mt-3">
-        Position <span className="text-red-500">*</span>
-      </label>
-      {departmentList.map((department) => (
-        <React.Fragment key={department.id}>
-          <div className="flex items-center-safe gap-1 mt-1">
-            <input
-              type="checkbox"
-              name="position"
-              id={department.name.toLowerCase().replace(/\s+/g, "") + "member"}
-              {...register("position", {
-                required: "Position cannot be empty",
-              })}
-            />
-            <label
-              htmlFor={
-                department.name.toLowerCase().replace(/\s+/g, "") + "member"
-              }
-            >
-              Member of {department.name}
-            </label>
-          </div>
-        </React.Fragment>
-      ))}
-
-      {departmentList.map((department) => (
-        <React.Fragment key={department.id}>
-          <div className="flex items-center-safe gap-1 mt-1">
-            <input
-              type="checkbox"
-              name="position"
-              id={department.name.toLowerCase().replace(/\s+/g, "") + "head"}
-              {...register("position", {
-                required: "Position cannot be empty",
-              })}
-            />
-            <label
-              htmlFor={
-                department.name.toLowerCase().replace(/\s+/g, "") + "head"
-              }
-            >
-              Head of {department.name}
-            </label>
-          </div>
-        </React.Fragment>
-      ))}
-      {errors.position && (
-        <p className="text-red-500 text-sm">{errors.position.message}</p>
-      )}
-
-      {/* Role field */}
-      <label htmlFor="role" className="mt-3">
-        Role <span className="text-red-500">*</span>
-      </label>
-      <select name="role" id="role" className="mt-2" {...register("role")}>
-        <option className="bg-gray-500" value="member">
-          Member
-        </option>
-        <option className="bg-gray-500" value="president">
-          Moderator
-        </option>
-        <option className="bg-gray-500" value="admin">
-          Admin
-        </option>
-      </select>
 
       {/* Join Date field */}
       <label htmlFor="join_date" className="mt-3">
@@ -149,12 +67,46 @@ const ClubInfoTab = () => {
         <option className="bg-gray-500" value="Inactive">
           Inactive
         </option>
-        <option className="bg-gray-500" value="Alumni">
-          Alumni
-        </option>
-        <option className="bg-gray-500" value="Pending">
-          Pending
-        </option>
+      </select>
+
+      {/* Position Id */}
+      <label htmlFor="positionId" className="mt-3">
+        Position <span className="text-red-500">*</span>
+      </label>
+      <select
+        name="positionId"
+        id="positionId"
+        className="mt-2"
+        {...register("positionId", {
+          required: "Position is required",
+        })}
+      >
+        <option value="">Select a position</option>
+        {positions.map((pos) => (
+          <option key={pos.id} value={pos.id}>
+            {pos.name}
+          </option>
+        ))}
+      </select>
+
+      {/* Root Department Id */}
+      <label htmlFor="rootDepartmentId" className="mt-3">
+        Root Department <span className="text-red-500">*</span>
+      </label>
+      <select
+        name="rootDepartmentId"
+        id="rootDepartmentId"
+        className="mt-2"
+        {...register("rootDepartmentId", {
+          required: "Root Department is required",
+        })}
+      >
+        <option value="">Select a department</option>
+        {departments.map((dept) => (
+          <option key={dept.id} value={dept.id}>
+            {dept.name}
+          </option>
+        ))}
       </select>
     </div>
   );

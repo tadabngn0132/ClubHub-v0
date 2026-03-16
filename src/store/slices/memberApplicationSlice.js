@@ -137,8 +137,8 @@ export const updateMemberApplicationFinalReview = createAsyncThunk(
 const memberApplicationSlice = createSlice({
   name: "memberApplication",
   initialState: {
-    applications: [],
-    application: null,
+    memberApplications: [],
+    memberApplication: null,
     isLoading: false,
     error: null,
     status: "idle",
@@ -158,7 +158,7 @@ const memberApplicationSlice = createSlice({
       .addCase(submitMemberApplication.fulfilled, (state, action) => {
         state.isLoading = false;
         state.status = "fulfilled";
-        state.applications.push(action.payload.application);
+        state.memberApplications.push(action.payload.data);
       })
       .addCase(submitMemberApplication.rejected, (state, action) => {
         state.isLoading = false;
@@ -173,7 +173,7 @@ const memberApplicationSlice = createSlice({
       })
       .addCase(getAllMemberApplicationsList.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.applications = action.payload.applications;
+        state.memberApplications = action.payload.datas;
         state.status = "fulfilled";
       })
       .addCase(getAllMemberApplicationsList.rejected, (state, action) => {
@@ -189,7 +189,7 @@ const memberApplicationSlice = createSlice({
       })
       .addCase(getMemberApplicationDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.application = action.payload.application;
+        state.memberApplication = action.payload.data;
         state.status = "fulfilled";
       })
       .addCase(getMemberApplicationDetails.rejected, (state, action) => {
@@ -205,8 +205,8 @@ const memberApplicationSlice = createSlice({
       })
       .addCase(softDeleteMemberApplicationById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.applications = state.applications.filter(
-          (app) => app._id !== action.payload.applicationId,
+        state.memberApplications = state.memberApplications.filter(
+          (app) => app.id !== action.payload.dataId,
         );
         state.status = "fulfilled";
       })
@@ -223,8 +223,8 @@ const memberApplicationSlice = createSlice({
       })
       .addCase(hardDeleteMemberApplicationById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.applications = state.applications.filter(
-          (app) => app._id !== action.payload.applicationId,
+        state.memberApplications = state.memberApplications.filter(
+          (app) => app.id !== action.payload.dataId,
         );
         state.status = "fulfilled";
       })
@@ -242,10 +242,10 @@ const memberApplicationSlice = createSlice({
       .addCase(updateMemberApplicationCVReview.fulfilled, (state, action) => {
         state.isLoading = false;
         if (
-          state.application &&
-          state.application._id === action.payload.applicationId
+          state.memberApplication &&
+          state.memberApplication.id === action.payload.dataId
         ) {
-          state.application.cvReviewDetail = action.payload.cvReviewDetail;
+          state.memberApplication.cvReviewDetail = action.payload.cvReviewDetail;
         }
         state.status = "fulfilled";
       })
@@ -265,10 +265,10 @@ const memberApplicationSlice = createSlice({
         (state, action) => {
           state.isLoading = false;
           if (
-            state.application &&
-            state.application._id === action.payload.applicationId
+            state.memberApplication &&
+            state.memberApplication.id === action.payload.dataId
           ) {
-            state.application.finalReviewDetail =
+            state.memberApplication.finalReviewDetail =
               action.payload.finalReviewDetail;
           }
           state.status = "fulfilled";

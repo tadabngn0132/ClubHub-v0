@@ -25,14 +25,12 @@ const UserForm = ({ mode, userId }) => {
       gender: "",
       major: "",
       generation: "",
-      department: "",
-      position: "",
-      role: "",
       joinedAt: "",
-      status: "",
+      status: "active",
       studentId: "",
       avatarUrl: null,
       bio: "",
+      rootDepartmentId: null,
     },
     mode: "onChange",
   });
@@ -52,14 +50,12 @@ const UserForm = ({ mode, userId }) => {
           gender: user.gender || "",
           major: user.major || "",
           generation: user.generation || "",
-          department: user.department || "",
-          position: user.position || "",
-          role: user.role || "",
           joinedAt: user.joinedAt || "",
-          status: user.status || "",
+          status: user.status || "active",
           studentId: user.studentId || "",
           avatarUrl: user.avatarUrl || null,
           bio: user.bio || "",
+          rootDepartmentId: user.rootDepartmentId || null,
         });
       }
     } else if (mode === "add") {
@@ -71,14 +67,13 @@ const UserForm = ({ mode, userId }) => {
         gender: "",
         major: "",
         generation: "",
-        department: "",
-        position: "",
-        role: "",
         joinedAt: "",
-        status: "",
+        status: "active",
         studentId: "",
         avatarUrl: null,
         bio: "",
+        rootDepartmentId: null,
+        positionId: null,
       });
     }
   }, [mode, userId, methods]);

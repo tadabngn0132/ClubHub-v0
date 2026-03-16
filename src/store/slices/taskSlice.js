@@ -133,7 +133,7 @@ const taskSlice = createSlice({
   name: "task",
   initialState: {
     tasks: [],
-    taskDetails: null,
+    task: null,
     isLoading: false,
     error: null,
     status: "idle",

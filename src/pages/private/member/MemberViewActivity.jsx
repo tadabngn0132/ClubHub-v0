@@ -2,13 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   getActivityById,
-  deleteActivityById,
 } from "../../../store/slices/activitySlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
-const MemberViewActivity = ({ activityId }) => {
+const MemberViewActivity = () => {
+  const { activityId } = useParams();
   const dispatch = useDispatch();
   const { activity, isLoading, error } = useSelector((state) => state.activity);
 

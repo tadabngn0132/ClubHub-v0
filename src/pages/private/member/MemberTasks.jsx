@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import {
-  getAllTasksList,
-  deleteTaskById,
+  getUserTasks,
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -14,7 +13,7 @@ const MemberTasks = () => {
   const [selectedTasks, setSelectedTasks] = useState([]);
 
   useEffect(() => {
-    dispatch(getAllTasksList());
+    dispatch(getUserTasks());
   }, [dispatch]);
 
   if (isLoading) {
@@ -44,7 +43,10 @@ const MemberTasks = () => {
             <th>Title</th>
             <th>Description</th>
             <th>Due Date</th>
+            <th>Is Check Cf</th>
             <th>Status</th>
+            <th>Assignee Scope</th>
+            <th>Assignor</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -57,7 +59,10 @@ const MemberTasks = () => {
               <td>{task.title}</td>
               <td>{task.description}</td>
               <td>{task.dueDate}</td>
+              <td>{task.isCheckCf ? "Yes" : "No"}</td>
               <td>{task.status}</td>
+              <td>{task.assigneeScope}</td>
+              <td>{task.assignorId}</td>
               <td className="text-center">
                 <Link
                   to={`/member/tasks/view/${task.id}`}

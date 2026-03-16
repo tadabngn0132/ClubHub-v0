@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
+import { resetStatus } from "../../../store/slices/memberApplicationSlice";
 
 const AdminMemberApplication = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,14 @@ const AdminMemberApplication = () => {
   }, [dispatch]);
 
   const handleDelete = (applicationId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this member application? This action cannot be undone.",
+    );
+    if (!confirmed) {
+      return;
+    }
     dispatch(deleteMemberApplicationById(applicationId));
+    dispatch(resetStatus());
   };
 
   if (isLoading) {

@@ -1,4 +1,5 @@
 const Members = () => {
+  // TODO: Implement the members page with sections for founders, executive board, and heads of departments, including their names and roles
   return (
     <div className="flex flex-col min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] gap-40">
       <div className="flex flex-col items-center md:pl-[var(--pub-container-padding-x)] md:pr-[var(--pub-container-padding-x)] mt-16 gap-12">

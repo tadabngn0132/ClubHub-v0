@@ -2,15 +2,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   getActivityById,
-  deleteActivityById,
+  softDeleteActivityById,
+  hardDeleteActivityById,
 } from "../../../store/slices/activitySlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { resetStatus } from "../../../store/slices/activitySlice";
+import { useParams } from "react-router-dom";
 
-const AdminViewActivity = ({ activityId }) => {
+const AdminViewActivity = () => {
+  const { activityId } = useParams();
   const dispatch = useDispatch();
   const { activity, isLoading, error, status } = useSelector(
     (state) => state.activity,
@@ -30,7 +33,22 @@ const AdminViewActivity = ({ activityId }) => {
   }
 
   const handleDelete = () => {
-    dispatch(deleteActivityById(activityId));
+    const softConfirmed = window.confirm(
+      "Do you want to deactivate this activity?",
+    );
+
+    if (softConfirmed) {
+      dispatch(softDeleteActivityById(activityId));
+      return;
+    }
+
+    const hardConfirmed = window.confirm(
+      "Do you want to permanently delete this activity? This action cannot be undone.",
+    );
+
+    if (hardConfirmed) {
+      dispatch(hardDeleteActivityById(activityId));
+    }
 
     if (status === "fulfilled") {
       navigate("/admin/activities");

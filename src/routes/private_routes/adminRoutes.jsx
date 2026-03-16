@@ -22,6 +22,8 @@ import AdminPositions from "../../pages/private/admin/AdminPositions.jsx";
 import AdminAddPosition from "../../pages/private/admin/AdminAddPosition.jsx";
 import AdminEditPosition from "../../pages/private/admin/AdminEditPosition.jsx";
 import AdminViewPosition from "../../pages/private/admin/AdminViewPosition.jsx";
+import AdminMemberApplications from "../../pages/private/admin/AdminMemberApplications.jsx";
+import AdminViewMemberApplication from "../../pages/private/admin/AdminViewMemberApplication.jsx";
 
 export const adminRoutes = [
   {
@@ -208,4 +210,20 @@ export const adminRoutes = [
       </AdminLayout>
     ),
   },
+  {
+    path: "/admin/member-applications",
+    element: (
+      <AdminLayout>
+        <AdminMemberApplications />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/admin/member-applications/view/:applicationId",
+    element: (
+      <AdminLayout>
+        <AdminViewMemberApplication />
+      </AdminLayout>
+    ),
+  }
 ];

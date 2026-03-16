@@ -66,7 +66,10 @@ const AdminTasks = () => {
             <th>Title</th>
             <th>Description</th>
             <th>Due Date</th>
+            <th>Is Check Cf</th>
             <th>Status</th>
+            <th>Assignee Scope</th>
+            <th>Assignor</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -79,7 +82,10 @@ const AdminTasks = () => {
               <td>{task.title}</td>
               <td>{task.description}</td>
               <td>{task.dueDate}</td>
+              <td>{task.isCheckCf ? "Yes" : "No"}</td>
               <td>{task.status}</td>
+              <td>{task.assigneeScope}</td>
+              <td>{task.assignorId}</td>
               <td className="text-center">
                 <Link
                   to={`/admin/tasks/view/${task.id}`}

@@ -140,7 +140,7 @@ const notificationSlice = createSlice({
       })
       .addCase(createNewNotification.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.notifications.push(action.payload.notification);
+        state.notifications.push(action.payload.data);
         state.status = "fulfilled";
       })
       .addCase(createNewNotification.rejected, (state, action) => {
@@ -156,7 +156,7 @@ const notificationSlice = createSlice({
       })
       .addCase(getNotificationDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.notificationDetails = action.payload.notification;
+        state.notificationDetails = action.payload.data;
         state.status = "fulfilled";
       })
       .addCase(getNotificationDetails.rejected, (state, action) => {
@@ -172,7 +172,7 @@ const notificationSlice = createSlice({
       })
       .addCase(getAllNotificationsList.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.notifications = action.payload.notifications;
+        state.notifications = action.payload.datas;
         state.status = "fulfilled";
       })
       .addCase(getAllNotificationsList.rejected, (state, action) => {
@@ -188,7 +188,7 @@ const notificationSlice = createSlice({
       })
       .addCase(getUserNotifications.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.notifications = action.payload.notifications;
+        state.notifications = action.payload.datas;
         state.status = "fulfilled";
       })
       .addCase(getUserNotifications.rejected, (state, action) => {
@@ -206,10 +206,10 @@ const notificationSlice = createSlice({
         state.isLoading = false;
         state.status = "fulfilled";
         const index = state.notifications.findIndex(
-          (notif) => notif._id === action.payload.notification._id,
+          (notif) => notif.id === action.payload.data.id,
         );
         if (index !== -1) {
-          state.notifications[index] = action.payload.notification;
+          state.notifications[index] = action.payload.data;
         }
       })
       .addCase(updateNotificationById.rejected, (state, action) => {
@@ -226,7 +226,7 @@ const notificationSlice = createSlice({
       .addCase(deleteNotificationById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.notifications = state.notifications.filter(
-          (notif) => notif._id !== action.payload.notificationId,
+          (notif) => notif.id !== action.payload.dataId,
         );
         state.status = "fulfilled";
       })

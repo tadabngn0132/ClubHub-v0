@@ -2,15 +2,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   getActivityById,
-  deleteActivityById,
+  softDeleteActivityById,
 } from "../../../store/slices/activitySlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { resetStatus } from "../../../store/slices/activitySlice";
+import { useParams } from "react-router-dom";
 
-const ModeratorViewActivity = ({ activityId }) => {
+const ModeratorViewActivity = () => {
+  const { activityId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { activity, isLoading, error, status } = useSelector(
@@ -30,7 +32,7 @@ const ModeratorViewActivity = ({ activityId }) => {
   }
 
   const handleDelete = () => {
-    dispatch(deleteActivityById(activityId));
+    dispatch(softDeleteActivityById(activityId));
 
     if (status === "fulfilled") {
       navigate("/moderator/activities");

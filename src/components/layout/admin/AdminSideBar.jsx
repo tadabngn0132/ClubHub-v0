@@ -3,10 +3,13 @@ import SideBar from "../internal/SideBar";
 const AdminSideBar = () => {
   const adminSideBarItems = [
     { name: "Dashboard", link: "/admin/dashboard" },
-    { name: "Activities", link: "/admin/activities" },
     { name: "Members", link: "/admin/users" },
+    { name: "Departments", link: "/admin/departments" },
+    { name: "Positions", link: "/admin/positions" },
+    { name: "Activities", link: "/admin/activities" },
     { name: "Schedule", link: "/admin/schedule" },
     { name: "Tasks", link: "/admin/tasks" },
+    { name: "Member Applications", link: "/admin/member-applications" },
     { name: "Profile", link: "/admin/profile" },
   ];
 

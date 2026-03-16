@@ -1,6 +1,7 @@
 import React from "react";
 
 const AdminSchedule = () => {
+  // TODO: Implement schedule management functionality, such as adding, editing, and deleting events
   return (
     <div>
       <h1>Admin Schedule Page</h1>

@@ -10,6 +10,14 @@ import ModeratorAddActivity from "../../pages/private/moderator/ModeratorAddActi
 import ModeratorEditTask from "../../pages/private/moderator/ModeratorEditTask.jsx";
 import ModeratorViewTask from "../../pages/private/moderator/ModeratorViewTask.jsx";
 import ModeratorAddTask from "../../pages/private/moderator/ModeratorAddTask.jsx";
+import ModeratorUsers from "../../pages/private/moderator/ModeratorUsers.jsx";
+import ModeratorViewUser from "../../pages/private/moderator/ModeratorViewUser.jsx";
+import ModeratorDepartments from "../../pages/private/moderator/ModeratorDepartments.jsx";
+import ModeratorViewDepartment from "../../pages/private/moderator/ModeratorViewDepartment.jsx";
+import ModeratorPositions from "../../pages/private/moderator/ModeratorPositions.jsx";
+import ModeratorViewPosition from "../../pages/private/moderator/ModeratorViewPosition.jsx";
+import ModeratorMemberApplications from "../../pages/private/moderator/ModeratorMemberApplications.jsx";
+import ModeratorViewMemberApplication from "../../pages/private/moderator/ModeratorViewMemberApplication.jsx";
 
 export const moderatorRoutes = [
   {
@@ -100,4 +108,68 @@ export const moderatorRoutes = [
       </ModeratorLayout>
     ),
   },
+  {
+    path: "/moderator/users",
+    element: (
+      <ModeratorLayout>
+        <ModeratorUsers />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/users/view/:userId",
+    element: (
+      <ModeratorLayout>
+        <ModeratorViewUser />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/departments",
+    element: (
+      <ModeratorLayout>
+        <ModeratorDepartments />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/departments/view/:departmentId",
+    element: (
+      <ModeratorLayout>
+        <ModeratorViewDepartment />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/positions",
+    element: (
+      <ModeratorLayout>
+        <ModeratorPositions />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/positions/view/:positionId",
+    element: (
+      <ModeratorLayout>
+        <ModeratorViewPosition />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/member-applications",
+    element: (
+      <ModeratorLayout>
+        <ModeratorMemberApplications />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/member-applications/view/:applicationId",
+    element: (
+      <ModeratorLayout>
+        <ModeratorViewMemberApplication />
+      </ModeratorLayout>
+    ),
+  }
 ];

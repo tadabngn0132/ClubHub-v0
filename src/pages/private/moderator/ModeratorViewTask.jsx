@@ -2,15 +2,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   getTaskDetails,
-  deleteTaskById,
+  softDeleteTaskById,
 } from "../../../store/slices/taskSlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { resetStatus } from "../../../store/slices/taskSlice";
+import { useParams } from "react-router-dom";
 
-const ModeratorViewTask = ({ taskId }) => {
+const ModeratorViewTask = () => {
+  const { taskId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { task, isLoading, error, status } = useSelector((state) => state.task);
@@ -28,7 +30,7 @@ const ModeratorViewTask = ({ taskId }) => {
   }
 
   const handleDelete = () => {
-    dispatch(deleteTaskById(taskId));
+    dispatch(softDeleteTaskById(taskId));
 
     if (status === "fulfilled") {
       navigate("/moderator/tasks");

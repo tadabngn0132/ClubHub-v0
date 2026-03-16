@@ -2,13 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   getTaskDetails,
-  deleteTaskById,
 } from "../../../store/slices/taskSlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
-const MemberViewTask = ({ taskId }) => {
+const MemberViewTask = () => {
+  const { taskId } = useParams();
   const dispatch = useDispatch();
   const { task, isLoading, error } = useSelector((state) => state.task);
 

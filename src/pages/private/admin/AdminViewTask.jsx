@@ -2,15 +2,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   getTaskDetails,
-  deleteTaskById,
+  softDeleteTaskById,
+  hardDeleteTaskById,
 } from "../../../store/slices/taskSlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { resetStatus } from "../../../store/slices/taskSlice";
+import { useParams } from "react-router-dom";
 
-const AdminViewTask = ({ taskId }) => {
+const AdminViewTask = () => {
+  const { taskId } = useParams();
   const dispatch = useDispatch();
   const { task, isLoading, error, status } = useSelector((state) => state.task);
   const navigate = useNavigate();
@@ -28,7 +31,22 @@ const AdminViewTask = ({ taskId }) => {
   }
 
   const handleDelete = () => {
-    dispatch(deleteTaskById(taskId));
+    const softConfirmed = window.confirm(
+      "Do you want to deactivate this task?",
+    );
+
+    if (softConfirmed) {
+      dispatch(softDeleteTaskById(taskId));
+      return;
+    }
+
+    const hardConfirmed = window.confirm(
+      "Do you want to permanently delete this task? This action cannot be undone.",
+    );
+
+    if (hardConfirmed) {
+      dispatch(hardDeleteTaskById(taskId));
+    }
 
     if (status === "fulfilled") {
       navigate("/admin/tasks");

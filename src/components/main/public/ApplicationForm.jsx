@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { submitMemberApplication } from "../../../store/slices/memberApplicationSlice";
 
 const ApplicationForm = () => {
+  // TODO: Implement the application form functionality, including form validation and submission handling
   const dispatch = useDispatch();
   const {
     register,
