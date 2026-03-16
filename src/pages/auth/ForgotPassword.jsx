@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { forgotPasswordUser } from "../../store/slices/authSlice";
 import { useState } from "react";
-import { current } from "@reduxjs/toolkit";
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
@@ -21,10 +20,8 @@ const ForgotPassword = () => {
   });
 
   const handleForgotPassword = async (data) => {
-    console.log(data);
     const resData = await dispatch(forgotPasswordUser(data)).unwrap();
     setCurrentResData(resData);
-    console.log(resData);
   };
 
   return (
