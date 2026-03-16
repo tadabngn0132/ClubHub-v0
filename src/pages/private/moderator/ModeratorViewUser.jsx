@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import { getUserById, deleteUserById } from "../../../store/slices/userSlice";
+import { getUserById, softDeleteUserById } from "../../../store/slices/userSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { getActivitiesByUserId } from "../../../store/slices/activitySlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
@@ -39,7 +39,7 @@ const ModeratorViewUser = () => {
   if (!currentMember) return <p>No member found.</p>;
 
   const handleDelete = () => {
-    dispatch(deleteUserById(memberId));
+    dispatch(softDeleteUserById(memberId));
 
     if (status === "fulfilled") {
       navigate("/moderator/members");

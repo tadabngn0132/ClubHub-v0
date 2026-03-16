@@ -1,4 +1,4 @@
-import { axiosClient } from "./axios.js";
+import axiosClient from "./axios.js";
 
 export const createDepartmentApplication = async (payload) => {
   const res = await axiosClient.post("/department-applications", payload);

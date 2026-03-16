@@ -1,3 +1,5 @@
+import activityItem01 from "../../assets/items/activity-item-01.webp";
+
 const Home = () => {
   return (
     <div className="flex flex-col min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] w-full md:pl-[var(--pub-container-padding-x)] md:pr-[var(--pub-container-padding-x)]">
@@ -24,7 +26,7 @@ const Home = () => {
 
       <img
         className="w-[30rem] m-10 ml-7"
-        src="src/assets/items/activites-items-01.webp"
+        src={activityItem01}
         alt="Featured Activities"
       />
 

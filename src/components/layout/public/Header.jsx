@@ -4,8 +4,9 @@ import {
   faBars,
   faArrowRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
-
 import { useState, useEffect, useRef } from "react";
+import GDCLogo from "../../../assets/logos/GDC_logo.svg";
+import UoGLogo from "../../../assets/logos/2025-Greenwich-White-Eng.png";
 
 const Header = () => {
   const [isNavBarOpen, setIsNavBarOpen] = useState(false);
@@ -44,13 +45,13 @@ const Header = () => {
           <Link className="hover:opacity-75" to="/">
             <img
               className="w-15.5 sm:w-17.5 md:w-22 lg:w-24.5"
-              src="src/assets/logos/GDC_logo.svg"
+              src={GDCLogo}
               alt="GDC Logo"
             />
           </Link>
           <img
             className="w-13.5 sm:w-15.5 md:w-20 lg:w-22.5"
-            src="src/assets/logos/2025-Greenwich-White-Eng.png"
+            src={UoGLogo}
             alt="UoG Logo"
           />
         </div>

@@ -1,45 +1,58 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { refreshAccessTokenUser, setGoogleAuthData } from "../../store/slices/authSlice";
+import toast from "react-hot-toast";
 
 const AuthCallback = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleCallback = async () => {
       const success = searchParams.get("success");
       const userData = searchParams.get("user");
+      const accessToken = searchParams.get("accessToken");
 
-      if (success && userData) {
+      if (success && userData && accessToken) {
         const user = JSON.parse(decodeURIComponent(userData));
 
-        // Gọi API lấy accessToken
-        const data = await refreshAccessToken();
-        localStorage.setItem("accessToken", data.accessToken);
-
-        // Lưu user vào context/redux
-        // setUser(user)
+        if (!accessToken || accessToken === "null" || accessToken === "undefined") {
+          // Gọi API lấy accessToken
+          dispatch(refreshAccessTokenUser());
+        } else {
+          // Lưu accessToken và userData vào Redux store
+          dispatch(setGoogleAuthData({ userData: user, accessToken: accessToken }));
+        }
 
         // Redirect dựa trên role
-        switch (user.role) {
+        switch (user.userPositions[0].position.systemRole) {
           case "admin":
             navigate("/admin/dashboard");
+            toast.success("Authentication successful. Welcome, Admin!");
             break;
           case "moderator":
             navigate("/moderator/dashboard");
+            toast.success("Authentication successful. Welcome, Moderator!");
             break;
           case "member":
+            navigate("/member/dashboard");
+            toast.success("Authentication successful. Welcome, Member!");
+            break;
           default:
-            navigate("/dashboard");
+            navigate("/sign-in");
+            toast.error("Authentication failed. Please try again.");
             break;
         }
       } else {
-        navigate("/login?error=auth_failed");
+        navigate("/sign-in");
+        toast.error("Authentication failed. Please try again.");
       }
     };
 
     handleCallback();
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, dispatch]);
 
   return <div>Authenticating...</div>;
 };

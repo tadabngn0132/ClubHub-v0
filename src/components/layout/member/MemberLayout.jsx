@@ -6,7 +6,7 @@ import MemberSideBar from "./MemberSideBar.jsx";
 const MemberLayout = ({ children }) => {
   return (
     <>
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin", "moderator", "member"]}>
         <MemberHeader />
         <main className="flex">
           <MemberSideBar />

@@ -8,6 +8,12 @@ import { loginUser } from "../../store/slices/authSlice";
 import toast, { Toaster } from "react-hot-toast";
 import gdcLogo from "../../assets/logos/GDC_logo.svg";
 import uogLogo from "../../assets/logos/2025-Greenwich-White-Eng.png";
+import bgVideo from "../../assets/videos/flirting_1080p.webm";
+import signInImage from "../../assets/images/sign_in_image.png";
+import backToHomeIcon from "../../assets/icons/back_to_home_icon.svg";
+import userIcon from "../../assets/icons/user_icon.svg";
+import emailIcon from "../../assets/icons/email_icon.svg";
+import lockIcon from "../../assets/icons/lock_icon.svg";
 
 const SignIn = () => {
   const {
@@ -53,7 +59,7 @@ const SignIn = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `http://localhost:5995/api/auth/google-auth`;
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google-auth`;
   };
 
   return (
@@ -63,7 +69,7 @@ const SignIn = () => {
         <div className="hidden lg:flex lg:flex-col lg:p-10 lg:pt-8 lg:justify-between">
           <video
             className="object-cover lg:w-2/3 2xl:w-7/10 h-full absolute top-0 left-0 z-[0] rounded-[3rem] rounded-r-none opacity-75 animate-scale-bigger animate-slide-left"
-            src="src/assets/videos/flirting_1080p.webm"
+            src={bgVideo}
             autoPlay
             loop
             muted
@@ -75,7 +81,7 @@ const SignIn = () => {
           <div className="flex flex-col z-10 animate-slide-left">
             <img
               className="w-125  2xl:w-138"
-              src="src/assets/items/sign_in.webp"
+              src={signInImage}
               alt="Hello"
             />
             <p className="ml-7 text-xs w-2/3">
@@ -85,7 +91,7 @@ const SignIn = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center-safe w-full min-h-[var(--sign-in-form-min-h)] lg:w-6/12 xl:w-[46%] 2xl:w-2/5 p-10 pl-21 pr-21 sm:pl-51 sm:pr-51 md:pl-66 md:pr-66 lg:pl-24 lg:pr-24 xl:pl-22 xl:pr-22 lg:rounded-[5rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background.webp)] bg-auto md:bg-size-[auto_1920px] lg:bg-auto bg-current bg-center relative animate-slide-right">
+        <div className="flex flex-col items-center justify-center-safe w-full min-h-[var(--sign-in-form-min-h)] lg:w-6/12 xl:w-[46%] 2xl:w-2/5 p-10 pl-21 pr-21 sm:pl-51 sm:pr-51 md:pl-66 md:pr-66 lg:pl-24 lg:pr-24 xl:pl-22 xl:pr-22 lg:rounded-[5rem] z-10 bg-[url(../../assets/backgrounds/sign_in_background/GDC_background.webp)] bg-auto md:bg-size-[auto_1920px] lg:bg-auto bg-current bg-center relative animate-slide-right">
           {/* Form header */}
           <div className="flex mb-6 w-full relative">
             <Link
@@ -93,7 +99,7 @@ const SignIn = () => {
               className="absolute w-10 top-0 left-[-80px] m-4 hover:opacity-70"
             >
               <img
-                src="src/assets/icons/back_to_home_icon.svg"
+                src={backToHomeIcon}
                 alt="Back to Home"
               />
             </Link>
@@ -112,7 +118,7 @@ const SignIn = () => {
             <div className="flex items-center relative w-full">
               <img
                 className="w-4.5 absolute left-5"
-                src="src/assets/icons/user_icon.svg"
+                src={userIcon}
                 alt="User icon"
               />
               <button
@@ -141,7 +147,7 @@ const SignIn = () => {
                 <div className="flex items-center relative">
                   <img
                     className="w-5 absolute left-5"
-                    src="src/assets/icons/email_icon.svg"
+                    src={emailIcon}
                     alt="Email icon"
                   />
                   <input
@@ -169,7 +175,7 @@ const SignIn = () => {
               <div className="flex items-center relative">
                 <img
                   className="w-5 absolute left-5"
-                  src="src/assets/icons/lock_icon.svg"
+                  src={lockIcon}
                   alt="Lock icon"
                 />
                 <input

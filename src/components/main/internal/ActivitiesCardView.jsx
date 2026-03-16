@@ -5,7 +5,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const ActivitiesCardView = () => {
+const ActivitiesCardView = ({ role }) => {
   const dispatch = useDispatch();
   const { activities } = useSelector((state) => state.activity);
 
@@ -54,25 +54,29 @@ const ActivitiesCardView = () => {
           <div className="mt-auto flex space-x-2">
             {/* TODO: Replace text "View" with an icon */}
             <Link
-              to={`/activities/${activity.id}`}
+              to={`/${role}/activities/view/${activity.id}`}
               className="text-blue-500 hover:underline"
             >
               View
             </Link>
             {/* TODO: Replace text "Edit" with an icon */}
-            <Link
-              to={`/admin/activities/edit/${activity.id}`}
-              className="text-green-500 hover:underline"
-            >
-              Edit
-            </Link>
+            {(role === "admin" || role === "moderator") && (
+              <Link
+                to={`/${role}/activities/edit/${activity.id}`}
+                className="text-green-500 hover:underline"
+              >
+                Edit
+              </Link>
+            )}
             {/* TODO: Replace text "Delete" with an icon */}
-            <button
-              onClick={() => handleDelete(activity.id)}
-              className="text-red-500 hover:underline"
-            >
-              Delete
-            </button>
+            {role === "admin" && (
+              <button
+                onClick={() => handleDelete(activity.id)}
+                className="text-red-500 hover:underline"
+              >
+                Delete
+              </button>
+            )}
           </div>
         </div>
       ))}

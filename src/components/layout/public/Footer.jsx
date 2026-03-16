@@ -5,13 +5,15 @@ import {
   faTiktok,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
+import GDCLogo from "../../../assets/logos/GDC_logo.svg";
+import footerImage from "../../../assets/items/footer_image.webp";
 
 const Footer = () => {
   return (
     <div className="flex flex-col p-2 pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)] gap-6">
       <img
         className="w-60 xl:w-55"
-        src="src/assets/logos/GDC_logo.svg"
+        src={GDCLogo}
         alt="GDC Logo"
       />
       <div className="flex flex-col items-start mt-3 xl:mt-1 lg:flex-row lg:justify-between lg:items-end">
@@ -79,7 +81,7 @@ const Footer = () => {
         <p className="border-b-1 text-[12.5px]">
           &copy; GDC - Greenwich Dance Crew
         </p>
-        <img src="src/assets/items/footer.webp" alt="Footer image" />
+        <img src={footerImage} alt="Footer image" />
       </div>
     </div>
   );

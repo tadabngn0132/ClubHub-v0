@@ -1,12 +1,12 @@
 import axios from "axios";
 import { getToken } from "../utils/helper";
 import { logoutUser } from "../store/slices/authSlice";
-import { useDispatch } from "react-redux";
+import store from "../store/index.js";
 import toast from "react-hot-toast";
 
 // Create an axios instance
 const axiosClient = axios.create({
-  baseURL: "http://localhost:5995/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",
@@ -16,8 +16,20 @@ const axiosClient = axios.create({
 
 // TODO: Implement queue mechanism for handling 401 responses
 // TODO: Implement global variables for queueing
+let isRefreshing = false;
+let failedQueue = [];
 
 // TODO: Implement queue functions
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
 
 // Add a request interceptor
 axiosClient.interceptors.request.use(
@@ -71,8 +83,7 @@ axiosClient.interceptors.response.use(
       case 401:
         // TODO: Handle refresh token expiration or unauthorized access in queue function
         toast.error("Session expired. Please log in again.");
-        const dispatch = useDispatch();
-        dispatch(logoutUser());
+        store.dispatch(logoutUser());
         break;
       case 403:
         // Handle forbidden access

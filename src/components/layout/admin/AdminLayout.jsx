@@ -6,7 +6,7 @@ import AdminSideBar from "./AdminSideBar.jsx";
 const AdminLayout = ({ children }) => {
   return (
     <>
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin"]}>
         <AdminHeader />
         <main className="flex mt-[61.2px]">
           <AdminSideBar />

@@ -6,7 +6,7 @@ import ModeratorSideBar from "./ModeratorSideBar.jsx";
 const ModeratorLayout = ({ children }) => {
   return (
     <>
-      <ProtectedRoute>
+      <ProtectedRoute allowedRoles={["admin", "moderator"]}>
         <ModeratorHeader />
         <main className="flex">
           <ModeratorSideBar />

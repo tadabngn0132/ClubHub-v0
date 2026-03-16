@@ -76,7 +76,7 @@ const MemberActivities = () => {
             key={index}
             style={{ display: activeTab === index ? "flex" : "none" }}
           >
-            <tab.component />
+            <tab.component role="member" />
           </div>
         ))}
       </div>

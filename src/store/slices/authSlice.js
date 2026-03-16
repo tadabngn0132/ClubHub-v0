@@ -13,6 +13,7 @@ import {
   setCurrentUser,
   removeCurrentUser,
 } from "../../utils/helper";
+import { set } from "react-hook-form";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
@@ -130,6 +131,13 @@ const authSlice = createSlice({
     resetStatus: (state) => {
       state.status = "idle";
     },
+    setGoogleAuthData: (state, action) => {
+      state.isLoggedIn = true;
+      state.currentUser = action.payload.userData;
+      state.token = action.payload.accessToken;
+      setToken(action.payload.accessToken);
+      setCurrentUser(action.payload.userData);
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -243,5 +251,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { resetStatus } = authSlice.actions;
+export const { resetStatus, setGoogleAuthData } = authSlice.actions;
 export default authSlice.reducer;

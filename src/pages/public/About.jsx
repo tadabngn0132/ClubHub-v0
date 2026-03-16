@@ -1,17 +1,24 @@
+import GDCLogo from "../../assets/logos/GDC_logo.svg";
+import aboutImage01 from "../../assets/items/about-items-01.webp";
+import aboutImage02 from "../../assets/items/about-items-02.webp";
+import aboutImage03 from "../../assets/items/about-items-03.webp";
+import aboutImage04 from "../../assets/items/about-items-04.webp";
+import aboutImage05 from "../../assets/items/about-items-05.webp";
+
 const About = () => {
   return (
     <div className="flex flex-col min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] w-full">
       <div className="flex flex-col w-full items-center bg-[#212121] p-10 pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)]">
         <img
           className="p-20 pl-0 pr-0 w-200 2xl:w-225"
-          src="src/assets/logos/GDC_logo.svg"
+          src={GDCLogo}
           alt="GDC Logo"
         />
 
         <div className="flex flex-col mt-10 ml-14 2xl:ml-24">
           <img
             className="w-[21rem]"
-            src="src/assets/items/about-items-01.webp"
+            src={aboutImage01}
             alt="About Us"
           />
           <div className="flex gap-12 leading-5">
@@ -51,7 +58,7 @@ const About = () => {
       <div className="flex flex-col mt-5">
         <img
           className=" pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)]"
-          src="src/assets/items/about-items-02.webp"
+          src={aboutImage02}
           alt="Moving Until The Last Breath"
         />
 
@@ -68,7 +75,7 @@ const About = () => {
 
         <img
           className="m-20 ml-4 mr-4"
-          src="src/assets/items/about-items-03.webp"
+          src={aboutImage03}
           alt="Creativity Unity Discipline"
         />
 
@@ -90,7 +97,7 @@ const About = () => {
           <div className="">
             <img
               className="absolute top-0 right-77 w-[35rem] 2xl:right-112 2xl:w-[35rem]"
-              src="src/assets/items/about-items-04.webp"
+              src={aboutImage04}
               alt="Main Activities"
             />
             <span className="absolute top-10 left-126 w-1/8 2xl:left-155 2xl:w-1/10 text-right">
@@ -135,7 +142,7 @@ const About = () => {
         </span>
         <img
           className="w-2/3"
-          src="src/assets/items/about-items-05.webp"
+          src={aboutImage05}
           alt="Achievements"
         />
       </div>

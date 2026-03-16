@@ -1,10 +1,9 @@
-// import MemberApplicationForm from "../../components/main/public/ApplicationForm";
+import MemberApplicationForm from "../../components/main/public/ApplicationForm.jsx";
 
 const AddMemberApplication = () => {
   return (
     <div>
-      <h1>Apply to Join Our Club</h1>
-      {/* <MemberApplicationForm /> */}
+      <MemberApplicationForm />
     </div>
   );
 };

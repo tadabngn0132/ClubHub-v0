@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ActivitiesBulkActionBar from "./ActivitiesBulkActionBar";
 
-const ActivitiesTableView = () => {
+const ActivitiesTableView = ({ role }) => {
   const dispatch = useDispatch();
   const { activities } = useSelector((state) => state.activity);
   const [selectedActivities, setSelectedActivities] = useState([]);
@@ -93,23 +93,27 @@ const ActivitiesTableView = () => {
                 <td className="px-4 py-2">{activity.registrationsCount}</td>
                 <td className="px-4 py-2">
                   <Link
-                    to={`/activities/${activity.id}`}
+                    to={`/${role}/activities/view/${activity.id}`}
                     className="text-blue-500 hover:underline"
                   >
                     View
                   </Link>
-                  <Link
-                    to={`/admin/activities/edit/${activity.id}`}
-                    className="text-green-500 hover:underline"
-                  >
-                    Edit
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(activity.id)}
-                    className="text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button>
+                  {(role === "admin" || role === "moderator") && (
+                    <Link
+                      to={`/${role}/activities/edit/${activity.id}`}
+                      className="text-green-500 hover:underline"
+                    >
+                      Edit
+                    </Link>
+                  )}
+                  {role === "admin" && (
+                    <button
+                      onClick={() => handleDelete(activity.id)}
+                      className="text-red-500 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

@@ -3,7 +3,7 @@ import { DEPARTMENTS } from "../../../utils/constants";
 import { useDispatch } from "react-redux";
 import { submitMemberApplication } from "../../../store/slices/memberApplicationSlice";
 
-const ApplicationForm = ({ mode, applicationId }) => {
+const ApplicationForm = () => {
   const dispatch = useDispatch();
   const {
     register,
@@ -33,7 +33,7 @@ const ApplicationForm = ({ mode, applicationId }) => {
 
   return (
     <div className="max-w-2xl mx-auto p-4">
-      <form onSubmit={handleSubmit} className="flex flex-col">
+      <form onSubmit={handleSubmit(handleSaveApplication)} className="flex flex-col">
         <h1>Application Form</h1>
         {/* Full Name field */}
         <label htmlFor="fullname">
@@ -95,7 +95,7 @@ const ApplicationForm = ({ mode, applicationId }) => {
           Department <span className="text-red-500">*</span>
         </label>
         {departmentList.map((department) => (
-          <React.Fragment key={department.id}>
+          <div key={department.id}>
             <div className="flex items-center-safe gap-1 mt-1">
               <input
                 type="checkbox"
@@ -111,7 +111,7 @@ const ApplicationForm = ({ mode, applicationId }) => {
                 {department.name}
               </label>
             </div>
-          </React.Fragment>
+          </div>
         ))}
         {errors.department && (
           <p className="text-red-500 text-sm">{errors.department.message}</p>

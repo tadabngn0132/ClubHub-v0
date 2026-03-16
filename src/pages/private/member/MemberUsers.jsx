@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { getUsersList, deleteUserById } from "../../../store/slices/userSlice";
+import { getUsersList } from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { mockUsers } from "../../../data/sampleMemberData";
@@ -16,10 +16,6 @@ const MemberUsers = () => {
   useEffect(() => {
     dispatch(getUsersList());
   }, [dispatch]);
-
-  const handleDelete = (userId) => {
-    dispatch(deleteUserById(userId));
-  };
 
   // TODO: Implement sorting functionality here
   const handleSort = (field) => {
