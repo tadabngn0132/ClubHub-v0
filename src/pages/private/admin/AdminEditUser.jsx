@@ -12,7 +12,7 @@ const AdminEditUser = () => {
 
   useEffect(() => {
     if (status === "fulfilled") {
-      navigate("/admin/members");
+      navigate("/admin/users");
     }
     dispatch(resetStatus());
   }, [status, navigate, dispatch]);

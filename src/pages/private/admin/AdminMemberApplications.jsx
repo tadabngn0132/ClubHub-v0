@@ -2,14 +2,14 @@ import { Link } from "react-router-dom";
 import {
   getAllMemberApplicationsList,
   deleteMemberApplicationById,
-} from "../../../store/slices/memberApplicationSlice";
+} from "../../../store/slices/memberApplicationSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
-import { resetStatus } from "../../../store/slices/memberApplicationSlice";
+import { resetStatus } from "../../../store/slices/memberApplicationSlice.js";
 
-const AdminMemberApplication = () => {
+const AdminMemberApplications = () => {
   const dispatch = useDispatch();
   const { memberApplications, isLoading, error } = useSelector(
     (state) => state.memberApplication,
@@ -91,4 +91,4 @@ const AdminMemberApplication = () => {
   );
 };
 
-export default AdminMemberApplication;
+export default AdminMemberApplications;

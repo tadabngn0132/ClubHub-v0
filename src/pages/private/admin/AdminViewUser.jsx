@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { resetStatus } from "../../../store/slices/userSlice";
 
 const AdminViewUser = () => {
-  const { memberId } = useParams();
+  const { userId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentMember, loading, error, status } = useSelector(

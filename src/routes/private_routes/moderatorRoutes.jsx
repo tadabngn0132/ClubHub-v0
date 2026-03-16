@@ -18,6 +18,9 @@ import ModeratorPositions from "../../pages/private/moderator/ModeratorPositions
 import ModeratorViewPosition from "../../pages/private/moderator/ModeratorViewPosition.jsx";
 import ModeratorMemberApplications from "../../pages/private/moderator/ModeratorMemberApplications.jsx";
 import ModeratorViewMemberApplication from "../../pages/private/moderator/ModeratorViewMemberApplication.jsx";
+import ChangePassword from "../../pages/auth/ChangePassword.jsx";
+import ModeratorAddUser from "../../pages/private/moderator/ModeratorAddUser.jsx";
+import ModeratorEditUser from "../../pages/private/moderator/ModeratorEditUser.jsx";
 
 export const moderatorRoutes = [
   {
@@ -125,6 +128,22 @@ export const moderatorRoutes = [
     ),
   },
   {
+    path: "/moderator/users/add",
+    element: (
+      <ModeratorLayout>
+        <ModeratorAddUser />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/users/edit/:userId",
+    element: (
+      <ModeratorLayout>
+        <ModeratorEditUser />
+      </ModeratorLayout>
+    ),
+  },
+  {
     path: "/moderator/departments",
     element: (
       <ModeratorLayout>
@@ -171,5 +190,13 @@ export const moderatorRoutes = [
         <ModeratorViewMemberApplication />
       </ModeratorLayout>
     ),
-  }
+  },
+  {
+    path: "/moderator/change-password",
+    element: (
+      <ModeratorLayout>
+        <ChangePassword />
+      </ModeratorLayout>
+    ),
+  },
 ];

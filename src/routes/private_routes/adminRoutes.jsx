@@ -24,6 +24,8 @@ import AdminEditPosition from "../../pages/private/admin/AdminEditPosition.jsx";
 import AdminViewPosition from "../../pages/private/admin/AdminViewPosition.jsx";
 import AdminMemberApplications from "../../pages/private/admin/AdminMemberApplications.jsx";
 import AdminViewMemberApplication from "../../pages/private/admin/AdminViewMemberApplication.jsx";
+import ChangePassword from "../../pages/auth/ChangePassword.jsx";
+import AdminPermissions from "../../pages/private/admin/AdminPermissions.jsx";
 
 export const adminRoutes = [
   {
@@ -225,5 +227,21 @@ export const adminRoutes = [
         <AdminViewMemberApplication />
       </AdminLayout>
     ),
-  }
+  },
+  {
+    path: "/admin/change-password",
+    element: (
+      <AdminLayout>
+        <ChangePassword />
+      </AdminLayout>
+    ),
+  },
+  {
+    path: "/admin/permissions",
+    element: (
+      <AdminLayout>
+        <AdminPermissions />
+      </AdminLayout>
+    ),
+  },
 ];

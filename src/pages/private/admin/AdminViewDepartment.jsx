@@ -8,9 +8,10 @@ import {
 } from "../../../store/slices/departmentSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-const AdminViewDepartment = ({ departmentId }) => {
+const AdminViewDepartment = () => {
+  const { departmentId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { department, isLoading, error, status } = useSelector(

@@ -16,7 +16,7 @@ export const getAllActivities = async () => {
 };
 
 export const getAllActivitiesBySlug = async (slug) => {
-  const res = await axiosClient.get(`/activities/${slug}`);
+  const res = await axiosClient.get(`/activities/slug/${slug}`);
   return res.data;
 };
 

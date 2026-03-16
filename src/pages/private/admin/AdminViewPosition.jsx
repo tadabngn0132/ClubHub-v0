@@ -8,9 +8,10 @@ import {
 } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-const AdminViewPosition = ({ positionId }) => {
+const AdminViewPosition = () => {
+  const { positionId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { position, isLoading, error, status } = useSelector(
