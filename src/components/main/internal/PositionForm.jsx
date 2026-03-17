@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import {
   createNewPosition,
   getPositionDetails,
-  updatePositionById,
+  updatePositionDetails,
 } from "../../../store/slices/positionSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
@@ -45,7 +45,7 @@ const PositionForm = ({ mode, positionId }) => {
     if (mode === "add") {
       dispatch(createNewPosition(data));
     } else if (mode === "edit") {
-      dispatch(updatePositionById({ id: positionId, positionData: data }));
+      dispatch(updatePositionDetails({ id: positionId, positionData: data }));
     }
   };
 

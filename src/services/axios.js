@@ -1,8 +1,12 @@
 import axios from "axios";
 import { getToken } from "../utils/helper";
-import { logoutUser } from "../store/slices/authSlice";
-import store from "../store/index.js";
 import toast from "react-hot-toast";
+
+let unauthorizedHandler = null;
+
+export const setUnauthorizedHandler = (handler) => {
+  unauthorizedHandler = handler;
+};
 
 // Create an axios instance
 const axiosClient = axios.create({
@@ -72,7 +76,7 @@ axiosClient.interceptors.response.use(
 
     return response;
   },
-  (error) => {
+  async (error) => {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     switch (error.response?.status) {
@@ -83,7 +87,9 @@ axiosClient.interceptors.response.use(
       case 401:
         // TODO: Handle refresh token expiration or unauthorized access in queue function
         toast.error("Session expired. Please log in again.");
-        store.dispatch(logoutUser());
+        if (unauthorizedHandler) {
+          await unauthorizedHandler(error);
+        }
         break;
       case 403:
         // Handle forbidden access

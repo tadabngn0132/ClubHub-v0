@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import {
   getAllMemberApplicationsList,
-  deleteMemberApplicationById,
+  softDeleteMemberApplicationById,
+  hardDeleteMemberApplicationById,
 } from "../../../store/slices/memberApplicationSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -23,13 +24,22 @@ const AdminMemberApplications = () => {
   }, [dispatch]);
 
   const handleDelete = (applicationId) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this member application? This action cannot be undone.",
+    const softConfirmed = window.confirm(
+      "Do you want to deactivate this member application?",
     );
-    if (!confirmed) {
+
+    if (softConfirmed) {
+      dispatch(softDeleteMemberApplicationById(applicationId));
       return;
     }
-    dispatch(deleteMemberApplicationById(applicationId));
+
+    const hardConfirmed = window.confirm(
+      "Do you want to permanently delete this member application? This action cannot be undone.",
+    );
+
+    if (hardConfirmed) {
+      dispatch(hardDeleteMemberApplicationById(applicationId));
+    }
     dispatch(resetMemberApplicationStatus());
   };
 

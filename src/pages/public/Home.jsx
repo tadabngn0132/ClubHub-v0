@@ -1,4 +1,4 @@
-import activityItem01 from "../../assets/items/activity-item-01.webp";
+import activityItem01 from "../../assets/items/activites-items-01.webp";
 
 const Home = () => {
   return (

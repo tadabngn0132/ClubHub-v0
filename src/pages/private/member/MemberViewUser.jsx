@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import { getUserById, deleteUserById } from "../../../store/slices/userSlice";
+import { getUserById } from "../../../store/slices/userSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { getActivitiesByUserId } from "../../../store/slices/activitySlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
@@ -19,17 +19,12 @@ const MemberViewUser = () => {
     error: activitiesError,
   } = useSelector((state) => state.activity);
 
-  const handleDelete = () => {
-    // Dispatch delete action here
-    dispatch(deleteUserById(memberId));
-  };
-
   useEffect(() => {
     dispatch(getUserById(memberId));
     dispatch(getActivitiesByUserId(memberId));
   }, [dispatch, memberId]);
 
-  if (loading) {
+  if (isLoading) {
     return <Loading />;
   }
 

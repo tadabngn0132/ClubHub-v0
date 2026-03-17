@@ -1,8 +1,8 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllDepartmentsList } from "../../../store/slices/departmentSlice";
-import { getAllPositionsList } from "../../../store/slices/positionSlice";
+import { getDepartmentsList } from "../../../store/slices/departmentSlice";
+import { getPositionsList } from "../../../store/slices/positionSlice";
 import { useEffect } from "react";
 
 const ClubInfoTab = () => {
@@ -15,8 +15,8 @@ const ClubInfoTab = () => {
   const { positions } = useSelector((state) => state.position);
 
   useEffect(() => {
-    dispatch(getAllDepartmentsList());
-    dispatch(getAllPositionsList());
+    dispatch(getDepartmentsList());
+    dispatch(getPositionsList());
   }, [dispatch]);
 
   return (

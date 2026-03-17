@@ -6,7 +6,6 @@ import { getUserById, softDeleteUserById } from "../../../store/slices/userSlice
 import toast, { Toaster } from "react-hot-toast";
 import { getActivitiesByUserId } from "../../../store/slices/activitySlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { resetUserStatus } from "../../../store/slices/userSlice";
 

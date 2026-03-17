@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import {
   getAllMemberApplicationsList,
-  deleteMemberApplicationById,
+  softDeleteMemberApplicationById,
 } from "../../../store/slices/memberApplicationSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ const ModeratorMemberApplications = () => {
     if (!confirmed) {
       return;
     }
-    dispatch(deleteMemberApplicationById(applicationId));
+    dispatch(softDeleteMemberApplicationById(applicationId));
     dispatch(resetMemberApplicationStatus());
   };
 

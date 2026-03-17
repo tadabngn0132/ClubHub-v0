@@ -91,7 +91,7 @@ const SignIn = () => {
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center-safe w-full min-h-[var(--sign-in-form-min-h)] lg:w-6/12 xl:w-[46%] 2xl:w-2/5 p-10 pl-21 pr-21 sm:pl-51 sm:pr-51 md:pl-66 md:pr-66 lg:pl-24 lg:pr-24 xl:pl-22 xl:pr-22 lg:rounded-[5rem] z-10 bg-[url(../../assets/backgrounds/sign_in_background/GDC_background.webp)] bg-auto md:bg-size-[auto_1920px] lg:bg-auto bg-current bg-center relative animate-slide-right">
+        <div className="flex flex-col items-center justify-center-safe w-full min-h-[var(--sign-in-form-min-h)] lg:w-6/12 xl:w-[46%] 2xl:w-2/5 p-10 pl-21 pr-21 sm:pl-51 sm:pr-51 md:pl-66 md:pr-66 lg:pl-24 lg:pr-24 xl:pl-22 xl:pr-22 lg:rounded-[5rem] z-10 bg-[url(src/assets/backgrounds/sign_in_background/GDC_background.webp)] bg-auto md:bg-size-[auto_1920px] lg:bg-auto bg-current bg-center relative animate-slide-right">
           {/* Form header */}
           <div className="flex mb-6 w-full relative">
             <Link

@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
-import { DEPARTMENTS } from "../../../utils/constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { submitMemberApplication } from "../../../store/slices/memberApplicationSlice";
+import { useEffect } from "react";
+import { getDepartmentsList, resetDepartmentStatus } from "../../../store/slices/departmentSlice";
 
 const ApplicationForm = () => {
-  // TODO: Implement the application form functionality, including form validation and submission handling
   const dispatch = useDispatch();
+  const { departments } = useSelector((state) => state.department);
   const {
     register,
     handleSubmit,
@@ -17,15 +18,14 @@ const ApplicationForm = () => {
       email: "",
       phoneNumber: "",
       department: [],
-      dateOfBirth: "",
-      gender: "",
-      major: "",
-      studentId: "",
     },
     mode: "onChange",
   });
 
-  const departmentList = DEPARTMENTS;
+  useEffect(() => {
+    dispatch(getDepartmentsList());
+    dispatch(resetDepartmentStatus());
+  }, [dispatch]);
 
   const handleSaveApplication = (data) => {
     dispatch(submitMemberApplication(data));
@@ -95,25 +95,19 @@ const ApplicationForm = () => {
         <label htmlFor="department" className="mt-3">
           Department <span className="text-red-500">*</span>
         </label>
-        {departmentList.map((department) => (
-          <div key={department.id}>
-            <div className="flex items-center-safe gap-1 mt-1">
-              <input
-                type="checkbox"
-                name="department"
-                id={department.name.toLowerCase().replace(/\s+/g, "")}
-                {...register("department", {
-                  required: "Department cannot be empty",
-                })}
-              />
-              <label
-                htmlFor={department.name.toLowerCase().replace(/\s+/g, "")}
-              >
-                {department.name}
-              </label>
-            </div>
-          </div>
-        ))}
+        <select
+          id="department"
+          className="mt-2"
+          {...register("department", { required: "Department cannot be empty" })}
+        >
+          <option value="">Select a department</option>
+          {departments.map((dept) => (
+            <option key={dept.id} value={dept.id}>
+              {dept.name}
+            </option>
+          ))}
+
+        </select>
         {errors.department && (
           <p className="text-red-500 text-sm">{errors.department.message}</p>
         )}
