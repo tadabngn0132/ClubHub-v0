@@ -7,7 +7,7 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link } from "react-router-dom";
-import { resetStatus } from "../../../store/slices/departmentSlice";
+import { resetDepartmentStatus } from "../../../store/slices/departmentSlice";
 
 const AdminDepartments = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const AdminDepartments = () => {
 
   const handleDelete = (id) => {
     dispatch(deleteDepartmentById(id));
-    dispatch(resetStatus());
+    dispatch(resetDepartmentStatus());
   };
 
   const handleStatusLabel = (status) => {

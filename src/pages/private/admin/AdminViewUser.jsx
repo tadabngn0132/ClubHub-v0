@@ -7,13 +7,13 @@ import toast, { Toaster } from "react-hot-toast";
 import { getActivitiesByUserId } from "../../../store/slices/activitySlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import { useNavigate } from "react-router-dom";
-import { resetStatus } from "../../../store/slices/userSlice";
+import { resetUserStatus } from "../../../store/slices/userSlice";
 
 const AdminViewUser = () => {
   const { userId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { currentMember, loading, error, status } = useSelector(
+  const { currentMember, loading, error, userStatus } = useSelector(
     (state) => state.user,
   );
   const {
@@ -41,16 +41,16 @@ const AdminViewUser = () => {
       dispatch(hardDeleteUserById(userId));
     }
 
-    if (status === "fulfilled") {
+    if (userStatus === "fulfilled") {
       navigate("/admin/users");
-      dispatch(resetStatus());
+      dispatch(resetUserStatus());
     }
   };
 
   useEffect(() => {
-    dispatch(getUserById(memberId));
-    dispatch(getActivitiesByUserId(memberId));
-  }, [dispatch, memberId]);
+    dispatch(getUserById(userId));
+    dispatch(getActivitiesByUserId(userId));
+  }, [dispatch, userId]);
 
   if (loading) {
     return <Loading />;
@@ -74,7 +74,7 @@ const AdminViewUser = () => {
         <p>{currentMember.role}</p>
         <p>{currentMember.email}</p>
         <p>{currentMember.phoneNumber}</p>
-        <Link to={`/admin/users/${memberId}/edit`}>Edit Member</Link>
+        <Link to={`/admin/users/${userId}/edit`}>Edit Member</Link>
         <button onClick={() => handleDelete()}>Delete Member</button>
       </header>
 

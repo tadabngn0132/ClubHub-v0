@@ -9,13 +9,13 @@ import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { resetStatus } from "../../../store/slices/taskSlice";
+import { resetTaskStatus } from "../../../store/slices/taskSlice";
 import { useParams } from "react-router-dom";
 
 const AdminViewTask = () => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
-  const { task, isLoading, error, status } = useSelector((state) => state.task);
+  const { task, isLoading, error, taskStatus } = useSelector((state) => state.task);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,9 +48,9 @@ const AdminViewTask = () => {
       dispatch(hardDeleteTaskById(taskId));
     }
 
-    if (status === "fulfilled") {
+    if (taskStatus === "fulfilled") {
       navigate("/admin/tasks");
-      dispatch(resetStatus());
+      dispatch(resetTaskStatus());
     }
   };
 

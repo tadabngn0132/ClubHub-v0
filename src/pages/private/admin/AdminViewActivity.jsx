@@ -9,13 +9,13 @@ import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { resetStatus } from "../../../store/slices/activitySlice";
+import { resetActivityStatus } from "../../../store/slices/activitySlice";
 import { useParams } from "react-router-dom";
 
 const AdminViewActivity = () => {
   const { activityId } = useParams();
   const dispatch = useDispatch();
-  const { activity, isLoading, error, status } = useSelector(
+  const { activity, isLoading, error, activityStatus } = useSelector(
     (state) => state.activity,
   );
   const navigate = useNavigate();
@@ -50,9 +50,9 @@ const AdminViewActivity = () => {
       dispatch(hardDeleteActivityById(activityId));
     }
 
-    if (status === "fulfilled") {
+    if (activityStatus === "fulfilled") {
       navigate("/admin/activities");
-      dispatch(resetStatus());
+      dispatch(resetActivityStatus());
     }
   };
 

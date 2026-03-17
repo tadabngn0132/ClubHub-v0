@@ -1,17 +1,17 @@
 import { useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import { getUsersList, resetStatus } from "../../../store/slices/userSlice.js";
+import { getUsersList, resetUserStatus } from "../../../store/slices/userSlice.js";
 import {
   getAllTasksList,
-  resetStatus,
+  resetTaskStatus,
 } from "../../../store/slices/taskSlice.js";
 import {
   getActivitiesList,
-  resetStatus,
+  resetActivityStatus,
 } from "../../../store/slices/activitySlice.js";
 import {
   getAllMemberApplicationsList,
-  resetStatus,
+  resetMemberApplicationStatus,
 } from "../../../store/slices/memberApplicationSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -60,10 +60,10 @@ const ModeratorDashboard = () => {
       setLoading(false);
     }
 
-    dispatch(resetStatus());
-    dispatch(resetStatus());
-    dispatch(resetStatus());
-    dispatch(resetStatus());
+    dispatch(resetUserStatus());
+    dispatch(resetTaskStatus());
+    dispatch(resetActivityStatus());
+    dispatch(resetMemberApplicationStatus());
   }, [dispatch]);
 
   if (loading) {

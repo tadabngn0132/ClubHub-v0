@@ -6,7 +6,7 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import GDCLogo from "../../../assets/logos/GDC_logo.svg";
-import footerImage from "../../../assets/items/footer_image.webp";
+import footerImage from "../../../assets/items/footer.webp";
 
 const Footer = () => {
   return (

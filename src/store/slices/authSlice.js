@@ -125,11 +125,11 @@ const authSlice = createSlice({
     token: null,
     isLoading: false,
     error: null,
-    status: "idle",
+    authStatus: "idle",
   },
   reducers: {
-    resetStatus: (state) => {
-      state.status = "idle";
+    resetAuthStatus: (state) => {
+      state.authStatus = "idle";
     },
     setGoogleAuthData: (state, action) => {
       state.isLoggedIn = true;
@@ -145,11 +145,11 @@ const authSlice = createSlice({
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.authStatus = "pending";
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.status = "fulfilled";
+        state.authStatus = "fulfilled";
         state.isLoggedIn = true;
         state.currentUser = action.payload.data.necessaryUserData;
         state.token = action.payload.data.accessToken;
@@ -159,97 +159,97 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.data;
-        state.status = "rejected";
+        state.authStatus = "rejected";
       })
 
       // Logout User
       .addCase(logoutUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.authStatus = "pending";
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.isLoading = false;
         state.isLoggedIn = false;
         state.currentUser = null;
         state.token = null;
-        state.status = "fulfilled";
+        state.authStatus = "fulfilled";
         removeToken();
         removeCurrentUser();
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.data;
-        state.status = "rejected";
+        state.authStatus = "rejected";
       })
 
       // Change Password
       .addCase(changePasswordUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.authStatus = "pending";
       })
       .addCase(changePasswordUser.fulfilled, (state) => {
         state.isLoading = false;
-        state.status = "fulfilled";
+        state.authStatus = "fulfilled";
       })
       .addCase(changePasswordUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.data;
-        state.status = "rejected";
+        state.authStatus = "rejected";
       })
 
       // Forgot Password
       .addCase(forgotPasswordUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.authStatus = "pending";
       })
       .addCase(forgotPasswordUser.fulfilled, (state) => {
         state.isLoading = false;
-        state.status = "fulfilled";
+        state.authStatus = "fulfilled";
       })
       .addCase(forgotPasswordUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.data;
-        state.status = "rejected";
+        state.authStatus = "rejected";
       })
 
       // Reset Password
       .addCase(resetPasswordUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.authStatus = "pending";
       })
       .addCase(resetPasswordUser.fulfilled, (state) => {
         state.isLoading = false;
-        state.status = "fulfilled";
+        state.authStatus = "fulfilled";
       })
       .addCase(resetPasswordUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.data;
-        state.status = "rejected";
+        state.authStatus = "rejected";
       })
 
       // Refresh Access Token
       .addCase(refreshAccessTokenUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.authStatus = "pending";
       })
       .addCase(refreshAccessTokenUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.token = action.payload.data.newAccessToken;
         setToken(action.payload.data.newAccessToken);
-        state.status = "fulfilled";
+        state.authStatus = "fulfilled";
       })
       .addCase(refreshAccessTokenUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload.data;
-        state.status = "rejected";
+        state.authStatus = "rejected";
       });
   },
 });
 
-export const { resetStatus, setGoogleAuthData } = authSlice.actions;
+export const { resetAuthStatus, setGoogleAuthData } = authSlice.actions;
 export default authSlice.reducer;

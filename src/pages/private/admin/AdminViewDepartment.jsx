@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   getDepartmentDetails,
   deleteDepartmentById,
-  resetStatus,
+  resetDepartmentStatus,
 } from "../../../store/slices/departmentSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast, { Toaster } from "react-hot-toast";
@@ -14,7 +14,7 @@ const AdminViewDepartment = () => {
   const { departmentId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { department, isLoading, error, status } = useSelector(
+  const { department, isLoading, error, departmentStatus } = useSelector(
     (state) => state.department,
   );
 
@@ -26,10 +26,10 @@ const AdminViewDepartment = () => {
     if (window.confirm("Are you sure you want to delete this department?")) {
       dispatch(deleteDepartmentById(departmentId));
 
-      if (status === "fulfilled") {
+      if (departmentStatus === "fulfilled") {
         navigate("/admin/departments");
       }
-      dispatch(resetStatus());
+      dispatch(resetDepartmentStatus());
     }
   };
 

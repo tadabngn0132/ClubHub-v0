@@ -2,7 +2,7 @@ import DepartmentForm from "../../../components/main/internal/DepartmentForm";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { resetStatus } from "../../../store/slices/departmentSlice";
+import { resetDepartmentStatus } from "../../../store/slices/departmentSlice";
 
 const AdminAddDepartment = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const AdminAddDepartment = () => {
     if (status === "fulfilled") {
       navigate("/admin/departments");
     }
-    dispatch(resetStatus());
+    dispatch(resetDepartmentStatus());
   }, [status, navigate, dispatch]);
 
   return (

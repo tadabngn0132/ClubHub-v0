@@ -8,14 +8,14 @@ import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { resetStatus } from "../../../store/slices/activitySlice";
+import { resetActivityStatus } from "../../../store/slices/activitySlice";
 import { useParams } from "react-router-dom";
 
 const ModeratorViewActivity = () => {
   const { activityId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { activity, isLoading, error, status } = useSelector(
+  const { activity, isLoading, error, activityStatus } = useSelector(
     (state) => state.activity,
   );
 
@@ -34,9 +34,9 @@ const ModeratorViewActivity = () => {
   const handleDelete = () => {
     dispatch(softDeleteActivityById(activityId));
 
-    if (status === "fulfilled") {
+    if (activityStatus === "fulfilled") {
       navigate("/moderator/activities");
-      dispatch(resetStatus());
+      dispatch(resetActivityStatus());
     }
   };
 

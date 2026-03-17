@@ -8,14 +8,14 @@ import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { resetStatus } from "../../../store/slices/taskSlice";
+import { resetTaskStatus } from "../../../store/slices/taskSlice";
 import { useParams } from "react-router-dom";
 
 const ModeratorViewTask = () => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { task, isLoading, error, status } = useSelector((state) => state.task);
+  const { task, isLoading, error, taskStatus } = useSelector((state) => state.task);
 
   useEffect(() => {
     dispatch(getTaskDetails(taskId));
@@ -32,9 +32,9 @@ const ModeratorViewTask = () => {
   const handleDelete = () => {
     dispatch(softDeleteTaskById(taskId));
 
-    if (status === "fulfilled") {
+    if (taskStatus === "fulfilled") {
       navigate("/moderator/tasks");
-      dispatch(resetStatus());
+      dispatch(resetTaskStatus());
     }
   };
 

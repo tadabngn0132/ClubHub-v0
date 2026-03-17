@@ -8,13 +8,13 @@ import { getActivitiesByUserId } from "../../../store/slices/activitySlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { resetStatus } from "../../../store/slices/userSlice";
+import { resetUserStatus } from "../../../store/slices/userSlice";
 
 const ModeratorViewUser = () => {
   const { memberId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { currentMember, isLoading, error, status } = useSelector(
+  const { currentMember, isLoading, error, userStatus } = useSelector(
     (state) => state.user,
   );
   const {
@@ -41,9 +41,9 @@ const ModeratorViewUser = () => {
   const handleDelete = () => {
     dispatch(softDeleteUserById(memberId));
 
-    if (status === "fulfilled") {
+    if (userStatus === "fulfilled") {
       navigate("/moderator/members");
-      dispatch(resetStatus());
+      dispatch(resetUserStatus());
     }
   };
 

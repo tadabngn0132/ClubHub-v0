@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { getUserById, resetStatus } from "../../../store/slices/userSlice";
+import { getUserById, resetUserStatus } from "../../../store/slices/userSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import UserForm from "../../../components/main/internal/UserForm";
 import ChangePasswordForm from "../../../components/main/internal/ChangePasswordForm";
@@ -23,7 +23,7 @@ const ModeratorProfile = () => {
     }
 
     return () => {
-      dispatch(resetStatus());
+      dispatch(resetUserStatus());
     };
   }, [dispatch, currentUser]);
 

@@ -136,11 +136,11 @@ const taskSlice = createSlice({
     task: null,
     isLoading: false,
     error: null,
-    status: "idle",
+    taskStatus: "idle",
   },
   reducers: {
-    resetStatus: (state) => {
-      state.status = "idle";
+    resetTaskStatus: (state) => {
+      state.taskStatus = "idle";
     },
   },
   extraReducers: (builder) => {
@@ -149,79 +149,79 @@ const taskSlice = createSlice({
       .addCase(createNewTask.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.taskStatus = "pending";
       })
       .addCase(createNewTask.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tasks.push(action.payload.data);
-        state.status = "fulfilled";
+        state.taskStatus = "fulfilled";
       })
       .addCase(createNewTask.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.taskStatus = "rejected";
       })
 
       // Get Task Details
       .addCase(getTaskDetails.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.taskStatus = "pending";
       })
       .addCase(getTaskDetails.fulfilled, (state, action) => {
         state.isLoading = false;
         state.taskDetails = action.payload.data;
-        state.status = "fulfilled";
+        state.taskStatus = "fulfilled";
       })
       .addCase(getTaskDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.taskStatus = "rejected";
       })
 
       // Get All Tasks
       .addCase(getAllTasksList.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.taskStatus = "pending";
       })
       .addCase(getAllTasksList.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tasks = action.payload.data;
-        state.status = "fulfilled";
+        state.taskStatus = "fulfilled";
       })
       .addCase(getAllTasksList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.taskStatus = "rejected";
       })
 
       // Get User Tasks
       .addCase(getUserTasks.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.taskStatus = "pending";
       })
       .addCase(getUserTasks.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tasks = action.payload.data;
-        state.status = "fulfilled";
+        state.taskStatus = "fulfilled";
       })
       .addCase(getUserTasks.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.taskStatus = "rejected";
       })
 
       // Update Task
       .addCase(updateTaskById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.taskStatus = "pending";
       })
       .addCase(updateTaskById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.status = "fulfilled";
+        state.taskStatus = "fulfilled";
         const index = state.tasks.findIndex(
           (task) => task.id === action.payload.data.id,
         );
@@ -232,48 +232,48 @@ const taskSlice = createSlice({
       .addCase(updateTaskById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.taskStatus = "rejected";
       })
 
       // Soft Delete Task
       .addCase(softDeleteTaskById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.taskStatus = "pending";
       })
       .addCase(softDeleteTaskById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tasks = state.tasks.filter(
           (task) => task.id !== action.payload.data.id,
         );
-        state.status = "fulfilled";
+        state.taskStatus = "fulfilled";
       })
       .addCase(softDeleteTaskById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.taskStatus = "rejected";
       })
 
       // Hard Delete Task
       .addCase(hardDeleteTaskById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.taskStatus = "pending";
       })
       .addCase(hardDeleteTaskById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tasks = state.tasks.filter(
           (task) => task.id !== action.payload.data.id,
         );
-        state.status = "fulfilled";
+        state.taskStatus = "fulfilled";
       })
       .addCase(hardDeleteTaskById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.taskStatus = "rejected";
       });
   },
 });
 
-export const { resetStatus } = taskSlice.actions;
+export const { resetTaskStatus } = taskSlice.actions;
 export default taskSlice.reducer;

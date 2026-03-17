@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
-import { resetStatus } from "../../../store/slices/memberApplicationSlice.js";
+import { resetMemberApplicationStatus } from "../../../store/slices/memberApplicationSlice.js";
 
 const ModeratorMemberApplications = () => {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const ModeratorMemberApplications = () => {
       return;
     }
     dispatch(deleteMemberApplicationById(applicationId));
-    dispatch(resetStatus());
+    dispatch(resetMemberApplicationStatus());
   };
 
   if (isLoading) {

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { getUserTasks, resetStatus } from "../../../store/slices/taskSlice";
+import { getUserTasks, resetTaskStatus } from "../../../store/slices/taskSlice";
 import {
   getActivitiesByUserId,
-  resetStatus,
+  resetActivityStatus,
 } from "../../../store/slices/activitySlice";
 import Loading from "../../../components/layout/internal/Loading";
 
@@ -35,8 +35,8 @@ const MemberDashboard = () => {
       setLoading(false);
     }
 
-    dispatch(resetStatus());
-    dispatch(resetStatus());
+    dispatch(resetTaskStatus());
+    dispatch(resetActivityStatus());
   }, [dispatch, currentUser]);
 
   if (loading) {

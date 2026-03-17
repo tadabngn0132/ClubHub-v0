@@ -2,7 +2,7 @@ import DepartmentForm from "../../../components/main/internal/DepartmentForm";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { resetStatus } from "../../../store/slices/departmentSlice";
+import { resetDepartmentStatus } from "../../../store/slices/departmentSlice";
 
 const AdminEditDepartment = () => {
   const { departmentId } = useParams();
@@ -14,7 +14,7 @@ const AdminEditDepartment = () => {
     if (status === "fulfilled") {
       navigate("/admin/departments");
     }
-    dispatch(resetStatus());
+    dispatch(resetDepartmentStatus());
   }, [status, navigate, dispatch]);
 
   return (

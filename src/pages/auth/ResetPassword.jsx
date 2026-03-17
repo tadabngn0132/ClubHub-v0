@@ -3,7 +3,7 @@ import { resetPasswordUser } from "../../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { resetStatus } from "../../store/slices/authSlice";
+import { resetAuthStatus } from "../../store/slices/authSlice";
 
 const ResetPassword = () => {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const ResetPassword = () => {
       if (status === "fulfilled") {
         navigate("/sign-in");
       }
-      dispatch(resetStatus());
+      dispatch(resetAuthStatus());
       
     } catch (error) {
       toast.error(error.message);

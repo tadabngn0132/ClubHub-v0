@@ -2,7 +2,7 @@ import PositionForm from "../../../components/main/internal/PositionForm";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { resetStatus } from "../../../store/slices/positionSlice";
+import { resetPositionStatus } from "../../../store/slices/positionSlice";
 
 const AdminAddPosition = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const AdminAddPosition = () => {
     if (status === "fulfilled") {
       navigate("/admin/positions");
     }
-    dispatch(resetStatus());
+    dispatch(resetPositionStatus());
   }, [status, navigate, dispatch]);
 
   return (

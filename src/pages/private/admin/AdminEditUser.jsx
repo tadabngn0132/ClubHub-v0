@@ -2,7 +2,7 @@ import UserForm from "../../../components/main/internal/UserForm.jsx";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { resetStatus } from "../../../store/slices/userSlice";
+import { resetUserStatus } from "../../../store/slices/userSlice";
 
 const AdminEditUser = () => {
   const { userId } = useParams();
@@ -14,7 +14,7 @@ const AdminEditUser = () => {
     if (status === "fulfilled") {
       navigate("/admin/users");
     }
-    dispatch(resetStatus());
+    dispatch(resetUserStatus());
   }, [status, navigate, dispatch]);
 
   return (

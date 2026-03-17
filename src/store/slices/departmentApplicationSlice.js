@@ -138,11 +138,11 @@ const departmentApplicationSlice = createSlice({
     deptApplication: null,
     isLoading: false,
     error: null,
-    status: "idle",
+    departmentApplicationStatus: "idle",
   },
   reducers: {
-    resetStatus: (state) => {
-      state.status = "idle";
+    resetDepartmentApplicationStatus: (state) => {
+      state.departmentApplicationStatus = "idle";
     },
   },
   extraReducers: (builder) => {
@@ -151,17 +151,17 @@ const departmentApplicationSlice = createSlice({
       .addCase(createNewDepartmentApplication.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.departmentApplicationStatus = "pending";
       })
       .addCase(createNewDepartmentApplication.fulfilled, (state, action) => {
         state.isLoading = false;
         state.deptApplications.push(action.payload.data);
-        state.status = "fulfilled";
+        state.departmentApplicationStatus = "fulfilled";
       })
       .addCase(createNewDepartmentApplication.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
-        state.status = "rejected";
+        state.departmentApplicationStatus = "rejected";
       })
 
       // Handle getDepartmentApplicationsByMemberApplication
@@ -170,7 +170,7 @@ const departmentApplicationSlice = createSlice({
         (state) => {
           state.isLoading = true;
           state.error = null;
-          state.status = "pending";
+          state.departmentApplicationStatus = "pending";
         },
       )
       .addCase(
@@ -178,7 +178,7 @@ const departmentApplicationSlice = createSlice({
         (state, action) => {
           state.isLoading = false;
           state.deptApplications = action.payload.data;
-          state.status = "fulfilled";
+          state.departmentApplicationStatus = "fulfilled";
         },
       )
       .addCase(
@@ -186,7 +186,7 @@ const departmentApplicationSlice = createSlice({
         (state, action) => {
           state.isLoading = false;
           state.error = action.payload || action.error.message;
-          state.status = "rejected";
+          state.departmentApplicationStatus = "rejected";
         },
       )
 
@@ -194,41 +194,41 @@ const departmentApplicationSlice = createSlice({
       .addCase(getDepartmentApplicationDetails.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.departmentApplicationStatus = "pending";
       })
       .addCase(getDepartmentApplicationDetails.fulfilled, (state, action) => {
         state.isLoading = false;
         state.deptApplication = action.payload.data;
-        state.status = "fulfilled";
+        state.departmentApplicationStatus = "fulfilled";
       })
       .addCase(getDepartmentApplicationDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
-        state.status = "rejected";
+        state.departmentApplicationStatus = "rejected";
       })
 
       // Handle getDepartmentApplicationsList
       .addCase(getDepartmentApplicationsList.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.departmentApplicationStatus = "pending";
       })
       .addCase(getDepartmentApplicationsList.fulfilled, (state, action) => {
         state.isLoading = false;
         state.deptApplications = action.payload.data;
-        state.status = "fulfilled";
+        state.departmentApplicationStatus = "fulfilled";
       })
       .addCase(getDepartmentApplicationsList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
-        state.status = "rejected";
+        state.departmentApplicationStatus = "rejected";
       })
 
       // Handle updateDepartmentApplicationById
       .addCase(updateDepartmentApplicationById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.departmentApplicationStatus = "pending";
       })
       .addCase(updateDepartmentApplicationById.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -238,19 +238,19 @@ const departmentApplicationSlice = createSlice({
         if (index !== -1) {
           state.deptApplications[index] = action.payload.data;
         }
-        state.status = "fulfilled";
+        state.departmentApplicationStatus = "fulfilled";
       })
       .addCase(updateDepartmentApplicationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
-        state.status = "rejected";
+        state.departmentApplicationStatus = "rejected";
       })
 
       // Handle softDeleteDepartmentApplicationById
       .addCase(softDeleteDepartmentApplicationById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.departmentApplicationStatus = "pending";
       })
       .addCase(
         softDeleteDepartmentApplicationById.fulfilled,
@@ -262,7 +262,7 @@ const departmentApplicationSlice = createSlice({
           if (index !== -1) {
             state.deptApplications[index] = action.payload.data;
           }
-          state.status = "fulfilled";
+          state.departmentApplicationStatus = "fulfilled";
         },
       )
       .addCase(
@@ -270,7 +270,7 @@ const departmentApplicationSlice = createSlice({
         (state, action) => {
           state.isLoading = false;
           state.error = action.payload || action.error.message;
-          state.status = "rejected";
+          state.departmentApplicationStatus = "rejected";
         },
       )
 
@@ -278,7 +278,7 @@ const departmentApplicationSlice = createSlice({
       .addCase(hardDeleteDepartmentApplicationById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.departmentApplicationStatus = "pending";
       })
       .addCase(
         hardDeleteDepartmentApplicationById.fulfilled,
@@ -287,7 +287,7 @@ const departmentApplicationSlice = createSlice({
           state.deptApplications = state.deptApplications.filter(
             (deptApp) => deptApp.id !== action.payload.data.id,
           );
-          state.status = "fulfilled";
+          state.departmentApplicationStatus = "fulfilled";
         },
       )
       .addCase(
@@ -295,11 +295,11 @@ const departmentApplicationSlice = createSlice({
         (state, action) => {
           state.isLoading = false;
           state.error = action.payload || action.error.message;
-          state.status = "rejected";
+          state.departmentApplicationStatus = "rejected";
         },
       );
   },
 });
 
-export const { resetStatus } = departmentApplicationSlice.actions;
+export const { resetDepartmentApplicationStatus } = departmentApplicationSlice.actions;
 export default departmentApplicationSlice.reducer;

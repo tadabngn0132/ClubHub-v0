@@ -2,7 +2,7 @@ import TaskForm from "../../../components/main/internal/TaskForm";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { resetStatus } from "../../../store/slices/taskSlice";
+import { resetTaskStatus } from "../../../store/slices/taskSlice";
 
 const MemberEditTask = () => {
   const { taskId } = useParams();
@@ -14,7 +14,7 @@ const MemberEditTask = () => {
     if (status === "fulfilled") {
       navigate("/member/tasks");
     }
-    dispatch(resetStatus());
+    dispatch(resetTaskStatus());
   }, [status, navigate, dispatch]);
 
   return (

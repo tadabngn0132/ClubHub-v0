@@ -9,7 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import gdcLogo from "../../assets/logos/GDC_logo.svg";
 import uogLogo from "../../assets/logos/2025-Greenwich-White-Eng.png";
 import bgVideo from "../../assets/videos/flirting_1080p.webm";
-import signInImage from "../../assets/images/sign_in_image.png";
+import signInImage from "../../assets/items/sign_in.webp";
 import backToHomeIcon from "../../assets/icons/back_to_home_icon.svg";
 import userIcon from "../../assets/icons/user_icon.svg";
 import emailIcon from "../../assets/icons/email_icon.svg";

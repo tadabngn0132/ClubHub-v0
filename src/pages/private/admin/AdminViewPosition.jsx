@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   getPositionDetails,
   deletePositionById,
-  resetStatus,
+  resetPositionStatus,
 } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast, { Toaster } from "react-hot-toast";
@@ -14,7 +14,7 @@ const AdminViewPosition = () => {
   const { positionId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { position, isLoading, error, status } = useSelector(
+  const { position, isLoading, error, positionStatus } = useSelector(
     (state) => state.position,
   );
 
@@ -26,10 +26,10 @@ const AdminViewPosition = () => {
     if (window.confirm("Are you sure you want to delete this position?")) {
       dispatch(deletePositionById(positionId));
 
-      if (status === "fulfilled") {
+      if (positionStatus === "fulfilled") {
         navigate("/admin/positions");
       }
-      dispatch(resetStatus());
+      dispatch(resetPositionStatus());
     }
   };
 

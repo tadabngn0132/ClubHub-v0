@@ -7,7 +7,7 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link } from "react-router-dom";
-import { resetStatus } from "../../../store/slices/positionSlice";
+import { resetPositionStatus } from "../../../store/slices/positionSlice";
 
 const AdminPositions = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const AdminPositions = () => {
 
   const handleDelete = (id) => {
     dispatch(deletePositionById(id));
-    dispatch(resetStatus());
+    dispatch(resetPositionStatus());
   };
 
   return (

@@ -135,11 +135,11 @@ const activityParticipationSlice = createSlice({
     registration: null,
     isLoading: false,
     error: null,
-    status: "idle",
+    activityParticipantStatus: "idle",
   },
   reducers: {
-    resetStatus: (state) => {
-      state.status = "idle";
+    resetActivityParticipantStatus: (state) => {
+      state.activityParticipantStatus = "idle";
     },
   },
   extraReducers: (builder) => {
@@ -147,62 +147,62 @@ const activityParticipationSlice = createSlice({
       // Handle createActivityParticipation
       .addCase(createNewActivityParticipation.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.activityParticipantStatus = "pending";
       })
       .addCase(createNewActivityParticipation.fulfilled, (state, action) => {
         state.isLoading = false;
         state.registrations.push(action.payload.data);
-        state.status = "fulfilled";
+        state.activityParticipantStatus = "fulfilled";
       })
       .addCase(createNewActivityParticipation.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.activityParticipantStatus = "rejected";
       })
 
       // Handle getAllActivityParticipations
       .addCase(getAllActivityParticipations.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.activityParticipantStatus = "pending";
       })
       .addCase(getAllActivityParticipations.fulfilled, (state, action) => {
         state.isLoading = false;
         state.registrations = action.payload.data;
-        state.status = "fulfilled";
+        state.activityParticipantStatus = "fulfilled";
       })
       .addCase(getAllActivityParticipations.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.activityParticipantStatus = "rejected";
       })
 
       // Handle getActivityParticipationById
       .addCase(getActivityParticipationById.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.activityParticipantStatus = "pending";
       })
       .addCase(getActivityParticipationById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.registration = action.payload.data;
-        state.status = "fulfilled";
+        state.activityParticipantStatus = "fulfilled";
       })
       .addCase(getActivityParticipationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.activityParticipantStatus = "rejected";
       })
 
       // Handle getActivityParticipationsByActivityId
       .addCase(getActivityParticipationsByActivityId.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.activityParticipantStatus = "pending";
       })
       .addCase(
         getActivityParticipationsByActivityId.fulfilled,
         (state, action) => {
           state.isLoading = false;
           state.registrations = action.payload.data;
-          state.status = "fulfilled";
+          state.activityParticipantStatus = "fulfilled";
         },
       )
       .addCase(
@@ -210,34 +210,34 @@ const activityParticipationSlice = createSlice({
         (state, action) => {
           state.isLoading = false;
           state.error = action.payload;
-          state.status = "rejected";
+          state.activityParticipantStatus = "rejected";
         },
       )
 
       // Handle getActivityParticipationsByUserId
       .addCase(getActivityParticipationsByUserId.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.activityParticipantStatus = "pending";
       })
       .addCase(getActivityParticipationsByUserId.fulfilled, (state, action) => {
         state.isLoading = false;
         state.registrations = action.payload.data;
-        state.status = "fulfilled";
+        state.activityParticipantStatus = "fulfilled";
       })
       .addCase(getActivityParticipationsByUserId.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.activityParticipantStatus = "rejected";
       })
 
       // Handle updateActivityParticipationById
       .addCase(updateActivityParticipationById.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.activityParticipantStatus = "pending";
       })
       .addCase(updateActivityParticipationById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.status = "fulfilled";
+        state.activityParticipantStatus = "fulfilled";
         const index = state.registrations.findIndex(
           (reg) => reg.id === action.payload.data.id,
         );
@@ -248,17 +248,17 @@ const activityParticipationSlice = createSlice({
       .addCase(updateActivityParticipationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.activityParticipantStatus = "rejected";
       })
 
       // Handle deleteActivityParticipation
       .addCase(deleteActivityParticipation.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.activityParticipantStatus = "pending";
       })
       .addCase(deleteActivityParticipation.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.status = "fulfilled";
+        state.activityParticipantStatus = "fulfilled";
         state.registrations = state.registrations.filter(
           (reg) => reg.id !== action.payload.data.id,
         );
@@ -266,10 +266,10 @@ const activityParticipationSlice = createSlice({
       .addCase(deleteActivityParticipation.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.activityParticipantStatus = "rejected";
       });
   },
 });
 
-export const { resetStatus } = activityParticipationSlice.actions;
+export const { resetActivityParticipantStatus } = activityParticipationSlice.actions;
 export default activityParticipationSlice.reducer;

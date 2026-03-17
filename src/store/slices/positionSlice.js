@@ -99,11 +99,11 @@ const positionSlice = createSlice({
     position: null,
     isLoading: false,
     error: null,
-    status: "idle",
+    positionStatus: "idle",
   },
   reducers: {
-    resetStatus: (state) => {
-      state.status = "idle";
+    resetPositionStatus: (state) => {
+      state.positionStatus = "idle";
     },
   },
   extraReducers: (builder) => {
@@ -112,58 +112,58 @@ const positionSlice = createSlice({
       .addCase(createNewPosition.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.positionStatus = "pending";
       })
       .addCase(createNewPosition.fulfilled, (state, action) => {
         state.isLoading = false;
         state.positions.push(action.payload.data);
-        state.status = "fulfilled";
+        state.positionStatus = "fulfilled";
       })
       .addCase(createNewPosition.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
-        state.status = "rejected";
+        state.positionStatus = "rejected";
       })
 
       // Handle getPositionsList
       .addCase(getPositionsList.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.positionStatus = "pending";
       })
       .addCase(getPositionsList.fulfilled, (state, action) => {
         state.isLoading = false;
         state.positions = action.payload.data;
-        state.status = "fulfilled";
+        state.positionStatus = "fulfilled";
       })
       .addCase(getPositionsList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
-        state.status = "rejected";
+        state.positionStatus = "rejected";
       })
 
       // Handle getPositionDetails
       .addCase(getPositionDetails.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.positionStatus = "pending";
       })
       .addCase(getPositionDetails.fulfilled, (state, action) => {
         state.isLoading = false;
         state.position = action.payload.data;
-        state.status = "fulfilled";
+        state.positionStatus = "fulfilled";
       })
       .addCase(getPositionDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
-        state.status = "rejected";
+        state.positionStatus = "rejected";
       })
 
       // Handle updatePositionDetails
       .addCase(updatePositionDetails.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.positionStatus = "pending";
       })
       .addCase(updatePositionDetails.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -173,34 +173,34 @@ const positionSlice = createSlice({
         if (index !== -1) {
           state.positions[index] = action.payload.data;
         }
-        state.status = "fulfilled";
+        state.positionStatus = "fulfilled";
       })
       .addCase(updatePositionDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
-        state.status = "rejected";
+        state.positionStatus = "rejected";
       })
 
       // Handle deletePositionById
       .addCase(deletePositionById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.positionStatus = "pending";
       })
       .addCase(deletePositionById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.positions = state.positions.filter(
           (position) => position.id !== action.payload.data.id,
         );
-        state.status = "fulfilled";
+        state.positionStatus = "fulfilled";
       })
       .addCase(deletePositionById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
-        state.status = "rejected";
+        state.positionStatus = "rejected";
       });
   },
 });
 
-export const { resetStatus } = positionSlice.actions;
+export const { resetPositionStatus } = positionSlice.actions;
 export default positionSlice.reducer;

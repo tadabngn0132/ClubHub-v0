@@ -117,7 +117,7 @@ const notificationSlice = createSlice({
     notificationDetails: null,
     isLoading: false,
     error: null,
-    status: "idle",
+    notificationStatus: "idle",
   },
   reducers: {
     clearError: (state) => {
@@ -127,8 +127,8 @@ const notificationSlice = createSlice({
       state.notifications = [];
       state.notificationDetails = null;
     },
-    resetStatus: (state) => {
-      state.status = "idle";
+    resetNotificationStatus: (state) => {
+      state.notificationStatus = "idle";
     },
   },
   extraReducers: (builder) => {
@@ -136,75 +136,75 @@ const notificationSlice = createSlice({
       // Create Notification
       .addCase(createNewNotification.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.notificationStatus = "pending";
       })
       .addCase(createNewNotification.fulfilled, (state, action) => {
         state.isLoading = false;
         state.notifications.push(action.payload.data);
-        state.status = "fulfilled";
+        state.notificationStatus = "fulfilled";
       })
       .addCase(createNewNotification.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.notificationStatus = "rejected";
       })
 
       // Get Notification Details
       .addCase(getNotificationDetails.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.notificationStatus = "pending";
       })
       .addCase(getNotificationDetails.fulfilled, (state, action) => {
         state.isLoading = false;
         state.notificationDetails = action.payload.data;
-        state.status = "fulfilled";
+        state.notificationStatus = "fulfilled";
       })
       .addCase(getNotificationDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.notificationStatus = "rejected";
       })
 
       // Get All Notifications
       .addCase(getAllNotificationsList.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.notificationStatus = "pending";
       })
       .addCase(getAllNotificationsList.fulfilled, (state, action) => {
         state.isLoading = false;
         state.notifications = action.payload.datas;
-        state.status = "fulfilled";
+        state.notificationStatus = "fulfilled";
       })
       .addCase(getAllNotificationsList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.notificationStatus = "rejected";
       })
 
       // Get User Notifications
       .addCase(getUserNotifications.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.notificationStatus = "pending";
       })
       .addCase(getUserNotifications.fulfilled, (state, action) => {
         state.isLoading = false;
         state.notifications = action.payload.datas;
-        state.status = "fulfilled";
+        state.notificationStatus = "fulfilled";
       })
       .addCase(getUserNotifications.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.notificationStatus = "rejected";
       })
 
       // Update Notification
       .addCase(updateNotificationById.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.notificationStatus = "pending";
       })
       .addCase(updateNotificationById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.status = "fulfilled";
+        state.notificationStatus = "fulfilled";
         const index = state.notifications.findIndex(
           (notif) => notif.id === action.payload.data.id,
         );
@@ -215,29 +215,29 @@ const notificationSlice = createSlice({
       .addCase(updateNotificationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.notificationStatus = "rejected";
       })
 
       // Delete Notification
       .addCase(deleteNotificationById.pending, (state) => {
         state.isLoading = true;
-        state.status = "pending";
+        state.notificationStatus = "pending";
       })
       .addCase(deleteNotificationById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.notifications = state.notifications.filter(
           (notif) => notif.id !== action.payload.dataId,
         );
-        state.status = "fulfilled";
+        state.notificationStatus = "fulfilled";
       })
       .addCase(deleteNotificationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.notificationStatus = "rejected";
       });
   },
 });
 
-export const { clearError, clearNotifications, resetStatus } =
+export const { clearError, clearNotifications, resetNotificationStatus } =
   notificationSlice.actions;
 export default notificationSlice.reducer;

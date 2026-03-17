@@ -117,11 +117,11 @@ const userSlice = createSlice({
     user: null,
     isLoading: false,
     error: null,
-    status: "idle",
+    userStatus: "idle",
   },
   reducers: {
-    resetStatus: (state) => {
-      state.status = "idle";
+    resetUserStatus: (state) => {
+      state.userStatus = "idle";
     },
   },
   extraReducers: (builder) => {
@@ -130,62 +130,62 @@ const userSlice = createSlice({
       .addCase(createUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.userStatus = "pending";
       })
       .addCase(createUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.users.push(action.payload.user);
-        state.status = "fulfilled";
+        state.userStatus = "fulfilled";
       })
       .addCase(createUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.userStatus = "rejected";
       })
 
       // Get User By ID
       .addCase(getUserById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.userStatus = "pending";
       })
       .addCase(getUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.data;
-        state.status = "fulfilled";
+        state.userStatus = "fulfilled";
       })
       .addCase(getUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.userStatus = "rejected";
       })
 
       // Get Users List
       .addCase(getUsersList.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.userStatus = "pending";
       })
       .addCase(getUsersList.fulfilled, (state, action) => {
         state.isLoading = false;
         state.users = action.payload.data;
-        state.status = "fulfilled";
+        state.userStatus = "fulfilled";
       })
       .addCase(getUsersList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.userStatus = "rejected";
       })
 
       // Update User By ID
       .addCase(updateUserById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.userStatus = "pending";
       })
       .addCase(updateUserById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.status = "fulfilled";
+        state.userStatus = "fulfilled";
         const index = state.users.findIndex(
           (user) => user.id === action.payload.data.id,
         );
@@ -196,48 +196,48 @@ const userSlice = createSlice({
       .addCase(updateUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.userStatus = "rejected";
       })
 
       // Soft Delete User By ID
       .addCase(softDeleteUserById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.userStatus = "pending";
       })
       .addCase(softDeleteUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.users = state.users.filter(
           (user) => user.id !== action.payload.user.id,
         );
-        state.status = "fulfilled";
+        state.userStatus = "fulfilled";
       })
       .addCase(softDeleteUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.userStatus = "rejected";
       })
 
       // Hard Delete User By ID
       .addCase(hardDeleteUserById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-        state.status = "pending";
+        state.userStatus = "pending";
       })
       .addCase(hardDeleteUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.users = state.users.filter(
           (user) => user.id !== action.payload.user.id,
         );
-        state.status = "fulfilled";
+        state.userStatus = "fulfilled";
       })
       .addCase(hardDeleteUserById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.status = "rejected";
+        state.userStatus = "rejected";
       });
   },
 });
 
-export const { resetStatus } = userSlice.actions;
+export const { resetUserStatus } = userSlice.actions;
 export default userSlice.reducer;
