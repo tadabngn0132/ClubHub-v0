@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import { changePasswordUser } from "../../store/slices/authSlice";
+import { changePasswordUser } from "../../../store/slices/authSlice";
 
-const ChangePassword = () => {
+const ChangePasswordForm = () => {
   const dispatch = useDispatch();
   const {
     register,
@@ -20,9 +20,7 @@ const ChangePassword = () => {
   });
 
   const handleChangePassword = async (data) => {
-    console.log(data);
-    const resData = await dispatch(changePasswordUser(data)).unwrap();
-    console.log(resData);
+    dispatch(changePasswordUser(data));
   };
 
   return (
@@ -122,4 +120,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ChangePasswordForm;

@@ -1,7 +1,6 @@
 import MemberLayout from "../../components/layout/member/MemberLayout.jsx";
 import MemberDashboard from "../../pages/private/member/MemberDashboard.jsx";
 import MemberActivities from "../../pages/private/member/MemberActivities.jsx";
-import MemberSchedule from "../../pages/private/member/MemberSchedule.jsx";
 import MemberTasks from "../../pages/private/member/MemberTasks.jsx";
 import MemberProfile from "../../pages/private/member/MemberProfile.jsx";
 import MemberViewActivity from "../../pages/private/member/MemberViewActivity.jsx";
@@ -12,7 +11,7 @@ import MemberDepartments from "../../pages/private/member/MemberDepartments.jsx"
 import MemberViewDepartment from "../../pages/private/member/MemberViewDepartment.jsx";
 import MemberPositions from "../../pages/private/member/MemberPositions.jsx";
 import MemberViewPosition from "../../pages/private/member/MemberViewPosition.jsx";
-import ChangePassword from "../../pages/auth/ChangePassword.jsx";
+import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
 import MemberEditTask from "../../pages/private/member/MemberEditTask.jsx";
 
 export const memberRoutes = [
@@ -37,14 +36,6 @@ export const memberRoutes = [
     element: (
       <MemberLayout>
         <MemberViewActivity />
-      </MemberLayout>
-    ),
-  },
-  {
-    path: "/member/schedule",
-    element: (
-      <MemberLayout>
-        <MemberSchedule />
       </MemberLayout>
     ),
   },

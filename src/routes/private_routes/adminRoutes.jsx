@@ -1,7 +1,6 @@
 import AdminLayout from "../../components/layout/admin/AdminLayout.jsx";
 import AdminDashboard from "../../pages/private/admin/AdminDashboard.jsx";
 import AdminActivities from "../../pages/private/admin/AdminActivities.jsx";
-import AdminSchedule from "../../pages/private/admin/AdminSchedule.jsx";
 import AdminTasks from "../../pages/private/admin/AdminTasks.jsx";
 import AdminProfile from "../../pages/private/admin/AdminProfile.jsx";
 import AdminUsers from "../../pages/private/admin/AdminUsers.jsx";
@@ -65,14 +64,6 @@ export const adminRoutes = [
     element: (
       <AdminLayout>
         <AdminAddActivity />
-      </AdminLayout>
-    ),
-  },
-  {
-    path: "/admin/schedule",
-    element: (
-      <AdminLayout>
-        <AdminSchedule />
       </AdminLayout>
     ),
   },

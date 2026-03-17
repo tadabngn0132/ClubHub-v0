@@ -1,7 +1,6 @@
 import ModeratorLayout from "../../components/layout/moderator/ModeratorLayout.jsx";
 import ModeratorDashboard from "../../pages/private/moderator/ModeratorDashboard.jsx";
 import ModeratorActivities from "../../pages/private/moderator/ModeratorActivities.jsx";
-import ModeratorSchedule from "../../pages/private/moderator/ModeratorSchedule.jsx";
 import ModeratorTasks from "../../pages/private/moderator/ModeratorTasks.jsx";
 import ModeratorProfile from "../../pages/private/moderator/ModeratorProfile.jsx";
 import ModeratorEditActivity from "../../pages/private/moderator/ModeratorEditActivity.jsx";
@@ -18,7 +17,7 @@ import ModeratorPositions from "../../pages/private/moderator/ModeratorPositions
 import ModeratorViewPosition from "../../pages/private/moderator/ModeratorViewPosition.jsx";
 import ModeratorMemberApplications from "../../pages/private/moderator/ModeratorMemberApplications.jsx";
 import ModeratorViewMemberApplication from "../../pages/private/moderator/ModeratorViewMemberApplication.jsx";
-import ChangePassword from "../../pages/auth/ChangePassword.jsx";
+import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
 import ModeratorAddUser from "../../pages/private/moderator/ModeratorAddUser.jsx";
 import ModeratorEditUser from "../../pages/private/moderator/ModeratorEditUser.jsx";
 
@@ -60,14 +59,6 @@ export const moderatorRoutes = [
     element: (
       <ModeratorLayout>
         <ModeratorAddActivity />
-      </ModeratorLayout>
-    ),
-  },
-  {
-    path: "/moderator/schedule",
-    element: (
-      <ModeratorLayout>
-        <ModeratorSchedule />
       </ModeratorLayout>
     ),
   },

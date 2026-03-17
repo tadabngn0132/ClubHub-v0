@@ -8,6 +8,7 @@ import { sampleActivityData } from "../../../data/sampleActivityData";
 import ActivitiesBulkActionBar from "../../../components/main/internal/ActivitiesBulkActionBar";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
+import ActivitiesCalendarView from "../../../components/main/internal/ActivitiesCalendarView.jsx";
 
 const AdminActivities = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const AdminActivities = () => {
   const tabs = [
     { name: "Table View", component: ActivitiesTableView },
     { name: "Card View", component: ActivitiesCardView },
+    { name: "Calendar View", component: ActivitiesCalendarView },
   ];
 
   useEffect(() => {
