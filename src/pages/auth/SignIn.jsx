@@ -31,28 +31,34 @@ const SignIn = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading, error } = useSelector((state) => state.auth);
+  const { currentUser, isLoading, error } = useSelector((state) => state.auth);
   // Error handling later
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleLogin = async (formData) => {
-    try {
-      const resData = await dispatch(loginUser(formData)).unwrap();
-      toast.success(resData.message || "Login successful!");
+    dispatch(loginUser(formData));
 
-      if (resData.data.necessaryUserData.role === "admin") {
-        navigate("/admin/dashboard");
-      } else if (resData.data.necessaryUserData.role === "moderator") {
-        navigate("/moderator/dashboard");
-      } else if (resData.data.necessaryUserData.role === "member") {
-        navigate("/member/dashboard");
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      console.error(error);
+    if (
+      currentUser.userPosition[0].position.systemRole.toLowerCase() === "admin"
+    ) {
+      navigate("/admin/dashboard");
+    } else if (
+      currentUser.userPosition[0].position.systemRole.toLowerCase() ===
+      "moderator"
+    ) {
+      navigate("/moderator/dashboard");
+    } else if (
+      currentUser.userPosition[0].position.systemRole.toLowerCase() === "member"
+    ) {
+      navigate("/member/dashboard");
+    } else {
+      navigate("/");
     }
   };
+
+  if (error) {
+    toast.error(error);
+  }
 
   const handlePasswordView = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -79,11 +85,7 @@ const SignIn = () => {
             <img className="w-25" src={uogLogo} alt="UoG Logo" />
           </div>
           <div className="flex flex-col z-10 animate-slide-left">
-            <img
-              className="w-125  2xl:w-138"
-              src={signInImage}
-              alt="Hello"
-            />
+            <img className="w-125  2xl:w-138" src={signInImage} alt="Hello" />
             <p className="ml-7 text-xs w-2/3">
               Access Greenwich Dance Club member portal to check schedules,
               connect with members, and stay updated on all GDC activities.
@@ -98,10 +100,7 @@ const SignIn = () => {
               to="/"
               className="absolute w-10 top-0 left-[-80px] m-4 hover:opacity-70"
             >
-              <img
-                src={backToHomeIcon}
-                alt="Back to Home"
-              />
+              <img src={backToHomeIcon} alt="Back to Home" />
             </Link>
             <h1 className="monument-extra-bold text-4xl text-black w-full">
               Welcome <br /> Back!

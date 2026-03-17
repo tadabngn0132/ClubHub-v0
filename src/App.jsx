@@ -13,9 +13,15 @@ import {
 } from "./routes";
 
 import { useTokenRefresh } from "./hooks/useTokenRefresh";
+import { useSelector } from "react-redux";
+import { getToken, getCurrentUser } from "./utils/helper";
 
 function App() {
-  useTokenRefresh();
+  const { isLoggedIn, token, currentUser } = useSelector((state) => state.auth);
+
+  const isLoggedInToWebsite = isLoggedIn || (token && currentUser) || (getToken() && getCurrentUser());
+  
+  useTokenRefresh(isLoggedInToWebsite);
 
   return (
     <BrowserRouter basename="/">

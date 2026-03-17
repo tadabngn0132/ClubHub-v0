@@ -8,7 +8,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const { token, currentUser } = useSelector((state) => state.auth);
   const accessToken = token || getToken();
   const currentUserInfo = currentUser || getCurrentUser();
-  const role = currentUserInfo?.userPosition[0]?.position?.systemRole.toLowerCase();
+  const role = currentUserInfo?.userPosition?.[0]?.position?.systemRole.toLowerCase();
 
   useEffect(() => {
     if (!accessToken || accessToken === null) {

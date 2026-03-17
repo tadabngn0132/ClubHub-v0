@@ -7,14 +7,15 @@ import {
 } from "../utils/helper";
 import { logoutUser, refreshAccessTokenUser } from "../store/slices/authSlice";
 
-export const useTokenRefresh = () => {
+export const useTokenRefresh = (isLoggedInToWebsite) => {
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.auth);
+  const { token, currentUser } = useSelector((state) => state.auth);
   const accessToken = token || getToken();
   const isRefreshing = useRef(false);
 
   useEffect(() => {
-    if (!accessToken) return;
+    if (!isLoggedInToWebsite) return;
+    if (!accessToken || !currentUser) return;
 
     const checkAndRefreshToken = async () => {
       const decodedToken = decodeAccessToken(accessToken);
@@ -42,5 +43,5 @@ export const useTokenRefresh = () => {
     const intervalId = setInterval(checkAndRefreshToken, 30000); // Check every 30 seconds
 
     return () => clearInterval(intervalId);
-  }, [accessToken, dispatch]);
+  }, [accessToken, currentUser, dispatch, isLoggedInToWebsite]);
 };

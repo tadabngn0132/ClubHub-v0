@@ -13,7 +13,6 @@ import {
   setCurrentUser,
   removeCurrentUser,
 } from "../../utils/helper";
-import { set } from "react-hook-form";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
