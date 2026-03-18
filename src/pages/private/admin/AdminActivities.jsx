@@ -82,11 +82,11 @@ const AdminActivities = () => {
         ))}
       </div>
 
-      <div>
+      <div className="w-full">
         {tabs.map((tab, index) => (
           <div
             key={index}
-            style={{ display: activeTab === index ? "flex" : "none" }}
+            style={{ display: activeTab === index ? "block" : "none" }}
           >
             <tab.component role="admin" />
           </div>

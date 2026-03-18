@@ -116,7 +116,7 @@ const TaskForm = ({ mode, taskId }) => {
             id="isCheckCf"
             name="isCheckCf"
             {...register("isCheckCf")}
-            className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="mt-2 bg-slate-800 text-white border border-slate-600"
           />
           <label htmlFor="isCheckCf" className="ml-2">
             Check Cf
@@ -130,13 +130,13 @@ const TaskForm = ({ mode, taskId }) => {
           id="status"
           name="status"
           {...register("status", { required: "Task status is required" })}
-          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="mt-2 bg-slate-800 text-white border border-slate-600"
         >
-          <option value="new">New</option>
-          <option value="in-progress">In Progress</option>
-          <option value="done">Done</option>
-          <option value="cancelled">Cancelled</option>
-          <option value="on-hold">On Hold</option>
+          <option value="new" className="bg-slate-800 text-white">New</option>
+          <option value="in-progress" className="bg-slate-800 text-white">In Progress</option>
+          <option value="done" className="bg-slate-800 text-white">Done</option>
+          <option value="cancelled" className="bg-slate-800 text-white">Cancelled</option>
+          <option value="on-hold" className="bg-slate-800 text-white">On Hold</option>
         </select>
         {errors.status && <p className="text-red-500">{errors.status.message}</p>}
 
@@ -148,10 +148,10 @@ const TaskForm = ({ mode, taskId }) => {
               id="assigneeScope"
               name="assigneeScope"
               {...register("assigneeScope", { required: "Assignee scope is required" })}
-              className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="mt-2 bg-slate-800 text-white border border-slate-600"
             >
               {ASSIGNEE_SCOPE.map((scope) => (
-                <option key={scope.id} value={scope.value}>
+                <option key={scope.id} value={scope.value} className="bg-slate-800 text-white">
                   {scope.name}
                 </option>
               ))}

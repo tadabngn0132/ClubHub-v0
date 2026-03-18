@@ -54,6 +54,7 @@ const MemberDashboard = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Member Dashboard</h1>
+      <p>Welcome, {currentUser?.fullname || "Member"}!</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white p-4 rounded shadow">
           <h2 className="text-xl font-semibold mb-2">My Tasks</h2>

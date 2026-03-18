@@ -102,7 +102,7 @@ const ModeratorUsers = () => {
             <th className="px-3 py-2" onClick={() => handleSort("email")}>
               Email
             </th>
-            <th className="px-2 py-2" onClick={() => handleSort("gen")}>
+            <th className="px-2 py-2" onClick={() => handleSort("generation")}>
               Gen
             </th>
             <th className="px-2 py-2">Major</th>
@@ -146,15 +146,15 @@ const ModeratorUsers = () => {
                   {/* TODO: Implement lazy loading for avatars */}
                   <img
                     src={user.avatar}
-                    alt={user.name}
+                    alt={user.fullname}
                     className="w-12 h-12 rounded-full object-cover mx-auto"
                   />
                 </td>
                 <td
                   className="px-3 py-2 max-w-[120px] truncate"
-                  title={user.name}
+                  title={user.fullname}
                 >
-                  {user.name}
+                  {user.fullname}
                 </td>
                 <td
                   className="px-3 py-2 max-w-[160px] truncate text-sm"
@@ -162,7 +162,7 @@ const ModeratorUsers = () => {
                 >
                   {user.email}
                 </td>
-                <td className="px-2 py-2 text-sm">{user.gen}</td>
+                <td className="px-2 py-2 text-sm">{user.generation}</td>
                 <td
                   className="px-2 py-2 text-sm max-w-[80px] truncate"
                   title={user.major}
@@ -173,11 +173,13 @@ const ModeratorUsers = () => {
                   className="px-2 py-2 text-sm max-w-[80px] truncate"
                   title={user.department}
                 >
-                  {user.department}
+                  {user.userPosition[0].position.department.name}
                 </td>
                 <td className="px-2 py-2 text-sm">
-                  {user.role && (
-                    <p className={displayRoleBadge(user.role)}>{user.role}</p>
+                  {user.userPosition[0].position.systemRole && (
+                    <p className={displayRoleBadge(user.userPosition[0].position.systemRole)}>
+                      {user.userPosition[0].position.systemRole}
+                    </p>
                   )}
                 </td>
                 <td className="px-2 py-2 text-sm">
@@ -188,7 +190,7 @@ const ModeratorUsers = () => {
                   )}
                 </td>
                 <td className="px-2 py-2 w-24 relative">
-                  <div className="flex justify-center items-center gap-1 text-xs absolute top-10 bg-white p-2 rounded-md shadow-md">
+                  <div className="flex justify-center items-center gap-1 text-xs bg-white p-2 rounded-md shadow-md">
                     <Link
                       to={`/moderator/users/view/${user.id}`}
                       className="text-green-500 hover:underline"

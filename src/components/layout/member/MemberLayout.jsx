@@ -8,9 +8,9 @@ const MemberLayout = ({ children }) => {
     <>
       <ProtectedRoute allowedRoles={["admin", "moderator", "member"]}>
         <MemberHeader />
-        <main className="flex">
+        <main className="flex mt-[61.2px]">
           <MemberSideBar />
-          <div className="flex-1">{children}</div>
+          <div className="flex-1 p-4">{children}</div>
         </main>
         <MemberFooter />
       </ProtectedRoute>

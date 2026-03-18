@@ -1,11 +1,19 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../../../components/layout/internal/Loading.jsx";
 
 const BasicInfoTab = () => {
   const {
     register,
     formState: { errors },
   } = useFormContext();
+
+  const { isLoading } = useSelector((state) => state.user);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col">

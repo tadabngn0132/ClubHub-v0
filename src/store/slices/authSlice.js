@@ -8,8 +8,10 @@ import {
   refreshAccessToken,
 } from "../../services/authService";
 import {
+  getToken,
   setToken,
   removeToken,
+  getCurrentUser,
   setCurrentUser,
   removeCurrentUser,
 } from "../../utils/helper";
@@ -120,8 +122,8 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     isLoggedIn: false,
-    currentUser: null,
-    token: null,
+    currentUser: null || getCurrentUser(),
+    token: null || getToken(),
     isLoading: false,
     error: null,
     authStatus: "idle",

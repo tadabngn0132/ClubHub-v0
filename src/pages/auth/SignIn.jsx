@@ -31,24 +31,23 @@ const SignIn = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { currentUser, isLoading, error } = useSelector((state) => state.auth);
-  // Error handling later
+  const { isLoading, error } = useSelector((state) => state.auth);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleLogin = async (formData) => {
-    dispatch(loginUser(formData));
+    const resData = await dispatch(loginUser(formData)).unwrap();
 
     if (
-      currentUser.userPosition[0].position.systemRole.toLowerCase() === "admin"
+      resData.data.necessaryUserData.userPosition[0].position.systemRole.toLowerCase() === "admin"
     ) {
       navigate("/admin/dashboard");
     } else if (
-      currentUser.userPosition[0].position.systemRole.toLowerCase() ===
+      resData.data.necessaryUserData.userPosition[0].position.systemRole.toLowerCase() ===
       "moderator"
     ) {
       navigate("/moderator/dashboard");
     } else if (
-      currentUser.userPosition[0].position.systemRole.toLowerCase() === "member"
+      resData.data.necessaryUserData.userPosition[0].position.systemRole.toLowerCase() === "member"
     ) {
       navigate("/member/dashboard");
     } else {

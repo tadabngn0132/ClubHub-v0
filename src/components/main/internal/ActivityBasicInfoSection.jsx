@@ -20,6 +20,7 @@ const ActivityBasicInfoSection = () => {
           required: "Activity title cannot be empty.",
           maxLength: 200,
         })}
+        className="mt-2 bg-slate-800 text-white border border-slate-600"
       />
       {errors.title && (
         <p className="text-red-500 text-sm">{errors.title.message}</p>
@@ -32,9 +33,10 @@ const ActivityBasicInfoSection = () => {
         {...register("type", {
           required: "Activity type cannot be empty",
         })}
+        className="mt-2 bg-slate-800 text-white border border-slate-600"
       >
         {Object.values(ACTIVITY_TYPES).map((type) => (
-          <option key={type} value={type}>
+          <option key={type} value={type} className="bg-slate-800 text-white">
             {type}
           </option>
         ))}
@@ -50,9 +52,10 @@ const ActivityBasicInfoSection = () => {
         {...register("status", {
           required: "Activity status cannot be empty",
         })}
+        className="mt-2 bg-slate-800 text-white border border-slate-600"
       >
         {Object.values(ACTIVITY_STATUSES).map((status) => (
-          <option key={status} value={status}>
+          <option key={status} value={status} className="bg-slate-800 text-white">
             {status}
           </option>
         ))}

@@ -86,6 +86,25 @@ axiosClient.interceptors.response.use(
         break;
       case 401:
         // TODO: Handle refresh token expiration or unauthorized access in queue function
+        const requestUrl = error.config?.url || "";
+        const isLoginRequest = requestUrl.includes("/auth/login");
+        const isRegisterRequest = requestUrl.includes("/auth/register");
+        const isForgotPasswordRequest = requestUrl.includes("/auth/forgot-password");
+        const isResetPasswordRequest = requestUrl.includes("/auth/reset-password");
+        const isLogoutRequest = requestUrl.includes("/auth/logout");
+
+        const shouldSkipAutoLogout =
+          isLoginRequest ||
+          isRegisterRequest ||
+          isForgotPasswordRequest ||
+          isResetPasswordRequest ||
+          isLogoutRequest;
+
+        if (shouldSkipAutoLogout) {
+          toast.error(error.response?.data?.message || "Unauthorized");
+          break;
+        }
+
         toast.error("Session expired. Please log in again.");
         if (unauthorizedHandler) {
           await unauthorizedHandler(error);

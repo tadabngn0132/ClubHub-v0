@@ -10,11 +10,13 @@ import {
   updateUserById,
 } from "../../../store/slices/userSlice.js";
 import { Toaster } from "react-hot-toast";
+import { useParams } from "react-router-dom";
+import { formatDateToLocal, formatNumberToString, formatUppercaseToCapitalized } from "../../../utils/formatters.js";
 
-const UserForm = ({ mode, userId }) => {
+const UserForm = ({ mode }) => {
+  const { userId } = useParams();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
-  const { user } = useSelector((state) => state.user);
 
   const methods = useForm({
     defaultValues: {
@@ -26,11 +28,12 @@ const UserForm = ({ mode, userId }) => {
       major: "",
       generation: "",
       joinedAt: "",
-      status: "active",
+      status: "Active",
       studentId: "",
       avatarUrl: null,
       bio: "",
       rootDepartmentId: null,
+      positionId: null,
     },
     mode: "onChange",
   });
@@ -38,44 +41,49 @@ const UserForm = ({ mode, userId }) => {
   const { isValid } = methods.formState;
 
   useEffect(() => {
-    if (mode === "edit") {
-      dispatch(getUserById(userId));
-
-      if (user) {
+    const fetchUserData = async () => {
+      if (mode === "edit") {
+        const userData = await dispatch(getUserById(userId)).unwrap();
+        console.log("Fetched user data:", userData); // Debug log
+  
+        if (userData) {
+          methods.reset({
+            fullname: userData.data.fullname || "",
+            email: userData.data.email || "",
+            phoneNumber: userData.data.phoneNumber || "",
+            dateOfBirth: formatDateToLocal(userData.data.dateOfBirth) || "",
+            gender: userData.data.gender || "",
+            major: userData.data.major || "",
+            generation: formatNumberToString(userData.data.generation) || "",
+            joinedAt: formatDateToLocal(userData.data.joinedAt) || "",
+            status: formatUppercaseToCapitalized(userData.data.status) || "Active",
+            studentId: userData.data.studentId || "",
+            avatarUrl: userData.data.avatarUrl || null,
+            bio: userData.data.bio || "",
+            rootDepartmentId: userData.data.rootDepartmentId || null,
+            positionId: userData.data.userPosition[0]?.positionId || null,
+          });
+        }
+      } else if (mode === "add") {
         methods.reset({
-          fullname: user.fullname || "",
-          email: user.email || "",
-          phoneNumber: user.phoneNumber || "",
-          dateOfBirth: user.dateOfBirth || "",
-          gender: user.gender || "",
-          major: user.major || "",
-          generation: user.generation || "",
-          joinedAt: user.joinedAt || "",
-          status: user.status || "active",
-          studentId: user.studentId || "",
-          avatarUrl: user.avatarUrl || null,
-          bio: user.bio || "",
-          rootDepartmentId: user.rootDepartmentId || null,
+          fullname: "",
+          email: "",
+          phoneNumber: "",
+          dateOfBirth: "",
+          gender: "",
+          major: "",
+          generation: "",
+          joinedAt: "",
+          status: "Active",
+          studentId: "",
+          avatarUrl: null,
+          bio: "",
+          rootDepartmentId: null,
+          positionId: null,
         });
       }
-    } else if (mode === "add") {
-      methods.reset({
-        fullname: "",
-        email: "",
-        phoneNumber: "",
-        dateOfBirth: "",
-        gender: "",
-        major: "",
-        generation: "",
-        joinedAt: "",
-        status: "active",
-        studentId: "",
-        avatarUrl: null,
-        bio: "",
-        rootDepartmentId: null,
-        positionId: null,
-      });
     }
+    fetchUserData();
   }, [mode, userId, methods]);
 
   const tabs = [
@@ -88,7 +96,7 @@ const UserForm = ({ mode, userId }) => {
     if (mode === "add") {
       dispatch(createUser(data));
     } else if (mode === "edit") {
-      dispatch(updateUserById(data));
+      dispatch(updateUserById({ id: userId, userData: data }));
     }
   };
 

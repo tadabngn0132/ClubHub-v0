@@ -11,12 +11,13 @@ import ActivityBasicInfoSection from "./ActivityBasicInfoSection.jsx";
 import ActivityLocationSection from "./ActivityLocationSection.jsx";
 import ActivityDescriptionSection from "./ActivityDescriptionSection.jsx";
 import ActivityScheduleSection from "./ActivityScheduleSection.jsx";
+import { useParams } from "react-router-dom";
 
-const ActivityForm = ({ mode, activityId }) => {
+const ActivityForm = ({ mode }) => {
+  const { activityId } = useParams();
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
   const { currentUser } = useSelector((state) => state.auth);
-  console.log("Activity ID:", activityId);
 
   const { activity } = useSelector((state) => state.activity);
 

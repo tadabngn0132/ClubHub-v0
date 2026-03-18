@@ -173,7 +173,7 @@ const memberApplicationSlice = createSlice({
       })
       .addCase(getAllMemberApplicationsList.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.memberApplications = action.payload.datas;
+        state.memberApplications = action.payload.data;
         state.memberApplicationStatus = "fulfilled";
       })
       .addCase(getAllMemberApplicationsList.rejected, (state, action) => {

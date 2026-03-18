@@ -3,9 +3,11 @@ import { useEffect } from "react";
 import { getDepartmentDetails } from "../../../store/slices/departmentSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { formatDate } from "../../../utils/formatters.js";
 
-const ModeratorViewDepartment = ({ departmentId }) => {
+const ModeratorViewDepartment = () => {
+  const { departmentId } = useParams();
   const dispatch = useDispatch();
   const { department, isLoading, error } = useSelector(
     (state) => state.department,
@@ -32,8 +34,8 @@ const ModeratorViewDepartment = ({ departmentId }) => {
       </div>
 
       <div>
-        <p>Created At: {department?.createdAt}</p>
-        <p>Updated At: {department?.updatedAt}</p>
+        <p>Created At: {formatDate(department?.createdAt)}</p>
+        <p>Updated At: {formatDate(department?.updatedAt)}</p>
       </div>
 
       <p>Description: {department?.description}</p>

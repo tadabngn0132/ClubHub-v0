@@ -22,10 +22,11 @@ const AdminDashboard = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.auth);
 
   // Fetch necessary data for the dashboard
   const {
-    user,
+    users,
     isLoading: userLoading,
     error: userError,
   } = useSelector((state) => state.user);
@@ -79,10 +80,10 @@ const AdminDashboard = () => {
   return (
     <div>
       <h1>Admin Dashboard</h1>
-      <p>Welcome, {user.name}!</p>
+      <p>Welcome, {currentUser?.fullname || "Admin"}!</p>
       <div>
         <h2>Summary</h2>
-        <p>Total Users: {userLoading ? "Loading..." : user.length}</p>
+        <p>Total Users: {userLoading ? "Loading..." : users.length}</p>
         <p>Total Tasks: {tasksLoading ? "Loading..." : tasks.length}</p>
         <p>
           Total Activities:{" "}

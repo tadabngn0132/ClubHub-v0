@@ -3,9 +3,10 @@ import { useEffect } from "react";
 import { getPositionDetails } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-const ModeraterViewPosition = ({ positionId }) => {
+const ModeraterViewPosition = () => {
+  const { positionId } = useParams();
   const dispatch = useDispatch();
   const { position, isLoading, error } = useSelector((state) => state.position);
 
@@ -26,16 +27,11 @@ const ModeraterViewPosition = ({ positionId }) => {
       <Toaster position="top-right" reverseOrder={false} />
       <Link to="/moderator/positions">Back to Positions</Link>
       <div>
-        <h1>{position?.name || "Position Details"}</h1>
+        <h1>{position?.title || "Position Details"}</h1>
       </div>
 
-      <div>
-        <p>Created At: {position?.createdAt}</p>
-        <p>Updated At: {position?.updatedAt}</p>
-      </div>
-
-      <p>{position?.level}</p>
-      <p>{position?.systemRole}</p>
+      <p>Level: {position?.level}</p>
+      <p>System Role: {position?.systemRole}</p>
     </div>
   );
 };

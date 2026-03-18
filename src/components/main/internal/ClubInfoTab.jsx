@@ -37,18 +37,18 @@ const ClubInfoTab = () => {
       )}
 
       {/* Join Date field */}
-      <label htmlFor="join_date" className="mt-3">
+      <label htmlFor="joinedAt" className="mt-3">
         Join Date <span className="text-red-500">*</span>
       </label>
       <input
         type="date"
-        id="join_date"
+        id="joinedAt"
         className="mt-2"
         defaultValue={new Date().toISOString().split("T")[0]}
-        {...register("join_date", { required: "Join Date cannot be empty" })}
+        {...register("joinedAt", { required: "Join Date cannot be empty" })}
       />
-      {errors.join_date && (
-        <p className="text-red-500 text-sm">{errors.join_date.message}</p>
+      {errors.joinedAt && (
+        <p className="text-red-500 text-sm">{errors.joinedAt.message}</p>
       )}
 
       {/* Status field */}
@@ -58,13 +58,13 @@ const ClubInfoTab = () => {
       <select
         name="status"
         id="status"
-        className="mt-2"
+        className="mt-2 bg-slate-800 text-white border border-slate-600"
         {...register("status")}
       >
-        <option className="bg-gray-500" value="Active">
+        <option className="bg-slate-800 text-white" value="Active">
           Active
         </option>
-        <option className="bg-gray-500" value="Inactive">
+        <option className="bg-slate-800 text-white" value="Inactive">
           Inactive
         </option>
       </select>
@@ -76,15 +76,15 @@ const ClubInfoTab = () => {
       <select
         name="positionId"
         id="positionId"
-        className="mt-2"
+        className="mt-2 bg-slate-800 text-white border border-slate-600"
         {...register("positionId", {
           required: "Position is required",
         })}
       >
         <option value="">Select a position</option>
         {positions.map((pos) => (
-          <option key={pos.id} value={pos.id}>
-            {pos.name}
+          <option key={pos.id} value={pos.id} className="bg-slate-800 text-white">
+            {pos.title}
           </option>
         ))}
       </select>
@@ -96,14 +96,14 @@ const ClubInfoTab = () => {
       <select
         name="rootDepartmentId"
         id="rootDepartmentId"
-        className="mt-2"
+        className="mt-2 bg-slate-800 text-white border border-slate-600"
         {...register("rootDepartmentId", {
           required: "Root Department is required",
         })}
       >
         <option value="">Select a department</option>
         {departments.map((dept) => (
-          <option key={dept.id} value={dept.id}>
+          <option key={dept.id} value={dept.id} className="bg-slate-800 text-white">
             {dept.name}
           </option>
         ))}

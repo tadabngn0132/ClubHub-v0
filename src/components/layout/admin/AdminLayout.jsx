@@ -10,7 +10,7 @@ const AdminLayout = ({ children }) => {
         <AdminHeader />
         <main className="flex mt-[61.2px]">
           <AdminSideBar />
-          <div className="flex-1">{children}</div>
+          <div className="flex-1 p-4">{children}</div>
         </main>
         <AdminFooter />
       </ProtectedRoute>

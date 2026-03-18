@@ -73,11 +73,12 @@ const ActivityLocationSection = () => {
             {...register("meetingPlatform", {
               required: "Meeting platform cannot be empty",
             })}
+            className="mt-2 bg-slate-800 text-white border border-slate-600"
           >
-            <option value="Google Meet">Google Meet</option>
-            <option value="Zoom">Zoom</option>
-            <option value="Microsoft Teams">Microsoft Teams</option>
-            <option value="Other">Other</option>
+            <option value="Google Meet" className="bg-slate-800 text-white">Google Meet</option>
+            <option value="Zoom" className="bg-slate-800 text-white">Zoom</option>
+            <option value="Microsoft Teams" className="bg-slate-800 text-white">Microsoft Teams</option>
+            <option value="Other" className="bg-slate-800 text-white">Other</option>
           </select>
           {errors.meetingPlatform && (
             <p className="text-red-500">{errors.meetingPlatform.message}</p>
@@ -93,6 +94,7 @@ const ActivityLocationSection = () => {
             {...register("meetingLink", {
               required: "Meeting link cannot be empty",
             })}
+            className="mt-2 bg-slate-800 text-white border border-slate-600"
           />
           {errors.meetingLink && (
             <p className="text-red-500">{errors.meetingLink.message}</p>
@@ -106,6 +108,7 @@ const ActivityLocationSection = () => {
             name="meeting_id"
             id="meeting_id"
             {...register("meetingId")}
+            className="mt-2 bg-slate-800 text-white border border-slate-600"
           />
 
           <label htmlFor="meeting_password">Meeting Password</label>
@@ -114,6 +117,7 @@ const ActivityLocationSection = () => {
             name="meeting_password"
             id="meeting_password"
             {...register("meetingPassword")}
+            className="mt-2 bg-slate-800 text-white border border-slate-600"
           />
         </>
       )}
@@ -130,6 +134,7 @@ const ActivityLocationSection = () => {
             {...register("venueName", {
               required: "Venue name cannot be empty",
             })}
+            className="mt-2 bg-slate-800 text-white border border-slate-600"
           />
           {errors.venueName && (
             <p className="text-red-500">{errors.venueName.message}</p>
@@ -145,6 +150,7 @@ const ActivityLocationSection = () => {
             {...register("venueAddress", {
               required: "Venue address cannot be empty",
             })}
+            className="mt-2 bg-slate-800 text-white border border-slate-600"
           />
           {errors.venueAddress && (
             <p className="text-red-500">{errors.venueAddress.message}</p>
@@ -155,6 +161,7 @@ const ActivityLocationSection = () => {
             type="text"
             name="room_number"
             id="room_number"
+            className="mt-2 bg-slate-800 text-white border border-slate-600"
             {...register("roomNumber")}
           />
 

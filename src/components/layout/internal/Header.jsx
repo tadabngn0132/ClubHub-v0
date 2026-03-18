@@ -66,7 +66,7 @@ const Header = ({ role }) => {
           onClick={toggleDropdown}
           className="cursor-pointer rounded-full overflow-hidden"
         >
-          <img className="w-8 h-8" src="" alt="Avatar" />
+          <img className="w-8 h-8" src={null} alt="Avatar" />
         </div>
         <Dropdown visible={isDropdownVisible} />
       </div>

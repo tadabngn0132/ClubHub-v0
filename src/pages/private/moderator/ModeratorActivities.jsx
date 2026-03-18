@@ -36,7 +36,7 @@ const ModeratorActivities = () => {
   }
 
   return (
-    <div className="px-4">
+    <div className="px-4 w-full">
       <Toaster position="top-right" reverseOrder={false} />
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div className="">
@@ -82,11 +82,12 @@ const ModeratorActivities = () => {
         ))}
       </div>
 
-      <div>
+      <div className="w-full">
         {tabs.map((tab, index) => (
           <div
             key={index}
-            style={{ display: activeTab === index ? "flex" : "none" }}
+            style={{ display: activeTab === index ? "block" : "none" }}
+            className="w-full"
           >
             <tab.component role="moderator" />
           </div>

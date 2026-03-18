@@ -38,29 +38,6 @@ const ActivityScheduleSection = () => {
       {errors.endDate && (
         <p className="text-red-500 text-sm">{errors.endDate.message}</p>
       )}
-
-      {/* Future implement */}
-      <label htmlFor="recurring_activity">Recurring Activity</label>
-      <input
-        type="checkbox"
-        name="recurring_activity"
-        id="recurring_activity"
-      />
-      <input
-        type="checkbox"
-        name="recurring_activity"
-        id="recurring_activity"
-      />
-      <input
-        type="checkbox"
-        name="recurring_activity"
-        id="recurring_activity"
-      />
-      <input
-        type="checkbox"
-        name="recurring_activity"
-        id="recurring_activity"
-      />
     </div>
   );
 };
