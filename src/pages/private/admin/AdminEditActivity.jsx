@@ -1,11 +1,10 @@
 import ActivityForm from "../../../components/main/internal/ActivityForm";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { resetActivityStatus } from "../../../store/slices/activitySlice";
 
 const AdminEditActivity = () => {
-  const { activityId } = useParams();
   const dispatch = useDispatch();
   const { status } = useSelector((state) => state.activity);
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ const AdminEditActivity = () => {
 
   return (
     <div>
-      <ActivityForm mode="edit" activityId={activityId} />
+      <ActivityForm mode="edit" />
     </div>
   );
 };

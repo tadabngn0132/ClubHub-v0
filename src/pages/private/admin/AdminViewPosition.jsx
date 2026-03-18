@@ -46,7 +46,7 @@ const AdminViewPosition = () => {
       <Toaster position="top-right" reverseOrder={false} />
       <Link to="/admin/positions">Back to Positions</Link>
       <div>
-        <h1>{position?.name || "Position Details"}</h1>
+        <h1>{position?.title || "Position Details"}</h1>
 
         <div>
           <Link to={`/admin/positions/edit/${position?.id}`}>
@@ -56,13 +56,8 @@ const AdminViewPosition = () => {
         </div>
       </div>
 
-      <div>
-        <p>Created At: {position?.createdAt}</p>
-        <p>Updated At: {position?.updatedAt}</p>
-      </div>
-
-      <p>{position?.level}</p>
-      <p>{position?.systemRole}</p>
+      <p>Level: {position?.level || "N/A"}</p>
+      <p>System Role: {position?.systemRole || "N/A"}</p>
     </div>
   );
 };

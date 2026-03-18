@@ -11,6 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { resetTaskStatus } from "../../../store/slices/taskSlice";
 import { useParams } from "react-router-dom";
+import { formatDate, formatUppercaseToCapitalized } from "../../../utils/formatters.js";
 
 const AdminViewTask = () => {
   const { taskId } = useParams();
@@ -68,14 +69,16 @@ const AdminViewTask = () => {
       </div>
 
       <div>
-        <p>Created At: {task?.createdAt}</p>
-        <p>Updated At: {task?.updatedAt}</p>
+        <p>Created At: { task?.createdAt ? formatDate(task?.createdAt) : "N/A" }</p>
+        <p>Updated At: { task?.updatedAt ? formatDate(task?.updatedAt) : "N/A" }</p>
+        <p>Assignor: {task?.assignees?.user?.name || "N/A"}</p>
       </div>
 
+      {task?.isCheckCf && <p>Check Confirmation: {task?.isCheckCf ? "Yes" : "No"}</p>}
+
       <p>Description: {task?.description}</p>
-      <p>Due Date: {task?.dueDate}</p>
-      {/* <p>Assigned To: {task?.assignedTo}</p> */}
-      {task?.isCompleted ? <p>Status: Completed</p> : <p>Status: Incomplete</p>}
+      <p>Due Date: { task?.dueDate ? formatDate(task?.dueDate) : "N/A" }</p>
+      <p>Status: {task?.status ? formatUppercaseToCapitalized(task?.status) : "N/A"}</p>
     </div>
   );
 };

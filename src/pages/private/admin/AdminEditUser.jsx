@@ -1,11 +1,10 @@
 import UserForm from "../../../components/main/internal/UserForm.jsx";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { resetUserStatus } from "../../../store/slices/userSlice";
 
 const AdminEditUser = () => {
-  const { userId } = useParams();
   const dispatch = useDispatch();
   const { status } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ const AdminEditUser = () => {
 
   return (
     <div>
-      <UserForm mode="edit" userId={userId} />
+      <UserForm mode="edit" />
     </div>
   );
 };

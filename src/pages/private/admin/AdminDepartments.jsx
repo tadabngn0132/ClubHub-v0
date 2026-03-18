@@ -32,11 +32,11 @@ const AdminDepartments = () => {
     dispatch(resetDepartmentStatus());
   };
 
-  const handleStatusLabel = (status) => {
-    switch (status) {
-      case "active":
+  const handleStatusLabel = (isActive) => {
+    switch (isActive) {
+      case true:
         return "Active";
-      case "inactive":
+      case false:
         return "Inactive";
       default:
         return "Unknown";
@@ -76,7 +76,7 @@ const AdminDepartments = () => {
             <tr key={department.id} className="border-t border-gray-300">
               <td>{department.name}</td>
               <td>{department.description}</td>
-              <td>{handleStatusLabel(department.status)}</td>
+              <td>{handleStatusLabel(department.isActive)}</td>
               <td>
                 <Link
                   to={`/admin/departments/view/${department.id}`}

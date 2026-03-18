@@ -8,8 +8,10 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import Loading from "../../../components/layout/internal/Loading";
+import { useParams } from "react-router-dom";
 
-const PositionForm = ({ mode, positionId }) => {
+const PositionForm = ({ mode }) => {
+  const { positionId } = useParams();
   const dispatch = useDispatch();
   const { position, isLoading, error } = useSelector((state) => state.position);
 

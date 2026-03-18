@@ -1,11 +1,10 @@
 import PositionForm from "../../../components/main/internal/PositionForm";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { resetPositionStatus } from "../../../store/slices/positionSlice";
 
 const AdminEditPosition = () => {
-  const { positionId } = useParams();
   const dispatch = useDispatch();
   const { status } = useSelector((state) => state.position);
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ const AdminEditPosition = () => {
 
   return (
     <div>
-      <PositionForm mode="edit" positionId={positionId} />
+      <PositionForm mode="edit" />
     </div>
   );
 };

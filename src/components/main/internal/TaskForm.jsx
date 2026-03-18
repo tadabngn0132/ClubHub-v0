@@ -7,8 +7,10 @@ import {
   getTaskDetails,
 } from "../../../store/slices/taskSlice";
 import { ASSIGNEE_SCOPE } from "../../../utils/constants";
+import { useParams } from "react-router-dom";
 
-const TaskForm = ({ mode, taskId }) => {
+const TaskForm = ({ mode }) => {
+  const { taskId } = useParams();
   const dispatch = useDispatch();
   const { task } = useSelector((state) => state.task);
   const { user } = useSelector((state) => state.auth);
