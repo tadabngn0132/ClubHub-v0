@@ -52,36 +52,36 @@ const AdminPositions = () => {
       </div>
 
       <table className="w-full border-collapse border border-gray-300">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Level</th>
-            <th>System Role</th>
-            <th>Actions</th>
+        <thead className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
+          <tr className="border-b border-gray-300 text-left">
+            <th className="px-2 py-1">Title</th>
+            <th className="px-2 py-1">Level</th>
+            <th className="px-2 py-1">System Role</th>
+            <th className="px-2 py-1 text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
           {positions.map((position) => (
             <tr key={position.id} className="border-t border-gray-300">
-              <td>{position.title}</td>
-              <td>{position.level}</td>
-              <td>{position.systemRole}</td>
-              <td>
+              <td className="px-2 py-1">{position.title}</td>
+              <td className="px-2 py-1">{position.level}</td>
+              <td className="px-2 py-1">{position.systemRole}</td>
+              <td className="px-2 py-1 text-center">
                 <Link
                   to={`/admin/positions/view/${position.id}`}
-                  className="text-blue-500 hover:text-blue-700 mr-2"
+                  className="text-green-500 hover:underline"
                 >
                   View
                 </Link>
                 <Link
                   to={`/admin/positions/edit/${position.id}`}
-                  className="text-blue-500 hover:text-blue-700 mr-2"
+                  className="text-blue-500 hover:underline"
                 >
                   Edit
                 </Link>
                 <button
                   onClick={() => handleDelete(position.id)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:underline"
                 >
                   Delete
                 </button>

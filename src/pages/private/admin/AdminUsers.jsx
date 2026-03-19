@@ -240,7 +240,9 @@ const AdminUsers = () => {
           )}
         </tbody>
       </table>
-      <Pagination currentPage={5} totalPages={10} onPageChange={() => {}} />
+      {users && users.length > 25 && (
+        <Pagination currentPage={5} totalPages={10} onPageChange={() => {}} />
+      )}
     </div>
   );
 };

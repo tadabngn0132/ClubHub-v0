@@ -9,12 +9,13 @@ import toast, { Toaster } from "react-hot-toast";
 
 const MemberTasks = () => {
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.auth);
   const { tasks, isLoading, error } = useSelector((state) => state.task);
   const [selectedTasks, setSelectedTasks] = useState([]);
 
   useEffect(() => {
-    dispatch(getUserTasks());
-  }, [dispatch]);
+    dispatch(getUserTasks(currentUser.id));
+  }, [dispatch, currentUser.id]);
 
   if (isLoading) {
     return <Loading />;

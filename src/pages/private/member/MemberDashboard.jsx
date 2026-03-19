@@ -12,7 +12,6 @@ import Loading from "../../../components/layout/internal/Loading";
 const MemberDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const { currentUser } = useSelector((state) => state.auth);
   const {
     tasks,
@@ -31,15 +30,11 @@ const MemberDashboard = () => {
       dispatch(getActivitiesByUserId(currentUser.id));
     }
 
-    if (!tasksLoading && !activitiesLoading) {
-      setLoading(false);
-    }
-
     dispatch(resetTaskStatus());
     dispatch(resetActivityStatus());
   }, [dispatch, currentUser]);
 
-  if (loading) {
+  if (tasksLoading || activitiesLoading) {
     return <Loading />;
   }
 
@@ -53,7 +48,7 @@ const MemberDashboard = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Member Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-4">Member Dashboard</h1>
       <p>Welcome, {currentUser?.fullname || "Member"}!</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white p-4 rounded shadow">

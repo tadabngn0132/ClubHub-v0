@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import { getUsersList, resetUserStatus } from "../../../store/slices/userSlice.js";
 import {
@@ -20,7 +20,6 @@ import toast from "react-hot-toast";
 
 const ModeratorDashboard = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.auth);
 
@@ -51,23 +50,13 @@ const ModeratorDashboard = () => {
     dispatch(getAllTasksList());
     dispatch(getActivitiesList());
     dispatch(getAllMemberApplicationsList());
-
-    if (
-      !userLoading &&
-      !tasksLoading &&
-      !activitiesLoading &&
-      !memberApplicationsLoading
-    ) {
-      setLoading(false);
-    }
-
     dispatch(resetUserStatus());
     dispatch(resetTaskStatus());
     dispatch(resetActivityStatus());
     dispatch(resetMemberApplicationStatus());
   }, [dispatch]);
 
-  if (loading) {
+  if (userLoading || tasksLoading || activitiesLoading || memberApplicationsLoading) {
     return <Loading />;
   }
 
@@ -79,10 +68,10 @@ const ModeratorDashboard = () => {
 
   return (
     <div>
-      <h1>Moderator Dashboard</h1>
-      <p>Welcome, {currentUser.fullname}!</p>
-      <div>
-        <h2>Summary</h2>
+      <h1 className="text-3xl font-bold mb-4">Moderator Dashboard</h1>
+      <p className="text-lg">Welcome, {currentUser.fullname}!</p>
+      <div className="mt-4 mb-6">
+        <h2 className="text-xl font-semibold mb-2">Summary</h2>
         <p>Total Users: {userLoading ? "Loading..." : users.length}</p>
         <p>Total Tasks: {tasksLoading ? "Loading..." : tasks.length}</p>
         <p>
@@ -95,8 +84,8 @@ const ModeratorDashboard = () => {
         </p>
       </div>
 
-      <div>
-        <h2>Recent Activities</h2>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Recent Activities</h2>
         {activitiesLoading ? (
           <p>Loading...</p>
         ) : (
@@ -108,8 +97,8 @@ const ModeratorDashboard = () => {
         )}
       </div>
 
-      <div>
-        <h2>Recent Tasks</h2>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Recent Tasks</h2>
         {tasksLoading ? (
           <p>Loading...</p>
         ) : (
@@ -121,8 +110,8 @@ const ModeratorDashboard = () => {
         )}
       </div>
 
-      <div>
-        <h2>Recent Member Applications</h2>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Recent Member Applications</h2>
         {memberApplicationsLoading ? (
           <p>Loading...</p>
         ) : (
@@ -134,32 +123,34 @@ const ModeratorDashboard = () => {
         )}
       </div>
 
-      <div>
-        <h2>Moderator Actions</h2>
-        <button onClick={() => dispatch(getUsersList())}>Refresh Users</button>
-        <button onClick={() => dispatch(getAllTasksList())}>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Moderator Actions</h2>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => dispatch(getUsersList())}>
+          Refresh Users
+        </button>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => dispatch(getAllTasksList())}>
           Refresh Tasks
         </button>
-        <button onClick={() => dispatch(getActivitiesList())}>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => dispatch(getActivitiesList())}>
           Refresh Activities
         </button>
-        <button onClick={() => dispatch(getAllMemberApplicationsList())}>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => dispatch(getAllMemberApplicationsList())}>
           Refresh Member Applications
         </button>
       </div>
 
-      <div>
-        <h2>Moderator Tools</h2>
-        <button onClick={() => navigate("/moderator/users")}>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Moderator Tools</h2>
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => navigate("/moderator/users")}>
           Manage Users
         </button>
-        <button onClick={() => navigate("/moderator/tasks")}>
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => navigate("/moderator/tasks")}>
           Manage Tasks
         </button>
-        <button onClick={() => navigate("/moderator/activities")}>
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => navigate("/moderator/activities")}>
           Manage Activities
         </button>
-        <button onClick={() => navigate("/moderator/member-applications")}>
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={() => navigate("/moderator/member-applications")}>
           Manage Member Applications
         </button>
       </div>

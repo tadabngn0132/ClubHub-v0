@@ -7,7 +7,6 @@ const MemberSideBar = () => {
     { name: "Departments", link: "/member/departments" },
     { name: "Positions", link: "/member/positions" },
     { name: "Activities", link: "/member/activities" },
-    { name: "Schedule", link: "/member/schedule" },
     { name: "Tasks", link: "/member/tasks" },
     { name: "Profile", link: "/member/profile" },
   ];

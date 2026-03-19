@@ -5,11 +5,11 @@ import {
 } from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { mockUsers } from "../../../data/sampleMemberData";
 import BulkActionBar from "../../../components/internal/BulkActionBar.jsx";
 import Pagination from "../../../components/internal/Pagination.jsx";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
+import { formatUppercaseToCapitalized, formatRoleBadgeColor, formatStatusBadgeColor } from "../../../utils/formatters.js";
 
 const ModeratorUsers = () => {
   const dispatch = useDispatch();
@@ -30,21 +30,6 @@ const ModeratorUsers = () => {
   const handleSort = (field) => {
     // Sorting logic will be implemented here
     // Asc, Desc and Default states
-  };
-
-  const displayStatusBadge = (status) => {
-    switch (status) {
-      case "Active":
-        return "text-green-600 font-medium";
-      case "Inactive":
-        return "text-gray-600 font-medium";
-      case "Alumni":
-        return "text-blue-600 font-medium";
-      case "Pending":
-        return "text-yellow-600 font-medium";
-      default:
-        return "";
-    }
   };
 
   const displayRoleBadge = (role) => {
@@ -87,8 +72,8 @@ const ModeratorUsers = () => {
 
       {/* TODO: Implement card view for tablet and mobile responsiveness */}
       <table className="w-full border-collapse table-auto overflow-auto">
-        <thead className="sticky top-[60px] text-white z-10 w-full bg-[var(--black-color)]">
-          <tr className="border border-gray-200">
+        <thead className="sticky top-[60px] z-10 w-full bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
+          <tr className="border border-gray-200 text-left">
             {/* TODO: Implement checkbox for selecting all members */}
             <th className="px-2 py-2 w-8">
               {/* <input type="checkbox" name="" id="" /> */}
@@ -107,9 +92,9 @@ const ModeratorUsers = () => {
             </th>
             <th className="px-2 py-2">Major</th>
             <th className="px-2 py-2">Dept</th>
-            <th className="px-2 py-2">Role</th>
-            <th className="px-2 py-2">Status</th>
-            <th className="px-2 py-2 w-24">Actions</th>
+            <th className="px-2 py-2">System Role</th>
+            <th className="px-2 py-2 text-center">Status</th>
+            <th className="px-2 py-2 w-24 text-center">Actions</th>
           </tr>
         </thead>
         <tbody className="text-center border border-gray-200">
@@ -151,13 +136,13 @@ const ModeratorUsers = () => {
                   />
                 </td>
                 <td
-                  className="px-3 py-2 max-w-[120px] truncate"
+                  className="px-3 py-2 max-w-[120px] truncate text-left"
                   title={user.fullname}
                 >
                   {user.fullname}
                 </td>
                 <td
-                  className="px-3 py-2 max-w-[160px] truncate text-sm"
+                  className="px-3 py-2 max-w-[160px] truncate text-sm text-left"
                   title={user.email}
                 >
                   {user.email}
@@ -170,22 +155,22 @@ const ModeratorUsers = () => {
                   {user.major}
                 </td>
                 <td
-                  className="px-2 py-2 text-sm max-w-[80px] truncate"
+                  className="px-2 py-2 text-sm max-w-[80px] truncate text-left"
                   title={user.department}
                 >
                   {user.userPosition[0].position.department.name}
                 </td>
                 <td className="px-2 py-2 text-sm">
                   {user.userPosition[0].position.systemRole && (
-                    <p className={displayRoleBadge(user.userPosition[0].position.systemRole)}>
-                      {user.userPosition[0].position.systemRole}
+                    <p className={`badge ${formatRoleBadgeColor(formatUppercaseToCapitalized(user.userPosition[0].position.systemRole))} w-22 text-center h-fit items-center-safe justify-center-safe p-1 pl-2 pr-2 rounded-2xl text-sm/tight`}>
+                      {formatUppercaseToCapitalized(user.userPosition[0].position.systemRole)}
                     </p>
                   )}
                 </td>
                 <td className="px-2 py-2 text-sm">
                   {user.status && (
-                    <p className={displayStatusBadge(user.status)}>
-                      {user.status}
+                    <p className={formatStatusBadgeColor(formatUppercaseToCapitalized(user.status))}>
+                      {formatUppercaseToCapitalized(user.status)}
                     </p>
                   )}
                 </td>
@@ -216,7 +201,9 @@ const ModeratorUsers = () => {
           )}
         </tbody>
       </table>
-      <Pagination role="moderator" content="users" />
+      {users && users.length > 25 && (
+        <Pagination role="moderator" content="users" />
+      )}
     </div>
   );
 };

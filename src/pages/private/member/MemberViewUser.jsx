@@ -15,7 +15,7 @@ const MemberViewUser = () => {
     (state) => state.user,
   );
   const {
-    activity,
+    activities,
     isLoading: activitiesLoading,
     error: activitiesError,
   } = useSelector((state) => state.activity);
@@ -42,7 +42,7 @@ const MemberViewUser = () => {
       <Link to="/member/users">Back to Members List</Link>
 
       <header>
-        <img src={user.avatarUrl} alt="Avatar" />
+        <img src={user.avatarUrl || null} alt="Avatar" />
         <h1>{user.name}</h1>
         <p>{formatUppercaseToCapitalized(user.userPosition[0].position.systemRole)}</p>
         <p>{user.email}</p>
@@ -92,22 +92,22 @@ const MemberViewUser = () => {
         <p>{user.bio}</p>
       </section>
 
-      <section id="activity-summary">
-        <h2>Activity Summary</h2>
+      <section id="activities-summary">
+        <h2>activities Summary</h2>
         <p>
-          <strong>Events Participated:</strong> {activity.length}
+          <strong>Events Participated:</strong> {activities.length}
         </p>
         <p>
           <strong>Meetings Attended:</strong>{" "}
           {
-            activity.filter((activity) => activity.type === "meeting")
+            activities.filter((activities) => activities.type === "meeting")
               .length
           }
         </p>
         {/* Get tasks from server instead of current task type activities later */}
         <p>
           <strong>Tasks Completed:</strong>{" "}
-          {activity.filter((activity) => activity.type === "task").length}
+          {activities.filter((activities) => activities.type === "task").length}
         </p>
       </section>
 
@@ -119,7 +119,7 @@ const MemberViewUser = () => {
           toast.error(activitiesError)
         ) : (
           <ul>
-            {activity.map((activity) => (
+            {activities.map((activity) => (
               <li key={activity.id}>
                 <h3>{activity.title}</h3>
                 <p>{activity.description}</p>
@@ -140,7 +140,7 @@ const MemberViewUser = () => {
           toast.error(activitiesError)
         ) : (
           <ul>
-            {activity.map((activity) => (
+            {activities.map((activity) => (
               <li key={activity.id}>
                 <h3>{activity.title}</h3>
                 <p>{activity.description}</p>

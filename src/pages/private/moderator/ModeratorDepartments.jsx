@@ -4,6 +4,7 @@ import { getDepartmentsList } from "../../../store/slices/departmentSlice";
 import toast, { Toaster } from "react-hot-toast";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link } from "react-router-dom";
+import { formatUppercaseToCapitalized, formatStatusBadgeColor } from "../../../utils/formatters.js";
 
 const ModeratorDepartments = () => {
   const dispatch = useDispatch();
@@ -45,27 +46,33 @@ const ModeratorDepartments = () => {
       </div>
 
       <table className="w-full border-collapse border border-gray-300">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Actions</th>
+        <thead className="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
+          <tr className="border-b border-gray-300 text-left">
+            <th className="px-2 py-1">Name</th>
+            <th className="px-2 py-1">Description</th>
+            <th className="px-2 py-1">Status</th>
+            <th className="px-2 py-1">Actions</th>
           </tr>
         </thead>
         <tbody>
           {departments.map((department) => (
             <tr key={department.id} className="border-t border-gray-300">
-              <td>{department.name}</td>
-              <td>{department.description}</td>
-              <td>{handleStatusLabel(department.isActive)}</td>
-              <td>
-                <Link
-                  to={`/moderator/departments/view/${department.id}`}
-                  className="text-blue-500 hover:text-blue-700 mr-2"
-                >
-                  View
-                </Link>
+              <td className="px-2 py-1">{department.name}</td>
+              <td className="px-2 py-1">{department.description}</td>
+              <td className="px-2 py-1">
+                <p className={formatStatusBadgeColor(formatUppercaseToCapitalized(handleStatusLabel(department.isActive)))}>
+                  {formatUppercaseToCapitalized(handleStatusLabel(department.isActive))}
+                </p>
+              </td>
+              <td className="px-2 py-1">
+                <div className="flex justify-center items-center gap-1 text-sm bg-white p-2 rounded-md shadow-md">
+                  <Link
+                    to={`/moderator/departments/view/${department.id}`}
+                    className="text-green-500 hover:underline"
+                  >
+                    View
+                  </Link>
+                </div>
               </td>
             </tr>
           ))}

@@ -9,21 +9,9 @@ import {
 import logo from "../../../assets/logos/GDC_logo.svg";
 import Dropdown from "./Dropdown";
 import { useState } from "react";
+import { formatRoleBadgeColor } from "../../../utils/formatters";
 
 const Header = ({ role }) => {
-  const setBadgeColor = (role) => {
-    switch (role) {
-      case "Admin":
-        return "bg-red-500";
-      case "Moderator":
-        return "bg-blue-500";
-      case "Member":
-        return "bg-green-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
-
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
@@ -43,7 +31,7 @@ const Header = ({ role }) => {
             />
           </Link>
           <div
-            className={`flex badge ${setBadgeColor(role)} h-fit items-center-safe justify-center-safe p-1 pl-2 pr-2 rounded-2xl text-sm/tight`}
+            className={`flex badge ${formatRoleBadgeColor(role)} h-fit items-center-safe justify-center-safe p-1 pl-2 pr-2 rounded-2xl text-sm/tight`}
           >
             {role}
           </div>

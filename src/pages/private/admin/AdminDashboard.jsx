@@ -20,7 +20,6 @@ import toast from "react-hot-toast";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.auth);
 
@@ -51,23 +50,13 @@ const AdminDashboard = () => {
     dispatch(getAllTasksList());
     dispatch(getActivitiesList());
     dispatch(getAllMemberApplicationsList());
-
-    if (
-      !userLoading &&
-      !tasksLoading &&
-      !activitiesLoading &&
-      !memberApplicationsLoading
-    ) {
-      setLoading(false);
-    }
-
     dispatch(resetUserStatus());
     dispatch(resetTaskStatus());
     dispatch(resetActivityStatus());
     dispatch(resetMemberApplicationStatus());
   }, [dispatch]);
 
-  if (loading) {
+  if (userLoading || tasksLoading || activitiesLoading || memberApplicationsLoading) {
     return <Loading />;
   }
 
@@ -79,10 +68,10 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <h1>Admin Dashboard</h1>
-      <p>Welcome, {currentUser?.fullname || "Admin"}!</p>
-      <div>
-        <h2>Summary</h2>
+      <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
+      <p className="text-lg">Welcome, {currentUser?.fullname || "Admin"}!</p>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Summary</h2>
         <p>Total Users: {userLoading ? "Loading..." : users.length}</p>
         <p>Total Tasks: {tasksLoading ? "Loading..." : tasks.length}</p>
         <p>
@@ -95,8 +84,8 @@ const AdminDashboard = () => {
         </p>
       </div>
 
-      <div>
-        <h2>Recent Activities</h2>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Recent Activities</h2>
         {activitiesLoading ? (
           <p>Loading...</p>
         ) : (
@@ -108,8 +97,8 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      <div>
-        <h2>Recent Tasks</h2>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Recent Tasks</h2>
         {tasksLoading ? (
           <p>Loading...</p>
         ) : (
@@ -121,8 +110,8 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      <div>
-        <h2>Recent Member Applications</h2>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Recent Member Applications</h2>
         {memberApplicationsLoading ? (
           <p>Loading...</p>
         ) : (
@@ -134,28 +123,34 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      <div>
-        <h2>Admin Actions</h2>
-        <button onClick={() => dispatch(getUsersList())}>Refresh Users</button>
-        <button onClick={() => dispatch(getAllTasksList())}>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Admin Actions</h2>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => dispatch(getUsersList())}>
+          Refresh Users
+        </button>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => dispatch(getAllTasksList())}>
           Refresh Tasks
         </button>
-        <button onClick={() => dispatch(getActivitiesList())}>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => dispatch(getActivitiesList())}>
           Refresh Activities
         </button>
-        <button onClick={() => dispatch(getAllMemberApplicationsList())}>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => dispatch(getAllMemberApplicationsList())}>
           Refresh Member Applications
         </button>
       </div>
 
-      <div>
-        <h2>Admin Tools</h2>
-        <button onClick={() => navigate("/admin/users")}>Manage Users</button>
-        <button onClick={() => navigate("/admin/tasks")}>Manage Tasks</button>
-        <button onClick={() => navigate("/admin/activities")}>
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-2">Admin Tools</h2>
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => navigate("/admin/users")}>
+          Manage Users
+        </button>
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => navigate("/admin/tasks")}>
+          Manage Tasks
+        </button>
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={() => navigate("/admin/activities")}>
           Manage Activities
         </button>
-        <button onClick={() => navigate("/admin/member-applications")}>
+        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={() => navigate("/admin/member-applications")}>
           Manage Member Applications
         </button>
       </div>
