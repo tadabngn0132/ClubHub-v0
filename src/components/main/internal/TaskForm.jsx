@@ -8,13 +8,23 @@ import {
 } from "../../../store/slices/taskSlice";
 import { ASSIGNEE_SCOPE } from "../../../utils/constants";
 import { useParams } from "react-router-dom";
+import { getDepartmentsList } from "../../../store/slices/departmentSlice";
+import { getUsersList } from "../../../store/slices/userSlice";
+import { all } from "axios";
 
 const TaskForm = ({ mode }) => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
   const { task } = useSelector((state) => state.task);
   const { user } = useSelector((state) => state.auth);
-  
+  const { departments } = useSelector((state) => state.department);
+  const { users } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(getDepartmentsList());
+    dispatch(getUsersList());
+  }, [dispatch]);
+
   const {
     register,
     handleSubmit,
@@ -29,6 +39,10 @@ const TaskForm = ({ mode }) => {
       isCheckCf: false,
       assigneeScope: "all",
       assignorId: user ? user.id : null,
+      allClub: false,
+      departmentIds: [],
+      userIds: [],
+      excludedUserIds: [],
     },
     mode: "onChange",
   });
@@ -48,6 +62,10 @@ const TaskForm = ({ mode }) => {
           assigneeScope: task.assigneeScope || "all",
           assignorId: task.assignorId || user ? user.id : null,
           isCheckCf: task.isCheckCf || false,
+          allClub: task.target?.allClub || false,
+          departmentIds: task.target?.departmentIds || [],
+          userIds: task.target?.userIds || [],
+          excludedUserIds: task.target?.excludedUserIds || [],
         });
       }
     } else {
@@ -59,6 +77,10 @@ const TaskForm = ({ mode }) => {
         assigneeScope: "all",
         assignorId: user ? user.id : null,
         isCheckCf: false,
+        allClub: false,
+        departmentIds: [],
+        userIds: [],
+        excludedUserIds: [],
       });
     }
   }, [mode, taskId, reset, user, dispatch, task]);
@@ -172,6 +194,51 @@ const TaskForm = ({ mode }) => {
           className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors.dueDate && <p className="text-red-500">{errors.dueDate.message}</p>}
+
+        <label htmlFor="allClub">
+          Assign to All Club
+        </label>
+        <input
+          type="checkbox"
+          id="allClub"
+          name="allClub"
+          {...register("allClub")}
+          className="mt-2 bg-slate-800 text-white border border-slate-600"
+        />
+
+        {!allClub && (
+          <>
+            <label htmlFor="departmentIds">Assign to Departments</label>
+            <select
+              id="departmentIds"
+              name="departmentIds"
+              {...register("departmentIds")}
+              className="mt-2 bg-slate-800 text-white border border-slate-600"
+            >
+              {departments.map((department) => (
+                <option key={department.id} value={department.id} className="bg-slate-800 text-white">
+                  {department.name}
+                </option>
+              ))}
+            </select>
+          </>
+        )}
+
+        <label htmlFor="excludedUserIds">
+          Exclude Specific Users
+        </label>
+        <select
+          id="excludedUserIds"
+          name="excludedUserIds"
+          {...register("excludedUserIds")}
+          className="mt-2 bg-slate-800 text-white border border-slate-600"
+        >
+          {users.map((user) => (
+            <option key={user.id} value={user.id} className="bg-slate-800 text-white">
+              {user.name}
+            </option>
+          ))}
+        </select>
 
         <button
           type="submit"
