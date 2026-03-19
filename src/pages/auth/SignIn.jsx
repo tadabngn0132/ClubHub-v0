@@ -39,7 +39,8 @@ const SignIn = () => {
     const resData = await dispatch(loginUser(formData)).unwrap();
 
     if (
-      resData.data.necessaryUserData.userPosition[0].position.systemRole.toLowerCase() === "admin"
+      resData.data.necessaryUserData.userPosition[0].position.systemRole.toLowerCase() ===
+      "admin"
     ) {
       navigate("/admin/dashboard");
     } else if (
@@ -48,7 +49,8 @@ const SignIn = () => {
     ) {
       navigate("/moderator/dashboard");
     } else if (
-      resData.data.necessaryUserData.userPosition[0].position.systemRole.toLowerCase() === "member"
+      resData.data.necessaryUserData.userPosition[0].position.systemRole.toLowerCase() ===
+      "member"
     ) {
       navigate("/member/dashboard");
     } else {
@@ -65,7 +67,7 @@ const SignIn = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google-auth`;
+    window.location.href = `http://localhost:5995/api/auth/google-auth`;
   };
 
   return (
