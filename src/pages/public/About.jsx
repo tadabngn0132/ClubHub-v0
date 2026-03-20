@@ -1,4 +1,5 @@
 import GDCLogo from "../../assets/logos/GDC_logo.svg";
+import { Link } from "react-router-dom";
 
 const About = () => {
   const highlights = [
@@ -219,9 +220,11 @@ const About = () => {
             in our crew. Let's create something extraordinary together.
           </p>
 
-          <button className="monument-regular uppercase px-8 py-3 rounded-xl border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white transition-colors duration-300 font-semibold">
-            Join Our Crew
-          </button>
+          <Link to="/apply-membership">
+            <button className="monument-regular uppercase px-8 py-3 rounded-xl border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white transition-colors duration-300 font-semibold">
+              Join Our Crew
+            </button>
+          </Link>
         </div>
       </section>
 
