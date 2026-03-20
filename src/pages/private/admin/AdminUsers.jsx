@@ -6,10 +6,10 @@ import {
 } from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { mockUsers } from "../../../data/sampleMemberData";
 import BulkActionBar from "../../../components/internal/BulkActionBar.jsx";
 import Pagination from "../../../components/internal/Pagination.jsx";
 import Loading from "../../../components/layout/internal/Loading.jsx";
+import { formatUppercaseToCapitalized, formatStatusBadgeColor, formatRoleBadgeColor } from "../../../utils/formatters.js";
 
 const AdminUsers = () => {
   const dispatch = useDispatch();
@@ -104,7 +104,7 @@ const AdminUsers = () => {
       )}
 
       {/* TODO: Implement card view for tablet and mobile responsiveness */}
-      <table className="w-full border-collapse table-auto overflow-auto">
+      <table className="w-full border-collapse table-auto overflow-auto text-center">
         <thead className="sticky top-[60px] text-white z-10 w-full bg-[var(--black-color)]">
           <tr className="border border-gray-200">
             {/* TODO: Implement checkbox for selecting all members */}
@@ -114,17 +114,17 @@ const AdminUsers = () => {
             <th className="px-2 py-2">ID</th>
             <th className="px-2 py-2 w-16">Avatar</th>
             {/* TODO: Implement clickable for name, email, and gen here with sorting indicators and related icon */}
-            <th className="px-3 py-2" onClick={() => handleSort("name")}>
+            <th className="px-3 py-2 text-left" onClick={() => handleSort("name")}>
               Name
             </th>
-            <th className="px-3 py-2" onClick={() => handleSort("email")}>
+            <th className="px-3 py-2 text-left" onClick={() => handleSort("email")}>
               Email
             </th>
-            <th className="px-2 py-2" onClick={() => handleSort("gen")}>
+            <th className="px-2 py-2" onClick={() => handleSort("generation")}>
               Gen
             </th>
-            <th className="px-2 py-2">Major</th>
-            <th className="px-2 py-2">Dept</th>
+            <th className="px-2 py-2 text-left">Major</th>
+            <th className="px-2 py-2 text-left">Dept</th>
             <th className="px-2 py-2">Role</th>
             <th className="px-2 py-2">Status</th>
             <th className="px-2 py-2 w-24">Actions</th>
@@ -177,43 +177,47 @@ const AdminUsers = () => {
                   />
                 </td>
                 <td
-                  className="px-3 py-2 max-w-[120px] truncate"
-                  title={user.name}
+                  className="px-3 py-2 max-w-[120px] truncate text-left"
+                  title={user.fullname}
                 >
-                  {user.name}
+                  {user.fullname}
                 </td>
                 <td
-                  className="px-3 py-2 max-w-[160px] truncate text-sm"
+                  className="px-3 py-2 max-w-[160px] truncate text-sm text-left"
                   title={user.email}
                 >
                   {user.email}
                 </td>
-                <td className="px-2 py-2 text-sm">{user.gen}</td>
+                <td className="px-2 py-2 text-sm">{user.generation}</td>
                 <td
-                  className="px-2 py-2 text-sm max-w-[80px] truncate"
+                  className="px-2 py-2 text-sm max-w-[80px] truncate text-left"
                   title={user.major}
                 >
                   {user.major}
                 </td>
                 <td
-                  className="px-2 py-2 text-sm max-w-[80px] truncate"
+                  className="px-2 py-2 text-sm max-w-[80px] truncate text-left"
                   title={user.department}
                 >
-                  {user.department}
+                  {user.userPosition[0].position.department.name}
                 </td>
                 <td className="px-2 py-2 text-sm">
-                  {user.role && (
-                    <p className={displayRoleBadge(user.role)}>{user.role}</p>
-                  )}
+                  <div className="flex justify-center items-center gap-1">
+                    {user.userPosition[0].position.systemRole && (
+                      <p className={`badge ${formatRoleBadgeColor(formatUppercaseToCapitalized(user.userPosition[0].position.systemRole))} w-22 text-center h-fit p-1 pl-2 pr-2 rounded-2xl text-sm/tight`}>
+                        {formatUppercaseToCapitalized(user.userPosition[0].position.systemRole)}
+                      </p>
+                    )}
+                  </div>
                 </td>
                 <td className="px-2 py-2 text-sm">
                   {user.status && (
-                    <p className={displayStatusBadge(user.status)}>
-                      {user.status}
+                    <p className={formatStatusBadgeColor(formatUppercaseToCapitalized(user.status))}>
+                      {formatUppercaseToCapitalized(user.status)}
                     </p>
                   )}
                 </td>
-                <td className="px-2 py-2 w-24 relative">
+                <td className="px-2 py-2 w-24">
                   <div className="flex justify-center items-center gap-1 text-xs bg-white p-2 rounded-md">
                     <Link
                       to={`/admin/users/view/${user.id}`}

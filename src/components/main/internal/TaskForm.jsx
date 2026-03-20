@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createNewTask,
@@ -10,13 +10,13 @@ import { ASSIGNEE_SCOPE } from "../../../utils/constants";
 import { useParams } from "react-router-dom";
 import { getDepartmentsList } from "../../../store/slices/departmentSlice";
 import { getUsersList } from "../../../store/slices/userSlice";
-import { all } from "axios";
 
 const TaskForm = ({ mode }) => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
+  const [allClub, setAllClub] = useState(false);
   const { task } = useSelector((state) => state.task);
-  const { user } = useSelector((state) => state.auth);
+  const { currentUser } = useSelector((state) => state.auth);
   const { departments } = useSelector((state) => state.department);
   const { users } = useSelector((state) => state.user);
 
@@ -38,7 +38,7 @@ const TaskForm = ({ mode }) => {
       status: "new",
       isCheckCf: false,
       assigneeScope: "all",
-      assignorId: user ? user.id : null,
+      assignorId: currentUser ? currentUser.id : null,
       allClub: false,
       departmentIds: [],
       userIds: [],
@@ -60,7 +60,7 @@ const TaskForm = ({ mode }) => {
             ? new Date(task.dueDate).toISOString().split("T")[0]
             : "",
           assigneeScope: task.assigneeScope || "all",
-          assignorId: task.assignorId || user ? user.id : null,
+          assignorId: task.assignorId || currentUser ? currentUser.id : null,
           isCheckCf: task.isCheckCf || false,
           allClub: task.target?.allClub || false,
           departmentIds: task.target?.departmentIds || [],
@@ -75,7 +75,7 @@ const TaskForm = ({ mode }) => {
         status: "new",
         dueDate: "",
         assigneeScope: "all",
-        assignorId: user ? user.id : null,
+        assignorId: currentUser ? currentUser.id : null,
         isCheckCf: false,
         allClub: false,
         departmentIds: [],
@@ -83,13 +83,22 @@ const TaskForm = ({ mode }) => {
         excludedUserIds: [],
       });
     }
-  }, [mode, taskId, reset, user, dispatch, task]);
+  }, [mode, taskId, reset, currentUser, dispatch, task]);
 
   const handleSaveData = (data) => {
+    const taskData = {
+      ...data,
+      target: {
+        allClub: data.allClub,
+        departmentIds: data.departmentIds,
+        userIds: data.userIds,
+        excludedUserIds: data.excludedUserIds,
+      }
+    };
     if (mode === "add") {
-      dispatch(createNewTask(data));
+      dispatch(createNewTask(taskData));
     } else if (mode === "edit") {
-      dispatch(updateTaskById({ id: taskId, taskData: data }));
+      dispatch(updateTaskById({ id: taskId, taskData: taskData }));
     }
   };
 
@@ -195,16 +204,19 @@ const TaskForm = ({ mode }) => {
         />
         {errors.dueDate && <p className="text-red-500">{errors.dueDate.message}</p>}
 
-        <label htmlFor="allClub">
-          Assign to All Club
-        </label>
-        <input
-          type="checkbox"
-          id="allClub"
-          name="allClub"
-          {...register("allClub")}
-          className="mt-2 bg-slate-800 text-white border border-slate-600"
-        />
+        <div className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            id="allClub"
+            name="allClub"
+            {...register("allClub")}
+            className="bg-slate-800 text-white border border-slate-600"
+            onChange={(e) => setAllClub(e.target.checked)}
+          />
+          <label htmlFor="allClub">
+            Assign to All Club
+          </label>
+        </div>
 
         {!allClub && (
           <>
@@ -235,7 +247,7 @@ const TaskForm = ({ mode }) => {
         >
           {users.map((user) => (
             <option key={user.id} value={user.id} className="bg-slate-800 text-white">
-              {user.name}
+              {user.fullname}
             </option>
           ))}
         </select>

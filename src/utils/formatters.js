@@ -56,12 +56,16 @@ export const formatRoleBadgeColor = (role) => {
 };
 
 export const formatStatusBadgeColor = (status) => {
-    switch (status) {
-      case "Active":
-        return "text-green-600 font-medium";
-      case "Inactive":
-        return "text-gray-600 font-medium";
-      default:
-        return "";
-    }
-  };
+  switch (status) {
+    case "Active":
+      return "text-green-600 font-medium";
+    case "Inactive":
+      return "text-gray-600 font-medium";
+    default:
+      return "";
+  }
+};
+
+export const formatDeptStatusBadgeColor = (isActive) => {
+  return isActive ? "text-green-600 font-medium" : "text-gray-600 font-medium";
+}

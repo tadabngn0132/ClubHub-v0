@@ -58,27 +58,37 @@ const AdminViewTask = () => {
   return (
     <div>
       <Toaster position="top-right" reverseOrder={false} />
-      <Link to="/admin/tasks">Back to Tasks</Link>
+      <Link to="/admin/tasks" className="text-blue-500 hover:underline mb-4 inline-block">
+        Back to Tasks
+      </Link>
+      <p className="text-sm text-gray-400 mb-4">
+        {task?.assignedBy?.fullname || "N/A"} | { task?.createdAt ? formatDate(task?.createdAt) : "N/A" }
+      </p>
       <div className="flex items-center justify-between">
-        <h1>{task?.title}</h1>
+        <h1 className="text-2xl font-bold">{task?.title}</h1>
 
-        <div>
-          <Link to={`/admin/tasks/edit/${taskId}`}>Edit Task</Link>
-          <button onClick={handleDelete}>Delete Task</button>
+        <div className="flex justify-center items-center gap-1 text-sm bg-white p-2 rounded-md shadow-md">
+          <Link to={`/admin/tasks/edit/${taskId}`} className="text-blue-500 hover:underline">
+            Edit
+          </Link>
+          <button onClick={handleDelete} className="text-red-500 hover:underline">
+            Delete
+          </button>
         </div>
       </div>
 
-      <div>
-        <p>Created At: { task?.createdAt ? formatDate(task?.createdAt) : "N/A" }</p>
-        <p>Updated At: { task?.updatedAt ? formatDate(task?.updatedAt) : "N/A" }</p>
-        <p>Assignor: {task?.assignees?.user?.name || "N/A"}</p>
+      <div className="flex items-center gap-3 mt-2 mb-4">
+        <p>@{formatUppercaseToCapitalized(task?.assigneeScope || "N/A")}</p>
+        {task?.isCheckCf && <p className="text-md font-semibold">{task?.isCheckCf ? "#checkcf" : ""}</p>}
       </div>
+      <p>Deadline: 23h59 { task?.dueDate ? formatDate(task?.dueDate) : "N/A" }</p>
 
-      {task?.isCheckCf && <p>Check Confirmation: {task?.isCheckCf ? "Yes" : "No"}</p>}
-
-      <p>Description: {task?.description}</p>
-      <p>Due Date: { task?.dueDate ? formatDate(task?.dueDate) : "N/A" }</p>
       <p>Status: {task?.status ? formatUppercaseToCapitalized(task?.status) : "N/A"}</p>
+      <p>{task?.description}</p>
+
+      <p className="mt-4">Updated At: { task?.updatedAt ? formatDate(task?.updatedAt) : "N/A" }</p>
+
+      <h1 className="text-xl font-bold mt-8 mb-2">Assignee Confirmation</h1>
     </div>
   );
 };

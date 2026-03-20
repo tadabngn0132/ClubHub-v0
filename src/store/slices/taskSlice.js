@@ -170,7 +170,7 @@ const taskSlice = createSlice({
       })
       .addCase(getTaskDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.taskDetails = action.payload.data;
+        state.task = action.payload.data;
         state.taskStatus = "fulfilled";
       })
       .addCase(getTaskDetails.rejected, (state, action) => {
