@@ -1,180 +1,232 @@
 import GDCLogo from "../../assets/logos/GDC_logo.svg";
-import aboutImage01 from "../../assets/items/about-items-01.webp";
-import aboutImage02 from "../../assets/items/about-items-02.webp";
-import aboutImage03 from "../../assets/items/about-items-03.webp";
-import aboutImage04 from "../../assets/items/about-items-04.webp";
-import aboutImage05 from "../../assets/items/about-items-05.webp";
 
 const About = () => {
+  const highlights = [
+    { number: "100+", label: "Active Members", desc: "Passionate dancers from all backgrounds" },
+    { number: "50+", label: "Events Performed", desc: "University and regional performances" },
+    { number: "4", label: "Years Active", desc: "Since 2022, growing stronger every day" },
+    { number: "20+", label: "Award Winners", desc: "Recognized for excellence in dance" },
+  ];
+
+  const teamRoles = [
+    { title: "Founders", count: "3", desc: "Vision makers who started it all" },
+    { title: "Choreographers", count: "8", desc: "Creative talents behind our moves" },
+    { title: "Dancers", count: "70+", desc: "Dedicated performers and trainees" },
+    { title: "Support Team", count: "15+", desc: "Production, media, and logistics" },
+  ];
+
   return (
-    <div className="flex flex-col min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] w-full">
-      <div className="flex flex-col w-full items-center bg-[#212121] p-10 pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)]">
-        <img
-          className="p-20 pl-0 pr-0 w-200 2xl:w-225"
-          src={GDCLogo}
-          alt="GDC Logo"
-        />
+    <div className="relative overflow-hidden flex flex-col w-full bg-black text-white">
+      {/* Background Gradient */}
+      <div className="absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl bg-pink-500/15 pointer-events-none" />
+      <div className="absolute bottom-20 right-0 w-96 h-96 rounded-full blur-3xl bg-blue-500/10 pointer-events-none" />
 
-        <div className="flex flex-col mt-10 ml-14 2xl:ml-24">
-          <img
-            className="w-[21rem]"
-            src={aboutImage01}
-            alt="About Us"
-          />
-          <div className="flex gap-12 leading-5">
-            <span className="w-[15%] 2xl:w-[14%]">
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-              nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam
-              erat
-            </span>
-            <span className="w-[15%] 2xl:w-[14%]">
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-              nonummy nibh e
-            </span>
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center px-4 md:px-[var(--pub-container-padding-x)] pt-20 pb-32">
+        <div className="flex flex-col items-center gap-8 max-w-4xl z-10">
+          <img src={GDCLogo} alt="Greenwich Dance Crew" className="w-40 md:w-56 h-auto drop-shadow-lg" />
+
+          <div className="text-center space-y-6">
+            <h1 className="monument-extra-bold text-5xl md:text-7xl uppercase leading-tight">
+              Greenwich
+              <br />
+              <span className="pink-color">Dance Crew</span>
+            </h1>
+
+            <p className="text-xl md:text-2xl text-white/80 font-light max-w-2xl mx-auto">
+              Where passion meets movement. Creating art, building community, inspiring change.
+            </p>
+
+            <div className="flex flex-wrap gap-4 justify-center pt-6">
+              <div className="px-6 py-3 rounded-full border border-pink-500/40 bg-pink-500/10 backdrop-blur-sm">
+                <span className="text-white/90">Founded 2022</span>
+              </div>
+              <div className="px-6 py-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm">
+                <span className="text-white/90">University of Greenwich</span>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div className="flex flex-col w-[46%] 2xl:w-[41%] mt-16 self-end leading-5">
-          <span className="w-full text-right">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-            nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
-            volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-            ulla-mcorper suscipit lobortis nisl ut aliquip ex ea commodo
-            consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate
-            velit esse molestie consequat, vel illum dolore eu feugiat nulla
-            facilisis at vero eros et ac-cumsan et iusto odio dignissim qui
-            blandit praesent luptatum zzril dele-nit augue duis dolore te
-            feugait nulla facilisi.
-          </span>
-          <span className="w-full text-right">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-            nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
-            volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-            ulla-
-          </span>
+      {/* Highlights Section */}
+      <section className="relative px-4 md:px-[var(--pub-container-padding-x)] py-24 bg-[#111111]/50">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {highlights.map((item, idx) => (
+            <div
+              key={idx}
+              className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-8 text-center hover:border-pink-500/30 transition-colors"
+            >
+              <div className="monument-extra-bold text-4xl md:text-5xl pink-color mb-2">{item.number}</div>
+              <h3 className="monument-regular text-lg uppercase text-white/90 mb-2">{item.label}</h3>
+              <p className="text-white/60 text-sm">{item.desc}</p>
+            </div>
+          ))}
         </div>
-      </div>
+      </section>
 
-      <div className="flex flex-col mt-5">
-        <img
-          className=" pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)]"
-          src={aboutImage02}
-          alt="Moving Until The Last Breath"
-        />
+      {/* About GDC */}
+      <section className="relative px-4 md:px-[var(--pub-container-padding-x)] py-24">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="monument-extra-bold text-4xl md:text-5xl uppercase mb-12 text-center">
+            Who We Are
+          </h2>
 
-        <div className="flex justify-between pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)] leading-5">
-          <span className="w-3/10">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-            nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
-          </span>
-          <span className="w-[22%]">
-            Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed diam
-            nonummy nibh euismod tincidunt ut
-          </span>
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="space-y-6">
+              <p className="text-lg text-white/80 leading-relaxed">
+                Greenwich Dance Crew is more than a performance group—we're a collective of artists,
+                innovators, and dreamers united by the power of dance. Since our founding in 2022,
+                we've grown into a vibrant community of over 100 members across multiple styles.
+              </p>
 
-        <img
-          className="m-20 ml-4 mr-4"
-          src={aboutImage03}
-          alt="Creativity Unity Discipline"
-        />
+              <p className="text-lg text-white/80 leading-relaxed">
+                Our journey has been marked by countless performances, international collaborations,
+                and a steadfast commitment to elevating dance culture within our university and
+                beyond. Every choreography, every practice, every performance tells the story of our
+                collective passion.
+              </p>
 
-        <div className="grid grid-cols-9 grid-rows-9 pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)] mt-6 gap-8 relative">
-          <div className="flex flex-col bg-[#212121] p-5 col-span-4 col-start-1 row-span-6 row-start-1 w-full h-[42rem] justify-end leading-5">
-            <span className="w-[74%] 2xl:w-[64%]">
-              Lorem ipsum dolor sit amet, consectetuer adipisc-ing elit, sed
-              diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-              aliquam erat volutpat. Ut wisi enim ad minim veniam, quis
-              nostrud{" "}
-            </span>
-            <span className="w-[74%] 2xl:w-[64%]">
-              suscipit lobortis nisl ut aliquip ex ea commodo con-sequat. Duis
-              autem vel eum iriure dolor in hendrerit in vulputate velit esse
-              molestie consequat, vel illum dolore eu feugiat nulla facilisis at
-              vero eros
-            </span>
-          </div>
-          <div className="">
-            <img
-              className="absolute top-0 right-77 w-[35rem] 2xl:right-112 2xl:w-[35rem]"
-              src={aboutImage04}
-              alt="Main Activities"
-            />
-            <span className="absolute top-10 left-126 w-1/8 2xl:left-155 2xl:w-1/10 text-right">
-              Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit,
-            </span>
-            <span className="absolute top-22 right-30 w-1/7 2xl:right-62 2xl:w-1/8">
-              Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed
-              diam nonummy tincidunt ut laoreet dolore
-            </span>
-            <span className="absolute top-65 right-20 w-[29%] 2xl:right-56 2xl:w-[24%] text-right">
-              Lorem ipsum dolor sit amet, consectetuer adipisc-ing elit, sed
-              diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-              aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud
-            </span>
-          </div>
-          <div className="bg-[#212121] col-span-4 col-start-1 row-span-3 row-end-10 w-full h-full"></div>
-          <div className="flex flex-col bg-[#212121] p-5 col-span-5 row-span-4 row-end-10 w-full h-full text-right items-end justify-end leading-5">
-            <span className="w-[57%] 2xl:w-[51%]">
-              Lorem ipsum dolor sit amet, consectetuer adipisc-ing elit, sed
-              diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-              aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud
-            </span>
-            <span className="w-[57%] 2xl:w-[51%]">
-              suscipit lobortis nisl ut aliquip ex ea commodo con-sequat. Duis
-              autem vel eum iriure dolor in hendrerit in vulputate velit esse
-              molestie consequat, vel illum dolore eu feugiat nulla facilisis at
-              vero eros
-            </span>
+              <p className="text-lg text-white/80 leading-relaxed">
+                We believe in the transformative power of movement—to express what words cannot, to
+                connect across cultures, and to inspire the next generation of artists.
+              </p>
+            </div>
+
+            <div className="space-y-6">
+              <div className="rounded-2xl border border-pink-500/30 bg-pink-500/10 p-6">
+                <h3 className="monument-regular text-xl pink-color uppercase mb-3">Our Mission</h3>
+                <p className="text-white/80">
+                  To create a thriving space where dancers can grow creatively and technically, pushing
+                  boundaries while respecting our roots in contemporary and street dance.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-6">
+                <h3 className="monument-regular text-xl text-blue-400 uppercase mb-3">Our Vision</h3>
+                <p className="text-white/80">
+                  To establish ourselves as a cultural force that sets the standard for dance excellence,
+                  innovation, and community impact across Southeast Asia.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-purple-500/30 bg-purple-500/10 p-6">
+                <h3 className="monument-regular text-xl text-purple-400 uppercase mb-3">Our Values</h3>
+                <p className="text-white/80">
+                  Creativity, Unity, and Discipline. We innovate fearlessly, support each other
+                  unconditionally, and commit to excellence in every move.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="flex flex-col gap-56 pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)] bg-[#212121] mt-8 w-full pt-8">
-        <span className="w-[29.5%] self-end text-end leading-5">
-          Lorem ipsum dolor sit amet, consectetuer adipisc-ing elit, sed diam
-          nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat
-          volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-          ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-          Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
-          molestie consequat, vel illum dolore eu feugiat nulla facilisis at
-          vero eros et accumsan et iusto odio dignissim qui
-        </span>
-        <img
-          className="w-2/3"
-          src={aboutImage05}
-          alt="Achievements"
-        />
-      </div>
+      {/* Team Structure */}
+      <section className="relative px-4 md:px-[var(--pub-container-padding-x)] py-24 bg-[#111111]/50">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="monument-extra-bold text-4xl md:text-5xl uppercase mb-12 text-center">
+            Our Team
+          </h2>
 
-      <div className="flex justify-between pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)] w-full pt-8">
-        <div className="flex flex-col w-[49.5%] 2xl:w-[43.75%] leading-5">
-          <span>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-            nonummy nibh euis-mod tincidunt ut laoreet dolore magna aliquam erat
-            volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-            ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo
-            consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate
-            velit esse molestie consequat, vel illum dolore eu feugiat nulla
-            facilisis at vero eros et ac-cumsan et iusto odio dignissim qui
-            blandit praesent luptatum zzril delenit augue duis dolore te feugait
-            nulla facilisi.
-          </span>
-          <span>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-            nonummy nibh eu-ismod tincidunt ut laoreet dolore magna aliquam erat
-            volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-            ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo
-            consequat.
-          </span>
-          <span>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam
-            nonummy nibh euis-mod tincidunt ut laoreet dolore
-          </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {teamRoles.map((role, idx) => (
+              <div
+                key={idx}
+                className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-5 py-10 hover:border-pink-500/30 transition-colors"
+              >
+                <div className="monument-extra-bold text-5xl pink-color mb-3">{role.count}</div>
+                <h3 className="monument-regular text-lg uppercase text-white/90 mb-3">{role.title}</h3>
+                <p className="text-white/60 text-sm">{role.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
+      </section>
 
-        <div className="bg-[#212121] w-[27%] h-[32rem]"></div>
-      </div>
+      {/* Journey Timeline */}
+      <section className="relative px-4 md:px-[var(--pub-container-padding-x)] py-24">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="monument-extra-bold text-4xl md:text-5xl uppercase mb-16 text-center">
+            Our Journey
+          </h2>
+
+          <div className="space-y-8">
+            <div className="flex gap-8 items-start">
+              <div className="flex-shrink-0">
+                <div className="monument-extra-bold text-3xl pink-color">2022</div>
+              </div>
+              <div className="flex-grow rounded-2xl border border-white/10 bg-[#111111]/80 p-6">
+                <h3 className="monument-regular text-xl uppercase text-white/90 mb-2">Genesis</h3>
+                <p className="text-white/75">
+                  GreenWich Dance Crew is founded by a group of passionate dancers at FPT University.
+                  A small team with a big vision to transform dance culture.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-8 items-start flex-row-reverse">
+              <div className="flex-shrink-0">
+                <div className="monument-extra-bold text-3xl pink-color">2023</div>
+              </div>
+              <div className="flex-grow rounded-2xl border border-white/10 bg-[#111111]/80 p-6">
+                <h3 className="monument-regular text-xl uppercase text-white/90 mb-2">Expansion</h3>
+                <p className="text-white/75">
+                  Membership grows to 50+ dancers. First major performances at university events and
+                  regional competitions. Recognition begins to build.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-8 items-start">
+              <div className="flex-shrink-0">
+                <div className="monument-extra-bold text-3xl pink-color">2024</div>
+              </div>
+              <div className="flex-grow rounded-2xl border border-white/10 bg-[#111111]/80 p-6">
+                <h3 className="monument-regular text-xl uppercase text-white/90 mb-2">Recognition</h3>
+                <p className="text-white/75">
+                  Multiple award wins, collaborations with international choreographers, and the
+                  launch of workshops training 100+ students across the community.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-8 items-start flex-row-reverse">
+              <div className="flex-shrink-0">
+                <div className="monument-extra-bold text-3xl pink-color">2025+</div>
+              </div>
+              <div className="flex-grow rounded-2xl border border-white/10 bg-[#111111]/80 p-6">
+                <h3 className="monument-regular text-xl uppercase text-white/90 mb-2">Legacy Building</h3>
+                <p className="text-white/75">
+                  100+ active members, 20+ performances, establishing mentorship programs and aiming
+                  for regional leadership in dance culture and education.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="relative px-4 md:px-[var(--pub-container-padding-x)] py-24 bg-[#111111]/50">
+        <div className="max-w-3xl mx-auto text-center rounded-3xl border border-pink-500/40 bg-gradient-to-b from-pink-500/10 to-transparent p-12 md:p-16">
+          <h2 className="monument-extra-bold text-3xl md:text-4xl uppercase mb-6">
+            Ready to Move With Us?
+          </h2>
+
+          <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">
+            Whether you're an experienced dancer or completely new to dance, there's a place for you
+            in our crew. Let's create something extraordinary together.
+          </p>
+
+          <button className="monument-regular uppercase px-8 py-3 rounded-xl border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white transition-colors duration-300 font-semibold">
+            Join Our Crew
+          </button>
+        </div>
+      </section>
+
+      {/* Footer Spacing */}
+      <div className="h-20" />
     </div>
   );
 };
