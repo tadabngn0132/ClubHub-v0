@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { refreshAccessTokenUser, setGoogleAuthData } from "../../store/slices/authSlice";
+import {
+  refreshAccessTokenUser,
+  setGoogleAuthData,
+} from "../../store/slices/authSlice";
 import toast from "react-hot-toast";
 
 const AuthCallback = () => {
@@ -18,16 +21,24 @@ const AuthCallback = () => {
       if (success && userData && accessToken) {
         const user = JSON.parse(decodeURIComponent(userData));
 
-        if (!accessToken || accessToken === "null" || accessToken === "undefined") {
+        if (
+          !accessToken ||
+          accessToken === "null" ||
+          accessToken === "undefined"
+        ) {
           // Gọi API lấy accessToken
           dispatch(refreshAccessTokenUser());
         } else {
           // Lưu accessToken và userData vào Redux store
-          dispatch(setGoogleAuthData({ userData: user, accessToken: accessToken }));
+          dispatch(
+            setGoogleAuthData({ userData: user, accessToken: accessToken }),
+          );
         }
 
+        const role = user.userPosition[0].position.systemRole.toLowerCase();
+
         // Redirect dựa trên role
-        switch (user.userPositions[0].position.systemRole) {
+        switch (role) {
           case "admin":
             navigate("/admin/dashboard");
             toast.success("Authentication successful. Welcome, Admin!");

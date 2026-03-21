@@ -45,13 +45,13 @@ export const formatPositionLevel = (level) => {
 export const formatRoleBadgeColor = (role) => {
   switch (role) {
     case "Admin":
-      return "bg-red-500";
-    case "Moderator":
-      return "bg-blue-500";
-    case "Member":
-      return "bg-green-500";
-    default:
-      return "bg-gray-500";
+        return "bg-rose-500/20 text-rose-300 border-rose-500/30";
+      case "Moderator":
+        return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
+      case "Member":
+        return "bg-sky-500/20 text-sky-300 border-sky-500/30";
+      default:
+        return "bg-slate-500/20 text-slate-300 border-slate-500/30";
   }
 };
 
