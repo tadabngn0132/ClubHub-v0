@@ -8,7 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link } from "react-router-dom";
 import { resetDepartmentStatus } from "../../../store/slices/departmentSlice";
-import { formatDeptStatusBadgeColor } from "../../../utils/formatters";
+import { formatDeptStatusBadgeColor, formatUppercaseToCapitalized } from "../../../utils/formatters";
 
 const AdminDepartments = () => {
   const dispatch = useDispatch();
@@ -49,8 +49,8 @@ const AdminDepartments = () => {
       <Toaster position="top-right" reverseOrder={false} />
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold">Departments</h1>
-          <p className="text-gray-600">{departments.length} departments</p>
+          <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">Departments</h1>
+          <p className="mt-1 text-slate-300">{departments.length} departments</p>
         </div>
 
         <span>
@@ -63,51 +63,73 @@ const AdminDepartments = () => {
         </span>
       </div>
 
-      <table className="w-full border-collapse border border-gray-300">
-        <thead>
-          <tr className="border border-gray-200 text-left">
-            <th className="px-2 py-1">Name</th>
-            <th className="px-2 py-1">Description</th>
-            <th className="px-2 py-1 text-center">Status</th>
-            <th className="px-2 py-1 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {departments.map((department) => (
-            <tr key={department.id} className="border-t border-gray-300">
-              <td className="px-2 py-1">{department.name}</td>
-              <td className="px-2 py-1">{department.description}</td>
-              <td className="px-2 py-1">
-                <span className={formatDeptStatusBadgeColor(department.isActive)}>
-                  {handleStatusLabel(department.isActive)}
-                </span>
-              </td>
-              <td className="px-2 py-1">
-                <div className="flex justify-center items-center gap-1 text-xs bg-white p-2 rounded-md shadow-md">
-                  <Link
-                    to={`/admin/departments/view/${department.id}`}
-                    className="text-green-500 hover:underline"
+      <div className="overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-900/65">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px] border-collapse text-sm">
+            <thead className="bg-slate-800/95 text-slate-200 backdrop-blur">
+              <tr className="border-b border-slate-700 text-left">
+                <th className="px-3 py-3">Name</th>
+                <th className="px-3 py-3">Description</th>
+                <th className="px-3 py-3 text-center">Status</th>
+                <th className="px-3 py-3 text-center">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {departments.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="4"
+                    className="px-4 py-10 text-center text-slate-300"
                   >
-                    View
-                  </Link>
-                  <Link
-                    to={`/admin/departments/edit/${department.id}`}
-                    className="text-blue-500 hover:underline"
+                    No departments found.
+                  </td>
+                </tr>
+              ) : (
+                departments.map((department) => (
+                  <tr
+                    key={department.id}
+                    className="border-t border-slate-800 odd:bg-slate-900/30 even:bg-slate-800/20 hover:bg-slate-800/50"
                   >
-                    Edit
-                  </Link>
-                  <button
-                    onClick={() => handleDelete(department.id)}
-                    className="text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                    <td className="px-3 py-3 font-medium text-slate-100">
+                      {department.name}
+                    </td>
+                    <td
+                      className="max-w-[420px] truncate px-3 py-3 text-slate-300"
+                      title={department.description}
+                    >
+                      {department.description || "No description"}
+                    </td>
+                    <td className="px-3 py-3 text-center">
+                      <p
+                        className={formatDeptStatusBadgeColor(
+                          formatUppercaseToCapitalized(
+                            handleStatusLabel(department.isActive),
+                          ),
+                        )}
+                      >
+                        {formatUppercaseToCapitalized(
+                          handleStatusLabel(department.isActive),
+                        )}
+                      </p>
+                    </td>
+                    <td className="px-3 py-3 text-center">
+                      <div className="flex items-center justify-center gap-1 text-xs">
+                        <Link
+                          to={`/moderator/departments/view/${department.id}`}
+                          className="rounded-md bg-emerald-500/20 px-3 py-1 font-semibold text-emerald-300 transition hover:bg-emerald-500/35"
+                        >
+                          View
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

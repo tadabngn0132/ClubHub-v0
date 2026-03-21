@@ -37,10 +37,10 @@ const ModeratorDepartments = () => {
     <div className="min-h-screen text-slate-100">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
         <section>
-          <h1 className="mt-2 text-2xl font-extrabold tracking-tight md:text-3xl">
+          <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">
             Departments
           </h1>
-          <p className="mt-3 text-slate-300">
+          <p className="mt-1 text-slate-300">
             {departments.length} departments
           </p>
         </section>

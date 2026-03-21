@@ -9,7 +9,7 @@ import {
 import logo from "../../../assets/logos/GDC_logo.svg";
 import Dropdown from "./Dropdown";
 import { useState } from "react";
-import { formatRoleBadgeColor } from "../../../utils/formatters";
+import { formatRoleBadgeColor, formatUppercaseToCapitalized } from "../../../utils/formatters";
 
 const Header = ({ role }) => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -31,9 +31,9 @@ const Header = ({ role }) => {
             />
           </Link>
           <div
-            className={`flex badge ${formatRoleBadgeColor(role)} h-fit items-center-safe justify-center-safe p-1 pl-2 pr-2 rounded-2xl text-sm/tight`}
+            className={`flex badge ${formatRoleBadgeColor(role)} h-fit items-center-safe justify-center-safe p-1 px-3 rounded-2xl text-sm/tight`}
           >
-            {role}
+            {formatUppercaseToCapitalized(role)}
           </div>
         </div>
       </div>
