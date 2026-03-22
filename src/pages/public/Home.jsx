@@ -1,221 +1,133 @@
 import activityItem01 from "../../assets/items/activites-items-01.webp";
 
 const Home = () => {
+  const highlights = [
+    {
+      title: "Mini Project",
+      subtitle: "Twist",
+      description:
+        "A fast-paced production sprint where students move from concept to final showcase in just two weeks.",
+      details:
+        "Participants rotate through direction, set design, visual styling, and event operations to build real execution skills.",
+      className: "md:col-span-4 md:row-span-2",
+    },
+    {
+      title: "Career Fair",
+      subtitle: "2025",
+      description:
+        "A campus-wide networking day connecting clubs, student leads, and industry partners.",
+      details:
+        "Portfolio reviews, mock interviews, and mini mentoring booths are curated to match student career tracks.",
+      className: "md:col-span-3 md:row-span-3",
+    },
+    {
+      title: "Photoshoot",
+      subtitle: "Campaign",
+      description:
+        "Seasonal visual campaign for club identity, social channels, and recruitment materials.",
+      details:
+        "Built around studio portraits, editorial direction, and motion snippets for launch week assets.",
+      className: "md:col-span-4 md:row-span-3",
+    },
+    {
+      title: "Club Fair",
+      subtitle: "2025",
+      description:
+        "The largest student activity opening where each organization presents live experiences.",
+      details:
+        "Traffic planning, booth strategy, and storytelling format help each club stand out from the first minute.",
+      className: "md:col-span-3 md:row-span-2",
+    },
+    {
+      title: "Student Honoring",
+      subtitle: "SUM25",
+      description:
+        "Recognition night for exceptional contribution in leadership and community projects.",
+      details:
+        "The ceremony combines stage production, media recap, and partner acknowledgements for a full showcase.",
+      className: "md:col-span-3 md:row-span-1",
+    },
+    {
+      title: "Opening Ceremony",
+      subtitle: "2025",
+      description:
+        "A dramatic launch event setting the visual and narrative direction for the semester.",
+      details:
+        "Sound, lighting, and staging are coordinated as one experience to introduce all headline activities.",
+      className: "md:col-span-4 md:row-span-1",
+    },
+    {
+      title: "Casting Call",
+      subtitle: "Result",
+      description:
+        "Final shortlist reveal for MCs, performers, and production volunteers.",
+      details:
+        "Selections prioritize communication, teamwork, and ability to perform in high-pressure live programs.",
+      className: "md:col-span-7 md:row-span-1",
+    },
+  ];
+
   return (
-    <div className="flex flex-col min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] w-full md:pl-[var(--pub-container-padding-x)] md:pr-[var(--pub-container-padding-x)]">
-      <div className="flex flex-col bg-[#212121] w-full h-[30rem] rounded-[3rem] p-10 pt-8 pb-6 justify-between">
-        <span className="self-end text-end leading-5 font-light">
-          Lorem ipsum dolor sit amet, consectetuer adipisc-
-          <br />
-          ing elit, sed diam nonummy nibh euismod tincidunt
-          <br /> ut laoreet dolore magna aliquam erat volutpat. Ut
-          <br /> wisi enim ad minim veniam
-        </span>
+    <main className="w-full min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)]">
+      <section className="relative overflow-hidden rounded-[2.5rem] border border-[#f6d9b8]/40 bg-[radial-gradient(circle_at_top_left,_#ffe8cf_0%,_#f8c48c_42%,_#bf5a2b_100%)] p-6 text-[#1d1007] sm:p-8 md:p-12">
+        <div className="pointer-events-none absolute -right-10 -top-12 h-56 w-56 rounded-full bg-[#ffd6a4]/40 blur-2xl" />
+        <div className="pointer-events-none absolute -bottom-20 left-1/3 h-64 w-64 rounded-full bg-[#8f340a]/20 blur-3xl" />
 
-        <div className="flex items-end justify-between uppercase">
-          <h1 className="monument-extra-bold text-6xl/18">
-            Project:
-            <br />
-            <span className="monument-regular">Stages of Love</span>
-          </h1>
-          <button className="monument-regular uppercase leading-10 cursor-pointer">
-            More
-          </button>
-        </div>
-      </div>
+        <div className="relative flex flex-col gap-10">
+          <p className="ml-auto max-w-md text-right text-sm font-light leading-6 md:text-base">
+            ClubHub curates a season of student-led projects where creativity,
+            operations, and collaboration meet in one shared stage.
+          </p>
 
-      <img
-        className="w-[30rem] m-10 ml-7"
-        src={activityItem01}
-        alt="Featured Activities"
-      />
-
-      <div className="grid grid-cols-7 gap-10 w-full">
-        {/* Card 1 */}
-        <div className="flex flex-col w-full h-full bg-[#212121] col-span-4 rounded-[3rem] items-end">
-          <div className="flex flex-col w-[37.5%] h-[30rem] bg-[#121212] rounded-[3rem] rounded-l-none p-5">
-            <h1 className="monument-extra-bold uppercase text-3xl/10">
-              {" "}
-              Mini Project:
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <h1 className="monument-extra-bold uppercase text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-7xl">
+              Project:
               <br />
-              <span className="monument-regular">Twist</span>
+              <span className="monument-regular">Stages of Love</span>
             </h1>
-            <div className="flex flex-col h-full justify-between mt-2">
-              <span className="text-[10.5px] font-light w-10/12">
-                Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed
-                diam nonummy nibh e
-              </span>
 
-              <span className="text-[10.5px] font-light">
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                diam nonummy nibh euis-mod tincidunt ut laoreet dolore magna
-                ali-quam erat adipiscing elit, sed diam nonummy nibh euismod
-                tincidunt ut laoreet dolore magna aliquam erat laoreet dolore
-                magna aliquam erat adipiscing ....
-              </span>
-            </div>
+            <button className="monument-regular w-fit rounded-full border border-[#1d1007] px-7 py-2 text-xs uppercase tracking-[0.2em] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#1d1007] hover:text-[#ffe8cf]">
+              Explore More
+            </button>
           </div>
         </div>
+      </section>
 
-        {/* Card 2 */}
-        <div className="flex flex-row w-full h-full bg-[#212121] col-span-3 row-span-9 rounded-[3rem] items-end">
-          <div className="flex flex-col justify-between w-full h-fit bg-[#121212] rounded-[3rem] rounded-t-none p-5">
-            <h1 className="monument-extra-bold uppercase text-3xl/10">
-              {" "}
-              Career Fair
-              <br />
-              <span className="monument-regular">2025</span>
-            </h1>
-            <div className="flex flex-row w-full h-full justify-between mt-10">
-              <span className="text-[10.5px] font-light w-[36%]">
-                Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed
-                diam nonummy nibh e
-              </span>
+      <section className="mt-8 md:mt-10">
+        <img
+          className="h-full w-9/12 md:w-[30rem] object-cover opacity-90 mix-blend-screen"
+          src={activityItem01}
+          alt="Featured Activities"
+        />
+      </section>
 
-              <span className="text-[10.5px] font-light w-6/12">
-                Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed
-                diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                aliquam erat adipiscing elit, sed diam nonummy nibh euismod
-                tincidunt ut laoreet dolore magna aliquam erat laoreet dolore
-                magna aliquam erat adipiscing ....
-              </span>
-            </div>
-          </div>
-        </div>
+      <section className="mt-8 grid grid-cols-1 gap-6 md:mt-10 md:auto-rows-[minmax(9rem,_auto)] md:grid-cols-7">
+        {highlights.map((item) => (
+          <article
+            key={item.title}
+            className={`group relative overflow-hidden rounded-[2rem] border border-[#e7a15c]/40 bg-[#211007] p-5 text-[#ffddb8] transition-all duration-300 hover:-translate-y-1 hover:border-[#ffd1a0] hover:shadow-[0_24px_60px_rgba(18,6,1,0.28)] md:p-6 ${item.className}`}
+          >
+            <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-[#f3bb84]/20 blur-2xl" />
 
-        {/* Card 3 */}
-        <div className="flex flex-row w-full h-full bg-[#212121] col-span-4 row-span-22 rounded-[3rem] items-end">
-          <div className="flex flex-col w-full h-fit bg-[#121212] rounded-[3rem] rounded-t-none p-5">
-            <h1 className="monument-extra-bold uppercase text-3xl/10">
-              Photoshoot
-              <br />
-              <span className="monument-regular"></span>
-            </h1>
-            <div className="flex flex-row w-3/4 h-full items-end gap-10">
-              <div className="flex flex-col gap-10 w-1/2">
-                <span className="text-[10.5px] font-light w-2/3">
-                  Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed
-                  diam nonummy nibh e
-                </span>
-                <span className="text-[10.5px] font-light w-full">
-                  Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed
-                  diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                  aliquam erat adipiscing elit, sed diam nonummy nibh euismod
-                  tincidunt ut laoreet dolore magna aliquam erat laoreet dolore
-                  magna aliquam erat adipiscing
-                </span>
-              </div>
-
-              <span className="text-[10.5px] font-light w-1/2">
-                Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed
-                diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                aliquam erat adipiscing elit, sed diam nonummy nibh euismod
-                tincidunt ut laoreet dolore magna aliquam erat laoreet dolore
-                magna aliquam erat adipiscing ....
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 4 */}
-        <div className="flex flex-row w-full h-full bg-[#212121] col-span-3 row-span-14 rounded-[3rem] items-end">
-          <div className="flex flex-col justify-between w-full h-fit bg-[#121212] rounded-[3rem] rounded-t-none p-5">
-            <h1 className="monument-extra-bold uppercase text-3xl/10">
-              Clubfair
-              <br />
-              <span className="monument-regular">2025</span>
-            </h1>
-            <div className="flex flex-row w-full h-full justify-between mt-2">
-              <span className="text-[10.5px] font-light w-[36%]">
-                Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed
-                diam nonummy nibh e
-              </span>
-
-              <span className="text-[10.5px] font-light w-6/12">
-                Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed
-                diam nibh euismod tincidunt ut laoreet dolore magna aliquam erat
-                laoreet dolore magna aliquam erat adipiscing ....
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 5 */}
-        <div className="flex flex-row w-full h-full bg-[#212121] col-span-3 row-span-3 rounded-[3rem] items-end">
-          <div className="flex flex-row w-full h-fit bg-[#121212] rounded-[3rem] rounded-t-none p-5 pl-9 pr-9 items-end">
-            <div className="flex flex-col h-full justify-between gap-8">
-              <h1 className="monument-extra-bold uppercase text-3xl/10">
-                Student Honoring Ceremony:
+            <div className="relative flex h-full flex-col">
+              <h3 className="monument-extra-bold text-2xl uppercase leading-tight md:text-3xl">
+                {item.title}
                 <br />
-                <span className="monument-regular">Sum25</span>
-              </h1>
+                <span className="monument-regular">{item.subtitle}</span>
+              </h3>
 
-              <span className="text-[10.5px] font-light w-9/12">
-                Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed
-                diam nonummy nibh e
-              </span>
+              <p className="mt-4 max-w-sm text-xs font-light leading-6 md:text-sm">
+                {item.description}
+              </p>
+
+              <p className="mt-3 text-xs font-light leading-6 text-[#ffc890] md:mt-auto md:text-sm">
+                {item.details}
+              </p>
             </div>
-            <span className="text-[10.5px] font-light w-[55%]">
-              Lorem ipsum dolor sit amet, consectetuer adipi-scing elit, sed
-              diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-              aliquam erat adipi-scing elit, sed diam nonummy nibh euismod
-              tincidunt ut laoreet dolore magna aliquam erat laoreet dolore
-              magna ali-quam erat adipiscing ....
-            </span>
-          </div>
-        </div>
-
-        {/* Card 6 */}
-        <div className="flex flex-col w-full h-full bg-[#212121] col-span-4 row-span-2 rounded-[3rem] items-end">
-          <div className="flex flex-col w-[37.5%] bg-[#121212] rounded-[3rem] rounded-l-none p-5">
-            <h1 className="monument-extra-bold uppercase text-3xl/10">
-              Opening Ceremony
-              <br />
-              <span className="monument-regular">2025</span>
-            </h1>
-            <div className="flex flex-col h-full justify-between mt-2 gap-12">
-              <span className="text-[10.5px] font-light w-10/12">
-                Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed
-                diam nonummy nibh e
-              </span>
-
-              <span className="text-[10.5px] font-light">
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                diam nonummy nibh euis-mod tincidunt ut laoreet dolore magna
-                ali-quam erat adipiscing elit, sed diam nonummy nibh euismod
-                tincidunt ut laoreet dolore magna aliquam erat laoreet dolore
-                magna aliquam erat adipiscing ....
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 7 */}
-        <div className="flex flex-col w-full h-full bg-[#212121] col-span-4 row-span-1 rounded-[3rem] items-start">
-          <div className="flex flex-col w-[37.5%] bg-[#121212] rounded-[3rem] rounded-r-none p-5">
-            <h1 className="monument-extra-bold uppercase text-3xl/10">
-              Casting Call:
-              <br />
-              <span className="monument-regular">Result</span>
-            </h1>
-            <div className="flex flex-col h-full justify-between mt-2 gap-24">
-              <span className="text-[10.5px] font-light w-10/12">
-                Lorem ipsum dolor sit amet, consec-tetuer adipiscing elit, sed
-                diam nonummy nibh e
-              </span>
-
-              <span className="text-[10.5px] font-light">
-                Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed
-                diam nonummy nibh euis-mod tincidunt ut laoreet dolore magna
-                ali-quam erat adipiscing elit, sed diam nonummy nibh euismod
-                tincidunt ut laoreet dolore magna aliquam erat laoreet dolore
-                magna aliquam erat adipiscing ....
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </article>
+        ))}
+      </section>
+    </main>
   );
 };
 

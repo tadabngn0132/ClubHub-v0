@@ -92,7 +92,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="relative overflow-hidden flex flex-col min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] px-4 md:px-[var(--pub-container-padding-x)]">
+    <div className="relative overflow-hidden flex flex-col min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)]">
       <div className="absolute top-6 -left-20 w-64 h-64 rounded-full blur-3xl bg-[var(--dark-pink-color)]/30 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full blur-3xl bg-[var(--pink-color)]/20 pointer-events-none" />
 

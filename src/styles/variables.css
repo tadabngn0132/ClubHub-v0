@@ -1,6 +1,7 @@
 :root {
   /* Layout - Container & Spacing */
   --pub-container-padding-x: 48px;
+  --pub-container-padding-x-mobile: 24px;
   --pub-main-min-height: 46.5vw;
   --pub-main-margin-y: 80px;
 

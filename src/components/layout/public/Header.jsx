@@ -38,7 +38,7 @@ const Header = () => {
   };
 
   return (
-    <div className="flex justify-between items-center p-3.5 pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)] xl:pt-0 xl:pb-0 fixed top-0 left-0 w-full bg-black/25 backdrop-blur-md z-50">
+    <div className="flex justify-between items-center p-3.5 px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)] xl:pt-0 xl:pb-0 fixed top-0 left-0 w-full bg-black/25 backdrop-blur-md z-50">
       <nav className="flex items-center justify-between w-[87.5%] sm:w-[92%] md:w-11/12 xl:w-max xl:gap-7 xl:justify-baseline">
         {/* Logo section */}
         <div className="flex items-center gap-4">

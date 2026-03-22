@@ -10,7 +10,7 @@ import footerImage from "../../../assets/items/footer.webp";
 
 const Footer = () => {
   return (
-    <div className="flex flex-col p-2 pl-[var(--pub-container-padding-x)] pr-[var(--pub-container-padding-x)] gap-6">
+    <div className="flex flex-col p-2 px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)] gap-6">
       <img
         className="w-60 xl:w-55"
         src={GDCLogo}
