@@ -95,14 +95,11 @@ const ModeratorDashboard = () => {
   return (
     <div className="min-h-screen text-slate-100">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-        <section className="rounded-3xl border border-slate-700/60 bg-slate-900/70 p-6 shadow-[0_20px_60px_-25px_rgba(15,23,42,0.85)] backdrop-blur md:p-8">
-          <p className="text-sm uppercase tracking-[0.2em] text-emerald-300/80">
-            Moderator Workspace
-          </p>
-          <h1 className="mt-2 text-3xl font-extrabold tracking-tight md:text-4xl">
+        <section>
+          <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl">
             Moderator Dashboard
           </h1>
-          <p className="mt-3 text-slate-300">
+          <p className="mt-1 text-slate-300">
             Welcome,{" "}
             <span className="font-semibold text-white">
               {currentUser?.fullname || "Moderator"}

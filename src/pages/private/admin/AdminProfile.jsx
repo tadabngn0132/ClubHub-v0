@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { getUserById, resetUserStatus } from "../../../store/slices/userSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import UserForm from "../../../components/main/internal/UserForm";
@@ -31,35 +30,52 @@ const AdminProfile = () => {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Admin Profile</h1>
+    <div className="min-h-screen text-slate-100">
+      <div className="flex w-full flex-col gap-6">
+        <section>
+          <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">
+            Admin Profile
+          </h1>
+          <p className="mt-1 text-slate-300">
+            Manage your profile details and security settings.
+          </p>
+        </section>
 
-      <div className="flex gap-4 mb-6">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setCurrentTab(tab.label)}
-            className={`px-4 py-2 rounded ${
-              currentTab === tab.label
-                ? "bg-[var(--pink-color)] text-white"
-                : "bg-gray-200 text-gray-700"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+        {error && (
+          <div className="rounded-xl border border-rose-400/50 bg-rose-500/15 px-4 py-3 text-sm text-rose-200">
+            {error}
+          </div>
+        )}
 
-      <div>
-        {currentTab === "profile" &&
-          (user ? <UserForm user={user} /> : <p>User data not available.</p>)}
+        <section className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-4 md:p-5">
+          <div className="flex flex-wrap gap-3">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setCurrentTab(tab.label)}
+                className={`rounded-xl px-4 py-2 text-sm font-semibold transition ${
+                  currentTab === tab.label
+                    ? "bg-emerald-500 text-slate-950"
+                    : "bg-slate-800 text-slate-200 hover:bg-slate-700"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </section>
 
-        {currentTab === "Change Password" && <ChangePasswordForm />}
+        <section className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
+          {currentTab === "profile" &&
+            (user ? (
+              <UserForm user={user} />
+            ) : (
+              <p className="text-sm text-slate-300">User data not available.</p>
+            ))}
+
+          {currentTab === "Change Password" && <ChangePasswordForm />}
+        </section>
       </div>
     </div>
   );

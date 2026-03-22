@@ -2,10 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getPositionDetails } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading";
-import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import {
+  formatUppercaseToCapitalized,
+  formatPositionLevel,
+} from "../../../utils/formatters.js";
 
-const MemberViewPosition = ({ positionId }) => {
+const MemberViewPosition = () => {
+  const { positionId } = useParams();
   const dispatch = useDispatch();
   const { position, isLoading, error } = useSelector((state) => state.position);
 
@@ -17,25 +21,55 @@ const MemberViewPosition = ({ positionId }) => {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-
   return (
-    <div>
-      <Toaster position="top-right" reverseOrder={false} />
-      <Link to="/member/positions">Back to Positions</Link>
-      <div>
-        <h1>{position?.name || "Position Details"}</h1>
-      </div>
+    <div className="min-h-screen text-slate-100">
+      <div className="flex w-full flex-col gap-6">
+        <div className="flex items-center justify-between">
+          <Link
+            to="/member/positions"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-600/70 bg-slate-900/60 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-emerald-400 hover:text-emerald-300"
+          >
+            Back to Positions
+          </Link>
+        </div>
 
-      <div>
-        <p>Created At: {position?.createdAt}</p>
-        <p>Updated At: {position?.updatedAt}</p>
-      </div>
+        {error && (
+          <div className="rounded-xl border border-rose-400/50 bg-rose-500/15 px-4 py-3 text-sm text-rose-200">
+            {error}
+          </div>
+        )}
 
-      <p>{position?.level}</p>
-      <p>{position?.systemRole}</p>
+        <section className="rounded-3xl border border-slate-700/60 bg-slate-900/70 p-6 shadow-[0_20px_60px_-25px_rgba(15,23,42,0.85)] backdrop-blur md:p-8">
+          <p className="text-sm uppercase tracking-[0.2em] text-emerald-300/80">
+            Position
+          </p>
+          <h1 className="mt-2 text-3xl font-extrabold tracking-tight md:text-4xl">
+            {position?.title || "Position Details"}
+          </h1>
+        </section>
+
+        <section className="grid gap-6 md:grid-cols-2">
+          <article className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
+            <h2 className="mb-3 text-lg font-bold text-slate-100">Level</h2>
+            <p className="inline-flex rounded-full border border-cyan-400/50 bg-cyan-500/15 px-3 py-1 text-sm font-semibold text-cyan-200">
+              {position?.level
+                ? formatPositionLevel(position.level)
+                : "Unknown"}
+            </p>
+          </article>
+
+          <article className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
+            <h2 className="mb-3 text-lg font-bold text-slate-100">
+              System Role
+            </h2>
+            <p className="inline-flex rounded-full border border-emerald-400/50 bg-emerald-500/15 px-3 py-1 text-sm font-semibold text-emerald-200">
+              {position?.systemRole
+                ? formatUppercaseToCapitalized(position.systemRole)
+                : "Unknown"}
+            </p>
+          </article>
+        </section>
+      </div>
     </div>
   );
 };

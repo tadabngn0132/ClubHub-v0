@@ -52,7 +52,7 @@ const MemberViewUser = () => {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
         <div className="flex items-center justify-between">
           <Link
-            to="/admin/users"
+            to="/member/users"
             className="inline-flex items-center gap-2 rounded-full border border-slate-600/70 bg-slate-900/60 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-teal-400 hover:text-teal-300"
           >
             Back to Members List
@@ -85,7 +85,7 @@ const MemberViewUser = () => {
             {currentUser.id === user.id && (
               <div className="flex flex-wrap gap-3">
                 <Link
-                  to={`/admin/users/edit/${userId}`}
+                  to={`/member/users/edit/${userId}`}
                   className="rounded-xl bg-teal-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-teal-400"
                 >
                   Edit Member

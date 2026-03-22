@@ -5,13 +5,14 @@ import {
 } from "../../../store/slices/taskSlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import toast, { Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
 const MemberViewTask = () => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
-  const { task, isLoading, error } = useSelector((state) => state.task);
+  const { task, isLoading, error } = useSelector(
+    (state) => state.task,
+  );
 
   useEffect(() => {
     dispatch(getTaskDetails(taskId));
@@ -21,29 +22,69 @@ const MemberViewTask = () => {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-
   return (
-    <div>
-      <Toaster position="top-right" reverseOrder={false} />
-      <Link to="/member/tasks">Back to Tasks</Link>
-      <div className="flex items-center justify-between">
-        <h1>{task?.title}</h1>
+    <div className="min-h-screen text-slate-100">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
+        <div className="flex items-center justify-between">
+          <Link
+            to="/member/tasks"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-600/70 bg-slate-900/60 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-emerald-400 hover:text-emerald-300"
+          >
+            Back to Tasks
+          </Link>
+        </div>
 
-        <Link to={`/member/tasks/edit/${taskId}`}>Edit Task</Link>
+        {error && (
+          <div className="rounded-xl border border-rose-400/50 bg-rose-500/15 px-4 py-3 text-sm text-rose-200">
+            {error}
+          </div>
+        )}
+
+        <section className="rounded-3xl border border-slate-700/60 bg-slate-900/70 p-6 shadow-[0_20px_60px_-25px_rgba(15,23,42,0.85)] backdrop-blur md:p-8">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <p className="text-sm uppercase tracking-[0.2em] text-emerald-300/80">
+                Task Detail
+              </p>
+              <h1 className="mt-2 text-3xl font-extrabold tracking-tight md:text-4xl">
+                {task?.title || "Untitled Task"}
+              </h1>
+              <p className="mt-3 inline-flex rounded-full border border-emerald-400/50 bg-emerald-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-200">
+                {task?.isCompleted ? "Completed" : "Incomplete"}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="grid gap-6 md:grid-cols-2">
+          <article className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
+            <h2 className="mb-3 text-lg font-bold text-slate-100">Timeline</h2>
+            <div className="space-y-2 text-sm text-slate-300">
+              <p>
+                <strong className="text-slate-100">Created At:</strong>{" "}
+                {task?.createdAt || "N/A"}
+              </p>
+              <p>
+                <strong className="text-slate-100">Updated At:</strong>{" "}
+                {task?.updatedAt || "N/A"}
+              </p>
+              <p>
+                <strong className="text-slate-100">Due Date:</strong>{" "}
+                {task?.dueDate || "N/A"}
+              </p>
+            </div>
+          </article>
+
+          <article className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
+            <h2 className="mb-3 text-lg font-bold text-slate-100">
+              Description
+            </h2>
+            <p className="text-sm leading-relaxed text-slate-300">
+              {task?.description || "No description provided for this task."}
+            </p>
+          </article>
+        </section>
       </div>
-
-      <div>
-        <p>Created At: {task?.createdAt}</p>
-        <p>Updated At: {task?.updatedAt}</p>
-      </div>
-
-      <p>Description: {task?.description}</p>
-      <p>Due Date: {task?.dueDate}</p>
-      {/* <p>Assigned To: {task?.assignedTo}</p> */}
-      {task?.isCompleted ? <p>Status: Completed</p> : <p>Status: Incomplete</p>}
     </div>
   );
 };
