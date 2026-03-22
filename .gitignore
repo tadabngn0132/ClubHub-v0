@@ -23,7 +23,7 @@ dist-ssr
 *.sln
 *.sw?
 
-src/assets/fonts
+# src/assets/fonts
 
 *.env
 *.env.local
