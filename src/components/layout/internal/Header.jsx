@@ -10,8 +10,10 @@ import logo from "../../../assets/logos/GDC_logo.svg";
 import Dropdown from "./Dropdown";
 import { useState } from "react";
 import { formatRoleBadgeColor, formatUppercaseToCapitalized } from "../../../utils/formatters";
+import { useSelector } from "react-redux";
 
 const Header = ({ role }) => {
+  const { currentUser } = useSelector((state) => state.auth);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const toggleDropdown = () => {
     setIsDropdownVisible(!isDropdownVisible);
@@ -54,7 +56,7 @@ const Header = ({ role }) => {
           onClick={toggleDropdown}
           className="cursor-pointer rounded-full overflow-hidden"
         >
-          <img className="w-8 h-8" src={null} alt="Avatar" />
+          <img className="w-8 h-8" src={currentUser?.avatarUrl || null} alt="Avatar" />
         </div>
         <Dropdown visible={isDropdownVisible} />
       </div>
