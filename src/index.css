@@ -39,9 +39,9 @@ body {
 @font-face {
   font-family: "Monument";
   src:
-    url("./assets/fonts/MonumentExtended-UltraBold.woff2") format("woff2"),
-    url("./assets/fonts/MonumentExtended-UltraBold.woff") format("woff"),
-    url("./assets/fonts/MonumentExtended-UltraBold.otf") format("opentype");
+    url("./assets/fonts/MonumentExtended-Ultrabold.woff2") format("woff2"),
+    url("./assets/fonts/MonumentExtended-Ultrabold.woff") format("woff"),
+    url("./assets/fonts/MonumentExtended-Ultrabold.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
