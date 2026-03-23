@@ -29,7 +29,78 @@ const ActivityDescriptionSection = () => {
         <p className="text-red-500">{errors.activity_description.message}</p>
       )}
 
-      {/* Implement event agenda input or timeline builder */}
+      {/* Is Public */}
+      <div className="flex items-center mt-4">
+        <input
+          type="checkbox"
+          id="isPublic"
+          {...register("isPublic")}
+          className="mr-2"
+        />
+        <label htmlFor="isPublic">Is Public</label>
+      </div>
+
+      {/* Is Featured */}
+      <div className="flex items-center mt-2">
+        <input
+          type="checkbox"
+          id="isFeatured"
+          {...register("isFeatured")}
+          className="mr-2"
+        />
+        <label htmlFor="isFeatured">Is Featured</label>
+      </div>
+
+      {/* Priority */}
+      <label htmlFor="priority" className="mt-4">
+        Priority
+      </label>
+      <input
+        type="number"
+        id="priority"
+        {...register("priority", {
+          min: {
+            value: 0,
+            message: "Priority cannot be negative",
+          },
+        })}
+        className="mt-2 bg-slate-800 text-white border border-slate-600"
+      />
+      {errors.priority && (
+        <p className="text-red-500">{errors.priority.message}</p>
+      )}
+
+      {/* Activity Images */}
+      <label htmlFor="activity_images" className="mt-4">
+        Activity Images
+      </label>
+      <input
+        type="file"
+        id="activity_images"
+        accept="image/*"
+        multiple
+        {...register("activity_images")}
+        className="mt-2 bg-slate-800 text-white border border-slate-600"
+      />
+      {errors.activity_images && (
+        <p className="text-red-500">{errors.activity_images.message}</p>
+      )}
+
+      {/* Activity Videos */}
+      <label htmlFor="activity_videos" className="mt-4">
+        Activity Videos
+      </label>
+      <input
+        type="file"
+        id="activity_videos"
+        accept="video/*"
+        multiple
+        {...register("activity_videos")}
+        className="mt-2 bg-slate-800 text-white border border-slate-600"
+      />
+      {errors.activity_videos && (
+        <p className="text-red-500">{errors.activity_videos.message}</p>
+      )}
     </div>
   );
 };

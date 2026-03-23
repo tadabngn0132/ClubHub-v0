@@ -31,7 +31,7 @@ const ActivityForm = ({ mode }) => {
       endDate: "",
       locationType: "",
       meetingPlatform: "",
-      meetLink: "",
+      meetingLink: "",
       meetingId: "",
       meetingPassword: "",
       venueName: "",
@@ -40,6 +40,7 @@ const ActivityForm = ({ mode }) => {
       type: "",
       status: "",
       thumbnailUrl: "",
+      thumbnail: null,
       images: [],
       videos: [],
       maxParticipants: null,
@@ -70,7 +71,7 @@ const ActivityForm = ({ mode }) => {
           endDate: activity.endDate || "",
           locationType: activity.locationType || "",
           meetingPlatform: activity.meetingPlatform || "",
-          meetLink: activity.meetLink || "",
+          meetingLink: activity.meetingLink || "",
           meetingId: activity.meetingId || "",
           meetingPassword: activity.meetingPassword || "",
           venueName: activity.venueName || "",
@@ -81,6 +82,7 @@ const ActivityForm = ({ mode }) => {
           type: activity.type || "",
           status: activity.status || "",
           thumbnailUrl: activity.thumbnailUrl || "",
+          thumbnail: activity.thumbnail || null,
           images: activity.images || [],
           videos: activity.videos || [],
           maxParticipants: activity.maxParticipants || null,
@@ -108,6 +110,7 @@ const ActivityForm = ({ mode }) => {
         type: "",
         status: "",
         thumbnailUrl: "",
+        thumbnail: null,
         images: [],
         videos: [],
         maxParticipants: null,
@@ -161,6 +164,7 @@ const ActivityForm = ({ mode }) => {
         <form
           onSubmit={methods.handleSubmit(handleSaveData)}
           className="shadow-md rounded px-4 py-2 mb-4"
+          encType="multipart/form-data"
         >
           {/* Hidden field để giữ organizerId */}
           <input

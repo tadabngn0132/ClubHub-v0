@@ -31,6 +31,7 @@ const UserForm = ({ mode }) => {
       status: "Active",
       studentId: "",
       avatarUrl: null,
+      avatar: null,
       bio: "",
       rootDepartmentId: null,
       positionId: null,
@@ -59,6 +60,7 @@ const UserForm = ({ mode }) => {
             status: formatUppercaseToCapitalized(userData.data.status) || "Active",
             studentId: userData.data.studentId || "",
             avatarUrl: userData.data.avatarUrl || null,
+            avatar: userData.data.avatar || null,
             bio: userData.data.bio || "",
             rootDepartmentId: userData.data.rootDepartmentId || null,
             positionId: userData.data.userPosition[0]?.positionId || null,
@@ -77,6 +79,7 @@ const UserForm = ({ mode }) => {
           status: "Active",
           studentId: "",
           avatarUrl: null,
+          avatar: null,
           bio: "",
           rootDepartmentId: null,
           positionId: null,
@@ -129,6 +132,7 @@ const UserForm = ({ mode }) => {
         <form
           onSubmit={methods.handleSubmit(handleSaveData)}
           className="shadow-md rounded px-4 py-2 mb-4"
+          encType="multipart/form-data"
         >
           {/* Render active tab */}
           {tabs.map((tab, index) => (
