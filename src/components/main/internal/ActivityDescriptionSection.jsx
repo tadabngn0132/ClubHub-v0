@@ -69,38 +69,6 @@ const ActivityDescriptionSection = () => {
       {errors.priority && (
         <p className="text-red-500">{errors.priority.message}</p>
       )}
-
-      {/* Activity Images */}
-      <label htmlFor="activity_images" className="mt-4">
-        Activity Images
-      </label>
-      <input
-        type="file"
-        id="activity_images"
-        accept="image/*"
-        multiple
-        {...register("activity_images")}
-        className="mt-2 bg-slate-800 text-white border border-slate-600"
-      />
-      {errors.activity_images && (
-        <p className="text-red-500">{errors.activity_images.message}</p>
-      )}
-
-      {/* Activity Videos */}
-      <label htmlFor="activity_videos" className="mt-4">
-        Activity Videos
-      </label>
-      <input
-        type="file"
-        id="activity_videos"
-        accept="video/*"
-        multiple
-        {...register("activity_videos")}
-        className="mt-2 bg-slate-800 text-white border border-slate-600"
-      />
-      {errors.activity_videos && (
-        <p className="text-red-500">{errors.activity_videos.message}</p>
-      )}
     </div>
   );
 };

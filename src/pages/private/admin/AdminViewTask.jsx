@@ -12,10 +12,13 @@ import { useNavigate } from "react-router-dom";
 import { resetTaskStatus } from "../../../store/slices/taskSlice";
 import { useParams } from "react-router-dom";
 import { formatDate, formatUppercaseToCapitalized } from "../../../utils/formatters.js";
+import { confirmTaskCompletionById } from "../../../store/slices/taskSlice";
+import TaskConfirmationForm from "../../../components/main/internal/TaskConfirmationForm.jsx";
 
 const AdminViewTask = () => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.auth);
   const { task, isLoading, error, taskStatus } = useSelector((state) => state.task);
   const navigate = useNavigate();
 
@@ -55,6 +58,18 @@ const AdminViewTask = () => {
     }
   };
 
+  const handleConfirmCompletion = (data) => {
+    const formData = new FormData();
+    formData.append("assigneeId", currentUser.id);
+    formData.append("additionalComments", data.additionalComments || "");
+
+    if (data.evidence && data.evidence[0]) {
+      formData.append("evidence", data.evidence[0]);
+    }
+    
+    dispatch(confirmTaskCompletionById({ id: taskId, formData }));
+  };
+
   return (
     <div>
       <Toaster position="top-right" reverseOrder={false} />
@@ -89,6 +104,8 @@ const AdminViewTask = () => {
       <p className="mt-4">Updated At: { task?.updatedAt ? formatDate(task?.updatedAt) : "N/A" }</p>
 
       <h1 className="text-xl font-bold mt-8 mb-2">Assignee Confirmation</h1>
+
+      <TaskConfirmationForm taskCfData={task.assignees} onSubmit={handleConfirmCompletion} />
     </div>
   );
 };

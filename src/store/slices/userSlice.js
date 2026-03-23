@@ -134,7 +134,7 @@ const userSlice = createSlice({
       })
       .addCase(createUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.users.push(action.payload.user);
+        state.users.push(action.payload.data);
         state.userStatus = "fulfilled";
       })
       .addCase(createUser.rejected, (state, action) => {
@@ -208,7 +208,7 @@ const userSlice = createSlice({
       .addCase(softDeleteUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.users = state.users.filter(
-          (user) => user.id !== action.payload.user.id,
+          (user) => user.id !== action.payload.data.id,
         );
         state.userStatus = "fulfilled";
       })
@@ -227,7 +227,7 @@ const userSlice = createSlice({
       .addCase(hardDeleteUserById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.users = state.users.filter(
-          (user) => user.id !== action.payload.user.id,
+          (user) => user.id !== action.payload.data.id,
         );
         state.userStatus = "fulfilled";
       })

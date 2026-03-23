@@ -11,6 +11,8 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { resetActivityStatus } from "../../../store/slices/activitySlice";
 import { useParams } from "react-router-dom";
+import ActivityMediaForm from "../../../components/main/internal/ActivityMediaForm.jsx";
+import { createActivityImages } from "../../../store/slices/activitySlice.js";
 
 const AdminViewActivity = () => {
   const { activityId } = useParams();
@@ -53,6 +55,42 @@ const AdminViewActivity = () => {
     if (activityStatus === "fulfilled") {
       navigate("/admin/activities");
       dispatch(resetActivityStatus());
+    }
+  };
+
+  const handleVideosUploading = async (videos) => {
+    if (videos && videos.length > 0) {
+      const uploadedVideos = videos.map(async (video) => {
+        const formData = new FormData();
+        formData.append("video", video);
+        formData.append("upload_preset", "my_preset");
+
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dqzjv4l8c/video/upload",
+          {
+            method: "POST",
+            body: formData,
+          },
+        );
+
+        return response.json();
+      });
+
+      await Promise.all(uploadedVideos);
+
+      // TODO: Implement the logic to associate the uploaded videos with the activity in the backend
+    }
+  };
+
+  const handleImagesSubmit = (images) => {
+    if (images && images.length > 0) {
+      const formData = new FormData();
+      
+      images.forEach((image) => {
+        formData.append("image", image[0]);
+      });
+
+      dispatch(createActivityImages({ activityId, formData }));
     }
   };
 
@@ -161,6 +199,8 @@ const AdminViewActivity = () => {
       ) : (
         <p>No videos available for this activity.</p>
       )}
+
+      <ActivityMediaForm onImagesSubmit={handleImagesSubmit} onVideosSubmit={handleVideosUploading} />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
   softDeleteAnActivity,
   hardDeleteAnActivity,
   getAllActivitiesByUserId,
+  createActivityImages,
 } from "../../services/activityService";
 
 export const createActivity = createAsyncThunk(
@@ -129,6 +130,23 @@ export const hardDeleteActivityById = createAsyncThunk(
   },
 );
 
+export const createActivityImages = createAsyncThunk(
+  "activity/createActivityImages",
+  async ({ activityId, formData }, thunkAPI) => {
+    try {
+      const data = await createActivityImages(activityId, formData);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
 export const getActivitiesByUserId = createAsyncThunk(
   "activity/getActivitiesByUserId",
   async (userId, thunkAPI) => {
@@ -150,6 +168,7 @@ const activitySlice = createSlice({
   name: "activity",
   initialState: {
     activities: [],
+    activityImages: [],
     activity: null,
     isLoading: false,
     error: null,
@@ -305,8 +324,30 @@ const activitySlice = createSlice({
         state.isLoading = false;
         state.error = action.payload || action.error.message;
         state.activityStatus = "rejected";
+      })
+
+      // Create Activity Images
+      .addCase(createActivityImages.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.activityStatus = "pending";
+      })
+      .addCase(createActivityImages.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.activityImages.findIndex(
+          (image) => image.id === action.payload.data.id,
+        );
+        if (index !== -1) {
+          state.activityImages[index] = action.payload.data;
+        }
+        state.activityStatus = "fulfilled";
+      })
+      .addCase(createActivityImages.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+        state.activityStatus = "rejected";
       });
-  },
+    }
 });
 
 export const { resetActivityStatus } = activitySlice.actions;

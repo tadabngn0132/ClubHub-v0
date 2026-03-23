@@ -12,9 +12,6 @@ export const setUnauthorizedHandler = (handler) => {
 const axiosClient = axios.create({
   baseURL: "http://localhost:5995/api",
   timeout: 5000,
-  headers: {
-    "Content-Type": "application/json",
-  },
   withCredentials: true,
 });
 
@@ -44,6 +41,13 @@ axiosClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    if (config.data instanceof FormData) {
+      delete config.headers["Content-Type"];
+    } else {
+      config.headers["Content-Type"] = "application/json";
+    }
+
     return config;
   },
   (error) => {

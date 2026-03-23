@@ -39,3 +39,8 @@ export const getAllActivitiesByUserId = async (userId) => {
   const res = await axiosClient.get(`/activities/user/${userId}`);
   return res.data;
 };
+
+export const createActivityImages = async (activityId, data) => {
+  const res = await axiosClient.put(`/activities/images/${activityId}`, data);
+  return res.data;
+}

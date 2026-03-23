@@ -30,7 +30,7 @@ const UserForm = ({ mode }) => {
       joinedAt: "",
       status: "Active",
       studentId: "",
-      avatarUrl: null,
+      avatarUrl: "",
       avatar: null,
       bio: "",
       rootDepartmentId: null,
@@ -45,7 +45,6 @@ const UserForm = ({ mode }) => {
     const fetchUserData = async () => {
       if (mode === "edit") {
         const userData = await dispatch(getUserById(userId)).unwrap();
-        console.log("Fetched user data:", userData); // Debug log
   
         if (userData) {
           methods.reset({
@@ -59,8 +58,8 @@ const UserForm = ({ mode }) => {
             joinedAt: formatDateToLocal(userData.data.joinedAt) || "",
             status: formatUppercaseToCapitalized(userData.data.status) || "Active",
             studentId: userData.data.studentId || "",
-            avatarUrl: userData.data.avatarUrl || null,
-            avatar: userData.data.avatar || null,
+            avatarUrl: userData.data.avatarUrl || "",
+            avatar: null,
             bio: userData.data.bio || "",
             rootDepartmentId: userData.data.rootDepartmentId || null,
             positionId: userData.data.userPosition[0]?.positionId || null,
@@ -78,7 +77,7 @@ const UserForm = ({ mode }) => {
           joinedAt: "",
           status: "Active",
           studentId: "",
-          avatarUrl: null,
+          avatarUrl: "",
           avatar: null,
           bio: "",
           rootDepartmentId: null,
@@ -96,10 +95,28 @@ const UserForm = ({ mode }) => {
   ];
 
   const handleSaveData = (data) => {
+    const formData = new FormData();
+    formData.append("fullname", data.fullname);
+    formData.append("email", data.email);
+    formData.append("phoneNumber", data.phoneNumber);
+    formData.append("dateOfBirth", data.dateOfBirth);
+    formData.append("gender", data.gender);
+    formData.append("major", data.major);
+    formData.append("generation", data.generation);
+    formData.append("joinedAt", data.joinedAt);
+    formData.append("status", data.status);
+    formData.append("studentId", data.studentId);
+    formData.append("bio", data.bio);
+    formData.append("rootDepartmentId", data.rootDepartmentId || "");
+    formData.append("positionId", data.positionId || "");
+
+    if (data.avatar && data.avatar[0]) {
+      formData.append("avatar", data.avatar[0]);
+    }
     if (mode === "add") {
-      dispatch(createUser(data));
+      dispatch(createUser(formData));
     } else if (mode === "edit") {
-      dispatch(updateUserById({ id: userId, userData: data }));
+      dispatch(updateUserById({ id: userId, userData: formData }));
     }
   };
 

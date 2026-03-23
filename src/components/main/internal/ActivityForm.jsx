@@ -41,8 +41,6 @@ const ActivityForm = ({ mode }) => {
       status: "",
       thumbnailUrl: "",
       thumbnail: null,
-      images: [],
-      videos: [],
       maxParticipants: null,
       registrationDeadline: "",
       requireRegistration: false,
@@ -83,8 +81,6 @@ const ActivityForm = ({ mode }) => {
           status: activity.status || "",
           thumbnailUrl: activity.thumbnailUrl || "",
           thumbnail: activity.thumbnail || null,
-          images: activity.images || [],
-          videos: activity.videos || [],
           maxParticipants: activity.maxParticipants || null,
           registrationDeadline: activity.registrationDeadline || "",
         });
@@ -111,8 +107,6 @@ const ActivityForm = ({ mode }) => {
         status: "",
         thumbnailUrl: "",
         thumbnail: null,
-        images: [],
-        videos: [],
         maxParticipants: null,
         registrationDeadline: "",
       });
@@ -127,11 +121,39 @@ const ActivityForm = ({ mode }) => {
   ];
 
   const handleSaveData = (data) => {
-    // Handle form submission for both add and edit modes
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("shortDescription", data.shortDescription);
+    formData.append("slug", data.slug);
+    formData.append("startDate", data.startDate);
+    formData.append("endDate", data.endDate);
+    formData.append("locationType", data.locationType);
+    formData.append("meetingPlatform", data.meetingPlatform);
+    formData.append("meetingLink", data.meetingLink);
+    formData.append("meetingId", data.meetingId);
+    formData.append("meetingPassword", data.meetingPassword);
+    formData.append("venueName", data.venueName);
+    formData.append("venueAddress", data.venueAddress);
+    formData.append("roomNumber", data.roomNumber);
+    formData.append("type", data.type);
+    formData.append("status", data.status);
+    formData.append("maxParticipants", data.maxParticipants || "");
+    formData.append("registrationDeadline", data.registrationDeadline);
+    formData.append("requireRegistration", data.requireRegistration);
+    formData.append("isPublic", data.isPublic);
+    formData.append("isFeatured", data.isFeatured);
+    formData.append("priority", data.priority);
+    formData.append("organizerId", data.organizerId);
+
+    if (data.thumbnail && data.thumbnail[0]) {
+      formData.append("thumbnail", data.thumbnail[0]);
+    }
+
     if (mode === "add") {
-      dispatch(createActivity(data));
+      dispatch(createActivity(formData));
     } else if (mode === "edit") {
-      dispatch(updateActivityById(activityId, data));
+      dispatch(updateActivityById(activityId, formData));
     }
   };
 
