@@ -130,8 +130,8 @@ export const hardDeleteActivityById = createAsyncThunk(
   },
 );
 
-export const createActivityImages = createAsyncThunk(
-  "activity/createActivityImages",
+export const createNewActivityImages = createAsyncThunk(
+  "activity/createNewActivityImages",
   async ({ activityId, formData }, thunkAPI) => {
     try {
       const data = await createActivityImages(activityId, formData);
@@ -327,12 +327,12 @@ const activitySlice = createSlice({
       })
 
       // Create Activity Images
-      .addCase(createActivityImages.pending, (state) => {
+      .addCase(createNewActivityImages.pending, (state) => {
         state.isLoading = true;
         state.error = null;
         state.activityStatus = "pending";
       })
-      .addCase(createActivityImages.fulfilled, (state, action) => {
+      .addCase(createNewActivityImages.fulfilled, (state, action) => {
         state.isLoading = false;
         const index = state.activityImages.findIndex(
           (image) => image.id === action.payload.data.id,
@@ -342,12 +342,12 @@ const activitySlice = createSlice({
         }
         state.activityStatus = "fulfilled";
       })
-      .addCase(createActivityImages.rejected, (state, action) => {
+      .addCase(createNewActivityImages.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
         state.activityStatus = "rejected";
       });
-    }
+  },
 });
 
 export const { resetActivityStatus } = activitySlice.actions;

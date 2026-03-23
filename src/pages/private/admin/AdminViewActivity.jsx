@@ -4,6 +4,7 @@ import {
   getActivityById,
   softDeleteActivityById,
   hardDeleteActivityById,
+  createNewActivityImages
 } from "../../../store/slices/activitySlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
@@ -12,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { resetActivityStatus } from "../../../store/slices/activitySlice";
 import { useParams } from "react-router-dom";
 import ActivityMediaForm from "../../../components/main/internal/ActivityMediaForm.jsx";
-import { createActivityImages } from "../../../store/slices/activitySlice.js";
 
 const AdminViewActivity = () => {
   const { activityId } = useParams();
@@ -90,7 +90,7 @@ const AdminViewActivity = () => {
         formData.append("image", image[0]);
       });
 
-      dispatch(createActivityImages({ activityId, formData }));
+      dispatch(createNewActivityImages({ activityId, formData }));
     }
   };
 
