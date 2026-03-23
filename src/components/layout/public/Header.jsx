@@ -173,7 +173,7 @@ const Header = () => {
         <div className="flex xl:hidden">
           <FontAwesomeIcon icon={faArrowRightToBracket} size="xl" />
         </div>
-        <span className="hidden xl:block">MEMBER PORTAL</span>
+        <span className="hidden monument-extra-bold xl:block">MEMBER PORTAL</span>
       </NavLink>
     </div>
   );
