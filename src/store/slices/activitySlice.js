@@ -8,7 +8,10 @@ import {
   softDeleteAnActivity,
   hardDeleteAnActivity,
   getAllActivitiesByUserId,
-  createActivityImages,
+  createActivityImage,
+  createActivityVideo,
+  deleteActivityImage,
+  deleteActivityVideo,
 } from "../../services/activityService";
 
 export const createActivity = createAsyncThunk(
@@ -130,11 +133,11 @@ export const hardDeleteActivityById = createAsyncThunk(
   },
 );
 
-export const createNewActivityImages = createAsyncThunk(
-  "activity/createNewActivityImages",
+export const createNewActivityImage = createAsyncThunk(
+  "activity/createNewActivityImage",
   async ({ activityId, formData }, thunkAPI) => {
     try {
-      const data = await createActivityImages(activityId, formData);
+      const data = await createActivityImage(activityId, formData);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -164,11 +167,61 @@ export const getActivitiesByUserId = createAsyncThunk(
   },
 );
 
+export const createNewActivityVideo = createAsyncThunk(
+  "activity/createNewActivityVideo",
+  async ({ activityId, formData }, thunkAPI) => {
+    try {
+      const data = await createActivityVideo(activityId, formData);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const deleteActivityImageById = createAsyncThunk(
+  "activity/deleteActivityImageById",
+  async (imageId, thunkAPI) => {
+    try {
+      const data = await deleteActivityImage(imageId);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const deleteActivityVideoById = createAsyncThunk(
+  "activity/deleteActivityVideoById",
+  async (videoId, thunkAPI) => {
+    try {
+      const data = await deleteActivityVideo(videoId);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
 const activitySlice = createSlice({
   name: "activity",
   initialState: {
     activities: [],
-    activityImages: [],
     activity: null,
     isLoading: false,
     error: null,
@@ -326,23 +379,65 @@ const activitySlice = createSlice({
         state.activityStatus = "rejected";
       })
 
-      // Create Activity Images
-      .addCase(createNewActivityImages.pending, (state) => {
+      // Create Activity Image
+      .addCase(createNewActivityImage.pending, (state) => {
         state.isLoading = true;
         state.error = null;
         state.activityStatus = "pending";
       })
-      .addCase(createNewActivityImages.fulfilled, (state, action) => {
+      .addCase(createNewActivityImage.fulfilled, (state, action) => {
         state.isLoading = false;
-        const index = state.activityImages.findIndex(
-          (image) => image.id === action.payload.data.id,
-        );
-        if (index !== -1) {
-          state.activityImages[index] = action.payload.data;
-        }
         state.activityStatus = "fulfilled";
       })
-      .addCase(createNewActivityImages.rejected, (state, action) => {
+      .addCase(createNewActivityImage.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+        state.activityStatus = "rejected";
+      })
+
+      // Create Activity Video
+      .addCase(createNewActivityVideo.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.activityStatus = "pending";
+      })
+      .addCase(createNewActivityVideo.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.activityStatus = "fulfilled";
+      })
+      .addCase(createNewActivityVideo.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+        state.activityStatus = "rejected";
+      })
+
+      // Delete Activity Image
+      .addCase(deleteActivityImageById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.activityStatus = "pending";
+      })
+      .addCase(deleteActivityImageById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.activityStatus = "fulfilled";
+      })
+      .addCase(deleteActivityImageById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+        state.activityStatus = "rejected";
+      })
+
+      // Delete Activity Video
+      .addCase(deleteActivityVideoById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.activityStatus = "pending";
+      })
+      .addCase(deleteActivityVideoById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.activityStatus = "fulfilled";
+      })
+      .addCase(deleteActivityVideoById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
         state.activityStatus = "rejected";

@@ -4,7 +4,8 @@ import {
   getActivityById,
   softDeleteActivityById,
   hardDeleteActivityById,
-  createNewActivityImages
+  createNewActivityImages,
+  createNewActivityVideos,
 } from "../../../store/slices/activitySlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
@@ -61,36 +62,77 @@ const AdminViewActivity = () => {
   const handleVideosUploading = async (videos) => {
     if (videos && videos.length > 0) {
       const uploadedVideos = videos.map(async (video) => {
-        const formData = new FormData();
-        formData.append("video", video);
-        formData.append("upload_preset", "my_preset");
+        try {
+          if (!video.type.startsWith("video/")) {
+            toast.error(`File ${video.name} is not a valid video format.`);
+            return;
+          }
 
-        const response = await fetch(
-          "https://api.cloudinary.com/v1_1/dqzjv4l8c/video/upload",
-          {
-            method: "POST",
-            body: formData,
-          },
-        );
+          if (video.size > 100 * 1024 * 1024) { // 100MB limit
+            toast.error(`Video ${video.name} exceeds the 100MB size limit.`);
+            return;
+          }
 
-        return response.json();
+          const formData = new FormData();
+          formData.append("video", video);
+          formData.append("upload_preset", "clubhub_activity_videos_unsigned");
+
+          const response = await fetch(
+            "https://api.cloudinary.com/v1_1/dztrteakz/video/upload",
+            {
+              method: "POST",
+              body: formData,
+            },
+          );
+
+          const resData = await response.json();
+          
+          return dispatch(createNewActivityVideos({ activityId, videoData: resData }));
+        } catch (error) {
+          console.error("Error uploading video:", error);
+          toast.error("Failed to upload video. Please try again.");
+        }
       });
 
       await Promise.all(uploadedVideos);
-
-      // TODO: Implement the logic to associate the uploaded videos with the activity in the backend
     }
   };
 
-  const handleImagesSubmit = (images) => {
+  const handleImagesSubmit = async (images) => {
     if (images && images.length > 0) {
-      const formData = new FormData();
-      
-      images.forEach((image) => {
-        formData.append("image", image[0]);
+      const uploadedImages = images.map(async (image) => {
+        try {
+          if (!image.type.startsWith("image/")) {
+            toast.error(`File ${image.name} is not a valid image format.`);
+            return;
+          }
+
+          if (image.size > 5 * 1024 * 1024) { // 5MB limit
+            toast.error(`Image ${image.name} exceeds the 5MB size limit.`);
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append("image", image);
+          formData.append("upload_preset", "clubhub_activity_images_unsigned");
+
+          const response = await fetch(
+            "https://api.cloudinary.com/v1_1/dztrteakz/image/upload",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          const resData = await response.json();
+          return dispatch(createNewActivityImages({ activityId, imageData: resData }));
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          toast.error("Failed to upload image. Please try again.");
+        }
       });
 
-      dispatch(createNewActivityImages({ activityId, formData }));
+      await Promise.all(uploadedImages);
     }
   };
 
