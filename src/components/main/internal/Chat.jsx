@@ -1,48 +1,45 @@
-import { useState, useEffect, useRef } from 'react';
-import { useSocket } from '../../../hooks/useSocket';
+import { useState, useEffect, useRef } from "react";
+import { useSocket } from "../../../hooks/useSocket";
+import { useDispatch } from "react-redux";
+import { getMessagesByRoom } from "../../../store/slices/messageSlice";
 
 const Chat = ({ userId, otherUserId, otherUserName }) => {
+  const dispatch = useDispatch();
   const { emitEvent, onEvent } = useSocket();
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const [isOtherTyping, setIsOtherTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const typingTimeoutRef = useRef(null);
 
-  const roomId = [userId, otherUserId].sort().join('-'); // Consistent room ID
+  const roomId = [userId, otherUserId].sort().join("-"); // Consistent room ID
 
   // Load chat history
   useEffect(() => {
     const fetchHistory = async () => {
-      try {
-        const response = await fetch(
-          `/api/chat/history/${otherUserId}`,
-          {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-          }
-        );
-        const data = await response.json();
-        setMessages(data.data || []);
-        scrollToBottom();
-      } catch (error) {
-        console.error('Failed to fetch history:', error);
-      }
+      dispatch(getMessagesByRoom(roomId))
+        .unwrap()
+        .then((data) => {
+          setMessages(data.messages);
+          scrollToBottom();
+        })
+        .catch((error) => {
+          console.error("Failed to load messages:", error);
+        });
     };
 
     fetchHistory();
-  }, [otherUserId]);
+  }, [dispatch, roomId]);
 
   // Listen for incoming messages
   useEffect(() => {
-    return onEvent('message:receive', (message) => {
+    return onEvent("message:receive", (message) => {
       if (
         (message.senderId === otherUserId && message.receiverId === userId) ||
         (message.senderId === userId && message.receiverId === otherUserId)
       ) {
-        setMessages(prev => [...prev, message]);
+        setMessages((prev) => [...prev, message]);
         scrollToBottom();
       }
     });
@@ -50,13 +47,13 @@ const Chat = ({ userId, otherUserId, otherUserName }) => {
 
   // Listen for typing indicators
   useEffect(() => {
-    const unsubscribeTyping = onEvent('user:typing', (data) => {
+    const unsubscribeTyping = onEvent("user:typing", (data) => {
       if (data.senderId === otherUserId) {
         setIsOtherTyping(true);
       }
     });
 
-    const unsubscribeStopTyping = onEvent('user:stop-typing', (data) => {
+    const unsubscribeStopTyping = onEvent("user:stop-typing", (data) => {
       if (data.senderId === otherUserId) {
         setIsOtherTyping(false);
       }
@@ -69,7 +66,7 @@ const Chat = ({ userId, otherUserId, otherUserName }) => {
   }, [otherUserId, onEvent]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleInputChange = (e) => {
@@ -78,14 +75,17 @@ const Chat = ({ userId, otherUserId, otherUserName }) => {
     // Send typing indicator
     if (!typing) {
       setTyping(true);
-      emitEvent('user:typing', { senderId: userId, receiverId: otherUserId });
+      emitEvent("user:typing", { senderId: userId, receiverId: otherUserId });
     }
 
     // Debounce stop typing
     clearTimeout(typingTimeoutRef.current);
     typingTimeoutRef.current = setTimeout(() => {
       setTyping(false);
-      emitEvent('user:stop-typing', { senderId: userId, receiverId: otherUserId });
+      emitEvent("user:stop-typing", {
+        senderId: userId,
+        receiverId: otherUserId,
+      });
     }, 1000);
   };
 
@@ -96,11 +96,11 @@ const Chat = ({ userId, otherUserId, otherUserName }) => {
       senderId: userId,
       receiverId: otherUserId,
       content: input,
-      roomId
+      roomId,
     };
 
-    emitEvent('message:send', messageData);
-    setInput('');
+    emitEvent("message:send", messageData);
+    setInput("");
     setTyping(false);
   };
 
@@ -118,14 +118,14 @@ const Chat = ({ userId, otherUserId, otherUserName }) => {
           <div
             key={msg.id}
             className={`flex ${
-              msg.senderId === userId ? 'justify-end' : 'justify-start'
+              msg.senderId === userId ? "justify-end" : "justify-start"
             }`}
           >
             <div
               className={`max-w-xs px-4 py-2 rounded-lg ${
                 msg.senderId === userId
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-black'
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-black"
               }`}
             >
               <p>{msg.content}</p>
@@ -152,7 +152,7 @@ const Chat = ({ userId, otherUserId, otherUserName }) => {
           type="text"
           value={input}
           onChange={handleInputChange}
-          onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+          onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
           placeholder="Nhập tin nhắn..."
           className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
