@@ -105,7 +105,7 @@ const AdminUsers = () => {
                 <th className="px-2 py-2">Major</th>
                 <th className="px-2 py-2">Dept</th>
                 <th className="px-2 py-2 text-center">Role</th>
-                <th className="px-2 py-2">Status</th>
+                <th className="px-2 py-2 text-center">Status</th>
                 <th className="px-2 py-2 text-center">Actions</th>
               </tr>
             </thead>

@@ -116,11 +116,23 @@ const AdminDepartments = () => {
                     <td className="px-3 py-3 text-center">
                       <div className="flex items-center justify-center gap-1 text-xs">
                         <Link
-                          to={`/moderator/departments/view/${department.id}`}
+                          to={`/admin/departments/view/${department.id}`}
                           className="rounded-md bg-emerald-500/20 px-3 py-1 font-semibold text-emerald-300 transition hover:bg-emerald-500/35"
                         >
                           View
                         </Link>
+                        <Link
+                          to={`/admin/departments/edit/${department.id}`}
+                          className="rounded-md bg-sky-500/20 px-3 py-1 font-semibold text-sky-300 transition hover:bg-sky-500/35"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(department.id)}
+                          className="rounded-md bg-rose-500/20 px-3 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
+                        >
+                          Delete
+                        </button>
                       </div>
                     </td>
                   </tr>

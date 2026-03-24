@@ -96,14 +96,14 @@ const AdminPositions = () => {
                       <td className="w-24 px-3 py-3 text-center">
                         <div className="flex items-center justify-center gap-1 text-xs">
                           <Link
-                            to={`/moderator/positions/view/${position.id}`}
+                            to={`/admin/positions/view/${position.id}`}
                             className="rounded-md bg-emerald-500/20 px-3 py-1 font-semibold text-sky-300 transition hover:bg-sky-500/35"
                           >
                             View
                           </Link>
 
                           <Link
-                            to={`/moderator/positions/edit/${position.id}`}
+                            to={`/admin/positions/edit/${position.id}`}
                             className="rounded-md bg-emerald-500/20 px-3 py-1 font-semibold text-emerald-300 transition hover:bg-emerald-500/35"
                           >
                             Edit
