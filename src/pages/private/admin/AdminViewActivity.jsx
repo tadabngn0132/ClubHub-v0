@@ -4,8 +4,8 @@ import {
   getActivityById,
   softDeleteActivityById,
   hardDeleteActivityById,
-  createNewActivityImages,
-  createNewActivityVideos,
+  createNewActivityImage,
+  createNewActivityVideo,
 } from "../../../store/slices/activitySlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
@@ -87,7 +87,7 @@ const AdminViewActivity = () => {
 
           const resData = await response.json();
           
-          return dispatch(createNewActivityVideos({ activityId, videoData: resData }));
+          return dispatch(createNewActivityVideo({ activityId, videoData: resData }));
         } catch (error) {
           console.error("Error uploading video:", error);
           toast.error("Failed to upload video. Please try again.");
@@ -125,7 +125,7 @@ const AdminViewActivity = () => {
           );
 
           const resData = await response.json();
-          return dispatch(createNewActivityImages({ activityId, imageData: resData }));
+          return dispatch(createNewActivityImage({ activityId, imageData: resData }));
         } catch (error) {
           console.error("Error uploading image:", error);
           toast.error("Failed to upload image. Please try again.");
