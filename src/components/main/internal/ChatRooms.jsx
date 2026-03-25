@@ -1,32 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useSocket } from '../../../hooks/useSocket';
+import { getAllRoomsForCurrentUser } from '../../../store/slices/messageSlice';
+import { useDispatch } from 'react-redux';
 
 const ChatRooms = ({ userId, onSelectConversation }) => {
-  const [conversations, setConversations] = useState([]);
+  const [rooms, setRooms] = useState([]);
   const { onEvent } = useSocket();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchConversations();
+    fetchrooms();
   }, []);
 
-  const fetchConversations = async () => {
-    try {
-      const response = await fetch('/api/chat/conversations', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+  const fetchrooms = async () => {
+    dispatch(getAllRoomsForCurrentUser())
+      .unwrap()
+      .then((data) => {
+        setRooms(data);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch rooms:', err);
       });
-      const data = await response.json();
-      setConversations(data.data || []);
-    } catch (error) {
-      console.error('Failed to fetch conversations:', error);
-    }
   };
 
   // Listen for new messages
   useEffect(() => {
     return onEvent('message:receive', (message) => {
-      fetchConversations();
+      fetchrooms();
     });
   }, [onEvent]);
 
@@ -37,23 +37,22 @@ const ChatRooms = ({ userId, onSelectConversation }) => {
       </div>
 
       <div className="overflow-y-auto">
-        {conversations.map((conv) => {
-          const otherUser = conv.sender.id === userId ? conv.receiver : conv.sender;
+        {rooms.map((conv) => {
           return (
             <div
               key={conv.roomId}
-              onClick={() => onSelectConversation(otherUser.id, otherUser.fullname)}
+              onClick={() => onSelectConversation(conv.otherUser.id, conv.otherUser.fullname)}
               className="p-4 border-b hover:bg-gray-100 cursor-pointer"
             >
               <div className="flex items-center gap-3">
                 <img
-                  src={otherUser.avatarUrl || '/default-avatar.png'}
-                  alt={otherUser.fullname}
+                  src={conv.otherUser.avatarUrl || '/default-avatar.png'}
+                  alt={conv.otherUser.fullname}
                   className="w-10 h-10 rounded-full"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-sm">{otherUser.fullname}</p>
-                  <p className="text-xs text-gray-600 truncate">{conv.content}</p>
+                  <p className="font-semibold text-sm">{conv.otherUser.fullname}</p>
+                  <p className="text-xs text-gray-600 truncate">{conv.lastMessage.content}</p>
                 </div>
               </div>
             </div>

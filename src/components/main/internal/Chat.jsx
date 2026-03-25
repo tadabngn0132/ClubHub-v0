@@ -21,7 +21,7 @@ const Chat = ({ userId, otherUserId, otherUserName }) => {
       dispatch(getMessagesByRoom(roomId))
         .unwrap()
         .then((data) => {
-          setMessages(data.messages);
+          setMessages(data.data);
           scrollToBottom();
         })
         .catch((error) => {

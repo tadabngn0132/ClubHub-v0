@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
 
-const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:5995';
 
 export const useSocket = () => {
   const socketRef = useRef(null);
@@ -15,7 +15,8 @@ export const useSocket = () => {
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
       reconnectionAttempts: MAX_RECONNECT,
-      transports: ['websocket', 'polling']
+      transports: ['websocket', 'polling'],
+      withCredentials: true,
     });
 
     socketRef.current.on('connect', () => {
