@@ -1,21 +1,13 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createNewTask,
-  updateTaskById,
-  getTaskDetails,
-} from "../../../store/slices/taskSlice";
 import { ASSIGNEE_SCOPE } from "../../../utils/constants";
-import { useParams } from "react-router-dom";
 import { getDepartmentsList } from "../../../store/slices/departmentSlice";
 import { getUsersList } from "../../../store/slices/userSlice";
 
-const TaskForm = ({ mode }) => {
-  const { taskId } = useParams();
+const TaskForm = ({ task, onSubmit }) => {
   const dispatch = useDispatch();
   const [allClub, setAllClub] = useState(false);
-  const { task } = useSelector((state) => state.task);
   const { currentUser } = useSelector((state) => state.auth);
   const { departments } = useSelector((state) => state.department);
   const { users } = useSelector((state) => state.user);
@@ -28,85 +20,29 @@ const TaskForm = ({ mode }) => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: "",
-      description: "",
-      dueDate: "",
-      status: "new",
-      isCheckCf: false,
-      assigneeScope: "all",
-      assignorId: currentUser ? currentUser.id : null,
-      allClub: false,
-      departmentIds: [],
-      userIds: [],
-      excludedUserIds: [],
+      title: task ? task.title : "",
+      description: task ? task.description : "",
+      dueDate: task ? new Date(task.dueDate).toISOString().split("T")[0] : "",
+      status: task ? task.status : "new",
+      isCheckCf: task ? task.isCheckCf : false,
+      assigneeScope: task ? task.assigneeScope : "all",
+      assignorId: task ? task.assignorId : currentUser.id,
+      allClub: task ? task.allClub : false,
+      departmentIds: task ? task.departmentIds : [],
+      userIds: task ? task.userIds : [],
+      excludedUserIds: task ? task.excludedUserIds : [],
     },
     mode: "onChange",
   });
-
-  useEffect(() => {
-    if (mode === "edit" && taskId) {
-      dispatch(getTaskDetails(taskId));
-
-      if (task) {
-        reset({
-          title: task.title,
-          description: task.description,
-          status: task.status || "new",
-          dueDate: task.dueDate
-            ? new Date(task.dueDate).toISOString().split("T")[0]
-            : "",
-          assigneeScope: task.assigneeScope || "all",
-          assignorId: task.assignorId || currentUser ? currentUser.id : null,
-          isCheckCf: task.isCheckCf || false,
-          allClub: task.target?.allClub || false,
-          departmentIds: task.target?.departmentIds || [],
-          userIds: task.target?.userIds || [],
-          excludedUserIds: task.target?.excludedUserIds || [],
-        });
-      }
-    } else {
-      reset({
-        title: "",
-        description: "",
-        status: "new",
-        dueDate: "",
-        assigneeScope: "all",
-        assignorId: currentUser ? currentUser.id : null,
-        isCheckCf: false,
-        allClub: false,
-        departmentIds: [],
-        userIds: [],
-        excludedUserIds: [],
-      });
-    }
-  }, [mode, taskId, reset, currentUser, dispatch, task]);
-
-  const handleSaveData = (data) => {
-    const taskData = {
-      ...data,
-      target: {
-        allClub: data.allClub,
-        departmentIds: data.departmentIds,
-        userIds: data.userIds,
-        excludedUserIds: data.excludedUserIds,
-      }
-    };
-    if (mode === "add") {
-      dispatch(createNewTask(taskData));
-    } else if (mode === "edit") {
-      dispatch(updateTaskById({ id: taskId, taskData: taskData }));
-    }
-  };
 
   return (
     <div className="px-4">
       <form
         action=""
-        onSubmit={handleSubmit(handleSaveData)}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-4"
       >
         <h1 className="text-3xl font-bold mb-4">
@@ -158,38 +94,62 @@ const TaskForm = ({ mode }) => {
         </div>
 
         {/* Status field */}
-        <label htmlFor="status">Task Status <span className="text-red-500">*</span></label>
+        <label htmlFor="status">
+          Task Status <span className="text-red-500">*</span>
+        </label>
         <select
           id="status"
           name="status"
           {...register("status", { required: "Task status is required" })}
           className="mt-2 bg-slate-800 text-white border border-slate-600"
         >
-          <option value="new" className="bg-slate-800 text-white">New</option>
-          <option value="in-progress" className="bg-slate-800 text-white">In Progress</option>
-          <option value="done" className="bg-slate-800 text-white">Done</option>
-          <option value="cancelled" className="bg-slate-800 text-white">Cancelled</option>
-          <option value="on-hold" className="bg-slate-800 text-white">On Hold</option>
+          <option value="new" className="bg-slate-800 text-white">
+            New
+          </option>
+          <option value="in-progress" className="bg-slate-800 text-white">
+            In Progress
+          </option>
+          <option value="done" className="bg-slate-800 text-white">
+            Done
+          </option>
+          <option value="cancelled" className="bg-slate-800 text-white">
+            Cancelled
+          </option>
+          <option value="on-hold" className="bg-slate-800 text-white">
+            On Hold
+          </option>
         </select>
-        {errors.status && <p className="text-red-500">{errors.status.message}</p>}
+        {errors.status && (
+          <p className="text-red-500">{errors.status.message}</p>
+        )}
 
         {/* Assignee Scope field */}
         {ASSIGNEE_SCOPE.length > 0 && (
           <>
-            <label htmlFor="assigneeScope">Assignee Scope <span className="text-red-500">*</span></label>
+            <label htmlFor="assigneeScope">
+              Assignee Scope <span className="text-red-500">*</span>
+            </label>
             <select
               id="assigneeScope"
               name="assigneeScope"
-              {...register("assigneeScope", { required: "Assignee scope is required" })}
+              {...register("assigneeScope", {
+                required: "Assignee scope is required",
+              })}
               className="mt-2 bg-slate-800 text-white border border-slate-600"
             >
               {ASSIGNEE_SCOPE.map((scope) => (
-                <option key={scope.id} value={scope.value} className="bg-slate-800 text-white">
+                <option
+                  key={scope.id}
+                  value={scope.value}
+                  className="bg-slate-800 text-white"
+                >
                   {scope.name}
                 </option>
               ))}
             </select>
-            {errors.assigneeScope && <p className="text-red-500">{errors.assigneeScope.message}</p>}
+            {errors.assigneeScope && (
+              <p className="text-red-500">{errors.assigneeScope.message}</p>
+            )}
           </>
         )}
 
@@ -202,7 +162,9 @@ const TaskForm = ({ mode }) => {
           {...register("dueDate")}
           className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        {errors.dueDate && <p className="text-red-500">{errors.dueDate.message}</p>}
+        {errors.dueDate && (
+          <p className="text-red-500">{errors.dueDate.message}</p>
+        )}
 
         <div className="flex items-center gap-2">
           <input
@@ -213,9 +175,7 @@ const TaskForm = ({ mode }) => {
             className="bg-slate-800 text-white border border-slate-600"
             onChange={(e) => setAllClub(e.target.checked)}
           />
-          <label htmlFor="allClub">
-            Assign to All Club
-          </label>
+          <label htmlFor="allClub">Assign to All Club</label>
         </div>
 
         {!allClub && (
@@ -228,7 +188,11 @@ const TaskForm = ({ mode }) => {
               className="mt-2 bg-slate-800 text-white border border-slate-600"
             >
               {departments.map((department) => (
-                <option key={department.id} value={department.id} className="bg-slate-800 text-white">
+                <option
+                  key={department.id}
+                  value={department.id}
+                  className="bg-slate-800 text-white"
+                >
                   {department.name}
                 </option>
               ))}
@@ -236,9 +200,7 @@ const TaskForm = ({ mode }) => {
           </>
         )}
 
-        <label htmlFor="excludedUserIds">
-          Exclude Specific Users
-        </label>
+        <label htmlFor="excludedUserIds">Exclude Specific Users</label>
         <select
           id="excludedUserIds"
           name="excludedUserIds"
@@ -246,7 +208,11 @@ const TaskForm = ({ mode }) => {
           className="mt-2 bg-slate-800 text-white border border-slate-600"
         >
           {users.map((user) => (
-            <option key={user.id} value={user.id} className="bg-slate-800 text-white">
+            <option
+              key={user.id}
+              value={user.id}
+              className="bg-slate-800 text-white"
+            >
               {user.fullname}
             </option>
           ))}
