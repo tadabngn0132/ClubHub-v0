@@ -9,6 +9,7 @@ import memberApplicationReducer from "./slices/memberApplicationSlice";
 import notificationReducer from "./slices/notificationSlice";
 import departmentApplicationReducer from "./slices/departmentApplicationSlice";
 import activityParticipationReducer from "./slices/activityParticipationSlice";
+import chatRoomReducer from "./slices/chatRoomSlice";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     notification: notificationReducer,
     departmentApplication: departmentApplicationReducer,
     activityParticipation: activityParticipationReducer,
+    chatRoom: chatRoomReducer,
   },
 });
 
