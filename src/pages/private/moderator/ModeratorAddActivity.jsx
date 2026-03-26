@@ -1,24 +1,39 @@
 import ActivityForm from "../../../components/main/internal/ActivityForm";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { resetActivityStatus } from "../../../store/slices/activitySlice";
+import {
+  createActivity,
+  resetActivityStatus
+} from "../../../store/slices/activitySlice";
+import Loading from "../../../components/layout/internal/Loading";
+import toast from "react-hot-toast";
 
 const ModeratorAddActivity = () => {
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.activity);
+  const { isLoading, error, status } = useSelector((state) => state.activity);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const handleAddActivity = (data) => {
+    dispatch(createActivity(data));
+
     if (status === "fulfilled") {
       navigate("/moderator/activities");
     }
+
     dispatch(resetActivityStatus());
-  }, [status, navigate, dispatch]);
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
 
   return (
     <div>
-      <ActivityForm mode="add" />
+      <ActivityForm onSubmit={handleAddActivity} />
     </div>
   );
 };

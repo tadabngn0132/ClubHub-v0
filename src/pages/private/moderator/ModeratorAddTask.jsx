@@ -5,10 +5,12 @@ import {
   createNewTask,
   resetTaskStatus,
 } from "../../../store/slices/taskSlice";
+import Loading from "../../../components/layout/internal/Loading.jsx";
+import toast from "react-hot-toast";
 
 const ModeratorAddTask = () => {
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.task);
+  const { isLoading, error, status } = useSelector((state) => state.task);
   const navigate = useNavigate();
 
   const handleAddTask = (data) => {
@@ -20,6 +22,14 @@ const ModeratorAddTask = () => {
 
     dispatch(resetTaskStatus());
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
 
   return (
     <div>

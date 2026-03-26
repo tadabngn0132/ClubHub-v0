@@ -1,24 +1,46 @@
 import PositionForm from "../../../components/main/internal/PositionForm";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { resetPositionStatus } from "../../../store/slices/positionSlice";
+import {
+  updatePositionDetails,
+  getPositionDetails,
+  resetPositionStatus
+} from "../../../store/slices/positionSlice";
+import Loading from "../../../components/layout/internal/Loading.jsx";
+import toast from "react-hot-toast";
 
 const AdminEditPosition = () => {
+  const { positionId } = useParams();
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.position);
+  const { position, isLoading, error, positionStatus } = useSelector((state) => state.position);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (status === "fulfilled") {
+    dispatch(getPositionDetails(positionId));
+  }, [dispatch, positionId]);
+
+  const handleEditPosition = (data) => {
+    dispatch(updatePositionDetails({ positionId, data }));
+
+    if (positionStatus === "fulfilled") {
       navigate("/admin/positions");
     }
+
     dispatch(resetPositionStatus());
-  }, [status, navigate, dispatch]);
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
 
   return (
     <div>
-      <PositionForm mode="edit" />
+      <PositionForm position={position} onSubmit={handleEditPosition} />
     </div>
   );
 };

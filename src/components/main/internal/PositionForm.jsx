@@ -1,106 +1,74 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import {
-  createNewPosition,
-  getPositionDetails,
-  updatePositionDetails,
-} from "../../../store/slices/positionSlice";
-import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
-import Loading from "../../../components/layout/internal/Loading";
-import { useParams } from "react-router-dom";
 
-const PositionForm = ({ mode }) => {
-  const { positionId } = useParams();
-  const dispatch = useDispatch();
-  const { position, isLoading, error } = useSelector((state) => state.position);
-
-  const { register, handleSubmit, reset } = useForm({
+const PositionForm = ({ position, onSubmit }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      title: "",
-      level: "",
-      systemRole: "",
+      title: position ? position.title : "",
+      level: position ? position.level : "",
+      systemRole: position ? position.systemRole : "",
     },
   });
-
-  useEffect(() => {
-    if (mode === "edit" && positionId) {
-      dispatch(getPositionDetails(positionId));
-
-      if (position) {
-        reset({
-          title: position.title,
-          level: position.level,
-          systemRole: position.systemRole,
-        });
-      }
-    } else if (mode === "add") {
-      reset({
-        title: "",
-        level: "",
-        systemRole: "",
-      });
-    }
-  }, [dispatch, mode, positionId, reset, position]);
-
-  const handleSaveData = (data) => {
-    if (mode === "add") {
-      dispatch(createNewPosition(data));
-    } else if (mode === "edit") {
-      dispatch(updatePositionDetails({ id: positionId, positionData: data }));
-    }
-  };
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (error) {
-    toast.error(error);
-  }
 
   return (
     <div>
       <form
-        onSubmit={handleSubmit(handleSaveData)}
+        onSubmit={handleSubmit(onSubmit)}
         className="max-w-md mx-auto bg-white p-6 rounded shadow"
       >
+        {/* Title */}
         <div className="mb-4">
           <label htmlFor="title" className="block text-gray-700 font-bold mb-2">
             Title
+            <span className="text-red-500">*</span>
           </label>
           <input
             id="title"
             {...register("title", { required: "Title is required" })}
             className="w-full border border-gray-300 p-2 rounded"
           />
+          {errors.title && (
+            <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
+          )}
         </div>
+
+        {/* Level */}
         <div className="mb-4">
           <label htmlFor="level" className="block text-gray-700 font-bold mb-2">
             Level
+            <span className="text-red-500">*</span>
           </label>
           <input
             id="level"
             {...register("level", { required: "Level is required" })}
             className="w-full border border-gray-300 p-2 rounded"
           />
+          {errors.level && (
+            <p className="text-red-500 text-sm mt-1">{errors.level.message}</p>
+          )}
         </div>
+
+        {/* System Role */}
         <div className="mb-4">
           <label
             htmlFor="systemRole"
             className="block text-gray-700 font-bold mb-2"
           >
             System Role
+            <span className="text-red-500">*</span>
           </label>
           <input
             id="systemRole"
             {...register("systemRole", { required: "System Role is required" })}
             className="w-full border border-gray-300 p-2 rounded"
           />
+          {errors.systemRole && (
+            <p className="text-red-500 text-sm mt-1">{errors.systemRole.message}</p>
+          )}
         </div>
+        
         <input
           type="submit"
-          value={mode === "add" ? "Submit" : "Save"}
+          value={position ? "Save" : "Submit"}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
         />
       </form>

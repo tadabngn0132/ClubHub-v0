@@ -1,9 +1,6 @@
-import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import { changePasswordUser } from "../../../store/slices/authSlice";
 
-const ChangePasswordForm = () => {
-  const dispatch = useDispatch();
+const ChangePasswordForm = ({ onSubmit }) => {
   const {
     register,
     handleSubmit,
@@ -19,14 +16,10 @@ const ChangePasswordForm = () => {
     reValidateMode: "onChange",
   });
 
-  const handleChangePassword = async (data) => {
-    dispatch(changePasswordUser(data));
-  };
-
   return (
     <div className="flex min-h-[100vh] items-center-safe justify-center-safe">
       <form
-        onSubmit={handleSubmit(handleChangePassword)}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col bg-white/10 w-3/12 p-3.5 rounded-2xl gap-5.5"
       >
         <h1 className="text-center text-2xl/tight font-bold w-full">

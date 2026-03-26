@@ -1,24 +1,47 @@
 import DepartmentForm from "../../../components/main/internal/DepartmentForm";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { resetDepartmentStatus } from "../../../store/slices/departmentSlice";
+import {
+  updateDepartmentById,
+  getDepartmentDetails,
+  resetDepartmentStatus
+} from "../../../store/slices/departmentSlice";
+import Loading from "../../../components/layout/internal/Loading";
+import toast from "react-hot-toast";
 
 const AdminEditDepartment = () => {
+  const { departmentId } = useParams();
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.department);
+  const { department, isLoading, error, status } = useSelector((state) => state.department);
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (departmentId) {
+      dispatch(getDepartmentDetails(departmentId));
+    }
+    dispatch(resetDepartmentStatus());
+  }, [departmentId, dispatch]);
+
+  const handleEditDepartment = (data) => {
+    dispatch(updateDepartmentById({ departmentId, data }));
     if (status === "fulfilled") {
       navigate("/admin/departments");
     }
     dispatch(resetDepartmentStatus());
-  }, [status, navigate, dispatch]);
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
 
   return (
     <div>
-      <DepartmentForm mode="edit" />
+      <DepartmentForm department={department} onSubmit={handleEditDepartment} />
     </div>
   );
 };

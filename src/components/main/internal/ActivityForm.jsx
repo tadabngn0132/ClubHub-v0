@@ -1,117 +1,48 @@
-import {
-  createActivity,
-  getActivityById,
-  updateActivityById,
-} from "../../../store/slices/activitySlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { Toaster } from "react-hot-toast";
 import ActivityBasicInfoSection from "./ActivityBasicInfoSection.jsx";
 import ActivityLocationSection from "./ActivityLocationSection.jsx";
 import ActivityDescriptionSection from "./ActivityDescriptionSection.jsx";
 import ActivityScheduleSection from "./ActivityScheduleSection.jsx";
-import { useParams } from "react-router-dom";
 
-const ActivityForm = ({ mode }) => {
-  const { activityId } = useParams();
-  const dispatch = useDispatch();
+const ActivityForm = ({ activity, onSubmit }) => {
   const [activeTab, setActiveTab] = useState(0);
   const { currentUser } = useSelector((state) => state.auth);
 
-  const { activity } = useSelector((state) => state.activity);
-
   const methods = useForm({
     defaultValues: {
-      title: "",
-      description: "",
-      shortDescription: "",
-      slug: "",
-      startDate: "",
-      endDate: "",
-      locationType: "",
-      meetingPlatform: "",
-      meetingLink: "",
-      meetingId: "",
-      meetingPassword: "",
-      venueName: "",
-      venueAddress: "",
-      roomNumber: "",
-      type: "",
-      status: "",
-      thumbnailUrl: "",
-      thumbnail: null,
-      maxParticipants: null,
-      registrationDeadline: "",
-      requireRegistration: false,
+      title: activity ? activity.title : "",
+      description: activity ? activity.description : "",
+      shortDescription: activity ? activity.shortDescription : "",
+      slug: activity ? activity.slug : "",
+      startDate: activity ? activity.startDate : "",
+      endDate: activity ? activity.endDate : "",
+      locationType: activity ? activity.locationType : "",
+      meetingPlatform: activity ? activity.meetingPlatform : "",
+      meetingLink: activity ? activity.meetingLink : "",
+      meetingId: activity ? activity.meetingId : "",
+      meetingPassword: activity ? activity.meetingPassword : "",
+      venueName: activity ? activity.venueName : "",
+      venueAddress: activity ? activity.venueAddress : "",
+      roomNumber: activity ? activity.roomNumber : "",
+      type: activity ? activity.type : "",
+      status: activity ? activity.status : "",
+      thumbnailUrl: activity ? activity.thumbnailUrl : "",
+      thumbnail: activity ? activity.thumbnail : null,
+      maxParticipants: activity ? activity.maxParticipants : null,
+      registrationDeadline: activity ? activity.registrationDeadline : "",
+      requireRegistration: activity ? activity.requireRegistration : false,
       organizerId: currentUser?.id,
-      isPublic: true,
-      isFeatured: false,
-      priority: 0,
+      isPublic: activity ? activity.isPublic : true,
+      isFeatured: activity ? activity.isFeatured : false,
+      priority: activity ? activity.priority : 0,
     },
     mode: "onChange",
     reValidateMode: "onChange",
   });
 
   const { isValid } = methods.formState;
-
-  useEffect(() => {
-    if (mode === "edit") {
-      dispatch(getActivityById(activityId));
-      if (activity) {
-        // Reset form with fetched activity data
-        methods.reset({
-          title: activity.title || "",
-          description: activity.description || "",
-          shortDescription: activity.shortDescription || "",
-          slug: activity.slug || "",
-          startDate: activity.startDate || "",
-          endDate: activity.endDate || "",
-          locationType: activity.locationType || "",
-          meetingPlatform: activity.meetingPlatform || "",
-          meetingLink: activity.meetingLink || "",
-          meetingId: activity.meetingId || "",
-          meetingPassword: activity.meetingPassword || "",
-          venueName: activity.venueName || "",
-          venueAddress: activity.venueAddress || "",
-          roomNumber: activity.roomNumber || "",
-          createdAt: activity.createdAt || "",
-          updatedAt: activity.updatedAt || "",
-          type: activity.type || "",
-          status: activity.status || "",
-          thumbnailUrl: activity.thumbnailUrl || "",
-          thumbnail: activity.thumbnail || null,
-          maxParticipants: activity.maxParticipants || null,
-          registrationDeadline: activity.registrationDeadline || "",
-        });
-      }
-    } else if (mode === "add") {
-      methods.reset({
-        title: "",
-        description: "",
-        shortDescription: "",
-        slug: "",
-        startDate: "",
-        endDate: "",
-        locationType: "",
-        meetingPlatform: "",
-        meetingLink: "",
-        meetingId: "",
-        meetingPassword: "",
-        venueName: "",
-        venueAddress: "",
-        roomNumber: "",
-        createdAt: "",
-        updatedAt: "",
-        type: "",
-        status: "",
-        thumbnailUrl: "",
-        thumbnail: null,
-        maxParticipants: null,
-        registrationDeadline: "",
-      });
-    }
-  }, [mode, activityId, methods, dispatch, activity]);
 
   const tabs = [
     { name: "Basic Info", component: ActivityBasicInfoSection },
@@ -150,18 +81,13 @@ const ActivityForm = ({ mode }) => {
       formData.append("thumbnail", data.thumbnail[0]);
     }
 
-    if (mode === "add") {
-      dispatch(createActivity(formData));
-    } else if (mode === "edit") {
-      dispatch(updateActivityById(activityId, formData));
-    }
+    onSubmit(formData);
   };
 
   return (
     <div>
-      <Toaster position="top-right" reverseOrder={false} />
       <h2 className="text-2xl font-bold mb-4">
-        {mode === "add" ? "Add New Activity" : "Edit Activity"}
+        {activity ? "Edit Activity" : "Add New Activity"}
       </h2>
 
       {/* Tab navigation */}
@@ -211,7 +137,7 @@ const ActivityForm = ({ mode }) => {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               disabled={!isValid}
             >
-              {mode === "add" ? "Add Activity" : "Update Activity"}
+              {activity ? "Save Changes" : "Submit"}
             </button>
           </div>
         </form>

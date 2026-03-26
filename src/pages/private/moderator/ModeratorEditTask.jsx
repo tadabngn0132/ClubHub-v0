@@ -7,11 +7,13 @@ import {
   getTaskDetails,
   resetTaskStatus,
 } from "../../../store/slices/taskSlice";
+import Loading from "../../../components/layout/internal/Loading.jsx";
+import toast from "react-hot-toast";
 
 const ModeratorEditTask = () => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.task);
+  const { task, isLoading, error, status } = useSelector((state) => state.task);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,9 +32,17 @@ const ModeratorEditTask = () => {
     dispatch(resetTaskStatus());
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    toast.error(error);
+  }
+
   return (
     <div>
-      <TaskForm onSubmit={handleEditTask} />
+      <TaskForm task={task} onSubmit={handleEditTask} />
     </div>
   );
 };

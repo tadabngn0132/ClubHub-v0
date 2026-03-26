@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 
 const TaskConfirmationForm = ({ taskCfData, onSubmit }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
     } = useForm({
         defaultValues: {
             evidence: null,
@@ -13,6 +13,18 @@ const TaskConfirmationForm = ({ taskCfData, onSubmit }) => {
         },
         mode: "onChange",
     });
+
+    const handleFormSubmit = (data) => {
+        const formData = new FormData();
+        formData.append("evidenceUrl", data.evidenceUrl);
+        formData.append("additionalComments", data.additionalComments);
+
+        if (data.evidence && data.evidence[0]) {
+            formData.append("evidence", data.evidence[0]);
+        }
+
+        onSubmit(formData);
+    };
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>

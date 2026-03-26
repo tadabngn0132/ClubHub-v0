@@ -1,116 +1,82 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import {
-  createNewDepartment,
-  getDepartmentDetails,
-  updateDepartmentById,
-} from "../../../store/slices/departmentSlice";
-import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
-import Loading from "../../../components/layout/internal/Loading";
 
-const DepartmentForm = ({ mode, departmentId }) => {
-  const dispatch = useDispatch();
-  const { department, isLoading, error } = useSelector(
-    (state) => state.department,
-  );
-
-  const { register, handleSubmit, reset } = useForm({
+const DepartmentForm = ({ department, onSubmit }) => {
+  const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
-      name: "",
-      description: "",
-      isActive: true,
+      name: department ? department.name : "",
+      description: department ? department.description : "",
+      isActive: department ? department.isActive : true,
     },
   });
-
-  useEffect(() => {
-    if (mode === "edit" && departmentId) {
-      dispatch(getDepartmentDetails(departmentId));
-
-      if (department) {
-        reset({
-          name: department.name,
-          description: department.description,
-          isActive: department.isActive,
-        });
-      }
-    } else if (mode === "add") {
-      reset({
-        name: "",
-        description: "",
-        isActive: true,
-      });
-    }
-  }, [dispatch, mode, departmentId, reset, department]);
-
-  const handleSaveData = (data) => {
-    if (mode === "add") {
-      dispatch(createNewDepartment(data));
-    } else if (mode === "edit") {
-      dispatch(
-        updateDepartmentById({ id: departmentId, departmentData: data }),
-      );
-    }
-  };
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (error) {
-    toast.error(error);
-  }
 
   return (
     <div>
       <form
-        onSubmit={handleSubmit(handleSaveData)}
+        onSubmit={handleSubmit(onSubmit)}
         className="max-w-md mx-auto bg-white p-6 rounded shadow"
       >
+        {/* Name */}
         <div className="mb-4">
           <label
             htmlFor="name"
             className="block text-sm font-medium text-gray-700"
           >
             Name
+            <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             id="name"
-            {...register("name", { required: true })}
+            {...register("name", { required: "Name is required" })}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+          )}
         </div>
+
+        {/* Description */}
         <div className="mb-4">
           <label
             htmlFor="description"
             className="block text-sm font-medium text-gray-700"
           >
             Description
+            <span className="text-red-500">*</span>
           </label>
           <textarea
             id="description"
-            {...register("description")}
+            {...register("description", { required: "Description is required" })}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           />
+          {errors.description && (
+            <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+          )}
         </div>
+
+        {/* Active Status */}
         <div className="mb-4">
           <label
             htmlFor="isActive"
             className="block text-sm font-medium text-gray-700"
           >
             Active
+            <span className="text-red-500">*</span>
           </label>
           <input
             type="checkbox"
             id="isActive"
-            {...register("isActive")}
+            {...register("isActive", { required: "Active status is required" })}
             className="mt-1 block"
           />
+          {errors.isActive && (
+            <p className="text-red-500 text-sm mt-1">{errors.isActive.message}</p>
+          )}
         </div>
+        
         <input
           type="submit"
-          value={mode === "add" ? "Submit" : "Save"}
+          value={department ? "Save" : "Submit"}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         />
       </form>

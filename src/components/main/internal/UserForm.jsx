@@ -1,92 +1,35 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import BasicInfoTab from "./BasicInfoTab.jsx";
 import ClubInfoTab from "./ClubInfoTab.jsx";
 import ProfileInfoTab from "./ProfileInfoTab.jsx";
-import {
-  getUserById,
-  createUser,
-  updateUserById,
-} from "../../../store/slices/userSlice.js";
-import { Toaster } from "react-hot-toast";
-import { useParams } from "react-router-dom";
 import { formatDateToLocal, formatNumberToString, formatUppercaseToCapitalized } from "../../../utils/formatters.js";
 
-const UserForm = ({ mode }) => {
-  const { userId } = useParams();
-  const dispatch = useDispatch();
+const UserForm = ({ user, onSubmit }) => {
   const [activeTab, setActiveTab] = useState(0);
 
   const methods = useForm({
     defaultValues: {
-      fullname: "",
-      email: "",
-      phoneNumber: "",
-      dateOfBirth: "",
-      gender: "",
-      major: "",
-      generation: "",
-      joinedAt: "",
-      status: "Active",
-      studentId: "",
-      avatarUrl: "",
+      fullname: user ? user.fullname : "",
+      email: user ? user.email : "",
+      phoneNumber: user ? user.phoneNumber : "",
+      dateOfBirth: user ? formatDateToLocal(user.dateOfBirth) : "",
+      gender: user ? user.gender : "",
+      major: user ? user.major : "",
+      generation: user ? formatNumberToString(user.generation) : "",
+      joinedAt: user ? formatDateToLocal(user.joinedAt) : "",
+      status: user ? formatUppercaseToCapitalized(user.status) : "Active",
+      studentId: user ? user.studentId : "",
+      avatarUrl: user ? user.avatarUrl : "",
       avatar: null,
-      bio: "",
-      rootDepartmentId: null,
-      positionId: null,
+      bio: user ? user.bio : "",
+      rootDepartmentId: user ? user.rootDepartmentId : null,
+      positionId: user ? user.userPosition[0]?.positionId : null,
     },
     mode: "onChange",
   });
 
   const { isValid } = methods.formState;
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (mode === "edit") {
-        const userData = await dispatch(getUserById(userId)).unwrap();
-  
-        if (userData) {
-          methods.reset({
-            fullname: userData.data.fullname || "",
-            email: userData.data.email || "",
-            phoneNumber: userData.data.phoneNumber || "",
-            dateOfBirth: formatDateToLocal(userData.data.dateOfBirth) || "",
-            gender: userData.data.gender || "",
-            major: userData.data.major || "",
-            generation: formatNumberToString(userData.data.generation) || "",
-            joinedAt: formatDateToLocal(userData.data.joinedAt) || "",
-            status: formatUppercaseToCapitalized(userData.data.status) || "Active",
-            studentId: userData.data.studentId || "",
-            avatarUrl: userData.data.avatarUrl || "",
-            avatar: null,
-            bio: userData.data.bio || "",
-            rootDepartmentId: userData.data.rootDepartmentId || null,
-            positionId: userData.data.userPosition[0]?.positionId || null,
-          });
-        }
-      } else if (mode === "add") {
-        methods.reset({
-          fullname: "",
-          email: "",
-          phoneNumber: "",
-          dateOfBirth: "",
-          gender: "",
-          major: "",
-          generation: "",
-          joinedAt: "",
-          status: "Active",
-          studentId: "",
-          avatarUrl: "",
-          avatar: null,
-          bio: "",
-          rootDepartmentId: null,
-          positionId: null,
-        });
-      }
-    }
-    fetchUserData();
-  }, [mode, userId, methods]);
 
   const tabs = [
     { name: "Basic Info", component: BasicInfoTab },
@@ -113,18 +56,14 @@ const UserForm = ({ mode }) => {
     if (data.avatar && data.avatar[0]) {
       formData.append("avatar", data.avatar[0]);
     }
-    if (mode === "add") {
-      dispatch(createUser(formData));
-    } else if (mode === "edit") {
-      dispatch(updateUserById({ id: userId, userData: formData }));
-    }
+    
+    onSubmit(formData);
   };
 
   return (
     <div>
-      <Toaster position="top-right" reverseOrder={false} />
       <h2 className="text-2xl font-bold mb-4">
-        {mode === "add" ? "Add New User" : "Edit User"}
+        {user ? "Edit User" : "Add New User"}
       </h2>
 
       {/* Tab Navigation */}
@@ -167,7 +106,7 @@ const UserForm = ({ mode }) => {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               disabled={!isValid}
             >
-              {mode === "add" ? "Add User" : "Update User"}
+              {user ? "Update User" : "Add User"}
             </button>
           </div>
         </form>
