@@ -7,7 +7,7 @@ import ChangePasswordForm from "../../../components/main/internal/ChangePassword
 
 const AdminProfile = () => {
   const dispatch = useDispatch();
-  const [currentTab, setCurrentTab] = useState("profile");
+  const [currentTab, setCurrentTab] = useState("Profile");
   const { currentUser } = useSelector((state) => state.auth);
   const { user, isLoading, error } = useSelector((state) => state.user);
 

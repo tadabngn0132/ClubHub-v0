@@ -16,99 +16,120 @@ const ChangePasswordForm = ({ onSubmit }) => {
     reValidateMode: "onChange",
   });
 
+  const inputClassName =
+    "w-full rounded-xl border border-slate-700 bg-slate-900/70 px-4 py-3 text-sm text-slate-100 shadow-sm outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-[var(--pink-color)] focus:bg-slate-900 focus:ring-2 focus:ring-[var(--pink-color)]/30";
+  const labelClassName = "mb-1.5 text-sm font-medium text-slate-200";
+  const errorClassName =
+    "mt-1 text-[11px] font-medium text-rose-300 lg:text-xs";
+
   return (
-    <div className="flex min-h-[100vh] items-center-safe justify-center-safe">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10 sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute inset-0" />
+
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col bg-white/10 w-3/12 p-3.5 rounded-2xl gap-5.5"
+        className="relative z-10 w-full max-w-xl rounded-3xl border border-white/10 bg-[radial-gradient(circle_at_top_right,_rgba(236,72,153,0.28),_transparent_42%),radial-gradient(circle_at_bottom_left,_rgba(14,165,233,0.14),_transparent_40%)] p-6 shadow-2xl shadow-black/45 backdrop-blur-md sm:p-8"
       >
-        <h1 className="text-center text-2xl/tight font-bold w-full">
-          Change Password
-        </h1>
-
-        <div className="flex flex-col">
-          <label htmlFor="current-password">
-            Current Password <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="password"
-            id="current-password"
-            className="outline-none border-b-1 pt-2 pb-2 focus:border-b-[var(--pink-color)] text-sm/tight"
-            placeholder="Enter your current password"
-            {...register("currentPassword", {
-              required: "Password cannot be empty",
-              minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters",
-              },
-            })}
-          />
-          {/* Current Password error */}
-          {errors.currentPassword && (
-            <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] mt-0.5">
-              {errors.currentPassword.message}
-            </span>
-          )}
+        <div className="mb-7 space-y-2 text-center sm:text-left">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-100 sm:text-3xl">
+            Change Password
+          </h1>
+          <p className="text-sm text-slate-300">
+            Keep your account secure by setting a strong, unique password.
+          </p>
         </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="new-password">
-            New Password <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="password"
-            id="new-password"
-            className="outline-none border-b-1 pt-2 pb-2 focus:border-b-[var(--pink-color)] text-sm/tight"
-            placeholder="Enter your new password"
-            {...register("newPassword", {
-              required: "Password cannot be empty",
-              minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters",
-              },
-            })}
-          />
-          {/* New Password error */}
-          {errors.newPassword && (
-            <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] mt-0.5">
-              {errors.newPassword.message}
-            </span>
-          )}
-        </div>
+        <div className="space-y-5">
+          <div className="flex flex-col">
+            <label htmlFor="current-password" className={labelClassName}>
+              Current Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              id="current-password"
+              className={inputClassName}
+              placeholder="Enter your current password"
+              {...register("currentPassword", {
+                required: "Password cannot be empty",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+              })}
+            />
+            {/* Current Password error */}
+            {errors.currentPassword && (
+              <span className={errorClassName}>
+                {errors.currentPassword.message}
+              </span>
+            )}
+          </div>
 
-        <div className="flex flex-col">
-          <label htmlFor="confirm-new-password">
-            Confirm New Password <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="password"
-            id="confirm-new-password"
-            className="outline-none border-b-1 pt-2 pb-2 focus:border-b-[var(--pink-color)] text-sm/tight"
-            placeholder="Confirm your new password"
-            {...register("confirmNewPassword", {
-              required: "Password cannot be empty",
-              minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters",
-              },
-              validate: (value) =>
-                value === watch("newPassword") || "Passwords do not match",
-            })}
-          />
-          {/* Confirm New Password error */}
-          {errors.confirmNewPassword && (
-            <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] mt-0.5">
-              {errors.confirmNewPassword.message}
-            </span>
-          )}
+          <div className="flex flex-col">
+            <label htmlFor="new-password" className={labelClassName}>
+              New Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              id="new-password"
+              className={inputClassName}
+              placeholder="Enter your new password"
+              {...register("newPassword", {
+                required: "Password cannot be empty",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+              })}
+            />
+            {/* New Password error */}
+            {errors.newPassword && (
+              <span className={errorClassName}>
+                {errors.newPassword.message}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col">
+            <label htmlFor="confirm-new-password" className={labelClassName}>
+              Confirm New Password <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="password"
+              id="confirm-new-password"
+              className={inputClassName}
+              placeholder="Confirm your new password"
+              {...register("confirmNewPassword", {
+                required: "Password cannot be empty",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+                validate: (value) =>
+                  value === watch("newPassword") || "Passwords do not match",
+              })}
+            />
+            {/* Confirm New Password error */}
+            {errors.confirmNewPassword && (
+              <span className={errorClassName}>
+                {errors.confirmNewPassword.message}
+              </span>
+            )}
+          </div>
         </div>
 
         <input
           type="submit"
-          className="p-1 bg-[var(--pink-color)] w-full rounded-md cursor-pointer hover:bg-[var(--dark-pink-color)]"
-          value="Submit"
+          className="mt-7 w-full cursor-pointer rounded-xl bg-[var(--pink-color)] px-4 py-3 text-sm font-semibold tracking-wide text-white shadow-lg shadow-[var(--pink-color)]/30 transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--dark-pink-color)] hover:shadow-xl hover:shadow-[var(--pink-color)]/35 active:translate-y-0"
+          value="Update Password"
         />
+
+        <p className="mt-3 text-center text-xs text-slate-400">
+          Make sure your new password is at least 8 characters long.
+        </p>
       </form>
+
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(15,23,42,0.45),transparent_45%)]" />
     </div>
   );
 };
