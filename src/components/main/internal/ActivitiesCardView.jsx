@@ -29,54 +29,56 @@ const ActivitiesCardView = ({ role }) => {
   };
 
   return (
-    <div className="w-full p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
+    <div className="mb-10 grid w-full grid-cols-1 gap-4 p-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {activities.map((activity) => (
-        <div key={activity.id} className="rounded-lg p-4 flex flex-col">
+        <div
+          key={activity.id}
+          className="flex flex-col overflow-hidden rounded-xl border border-gray-800 bg-gray-900 shadow-lg transition hover:-translate-y-0.5 hover:border-gray-700"
+        >
           <img
             src={activity.thumbnailUrl}
             alt={activity.name}
-            className="w-full h-40 object-cover mb-4 rounded-t-2xl"
+            className="h-40 w-full object-cover"
           />
-          {/* TODO: Styling type badge */}
-          <p className="text-sm text-gray-600 mb-1">{activity.type}</p>
-          {/* TODO: Replace text "Date: " with an icon */}
-          <p className="text-sm text-gray-600 mb-1">Date: {activity.date}</p>
-          <h3 className="text-lg font-semibold mb-2">{activity.name}</h3>
-          {/* TODO: Styling status badge */}
-          <p className="text-sm text-gray-600 mb-1">{activity.status}</p>
-          {/* TODO: Replace text "Location: " with an icon */}
-          <p className="text-sm text-gray-600 mb-1">
-            Location: {activity.location}
-          </p>
-          <p className="text-sm text-gray-600 mb-4">
-            {activity.registrationsCount} participants
-          </p>
-          <div className="mt-auto flex space-x-2">
-            {/* TODO: Replace text "View" with an icon */}
+          <div className="flex flex-1 flex-col p-4">
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <p className="rounded-full border border-violet-500/40 bg-violet-500/20 px-2.5 py-1 text-xs font-semibold uppercase text-violet-200">
+                {activity.type || "N/A"}
+              </p>
+              <p className="rounded-full border border-emerald-500/40 bg-emerald-500/20 px-2.5 py-1 text-xs font-semibold uppercase text-emerald-200">
+                {activity.status || "N/A"}
+              </p>
+            </div>
+
+            <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-gray-100">{activity.name || "Untitled activity"}</h3>
+            <p className="mb-1 text-sm text-gray-300">Date: {activity.date || "N/A"}</p>
+            <p className="mb-1 text-sm text-gray-300">Location: {activity.location || "N/A"}</p>
+            <p className="mb-4 text-sm text-gray-400">{activity.registrationsCount || 0} participants</p>
+
+            <div className="mt-auto flex flex-wrap gap-2">
             <Link
               to={`/${role}/activities/view/${activity.id}`}
-              className="text-blue-500 hover:underline"
+                className="rounded-md bg-sky-500/15 px-3 py-1.5 text-xs font-medium text-sky-300 transition hover:bg-sky-500/30"
             >
               View
             </Link>
-            {/* TODO: Replace text "Edit" with an icon */}
-            {(role === "admin" || role === "moderator") && (
-              <Link
-                to={`/${role}/activities/edit/${activity.id}`}
-                className="text-green-500 hover:underline"
-              >
-                Edit
-              </Link>
-            )}
-            {/* TODO: Replace text "Delete" with an icon */}
-            {role === "admin" && (
-              <button
-                onClick={() => handleDelete(activity.id)}
-                className="text-red-500 hover:underline"
-              >
-                Delete
-              </button>
-            )}
+              {(role === "admin" || role === "moderator") && (
+                <Link
+                  to={`/${role}/activities/edit/${activity.id}`}
+                  className="rounded-md bg-blue-500/15 px-3 py-1.5 text-xs font-medium text-blue-300 transition hover:bg-blue-500/30"
+                >
+                  Edit
+                </Link>
+              )}
+              {role === "admin" && (
+                <button
+                  onClick={() => handleDelete(activity.id)}
+                  className="rounded-md bg-rose-500/15 px-3 py-1.5 text-xs font-medium text-rose-300 transition hover:bg-rose-500/30"
+                >
+                  Delete
+                </button>
+              )}
+            </div>
           </div>
         </div>
       ))}

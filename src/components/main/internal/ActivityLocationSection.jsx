@@ -1,4 +1,3 @@
-import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useState } from "react";
 
@@ -14,58 +13,68 @@ const ActivityLocationSection = () => {
     setLocationType(e.target.id);
   };
 
+  const inputClassName =
+    "mt-2 w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
+  const labelClassName = "mt-3 text-sm font-semibold text-gray-100";
+  const errorClassName = "mt-1 text-sm font-medium text-red-400";
+
   return (
-    <div className="flex flex-col">
-      <label htmlFor="location_type">
-        Location Type <span className="text-red-500">*</span>
+    <div className="flex w-full flex-col">
+      <label htmlFor="location_type" className="text-sm font-semibold text-gray-100">
+        Location Type <span className="text-red-400">*</span>
       </label>
-      <div className="flex items-center gap-1">
-        <input
-          type="radio"
-          value="online"
-          id="online"
-          {...register("locationType", {
-            required: "Location type cannot be empty",
-          })}
-          onChange={handleLocationTypeChange}
-        />
-        <label htmlFor="online">Online</label>
-      </div>
+      <div className="mt-2 flex flex-wrap gap-3">
+        <label htmlFor="online" className="inline-flex cursor-pointer items-center gap-2 text-sm text-gray-200">
+          <input
+            type="radio"
+            value="online"
+            id="online"
+            className="h-4 w-4 border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
+            {...register("locationType", {
+              required: "Location type cannot be empty",
+            })}
+            onChange={handleLocationTypeChange}
+          />
+          Online
+        </label>
 
-      <div className="flex items-center gap-1">
-        <input
-          type="radio"
-          value="in_person"
-          id="in_person"
-          {...register("locationType", {
-            required: "Location type cannot be empty",
-          })}
-          onChange={handleLocationTypeChange}
-        />
-        <label htmlFor="in_person">In-person</label>
-      </div>
+        <label htmlFor="in_person" className="inline-flex cursor-pointer items-center gap-2 text-sm text-gray-200">
+          <input
+            type="radio"
+            value="in_person"
+            id="in_person"
+            className="h-4 w-4 border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
+            {...register("locationType", {
+              required: "Location type cannot be empty",
+            })}
+            onChange={handleLocationTypeChange}
+          />
+          In-person
+        </label>
 
-      <div className="flex items-center gap-1">
-        <input
-          type="radio"
-          value="hybrid"
-          id="hybrid"
-          {...register("locationType", {
-            required: "Location type cannot be empty",
-          })}
-          onChange={handleLocationTypeChange}
-        />
-        <label htmlFor="hybrid">Hybrid</label>
+        <label htmlFor="hybrid" className="inline-flex cursor-pointer items-center gap-2 text-sm text-gray-200">
+          <input
+            type="radio"
+            value="hybrid"
+            id="hybrid"
+            className="h-4 w-4 border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
+            {...register("locationType", {
+              required: "Location type cannot be empty",
+            })}
+            onChange={handleLocationTypeChange}
+          />
+          Hybrid
+        </label>
       </div>
       {errors.locationType && (
-        <p className="text-red-500">{errors.locationType.message}</p>
+        <p className={errorClassName}>{errors.locationType.message}</p>
       )}
 
       {/* Need to implement more based on condition of location type */}
       {(locationType === "online" || locationType === "hybrid") && (
         <>
-          <label htmlFor="meeting_platform">
-            Meeting Platform <span className="text-red-500">*</span>
+          <label htmlFor="meeting_platform" className={labelClassName}>
+            Meeting Platform <span className="text-red-400">*</span>
           </label>
           <select
             name="meeting_platform"
@@ -73,19 +82,19 @@ const ActivityLocationSection = () => {
             {...register("meetingPlatform", {
               required: "Meeting platform cannot be empty",
             })}
-            className="mt-2 bg-slate-800 text-white border border-slate-600"
+            className={inputClassName}
           >
-            <option value="Google Meet" className="bg-slate-800 text-white">Google Meet</option>
-            <option value="Zoom" className="bg-slate-800 text-white">Zoom</option>
-            <option value="Microsoft Teams" className="bg-slate-800 text-white">Microsoft Teams</option>
-            <option value="Other" className="bg-slate-800 text-white">Other</option>
+            <option value="Google Meet" className="bg-gray-800 text-gray-100">Google Meet</option>
+            <option value="Zoom" className="bg-gray-800 text-gray-100">Zoom</option>
+            <option value="Microsoft Teams" className="bg-gray-800 text-gray-100">Microsoft Teams</option>
+            <option value="Other" className="bg-gray-800 text-gray-100">Other</option>
           </select>
           {errors.meetingPlatform && (
-            <p className="text-red-500">{errors.meetingPlatform.message}</p>
+            <p className={errorClassName}>{errors.meetingPlatform.message}</p>
           )}
 
-          <label htmlFor="meeting_link">
-            Meeting Link <span className="text-red-500">*</span>
+          <label htmlFor="meeting_link" className={labelClassName}>
+            Meeting Link <span className="text-red-400">*</span>
           </label>
           <input
             type="text"
@@ -94,38 +103,38 @@ const ActivityLocationSection = () => {
             {...register("meetingLink", {
               required: "Meeting link cannot be empty",
             })}
-            className="mt-2 bg-slate-800 text-white border border-slate-600"
+            className={inputClassName}
           />
           {errors.meetingLink && (
-            <p className="text-red-500">{errors.meetingLink.message}</p>
+            <p className={errorClassName}>{errors.meetingLink.message}</p>
           )}
 
-          <label htmlFor="meeting_id">
-            Meeting ID <span className="text-red-500">*</span>
+          <label htmlFor="meeting_id" className={labelClassName}>
+            Meeting ID <span className="text-red-400">*</span>
           </label>
           <input
             type="text"
             name="meeting_id"
             id="meeting_id"
             {...register("meetingId")}
-            className="mt-2 bg-slate-800 text-white border border-slate-600"
+            className={inputClassName}
           />
 
-          <label htmlFor="meeting_password">Meeting Password</label>
+          <label htmlFor="meeting_password" className={labelClassName}>Meeting Password</label>
           <input
             type="text"
             name="meeting_password"
             id="meeting_password"
             {...register("meetingPassword")}
-            className="mt-2 bg-slate-800 text-white border border-slate-600"
+            className={inputClassName}
           />
         </>
       )}
 
       {(locationType === "in_person" || locationType === "hybrid") && (
         <>
-          <label htmlFor="venue_name">
-            Venue Name <span className="text-red-500">*</span>
+          <label htmlFor="venue_name" className={labelClassName}>
+            Venue Name <span className="text-red-400">*</span>
           </label>
           <input
             type="text"
@@ -134,14 +143,14 @@ const ActivityLocationSection = () => {
             {...register("venueName", {
               required: "Venue name cannot be empty",
             })}
-            className="mt-2 bg-slate-800 text-white border border-slate-600"
+            className={inputClassName}
           />
           {errors.venueName && (
-            <p className="text-red-500">{errors.venueName.message}</p>
+            <p className={errorClassName}>{errors.venueName.message}</p>
           )}
 
-          <label htmlFor="venue_address">
-            Venue Address <span className="text-red-500">*</span>
+          <label htmlFor="venue_address" className={labelClassName}>
+            Venue Address <span className="text-red-400">*</span>
           </label>
           <input
             type="text"
@@ -150,18 +159,18 @@ const ActivityLocationSection = () => {
             {...register("venueAddress", {
               required: "Venue address cannot be empty",
             })}
-            className="mt-2 bg-slate-800 text-white border border-slate-600"
+            className={inputClassName}
           />
           {errors.venueAddress && (
-            <p className="text-red-500">{errors.venueAddress.message}</p>
+            <p className={errorClassName}>{errors.venueAddress.message}</p>
           )}
 
-          <label htmlFor="room_number">Room Number</label>
+          <label htmlFor="room_number" className={labelClassName}>Room Number</label>
           <input
             type="text"
             name="room_number"
             id="room_number"
-            className="mt-2 bg-slate-800 text-white border border-slate-600"
+            className={inputClassName}
             {...register("roomNumber")}
           />
 

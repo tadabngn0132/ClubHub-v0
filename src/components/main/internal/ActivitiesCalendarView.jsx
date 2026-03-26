@@ -2,12 +2,13 @@ import React from "react";
 
 const ActivitiesCalendarView = () => {
   return (
-    <div>
+    <div className="overflow-hidden rounded-xl border border-gray-800 bg-gray-900 p-3 shadow-xl md:p-4">
       {/* Google Calendar Embed */}
       <iframe
         title="GDC Calendar"
         src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FHo_Chi_Minh&showPrint=0&title=GDC%20Calendar&hl=en&src=Z2RjLmZwdDIwMjJAZ21haWwuY29t&src=ZW4udmlldG5hbWVzZSNob2xpZGF5QGdyb3VwLnYuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&src=dmkudmlldG5hbWVzZSNob2xpZGF5QGdyb3VwLnYuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%23039be5&color=%230b8043&color=%230b8043"
-        style={{ border: "solid 1px #777" }}
+        className="w-full rounded-lg border border-gray-700"
+        style={{ backgroundColor: "#111827" }}
         width="100%"
         height="600"
         frameBorder="0"

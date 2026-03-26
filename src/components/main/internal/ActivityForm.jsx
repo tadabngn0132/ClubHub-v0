@@ -85,20 +85,20 @@ const ActivityForm = ({ activity, onSubmit }) => {
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">
+    <div className="w-full">
+      <h2 className="mb-5 text-2xl font-bold tracking-tight text-gray-100 md:text-3xl">
         {activity ? "Edit Activity" : "Add New Activity"}
       </h2>
 
       {/* Tab navigation */}
-      <div className="flex border-b mb-4">
+      <div className="mb-5 flex flex-wrap gap-2 rounded-xl border border-gray-800 bg-gray-900 p-2">
         {tabs.map((tab, index) => (
           <button
             key={index}
-            className={`py-2 px-4 ${
+            className={`rounded-md px-4 py-2 text-sm font-semibold transition ${
               activeTab === index
-                ? "border-b-2 border-blue-500 text-blue-500"
-                : "text-gray-500"
+                ? "bg-blue-500/20 text-blue-300"
+                : "text-gray-400 hover:bg-gray-800 hover:text-gray-200"
             }`}
             onClick={() => setActiveTab(index)}
             type="button"
@@ -111,7 +111,7 @@ const ActivityForm = ({ activity, onSubmit }) => {
       <FormProvider {...methods}>
         <form
           onSubmit={methods.handleSubmit(handleSaveData)}
-          className="shadow-md rounded px-4 py-2 mb-4"
+          className="mb-4 rounded-xl border border-gray-800 bg-gray-900 p-5 shadow-xl md:p-6"
           encType="multipart/form-data"
         >
           {/* Hidden field để giữ organizerId */}
@@ -131,10 +131,10 @@ const ActivityForm = ({ activity, onSubmit }) => {
             </div>
           ))}
 
-          <div className="flex items-center justify-between my-6">
+          <div className="mt-6 flex items-center justify-between border-t border-gray-800 pt-5">
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
               disabled={!isValid}
             >
               {activity ? "Save Changes" : "Submit"}

@@ -12,7 +12,6 @@ import MemberViewDepartment from "../../pages/private/member/MemberViewDepartmen
 import MemberPositions from "../../pages/private/member/MemberPositions.jsx";
 import MemberViewPosition from "../../pages/private/member/MemberViewPosition.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
-import MemberEditTask from "../../pages/private/member/MemberEditTask.jsx";
 
 export const memberRoutes = [
   {
@@ -52,14 +51,6 @@ export const memberRoutes = [
     element: (
       <MemberLayout>
         <MemberViewTask />
-      </MemberLayout>
-    ),
-  },
-  {
-    path: "/member/tasks/edit/:taskId",
-    element: (
-      <MemberLayout>
-        <MemberEditTask />
       </MemberLayout>
     ),
   },

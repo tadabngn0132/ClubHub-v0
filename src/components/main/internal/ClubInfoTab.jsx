@@ -19,95 +19,106 @@ const ClubInfoTab = () => {
     dispatch(getPositionsList());
   }, [dispatch]);
 
+  const inputClassName =
+    "mt-2 w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
+  const labelClassName = "mt-3 text-sm font-semibold text-gray-100";
+  const errorClassName = "mt-1 text-sm font-medium text-red-400";
+
   return (
     <div className="flex flex-col">
       {/* Generation field */}
-      <label htmlFor="generation">
-        Generation <span className="text-red-500">*</span>
+      <label htmlFor="generation" className="text-sm font-semibold text-gray-100">
+        Generation <span className="text-red-400">*</span>
       </label>
       <input
         type="text"
         id="generation"
         placeholder="2025"
-        className="mt-2"
+        className={inputClassName}
         {...register("generation", { required: "Generation cannot be empty" })}
       />
       {errors.generation && (
-        <p className="text-red-500 text-sm">{errors.generation.message}</p>
+        <p className={errorClassName}>{errors.generation.message}</p>
       )}
 
       {/* Join Date field */}
-      <label htmlFor="joinedAt" className="mt-3">
-        Join Date <span className="text-red-500">*</span>
+      <label htmlFor="joinedAt" className={labelClassName}>
+        Join Date <span className="text-red-400">*</span>
       </label>
       <input
         type="date"
         id="joinedAt"
-        className="mt-2"
+        className={inputClassName}
         defaultValue={new Date().toISOString().split("T")[0]}
         {...register("joinedAt", { required: "Join Date cannot be empty" })}
       />
       {errors.joinedAt && (
-        <p className="text-red-500 text-sm">{errors.joinedAt.message}</p>
+        <p className={errorClassName}>{errors.joinedAt.message}</p>
       )}
 
       {/* Status field */}
-      <label htmlFor="status" className="mt-3">
+      <label htmlFor="status" className={labelClassName}>
         Status
       </label>
       <select
         name="status"
         id="status"
-        className="mt-2 bg-slate-800 text-white border border-slate-600"
+        className={inputClassName}
         {...register("status")}
       >
-        <option className="bg-slate-800 text-white" value="Active">
+        <option className="bg-gray-800 text-gray-100" value="Active">
           Active
         </option>
-        <option className="bg-slate-800 text-white" value="Inactive">
+        <option className="bg-gray-800 text-gray-100" value="Inactive">
           Inactive
         </option>
       </select>
 
       {/* Position Id */}
-      <label htmlFor="positionId" className="mt-3">
-        Position <span className="text-red-500">*</span>
+      <label htmlFor="positionId" className={labelClassName}>
+        Position <span className="text-red-400">*</span>
       </label>
       <select
         name="positionId"
         id="positionId"
-        className="mt-2 bg-slate-800 text-white border border-slate-600"
+        className={inputClassName}
         {...register("positionId", {
           required: "Position is required",
         })}
       >
         <option value="">Select a position</option>
         {positions.map((pos) => (
-          <option key={pos.id} value={pos.id} className="bg-slate-800 text-white">
+          <option key={pos.id} value={pos.id} className="bg-gray-800 text-gray-100">
             {pos.title}
           </option>
         ))}
       </select>
+      {errors.positionId && (
+        <p className={errorClassName}>{errors.positionId.message}</p>
+      )}
 
       {/* Root Department Id */}
-      <label htmlFor="rootDepartmentId" className="mt-3">
-        Root Department <span className="text-red-500">*</span>
+      <label htmlFor="rootDepartmentId" className={labelClassName}>
+        Root Department <span className="text-red-400">*</span>
       </label>
       <select
         name="rootDepartmentId"
         id="rootDepartmentId"
-        className="mt-2 bg-slate-800 text-white border border-slate-600"
+        className={inputClassName}
         {...register("rootDepartmentId", {
           required: "Root Department is required",
         })}
       >
         <option value="">Select a department</option>
         {departments.map((dept) => (
-          <option key={dept.id} value={dept.id} className="bg-slate-800 text-white">
+          <option key={dept.id} value={dept.id} className="bg-gray-800 text-gray-100">
             {dept.name}
           </option>
         ))}
       </select>
+      {errors.rootDepartmentId && (
+        <p className={errorClassName}>{errors.rootDepartmentId.message}</p>
+      )}
     </div>
   );
 };
