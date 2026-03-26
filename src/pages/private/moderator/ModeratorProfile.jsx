@@ -12,8 +12,12 @@ const ModeratorProfile = () => {
   const { user, isLoading, error } = useSelector((state) => state.user);
 
   const tabs = [
-    { id: 1, label: "Profile" },
-    { id: 2, label: "Change Password" },
+    { id: 1, label: "Profile", component: (user ? (
+      <UserForm user={user} />
+    ) : (
+      <p className="text-sm text-slate-300">User data not available.</p>
+    )) },
+    { id: 2, label: "Change Password", component: <ChangePasswordForm /> },
   ];
 
   useEffect(() => {
@@ -67,14 +71,7 @@ const ModeratorProfile = () => {
         </section>
 
         <section className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
-          {currentTab === "profile" &&
-            (user ? (
-              <UserForm user={user} />
-            ) : (
-              <p className="text-sm text-slate-300">User data not available.</p>
-            ))}
-
-          {currentTab === "Change Password" && <ChangePasswordForm />}
+          {tabs.find((tab) => tab.label === currentTab)?.component}
         </section>
       </div>
     </div>
