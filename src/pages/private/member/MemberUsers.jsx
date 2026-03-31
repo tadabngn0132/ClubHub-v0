@@ -12,6 +12,7 @@ import {
   formatStatusBadgeColor,
   formatRoleBadgeColor,
 } from "../../../utils/formatters.js";
+import { Toaster } from "react-hot-toast";
 
 const MemberUsers = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const MemberUsers = () => {
 
   return (
     <div className="min-w-0 w-full overflow-x-hidden">
+      <Toaster position="top-right" reverseOrder={false} />
       {/* TODO: Implement loading state using spinner or skeleton */}
       <div className="flex items-center-safe justify-between mb-6">
         <div>

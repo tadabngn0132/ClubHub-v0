@@ -9,6 +9,7 @@ import {
   formatDate,
   formatUppercaseToCapitalized,
 } from "../../../utils/formatters.js";
+import { Toaster } from "react-hot-toast";
 
 const MemberTasks = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const MemberTasks = () => {
 
   return (
     <div className="min-h-screen text-slate-100">
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="flex w-full flex-col gap-6">
         <section>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

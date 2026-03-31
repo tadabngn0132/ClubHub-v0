@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import Loading from "../../../components/layout/internal/Loading";
 import { formatDate } from "../../../utils/formatters";
 
-const AdminViewMemberApplication = () => {
+const MemberApplicationDetails = () => {
   const { applicationId } = useParams();
   const dispatch = useDispatch();
   const { memberApplication, isLoading, error } = useSelector((state) => state.memberApplication);
@@ -15,8 +15,8 @@ const AdminViewMemberApplication = () => {
     dispatch(getMemberApplicationDetails(applicationId));
   }, [dispatch, applicationId]);
 
-  const handleDisplayGeneralizedInterviewStatus = (application) => {
-    if (!application?.departmentApplications || application?.departmentApplications.length <= 0) {
+  const handleDisplaySpecializedInterviewStatus = (application) => {
+    if (!application.departmentApplications || application.departmentApplications.length <= 0) {
       return <p>Has not been interviewed yet</p>;
     }
     return application.departmentApplications.map((deptApp) => {
@@ -54,7 +54,7 @@ const AdminViewMemberApplication = () => {
       <p>CV Review Comment: {memberApplication?.cvReviewComment || "N/A"}</p>
       <p>CV Reviewed At: {formatDate(memberApplication?.cvReviewedAt) || "N/A"}</p>
       <p>CV Reviewed By: {memberApplication?.cvReviewer?.fullname || "N/A"}</p>
-      <p>Interview Status: {handleDisplayGeneralizedInterviewStatus(memberApplication) || "N/A"}</p>
+      <p>Interview Status: {memberApplication?.interviewStatus || "N/A"}</p>
       <p>Interview Comment: {memberApplication?.interviewComment || "N/A"}</p>
       <p>Interview At: {formatDate(memberApplication?.interviewedAt) || "N/A"}</p>
       <p>Interviewed By: {memberApplication?.interviewer?.fullname || "N/A"}</p>
@@ -66,4 +66,4 @@ const AdminViewMemberApplication = () => {
   );
 };
 
-export default AdminViewMemberApplication;
+export default MemberApplicationDetails;

@@ -294,10 +294,8 @@ const About = () => {
             extraordinary together.
           </p>
 
-          <Link to="/apply-membership">
-            <button className="monument-regular uppercase px-8 py-3 rounded-xl border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white transition-colors duration-300 font-semibold">
-              Join Our Crew
-            </button>
+          <Link to="/apply-membership" className="monument-regular uppercase px-8 py-3 rounded-xl border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white transition-colors duration-300 font-semibold">
+            Join Our Crew
           </Link>
         </div>
       </section>

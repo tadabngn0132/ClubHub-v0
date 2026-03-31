@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast, { Toaster } from "react-hot-toast";
+import { formatDate, formatUppercaseToCapitalized } from "../../../utils/formatters.js";
 
 const AdminMemberApplications = () => {
   const dispatch = useDispatch();
@@ -67,6 +68,26 @@ const AdminMemberApplications = () => {
     dispatch(resetMemberApplicationStatus());
   };
 
+  const handleDisplayGeneralizedInterviewStatus = (application) => {
+    let interviewFailCount = 0;
+    let interviewPendingCount = 0;
+    if (application.departmentApplications && application.departmentApplications.length > 0) {
+      application.departmentApplications.map((deptApp) => (
+        deptApp.interviewStatus === "FAILED" && interviewFailCount++,
+        deptApp.interviewStatus === "PENDING" && interviewPendingCount++
+      ))
+
+      if (interviewPendingCount > 0) {
+        return "PENDING";
+      } else if (interviewFailCount === application.departmentApplications.length) {
+        return "FAILED";
+      } else {
+        return "PASSED";
+      }
+    }
+    return "N/A";
+  }
+
   if (isLoading) {
     return <Loading />;
   }
@@ -82,11 +103,11 @@ const AdminMemberApplications = () => {
       return "border-amber-500/40 bg-amber-500/20 text-amber-300";
     }
 
-    if (normalizedStatus === "APPROVED") {
+    if (normalizedStatus === "PASSED") {
       return "border-emerald-500/40 bg-emerald-500/20 text-emerald-300";
     }
 
-    if (normalizedStatus === "REJECTED") {
+    if (normalizedStatus === "FAILED") {
       return "border-rose-500/40 bg-rose-500/20 text-rose-300";
     }
 
@@ -110,8 +131,8 @@ const AdminMemberApplications = () => {
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-800 text-sm text-gray-200">
               <thead className="bg-gray-950/80 text-xs uppercase tracking-wide text-gray-400">
-                <tr>
-                  <th className="w-12 px-4 py-3 text-left">
+                <tr className="text-left">
+                  <th className="w-12 px-3 py-3">
                     <input
                       type="checkbox"
                       name="selectAll"
@@ -121,11 +142,13 @@ const AdminMemberApplications = () => {
                       className="h-4 w-4 cursor-pointer rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
                     />
                   </th>
-                  <th className="px-4 py-3 text-left">Name</th>
-                  <th className="px-4 py-3 text-left">Email</th>
-                  <th className="px-4 py-3 text-left">Application Date</th>
-                  <th className="px-4 py-3 text-left">Status</th>
-                  <th className="px-4 py-3 text-left">Actions</th>
+                  <th className="px-3 py-3">Full Name</th>
+                  <th className="px-3 py-3">Email</th>
+                  <th className="px-3 py-3">Application Date</th>
+                  <th className="px-3 py-3 text-center">CV Status</th>
+                  <th className="px-3 py-3 text-center">Interview Status</th>
+                  <th className="px-3 py-3 text-center">Final Status</th>
+                  <th className="px-3 py-3 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
@@ -139,7 +162,7 @@ const AdminMemberApplications = () => {
                         isSelected ? "bg-blue-500/10" : "bg-transparent"
                       }`}
                     >
-                      <td className="px-4 py-3">
+                      <td className="px-3 py-3">
                         <input
                           type="checkbox"
                           name="application"
@@ -149,17 +172,31 @@ const AdminMemberApplications = () => {
                           className="h-4 w-4 cursor-pointer rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
                         />
                       </td>
-                      <td className="px-4 py-3 font-medium text-gray-100">{application.name || "N/A"}</td>
-                      <td className="px-4 py-3 text-gray-300">{application.email || "N/A"}</td>
-                      <td className="px-4 py-3 text-gray-300">{application.applicationDate || "N/A"}</td>
-                      <td className="px-4 py-3">
+                      <td className="px-3 py-3 font-medium text-gray-100">{application.fullname || "N/A"}</td>
+                      <td className="px-3 py-3 text-gray-300">{application.email || "N/A"}</td>
+                      <td className="px-3 py-3 text-gray-300">{formatDate(application.appliedAt) || "N/A"}</td>
+                      <td className="px-3 py-3">
                         <span
-                          className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-wide ${getStatusBadgeClass(application.status)}`}
+                          className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-wide ${getStatusBadgeClass(application.cvStatus)}`}
                         >
-                          {application.status || "N/A"}
+                          {application.cvStatus || "N/A"}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-3 py-3">
+                        <span
+                          className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-wide ${getStatusBadgeClass(handleDisplayGeneralizedInterviewStatus(application))}`}
+                        >
+                          {handleDisplayGeneralizedInterviewStatus(application)}
+                        </span>
+                      </td>
+                      <td className="px-3 py-3">
+                        <span
+                          className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-wide ${getStatusBadgeClass(application.finalStatus)}`}
+                        >
+                          {application.finalStatus || "N/A"}
+                        </span>
+                      </td>
+                      <td className="px-3 py-3 text-center">
                         <div className="flex flex-wrap items-center gap-2">
                           <Link
                             to={`/admin/member-applications/view/${application.id}`}
@@ -195,7 +232,7 @@ const AdminMemberApplications = () => {
           </div>
 
           {applications.length === 0 && (
-            <div className="border-t border-gray-800 px-4 py-10 text-center text-sm text-gray-400">
+            <div className="border-t border-gray-800 px-3 py-30 text-center text-sm text-gray-400">
               No member applications found.
             </div>
           )}
