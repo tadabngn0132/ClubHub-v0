@@ -1,7 +1,6 @@
 import { getActivitiesList } from "../../../store/slices/activitySlice";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import ActivitiesCardView from "../../../components/main/internal/ActivitiesCardView";
 import ActivitiesTableView from "../../../components/main/internal/ActivitiesTableView";
 import Loading from "../../../components/layout/internal/Loading.jsx";
@@ -88,6 +87,23 @@ const MemberActivities = () => {
             </div>
           </div>
 
+          <div className="mb-4 flex flex-wrap gap-2 rounded-lg border border-gray-800 bg-gray-950/80 p-2">
+            {tabs.map((tab, index) => (
+              <button
+                key={index}
+                className={`rounded-md px-4 py-1 text-sm font-semibold transition ${
+                  activeTab === index
+                    ? "bg-blue-500/20 text-blue-300"
+                    : "text-gray-400 hover:bg-gray-800 hover:text-gray-200"
+                }`}
+                type="button"
+                onClick={() => setActiveTab(index)}
+              >
+                {tab.name}
+              </button>
+            ))}
+          </div>
+
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <input
               value={searchTerm}
@@ -133,23 +149,6 @@ const MemberActivities = () => {
             >
               Clear Filters
             </button>
-
-            <div className="flex flex-wrap gap-2 rounded-lg border border-gray-800 bg-gray-950/80 p-2">
-              {tabs.map((tab, index) => (
-                <button
-                  key={index}
-                  className={`rounded-md px-4 py-1 text-sm font-semibold transition ${
-                    activeTab === index
-                      ? "bg-blue-500/20 text-blue-300"
-                      : "text-gray-400 hover:bg-gray-800 hover:text-gray-200"
-                  }`}
-                  type="button"
-                  onClick={() => setActiveTab(index)}
-                >
-                  {tab.name}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
 
