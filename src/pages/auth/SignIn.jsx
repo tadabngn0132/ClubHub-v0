@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { loginUser } from "../../store/slices/authSlice";
 import toast, { Toaster } from "react-hot-toast";
 import gdcLogo from "../../assets/logos/GDC_logo.svg";
@@ -15,16 +15,20 @@ import userIcon from "../../assets/icons/user_icon.svg";
 import emailIcon from "../../assets/icons/email_icon.svg";
 import lockIcon from "../../assets/icons/lock_icon.svg";
 import bgFormImage from "../../assets/backgrounds/sign_in_background/GDC_background.webp";
+import { AUTH_REMEMBER_DAY_OPTIONS } from "../../utils/constants";
 
 const SignIn = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
       email: "",
       password: "",
+      rememberMe: false,
+      rememberForDays: AUTH_REMEMBER_DAY_OPTIONS[1],
     },
     mode: "onChange",
     reValidateMode: "onChange",
@@ -34,6 +38,7 @@ const SignIn = () => {
   const navigate = useNavigate();
   const { isLoading, error } = useSelector((state) => state.auth);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const rememberMe = watch("rememberMe");
 
   const handleLogin = async (formData) => {
     const resData = await dispatch(loginUser(formData)).unwrap();
@@ -204,27 +209,55 @@ const SignIn = () => {
                 </span>
               </div>
 
-              {errors.password ? (
+              {errors.password && (
                 <div className="flex flex-col w-full justify-between">
                   {/* Password error */}
                   <span className="text-[var(--red-color)] text-[10px] lg:text-[11px] pl-4">
                     {errors.password.message}
                   </span>
+                </div>
+              )}
+
+              <div className="w-full mb-3 rounded-2xl border border-white/35 px-4 py-3 backdrop-blur-[1px]">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <label className="flex items-center gap-1.5 text-[12px] text-black select-none cursor-pointer leading-none">
+                    <input
+                      type="checkbox"
+                      className="accent-[var(--pink-color)] mt-[1px]"
+                      {...register("rememberMe")}
+                    />
+                    <span className="font-semibold tracking-[0.01em]">Remember me</span>
+                    <span
+                      className="text-[11px] text-[#545454] self-start mt-0.5"
+                      title="When enabled, your session is persisted and auto-expires after the selected duration."
+                    >
+                      <FontAwesomeIcon icon={faInfoCircle} />
+                    </span>
+                  </label>
+
                   <Link
                     to="/forgot-password"
-                    className="mb-3 self-end text-black text-[10px] lg:text-[11px]"
+                    className="text-[10px] lg:text-[11px] font-medium text-[#272727] underline underline-offset-2 decoration-transparent hover:decoration-[var(--pink-color)] hover:text-[var(--pink-color)] transition-colors"
                   >
-                    Forgot Password?
+                    Forgot password?
                   </Link>
                 </div>
-              ) : (
-                <Link
-                  to="/forgot-password"
-                  className="mb-3 w-full self-end text-black text-[10px] lg:text-[11px] text-end"
-                >
-                  Forgot Password?
-                </Link>
-              )}
+
+                <div className="flex items-center gap-3 text-[11px] text-black">
+                  <span className="font-medium text-[#3d3d3d]">Keep me signed in for</span>
+                  <select
+                    className="min-w-[92px] bg-[#e0e0e0]/50 rounded-lg px-1.75 py-0.75 outline-none border border-transparent focus:border-[var(--pink-color)] disabled:opacity-55 disabled:cursor-not-allowed text-[#222] font-medium"
+                    disabled={!rememberMe}
+                    {...register("rememberForDays", { valueAsNumber: true })}
+                  >
+                    {AUTH_REMEMBER_DAY_OPTIONS.map((day) => (
+                      <option key={day} value={day}>
+                        {day} day{day > 1 ? "s" : ""}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
 
             <input

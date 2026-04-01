@@ -15,8 +15,7 @@ import {
 import { useTokenRefresh } from "./hooks/useTokenRefresh";
 import { useSelector } from "react-redux";
 import { getToken, getCurrentUser } from "./utils/helper";
-
-const PRIVATE_ROUTE_PREFIXES = ["/admin", "/moderator", "/member"];
+import { PRIVATE_ROUTE_PREFIXES } from "./utils/constants";
 
 function TokenRefreshGate({ isLoggedInToWebsite }) {
   const { pathname } = useLocation();

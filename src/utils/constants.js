@@ -1,5 +1,38 @@
 export const API_BASE_URL = "http://localhost:5000/api/v1";
 
+export const AUTH_STORAGE_MODE = {
+  LOCAL: "local",
+  SESSION: "session",
+};
+
+export const AUTH_STORAGE_MODE_KEY = "authStorageMode";
+export const AUTH_LAST_ACTIVE_AT_KEY = "authLastActiveAt";
+export const AUTH_INACTIVITY_TIMEOUT_HOURS_KEY = "authInactivityTimeoutHours";
+export const AUTH_REMEMBER_DAYS_KEY = "authRememberDays";
+export const AUTH_INACTIVITY_TIMEOUT_HOURS = Number(
+  import.meta.env.VITE_AUTH_INACTIVITY_TIMEOUT_HOURS || 24,
+);
+export const AUTH_REMEMBER_DAY_OPTIONS = [1, 7, 30];
+
+export const PRIVATE_ROUTE_PREFIXES = ["/admin", "/moderator", "/member"];
+
+export const PRIVATE_API_PREFIXES = [
+  "/users",
+  "/tasks",
+  "/positions",
+  "/notifications",
+  "/messages",
+  "/rooms",
+  "/departments",
+  "/department-applications",
+  "/chat-rooms",
+  "/activities",
+  "/activity-participations",
+  "/member-applications",
+  "/ai",
+  "/auth/change-password",
+];
+
 export const ACTIVITY_TYPES = {
   MEETING: "MEETING",
   WORKSHOP: "WORKSHOP",

@@ -6,6 +6,9 @@ import store from "./store/index.js";
 import { Provider } from "react-redux";
 import { setUnauthorizedHandler } from "./services/axios.js";
 import { logoutUser } from "./store/slices/authSlice.js";
+import { initializeAuthSession } from "./utils/helper.js";
+
+initializeAuthSession();
 
 setUnauthorizedHandler(async () => {
   const dispatch = store.dispatch;

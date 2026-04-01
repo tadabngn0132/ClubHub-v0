@@ -1,6 +1,7 @@
 import axios from "axios";
-import { getToken, setToken } from "../utils/helper";
+import { getToken, setToken, touchSessionActivity } from "../utils/helper";
 import toast from "react-hot-toast";
+import { PRIVATE_ROUTE_PREFIXES, PRIVATE_API_PREFIXES } from "../utils/constants";
 
 let unauthorizedHandler = null;
 
@@ -58,6 +59,27 @@ const isAuthRequest = (requestUrl = "") => {
   );
 };
 
+const normalizePath = (requestUrl = "") => {
+  if (!requestUrl) return "";
+
+  try {
+    const parsedUrl = new URL(requestUrl, axiosClient.defaults.baseURL);
+    return parsedUrl.pathname.replace(/^\/api/, "") || "/";
+  } catch {
+    return requestUrl.split("?")[0];
+  }
+};
+
+const isOnPrivateRoute = () => {
+  const currentPath = window.location.pathname || "";
+  return PRIVATE_ROUTE_PREFIXES.some((prefix) => currentPath.startsWith(prefix));
+};
+
+const isPrivateApiRequest = (requestUrl = "") => {
+  const path = normalizePath(requestUrl);
+  return PRIVATE_API_PREFIXES.some((prefix) => path.startsWith(prefix));
+};
+
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   (config) => {
@@ -66,6 +88,7 @@ axiosClient.interceptors.request.use(
     const token = getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      touchSessionActivity();
     }
 
     if (config.data instanceof FormData) {
@@ -118,8 +141,12 @@ axiosClient.interceptors.response.use(
         const requestUrl = error.config?.url || "";
         const originalRequest = error.config || {};
         const shouldSkipAutoLogout = isAuthRequest(requestUrl);
+        const shouldTryRefresh =
+          isOnPrivateRoute() &&
+          isPrivateApiRequest(requestUrl) &&
+          !shouldSkipAutoLogout;
 
-        if (shouldSkipAutoLogout || originalRequest._retry) {
+        if (!shouldTryRefresh || originalRequest._retry) {
           toast.error(error.response?.data?.message || "Unauthorized");
           break;
         }

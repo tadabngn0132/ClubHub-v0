@@ -14,19 +14,32 @@ import {
   getCurrentUser,
   setCurrentUser,
   removeCurrentUser,
+  setAuthStorageMode,
+  configureAuthPersistence,
 } from "../../utils/helper";
+import { AUTH_STORAGE_MODE } from "../../utils/constants";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (userData, thunkAPI) => {
     try {
-      const data = await login(userData);
+      const loginPayload = {
+        email: userData.email,
+        password: userData.password,
+        rememberMe: Boolean(userData.rememberMe),
+        rememberForDays: Number(userData.rememberForDays),
+      };
+      const data = await login(loginPayload);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
       }
 
-      return data;
+      return {
+        ...data,
+        rememberMe: Boolean(userData.rememberMe),
+        rememberForDays: Number(userData.rememberForDays),
+      };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
@@ -136,6 +149,7 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
       state.currentUser = action.payload.userData;
       state.token = action.payload.accessToken;
+      setAuthStorageMode(AUTH_STORAGE_MODE.LOCAL);
       setToken(action.payload.accessToken);
       setCurrentUser(action.payload.userData);
     }
@@ -154,6 +168,11 @@ const authSlice = createSlice({
         state.isLoggedIn = true;
         state.currentUser = action.payload.data.necessaryUserData;
         state.token = action.payload.data.accessToken;
+
+        configureAuthPersistence({
+          rememberMe: action.payload.rememberMe,
+          rememberForDays: action.payload.rememberForDays,
+        });
         setToken(action.payload.data.accessToken);
         setCurrentUser(action.payload.data.necessaryUserData);
       })
@@ -175,6 +194,7 @@ const authSlice = createSlice({
         state.currentUser = null;
         state.token = null;
         state.authStatus = "fulfilled";
+        setAuthStorageMode(AUTH_STORAGE_MODE.LOCAL);
         removeToken();
         removeCurrentUser();
       })
