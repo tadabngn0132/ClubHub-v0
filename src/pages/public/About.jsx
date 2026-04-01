@@ -1,308 +1,346 @@
-import GDCLogo from "../../assets/logos/GDC_logo.svg";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBullseye,
+  faEye,
+  faGem,
+  faTrophy,
+  faGraduationCap,
+  faMedal,
+  faPeopleGroup,
+  faCameraRetro,
+  faUsers,
+  faBullhorn,
+  faCalendarDays,
+  faPalette,
+  faHeart,
+  faGasPump,
+  faGear,
+  faBrain,
+} from "@fortawesome/free-solid-svg-icons";
 
 const About = () => {
-  const highlights = [
+  const timelineMilestones = [
     {
-      number: "100+",
-      label: "Active Members",
-      desc: "Passionate dancers from all backgrounds",
+      year: "2022",
+      event: "Foundation",
+      description:
+        "Greenwich Dance Crew started as a small student-led team with one clear goal: create a disciplined, creative, and inclusive dance culture on campus.",
+      image:
+        "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=80",
     },
     {
-      number: "50+",
-      label: "Events Performed",
-      desc: "University and regional performances",
+      year: "2023",
+      event: "First Competitive Season",
+      description:
+        "The club entered regional showcases, ran internal training systems, and built a structured mentoring model between senior and junior members.",
+      image:
+        "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?auto=format&fit=crop&w=1000&q=80",
     },
     {
-      number: "4",
-      label: "Years Active",
-      desc: "Since 2022, growing stronger every day",
+      year: "2024",
+      event: "Cross-Club Collaboration",
+      description:
+        "GDC launched joint projects with other student organizations, expanding from pure performance into event production, media campaigns, and community activations.",
+      image:
+        "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1000&q=80",
     },
     {
-      number: "20+",
-      label: "Award Winners",
-      desc: "Recognized for excellence in dance",
+      year: "2025",
+      event: "Regional Recognition",
+      description:
+        "With larger stages and stronger routines, the team earned multiple recognitions and strengthened its identity as a high-standard student performing collective.",
+      image:
+        "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?auto=format&fit=crop&w=1000&q=80",
     },
   ];
 
-  const teamRoles = [
-    { title: "Founders", count: "3", desc: "Vision makers who started it all" },
+  const achievements = [
     {
-      title: "Choreographers",
-      count: "8",
-      desc: "Creative talents behind our moves",
+      title: "Outstanding Student Initiative",
+      year: "2024",
+      category: "Academic",
+      icon: faGraduationCap,
+      description:
+        "Recognized for integrating training, event operations, and peer mentoring into a student-led development model.",
     },
     {
-      title: "Dancers",
-      count: "70+",
-      desc: "Dedicated performers and trainees",
+      title: "Best Campus Performance",
+      year: "2025",
+      category: "Performance",
+      icon: faTrophy,
+      description:
+        "Awarded for stage quality, choreography coherence, and audience engagement across annual headline events.",
     },
     {
-      title: "Support Team",
-      count: "15+",
-      desc: "Production, media, and logistics",
+      title: "Community Impact Recognition",
+      year: "2025",
+      category: "Community Service",
+      icon: faPeopleGroup,
+      description:
+        "Honored for organizing dance workshops and outreach sessions that supported student well-being and social connection.",
+    },
+    {
+      title: "Creative Production Excellence",
+      year: "2023",
+      category: "Performance",
+      icon: faMedal,
+      description:
+        "Praised for combining performance, visual identity, and storytelling into a complete production experience.",
+    },
+    {
+      title: "Student Leadership Award",
+      year: "2024",
+      category: "Academic",
+      icon: faGraduationCap,
+      description:
+        "Awarded to the executive team for building transparent workflows and sustainable leadership transfer between generations.",
+    },
+    {
+      title: "Campus Volunteer Champion",
+      year: "2023",
+      category: "Community Service",
+      icon: faPeopleGroup,
+      description:
+        "Recognized for active support in student campaigns, charity showcases, and collaborative university events.",
     },
   ];
+
+  const galleryImages = [
+    "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1547153760-18fc9498041f?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1485217988980-11786ced9454?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1535525153412-5a42439a210d?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?auto=format&fit=crop&w=900&q=80",
+  ];
+
+  useEffect(() => {
+    const revealItems = document.querySelectorAll("[data-scroll-reveal]");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.remove("opacity-0", "translate-y-6");
+            entry.target.classList.add("opacity-100", "translate-y-0");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    revealItems.forEach((item) => observer.observe(item));
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="relative overflow-hidden flex flex-col w-full bg-black text-white">
-      {/* Background Gradient */}
-      <div className="absolute top-0 left-0 w-96 h-96 rounded-full blur-3xl bg-pink-500/15 pointer-events-none" />
-      <div className="absolute bottom-20 right-0 w-96 h-96 rounded-full blur-3xl bg-blue-500/10 pointer-events-none" />
+    <main className="relative overflow-hidden w-full min-h-[var(--pub-main-min-height)] my-[var(--pub-main-margin-y)] px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)] bg-black text-white">
+      <div className="pointer-events-none absolute top-0 left-0 h-80 w-80 rounded-full bg-[#DB3F7A]/12 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-24 right-0 h-96 w-96 rounded-full bg-[#DB3F7A]/8 blur-3xl" />
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)] pt-20 pb-32">
-        <div className="flex flex-col items-center gap-8 max-w-4xl z-10">
-          <img
-            src={GDCLogo}
-            alt="Greenwich Dance Crew"
-            className="w-40 md:w-56 h-auto drop-shadow-lg"
-          />
-
-          <div className="text-center space-y-6">
-            <h1 className="monument-extra-bold text-5xl md:text-7xl uppercase leading-tight">
-              Greenwich
-              <br />
-              <span className="pink-color">Dance Crew</span>
-            </h1>
-
-            <p className="text-xl md:text-2xl text-white/80 font-light max-w-2xl mx-auto">
-              Where passion meets movement. Creating art, building community,
-              inspiring change.
-            </p>
-
-            <div className="flex flex-wrap gap-4 justify-center pt-6">
-              <div className="px-6 py-3 rounded-full border border-pink-500/40 bg-pink-500/10 backdrop-blur-sm">
-                <span className="text-white/90">Founded 2022</span>
-              </div>
-              <div className="px-6 py-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm">
-                <span className="text-white/90">University of Greenwich</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      <section className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[radial-gradient(circle_at_18%_20%,_#1c1c1e_0%,_#080809_100%)] p-8 md:p-12">
+        <p className="text-xs uppercase tracking-[0.28em] text-white/50">About Greenwich Dance Crew</p>
+        <h1 className="monument-extra-bold mt-4 text-4xl uppercase leading-[1.04] sm:text-5xl md:text-7xl">
+          Our Story,
+          <br />
+          Vision, Impact
+        </h1>
+        <p className="mt-6 max-w-3xl text-sm leading-7 text-white/75 md:text-base">
+          Explore how Greenwich Dance Crew evolved from a student initiative into a dynamic organization driven by creativity, discipline, and social impact.
+        </p>
       </section>
 
-      {/* Highlights Section */}
-      <section className="relative px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)] py-24 bg-[#111111]/50">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {highlights.map((item, idx) => (
-            <div
-              key={idx}
-              className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-8 text-center hover:border-pink-500/30 transition-colors"
-            >
-              <div className="monument-extra-bold text-4xl md:text-5xl pink-color mb-2">
-                {item.number}
-              </div>
-              <h3 className="monument-regular text-lg uppercase text-white/90 mb-2">
-                {item.label}
-              </h3>
-              <p className="text-white/60 text-sm">{item.desc}</p>
-            </div>
-          ))}
+      <section className="mt-12">
+        <div className="mb-6 flex items-end gap-4">
+          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
+          <h2 className="monument-extra-bold text-3xl uppercase leading-none sm:text-4xl">History Timeline</h2>
         </div>
-      </section>
 
-      {/* About GDC */}
-      <section className="relative px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)] py-24">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="monument-extra-bold text-4xl md:text-5xl uppercase mb-12 text-center">
-            Who We Are
-          </h2>
+        <div className="relative mx-auto max-w-5xl">
+          <div className="absolute left-6 top-0 h-full w-px bg-white/15 md:left-1/2 md:-translate-x-1/2" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="space-y-6">
-              <p className="text-lg text-white/80 leading-relaxed">
-                Greenwich Dance Crew is more than a performance group—we're a
-                collective of artists, innovators, and dreamers united by the
-                power of dance. Since our founding in 2022, we've grown into a
-                vibrant community of over 100 members across multiple styles.
-              </p>
-
-              <p className="text-lg text-white/80 leading-relaxed">
-                Our journey has been marked by countless performances,
-                international collaborations, and a steadfast commitment to
-                elevating dance culture within our university and beyond. Every
-                choreography, every practice, every performance tells the story
-                of our collective passion.
-              </p>
-
-              <p className="text-lg text-white/80 leading-relaxed">
-                We believe in the transformative power of movement—to express
-                what words cannot, to connect across cultures, and to inspire
-                the next generation of artists.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <div className="rounded-2xl border border-pink-500/30 bg-pink-500/10 p-6">
-                <h3 className="monument-regular text-xl pink-color uppercase mb-3">
-                  Our Mission
-                </h3>
-                <p className="text-white/80">
-                  To create a thriving space where dancers can grow creatively
-                  and technically, pushing boundaries while respecting our roots
-                  in contemporary and street dance.
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-6">
-                <h3 className="monument-regular text-xl text-blue-400 uppercase mb-3">
-                  Our Vision
-                </h3>
-                <p className="text-white/80">
-                  To establish ourselves as a cultural force that sets the
-                  standard for dance excellence, innovation, and community
-                  impact across Southeast Asia.
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-purple-500/30 bg-purple-500/10 p-6">
-                <h3 className="monument-regular text-xl text-purple-400 uppercase mb-3">
-                  Our Values
-                </h3>
-                <p className="text-white/80">
-                  Creativity, Unity, and Discipline. We innovate fearlessly,
-                  support each other unconditionally, and commit to excellence
-                  in every move.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Team Structure */}
-      <section className="relative px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)] py-24 bg-[#111111]/50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="monument-extra-bold text-4xl md:text-5xl uppercase mb-12 text-center">
-            Our Team
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {teamRoles.map((role, idx) => (
-              <div
-                key={idx}
-                className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-5 py-10 hover:border-pink-500/30 transition-colors"
+          <div className="space-y-8">
+            {timelineMilestones.map((milestone, index) => (
+              <article
+                key={milestone.year}
+                data-scroll-reveal
+                className={`relative opacity-0 translate-y-6 transition-all duration-700 ease-out ${
+                  index % 2 === 0 ? "md:pr-[52%]" : "md:pl-[52%]"
+                }`}
               >
-                <div className="monument-extra-bold text-5xl pink-color mb-3">
-                  {role.count}
+                <div className="absolute left-6 top-8 h-4 w-4 -translate-x-1/2 rounded-full border-4 border-black bg-[#DB3F7A] md:left-1/2" />
+
+                <div className="rounded-2xl border border-white/10 bg-[#0d0d0f] p-5 md:p-6">
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#DB3F7A]">{milestone.year}</p>
+                  <h3 className="monument-extra-bold mt-2 text-2xl uppercase">{milestone.event}</h3>
+                  <p className="mt-3 text-sm leading-7 text-white/75">{milestone.description}</p>
+
+                  <img
+                    src={milestone.image}
+                    alt={`${milestone.year} milestone`}
+                    className="mt-4 h-40 w-full rounded-xl object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
-                <h3 className="monument-regular text-lg uppercase text-white/90 mb-3">
-                  {role.title}
-                </h3>
-                <p className="text-white/60 text-sm">{role.desc}</p>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Journey Timeline */}
-      <section className="relative px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)] py-24">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="monument-extra-bold text-4xl md:text-5xl uppercase mb-16 text-center">
-            Our Journey
-          </h2>
+      <section className="mt-12">
+        <div className="mb-6 flex items-end gap-4">
+          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
+          <h2 className="monument-extra-bold text-3xl uppercase leading-none sm:text-4xl">Vision, Mission, Values</h2>
+        </div>
 
-          <div className="space-y-8">
-            <div className="flex gap-8 items-start">
-              <div className="flex-shrink-0">
-                <div className="monument-extra-bold text-3xl pink-color">
-                  2022
-                </div>
-              </div>
-              <div className="flex-grow rounded-2xl border border-white/10 bg-[#111111]/80 p-6">
-                <h3 className="monument-regular text-xl uppercase text-white/90 mb-2">
-                  Genesis
-                </h3>
-                <p className="text-white/75">
-                  GreenWich Dance Crew is founded by a group of passionate
-                  dancers at FPT University. A small team with a big vision to
-                  transform dance culture.
-                </p>
-              </div>
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+          <article className="rounded-2xl border border-white/10 bg-[#0d0d0f] p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="monument-regular text-xl uppercase">Vision</h3>
+              <FontAwesomeIcon icon={faEye} className="text-[#DB3F7A]" />
             </div>
+            <p className="mt-4 text-sm leading-7 text-white/75">
+              Greenwich Dance Crew envisions becoming a benchmark student arts organization recognized for artistic quality, leadership culture, and social impact. We aim to build a long-term creative ecosystem where students can continuously develop their craft, experiment with bold production ideas, and perform with professional standards. Our vision extends beyond stages: we want to shape responsible young leaders who can collaborate across disciplines, represent campus culture with confidence, and inspire wider communities through movement, storytelling, and meaningful creative work.
+            </p>
+          </article>
 
-            <div className="flex gap-8 items-start flex-row-reverse">
-              <div className="flex-shrink-0">
-                <div className="monument-extra-bold text-3xl pink-color">
-                  2023
-                </div>
-              </div>
-              <div className="flex-grow rounded-2xl border border-white/10 bg-[#111111]/80 p-6">
-                <h3 className="monument-regular text-xl uppercase text-white/90 mb-2">
-                  Expansion
-                </h3>
-                <p className="text-white/75">
-                  Membership grows to 50+ dancers. First major performances at
-                  university events and regional competitions. Recognition
-                  begins to build.
-                </p>
-              </div>
+          <article className="rounded-2xl border border-white/10 bg-[#0d0d0f] p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="monument-regular text-xl uppercase">Mission</h3>
+              <FontAwesomeIcon icon={faBullseye} className="text-[#DB3F7A]" />
             </div>
+            <p className="mt-4 text-sm leading-7 text-white/75">
+              Our mission is to provide an inclusive, high-discipline environment where members improve both artistic and operational skills through real projects. We deliver structured training, collaborative rehearsals, and performance opportunities that challenge each member to grow in confidence, consistency, and stage presence. At the same time, we cultivate project management, communication, and team leadership through events and campaigns. By balancing creativity with execution, we help members become not only better dancers, but also stronger contributors in any professional or community setting.
+            </p>
+          </article>
 
-            <div className="flex gap-8 items-start">
-              <div className="flex-shrink-0">
-                <div className="monument-extra-bold text-3xl pink-color">
-                  2024
-                </div>
-              </div>
-              <div className="flex-grow rounded-2xl border border-white/10 bg-[#111111]/80 p-6">
-                <h3 className="monument-regular text-xl uppercase text-white/90 mb-2">
-                  Recognition
-                </h3>
-                <p className="text-white/75">
-                  Multiple award wins, collaborations with international
-                  choreographers, and the launch of workshops training 100+
-                  students across the community.
-                </p>
-              </div>
+          <article className="rounded-2xl border border-white/10 bg-[#0d0d0f] p-6">
+            <div className="flex items-center justify-between">
+              <h3 className="monument-regular text-xl uppercase">Values</h3>
+              <FontAwesomeIcon icon={faGem} className="text-[#DB3F7A]" />
             </div>
+            <p className="mt-4 text-sm leading-7 text-white/75">
+              We are grounded in three core values: creativity, unity, and discipline. Creativity encourages us to explore new styles and ideas without fear. Unity reminds us that meaningful achievements come from mutual trust, support, and accountability. Discipline ensures that every concept is transformed into a polished outcome through consistent effort and respect for process. These values shape how we rehearse, perform, and work together as a community. They also define how we represent the club: with integrity, ambition, and commitment to continuous improvement.
+            </p>
+          </article>
+        </div>
+      </section>
 
-            <div className="flex gap-8 items-start flex-row-reverse">
-              <div className="flex-shrink-0">
-                <div className="monument-extra-bold text-3xl pink-color">
-                  2025+
+      <section className="mt-12">
+        <div className="mb-6 flex items-end gap-4">
+          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
+          <h2 className="monument-extra-bold text-3xl uppercase leading-none sm:text-4xl">Achievements</h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {achievements.map((award) => (
+            <article
+              key={`${award.title}-${award.year}`}
+              className="rounded-2xl border border-white/10 bg-[#0d0d0f] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#DB3F7A]/55"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-[#DB3F7A]">{award.category}</p>
+                  <h3 className="monument-extra-bold mt-2 text-2xl uppercase leading-tight">{award.title}</h3>
                 </div>
+                <FontAwesomeIcon icon={award.icon} className="text-[#DB3F7A]" />
               </div>
-              <div className="flex-grow rounded-2xl border border-white/10 bg-[#111111]/80 p-6">
-                <h3 className="monument-regular text-xl uppercase text-white/90 mb-2">
-                  Legacy Building
-                </h3>
-                <p className="text-white/75">
-                  100+ active members, 20+ performances, establishing mentorship
-                  programs and aiming for regional leadership in dance culture
-                  and education.
-                </p>
-              </div>
+
+              <p className="mt-3 text-sm text-white/60">Year: {award.year}</p>
+              <p className="mt-3 text-sm leading-6 text-white/75">{award.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-12">
+        <div className="mb-6 flex items-end gap-4">
+          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
+          <h2 className="monument-extra-bold text-3xl uppercase leading-none sm:text-4xl">Club Structure</h2>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-[#0d0d0f] p-6 md:p-8">
+          <div className="mx-auto flex max-w-5xl flex-col items-center gap-5">
+            <article className="w-full max-w-sm rounded-xl border border-[#DB3F7A]/40 bg-[#DB3F7A]/10 p-4 text-center">
+              <FontAwesomeIcon icon={faBrain} className="text-[#DB3F7A] text-xl" />
+              <h3 className="monument-extra-bold mt-2 text-2xl uppercase">Executive Board</h3>
+            </article>
+
+            <div className="h-8 w-px bg-white/20" />
+
+            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              <article className="rounded-xl border border-white/10 bg-[#111114] p-4 text-center">
+                <FontAwesomeIcon icon={faBullhorn} className="text-[#DB3F7A]" />
+                <p className="monument-regular mt-2 text-sm uppercase">Communications</p>
+              </article>
+              <article className="rounded-xl border border-white/10 bg-[#111114] p-4 text-center">
+                <FontAwesomeIcon icon={faCalendarDays} className="text-[#DB3F7A]" />
+                <p className="monument-regular mt-2 text-sm uppercase">Events</p>
+              </article>
+              <article className="rounded-xl border border-white/10 bg-[#111114] p-4 text-center">
+                <FontAwesomeIcon icon={faPalette} className="text-[#DB3F7A]" />
+                <p className="monument-regular mt-2 text-sm uppercase">Design</p>
+              </article>
+              <article className="rounded-xl border border-white/10 bg-[#111114] p-4 text-center">
+                <FontAwesomeIcon icon={faUsers} className="text-[#DB3F7A]" />
+                <p className="monument-regular mt-2 text-sm uppercase">Human Resources</p>
+              </article>
+              <article className="rounded-xl border border-white/10 bg-[#111114] p-4 text-center">
+                <FontAwesomeIcon icon={faGear} className="text-[#DB3F7A]" />
+                <p className="monument-regular mt-2 text-sm uppercase">Logistics</p>
+              </article>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="relative px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)] py-24 bg-[#111111]/50">
-        <div className="max-w-3xl mx-auto text-center rounded-3xl border border-pink-500/40 bg-gradient-to-b from-pink-500/10 to-transparent p-12 md:p-16">
-          <h2 className="monument-extra-bold text-3xl md:text-4xl uppercase mb-6">
-            Ready to Move With Us?
-          </h2>
+      <section className="mt-12 pb-10">
+        <div className="mb-6 flex items-end gap-4">
+          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
+          <h2 className="monument-extra-bold text-3xl uppercase leading-none sm:text-4xl">Photo Gallery</h2>
+        </div>
 
-          <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">
-            Whether you're an experienced dancer or completely new to dance,
-            there's a place for you in our crew. Let's create something
-            extraordinary together.
+        <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+          {galleryImages.map((image, index) => (
+            <article
+              key={image}
+              className="mb-4 break-inside-avoid overflow-hidden rounded-xl border border-white/10 bg-[#0d0d0f]"
+            >
+              <img
+                src={image}
+                alt={`Club key moment ${index + 1}`}
+                className="w-full object-cover transition-transform duration-300 hover:scale-105"
+                loading="lazy"
+                decoding="async"
+              />
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="pb-10">
+        <div className="rounded-3xl border border-[#DB3F7A]/35 bg-[#DB3F7A]/10 p-8 text-center md:p-12">
+          <FontAwesomeIcon icon={faCameraRetro} className="text-[#DB3F7A]" />
+          <h2 className="monument-extra-bold mt-4 text-3xl uppercase md:text-4xl">Ready to be part of the journey?</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-white/75 md:text-base">
+            If you are looking for a place to grow creatively, build real teamwork experience, and perform with purpose, Greenwich Dance Crew is ready to welcome you.
           </p>
-
-          <Link to="/apply-membership" className="monument-regular uppercase px-8 py-3 rounded-xl border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white transition-colors duration-300 font-semibold">
+          <Link
+            to="/apply-membership"
+            className="monument-regular mt-6 inline-flex rounded-xl border border-[#DB3F7A] px-8 py-3 text-xs uppercase tracking-[0.2em] text-[#DB3F7A] transition-colors hover:bg-[#DB3F7A] hover:text-white"
+          >
             Join Our Crew
           </Link>
         </div>
       </section>
-
-      {/* Footer Spacing */}
-      <div className="h-20" />
-    </div>
+    </main>
   );
 };
 

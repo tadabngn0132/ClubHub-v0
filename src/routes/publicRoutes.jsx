@@ -3,6 +3,7 @@ import Home from "../pages/public/Home.jsx";
 import About from "../pages/public/About.jsx";
 import Members from "../pages/public/Members.jsx";
 import Activities from "../pages/public/Activities.jsx";
+import ActivityDetails from "../pages/public/ActivityDetails.jsx";
 import Contact from "../pages/public/Contact.jsx";
 import AddMemberApplication from "../pages/public/AddMemberApplication.jsx";
 
@@ -36,6 +37,14 @@ export const publicRoutes = [
     element: (
       <PublicLayout>
         <Activities />
+      </PublicLayout>
+    ),
+  },
+  {
+    path: "/activities/:slug",
+    element: (
+      <PublicLayout>
+        <ActivityDetails />
       </PublicLayout>
     ),
   },

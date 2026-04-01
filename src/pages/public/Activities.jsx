@@ -1,248 +1,492 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { sampleActivityData } from "../../data/sampleActivityData";
+
+const TIME_FILTERS = ["All", "Upcoming", "Ongoing", "Completed"];
+const SORT_OPTIONS = [
+  { value: "date_desc", label: "Day (newest)" },
+  { value: "date_asc", label: "Day (oldest)" },
+  { value: "name_asc", label: "Name (A-Z)" },
+  { value: "name_desc", label: "Name (Z-A)" },
+];
+const PAGE_SIZE = 12;
+
+const formatDateLabel = (isoDate) => {
+  const date = new Date(isoDate);
+  if (Number.isNaN(date.getTime())) {
+    return "TBD";
+  }
+
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+};
+
+const mapActivityStatus = (status) => {
+  const normalized = String(status || "").toUpperCase();
+
+  if (normalized === "ONGOING") {
+    return "Ongoing";
+  }
+
+  if (normalized === "COMPLETED") {
+    return "Completed";
+  }
+
+  return "Upcoming";
+};
+
+const highlightText = (text, keyword) => {
+  if (!keyword?.trim()) {
+    return text;
+  }
+
+  const keywordLower = keyword.toLowerCase();
+  const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escaped})`, "ig");
+  const parts = text.split(regex);
+
+  return parts.map((part, index) =>
+    part.toLowerCase() === keywordLower ? (
+      <mark key={`${part}-${index}`} className="rounded bg-[#DB3F7A] px-0.5 text-white">
+        {part}
+      </mark>
+    ) : (
+      <span key={`${part}-${index}`}>{part}</span>
+    ),
+  );
+};
 
 const Activities = () => {
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [activeTab, setActiveTab] = useState("Upcoming");
+  const [selectedTimes, setSelectedTimes] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [sortBy, setSortBy] = useState("date_desc");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [jumpToPage, setJumpToPage] = useState("");
+  const [jumpError, setJumpError] = useState("");
 
-  const activities = [
-    {
-      id: 1,
-      title: "Orientation Jam",
-      type: "Workshop",
-      status: "Upcoming",
-      date: "Apr 05, 2026",
-      location: "Studio A - Hall 3",
-      description:
-        "Intro session for new members with choreography basics, club culture, and team matching.",
-      className: "md:col-span-7",
-    },
-    {
-      id: 2,
-      title: "Campus Flashmob",
-      type: "Performance",
-      status: "Upcoming",
-      date: "Apr 18, 2026",
-      location: "Central Courtyard",
-      description:
-        "Open-air performance activation designed to kick off recruitment week across campus.",
-      className: "md:col-span-5",
-    },
-    {
-      id: 3,
-      title: "Content Sprint",
-      type: "Production",
-      status: "Ongoing",
-      date: "Every Tue, 19:00",
-      location: "Media Lab 2",
-      description:
-        "Weekly sprint for filming reels, behind-the-scenes stories, and social campaign assets.",
-      className: "md:col-span-4",
-    },
-    {
-      id: 4,
-      title: "Technique Lab",
-      type: "Workshop",
-      status: "Ongoing",
-      date: "Every Thu, 18:00",
-      location: "Studio C",
-      description:
-        "Skill-focused class for footwork, musicality, and stage transition techniques.",
-      className: "md:col-span-4",
-    },
-    {
-      id: 5,
-      title: "Spring Showcase",
-      type: "Performance",
-      status: "Completed",
-      date: "Mar 20, 2026",
-      location: "Main Auditorium",
-      description:
-        "End-of-season stage event featuring six concept sets and cross-team collaboration.",
-      className: "md:col-span-4",
-    },
-    {
-      id: 6,
-      title: "Leadership Roundtable",
-      type: "Internal",
-      status: "Completed",
-      date: "Mar 12, 2026",
-      location: "Meeting Room B",
-      description:
-        "Strategic review with team leads to refine operations, pipeline, and event quality metrics.",
-      className: "md:col-span-6",
-    },
-    {
-      id: 7,
-      title: "Partner Networking Night",
-      type: "Networking",
-      status: "Upcoming",
-      date: "May 02, 2026",
-      location: "Innovation Hub",
-      description:
-        "Evening meet-up with media partners, sponsors, and alumni to expand collaboration channels.",
-      className: "md:col-span-6",
-    },
-  ];
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm.trim());
+    }, 300);
 
-  const filters = ["All", "Upcoming", "Ongoing", "Completed"];
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
-  const filteredActivities = useMemo(() => {
-    if (activeFilter === "All") {
-      return activities;
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab, selectedTimes, selectedCategories, debouncedSearch, sortBy]);
+
+  const activities = useMemo(() => {
+    return sampleActivityData.map((item) => {
+      const category = item.category || item.type || "General";
+      const dateISO = item.startDate || item.date;
+      const location = item.location || [item.venueName, item.venueAddress].filter(Boolean).join(" - ") || "TBD";
+
+      return {
+        id: item.id,
+        slug: item.slug,
+        title: item.title || item.name || "Untitled Activity",
+        category,
+        status: mapActivityStatus(item.status),
+        dateISO,
+        dateLabel: item.dateLabel || formatDateLabel(dateISO),
+        location,
+        description: item.shortDescription || item.description || "No description available.",
+        thumbnail: item.thumbnail || item.thumbnailUrl,
+      };
+    });
+  }, []);
+
+  const categoryFilters = useMemo(() => {
+    return Array.from(new Set(activities.map((item) => item.category))).sort((a, b) =>
+      a.localeCompare(b),
+    );
+  }, [activities]);
+
+  const tabFiltered = useMemo(() => {
+    const upcomingStatuses = ["Upcoming", "Ongoing"];
+
+    return activities.filter((item) =>
+      activeTab === "Upcoming"
+        ? upcomingStatuses.includes(item.status)
+        : item.status === "Completed",
+    );
+  }, [activeTab, activities]);
+
+  const finalList = useMemo(() => {
+    let result = [...tabFiltered];
+
+    if (selectedTimes.length > 0 && !selectedTimes.includes("All")) {
+      result = result.filter((item) => selectedTimes.includes(item.status));
     }
 
-    return activities.filter((item) => item.status === activeFilter);
-  }, [activeFilter]);
+    if (selectedCategories.length > 0) {
+      result = result.filter((item) => selectedCategories.includes(item.category));
+    }
 
-  const statCards = [
-    {
-      label: "Total Activities",
-      value: activities.length,
-    },
-    {
-      label: "Upcoming",
-      value: activities.filter((item) => item.status === "Upcoming").length,
-    },
-    {
-      label: "Ongoing",
-      value: activities.filter((item) => item.status === "Ongoing").length,
-    },
-  ];
+    if (debouncedSearch) {
+      const keyword = debouncedSearch.toLowerCase();
+      result = result.filter((item) =>
+        [item.title, item.location, item.description, item.category]
+          .join(" ")
+          .toLowerCase()
+          .includes(keyword),
+      );
+    }
+
+    result.sort((a, b) => {
+      if (sortBy === "date_desc") {
+        return new Date(b.dateISO) - new Date(a.dateISO);
+      }
+
+      if (sortBy === "date_asc") {
+        return new Date(a.dateISO) - new Date(b.dateISO);
+      }
+
+      if (sortBy === "name_asc") {
+        return a.title.localeCompare(b.title, "vi");
+      }
+
+      return b.title.localeCompare(a.title, "vi");
+    });
+
+    return result;
+  }, [tabFiltered, selectedTimes, selectedCategories, debouncedSearch, sortBy]);
+
+  const totalPages = Math.max(1, Math.ceil(finalList.length / PAGE_SIZE));
+  const clampedPage = Math.min(currentPage, totalPages);
+  const startIndex = (clampedPage - 1) * PAGE_SIZE;
+  const paginatedActivities = finalList.slice(startIndex, startIndex + PAGE_SIZE);
+  const fromResult = finalList.length === 0 ? 0 : startIndex + 1;
+  const toResult = Math.min(startIndex + PAGE_SIZE, finalList.length);
+
+  const pageNumbers = useMemo(() => {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }, [totalPages]);
+
+  const toggleFilter = (value, currentList, setter) => {
+    if (value === "All") {
+      setter(currentList.includes("All") ? [] : ["All"]);
+      return;
+    }
+
+    const withoutAll = currentList.filter((item) => item !== "All");
+    setter(
+      withoutAll.includes(value)
+        ? withoutAll.filter((item) => item !== value)
+        : [...withoutAll, value],
+    );
+  };
+
+  const clearFilters = () => {
+    setSelectedTimes([]);
+    setSelectedCategories([]);
+    setSearchTerm("");
+    setDebouncedSearch("");
+    setSortBy("date_desc");
+    setCurrentPage(1);
+    setJumpToPage("");
+    setJumpError("");
+  };
+
+  const handleJumpPage = (event) => {
+    if (event.key !== "Enter") {
+      return;
+    }
+
+    const value = Number(jumpToPage);
+    if (!Number.isInteger(value) || value < 1 || value > totalPages) {
+      setJumpError(`Please enter a page number from 1 to ${totalPages}.`);
+      return;
+    }
+
+    setJumpError("");
+    setCurrentPage(value);
+  };
 
   return (
     <main className="w-full min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] md:px-[var(--pub-container-padding-x)]">
-      <section className="relative overflow-hidden rounded-[2.5rem] border border-[#f8d7b9]/40 bg-[radial-gradient(circle_at_16%_18%,_#ffe8cf_0%,_#f5c08a_40%,_#b75324_100%)] p-6 text-[#211208] sm:p-8 md:p-12">
-        <div className="pointer-events-none absolute -right-16 -top-12 h-56 w-56 rounded-full bg-[#ffd5aa]/30 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-20 left-20 h-64 w-64 rounded-full bg-[#8e2f08]/20 blur-3xl" />
+      <section className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[radial-gradient(circle_at_16%_18%,_#1c1c1e_0%,_#0f0f10_55%,_#080809_100%)] p-6 text-white sm:p-8 md:p-12">
+        <div className="pointer-events-none absolute -right-16 -top-12 h-56 w-56 rounded-full bg-[#DB3F7A]/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-20 left-20 h-64 w-64 rounded-full bg-[#DB3F7A]/10 blur-3xl" />
 
         <div className="relative flex flex-col gap-8">
-          <p className="monument-regular text-xs uppercase tracking-[0.28em] text-[#5f2e15]">
-            Activities
+          <p className="monument-regular text-xs uppercase tracking-[0.28em] text-white/70">
+            Activities & Events
           </p>
 
           <h1 className="monument-extra-bold uppercase text-4xl leading-[1.04] sm:text-5xl md:text-7xl">
-            Move, Build,
+            Find The Right
             <br />
-            Perform
+            Activity Fast
           </h1>
 
           <p className="max-w-2xl text-sm font-light leading-7 md:text-base">
-            From training labs to stage showcases, every activity is designed as
-            a complete cycle of learning, collaboration, and execution.
+            Explore all club activities, apply filters, and search instantly to
+            find the events that match your interests.
           </p>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {statCards.map((card) => (
-              <div
-                key={card.label}
-                className="rounded-2xl border border-[#7d3312]/35 bg-[#1d1008]/10 p-4"
-              >
-                <p className="monument-extra-bold text-2xl">{card.value}</p>
-                <p className="mt-1 text-xs uppercase tracking-[0.2em]">
-                  {card.label}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="mt-10">
-        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-end gap-4">
-            <div className="h-11 w-2 rounded-full bg-[#f0a160]" />
-            <h2 className="monument-extra-bold text-3xl uppercase leading-none sm:text-4xl">
-              Program Board
-            </h2>
-          </div>
-
           <div className="flex flex-wrap gap-2">
-            {filters.map((filter) => {
-              const isActive = filter === activeFilter;
+            {["Upcoming", "Past"].map((tab) => {
+              const isActive = tab === activeTab;
 
               return (
                 <button
-                  key={filter}
+                  key={tab}
                   type="button"
-                  onClick={() => setActiveFilter(filter)}
-                  className={`rounded-full border px-4 py-2 text-xs uppercase tracking-[0.15em] transition-all duration-300 ${
+                  onClick={() => setActiveTab(tab)}
+                  className={`rounded-full border px-5 py-2 text-xs uppercase tracking-[0.18em] transition-all duration-300 ${
                     isActive
-                      ? "border-[#f0a160] bg-[#f0a160] text-[#211106]"
-                      : "border-[#f0a160]/45 bg-[#251208] text-[#ffd8b6] hover:border-[#f0a160]/80"
+                      ? "border-[#DB3F7A] bg-[#DB3F7A] text-white"
+                      : "border-white/20 bg-white/5 text-white/80 hover:border-[#DB3F7A]/70 hover:text-white"
                   }`}
                 >
-                  {filter}
+                  {tab}
                 </button>
               );
             })}
           </div>
         </div>
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-12">
-          {filteredActivities.map((item) => (
-            <article
-              key={item.id}
-              className={`group relative overflow-hidden rounded-[1.75rem] border border-[#f2b982]/35 bg-[#231006] p-5 text-[#ffdcb8] shadow-[0_24px_48px_rgba(16,5,0,0.24)] transition-all duration-300 hover:-translate-y-1 hover:border-[#ffd2a5] ${item.className}`}
-            >
-              <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-[#ffcf9a]/20 blur-2xl" />
-
-              <div className="relative flex h-full flex-col gap-5">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-[11px] uppercase tracking-[0.24em] text-[#ffc890]">
-                    {item.type}
-                  </p>
-                  <span className="rounded-full border border-[#f2b982]/45 px-3 py-1 text-[10px] uppercase tracking-[0.15em] text-[#ffd7b2]">
-                    {item.status}
-                  </span>
-                </div>
-
-                <h3 className="monument-extra-bold text-3xl uppercase leading-tight">
-                  {item.title}
-                </h3>
-
-                <p className="text-sm font-light leading-7 text-[#ffcd9b]">
-                  {item.description}
-                </p>
-
-                <div className="mt-auto flex flex-wrap gap-3 text-xs uppercase tracking-[0.08em] text-[#ffc187]">
-                  <span className="rounded-full bg-[#3f1e0f] px-3 py-1">
-                    {item.date}
-                  </span>
-                  <span className="rounded-full bg-[#3f1e0f] px-3 py-1">
-                    {item.location}
-                  </span>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {filteredActivities.length === 0 ? (
-          <div className="mt-5 rounded-2xl border border-dashed border-[#f0a160]/50 bg-[#241107] p-8 text-center text-sm text-[#ffc993]">
-            No activities in this status yet.
-          </div>
-        ) : null}
       </section>
 
-      <section className="mt-10 rounded-[2rem] border border-[#efa35f]/35 bg-[#261208] p-6 sm:p-8 md:p-10">
-        <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div>
-            <p className="monument-regular text-xs uppercase tracking-[0.28em] text-[#ffbf87]">
-              Join The Next Run
-            </p>
-            <h2 className="monument-extra-bold mt-3 text-3xl uppercase leading-tight text-[#ffddb9] sm:text-4xl">
-              Bring Your Energy To
-              <br />
-              The Next Activity
-            </h2>
+      <section className="mt-8 rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-5 sm:p-6 md:p-8">
+        <div className="grid gap-4 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <label
+              htmlFor="activities-search"
+              className="mb-2 block text-xs uppercase tracking-[0.2em] text-white/70"
+            >
+              Search
+            </label>
+            <input
+              id="activities-search"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search activities..."
+              className="w-full rounded-2xl border border-white/20 bg-[#141416] px-4 py-3 text-sm text-white outline-none transition-colors duration-300 placeholder:text-white/45 focus:border-[#DB3F7A]"
+            />
           </div>
+
+          <div>
+            <label
+              htmlFor="activities-sort"
+              className="mb-2 block text-xs uppercase tracking-[0.2em] text-white/70"
+            >
+              Sort by
+            </label>
+            <select
+              id="activities-sort"
+              value={sortBy}
+              onChange={(event) => setSortBy(event.target.value)}
+              className="w-full rounded-2xl border border-white/20 bg-[#141416] px-4 py-3 text-sm text-white outline-none transition-colors duration-300 focus:border-[#DB3F7A]"
+            >
+              {SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          <fieldset className="rounded-2xl border border-white/15 bg-[#121214] p-4">
+            <legend className="px-2 text-xs uppercase tracking-[0.2em] text-white/70">
+              Filter by time
+            </legend>
+            <div className="mt-2 flex flex-wrap gap-4">
+              {TIME_FILTERS.map((filter) => (
+                <label
+                  key={filter}
+                  className="flex cursor-pointer items-center gap-2 text-sm text-white/90"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedTimes.includes(filter)}
+                    onChange={() =>
+                      toggleFilter(filter, selectedTimes, setSelectedTimes)
+                    }
+                    className="h-4 w-4 rounded border-white/40 bg-[#141416] text-[#DB3F7A] focus:ring-[#DB3F7A]"
+                  />
+                  <span>{filter}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="rounded-2xl border border-white/15 bg-[#121214] p-4">
+            <legend className="px-2 text-xs uppercase tracking-[0.2em] text-white/70">
+              Filter by category
+            </legend>
+            <div className="mt-2 flex flex-wrap gap-4">
+              {categoryFilters.map((filter) => (
+                <label
+                  key={filter}
+                  className="flex cursor-pointer items-center gap-2 text-sm text-white/90"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(filter)}
+                    onChange={() =>
+                      toggleFilter(
+                        filter,
+                        selectedCategories,
+                        setSelectedCategories,
+                      )
+                    }
+                    className="h-4 w-4 rounded border-white/40 bg-[#141416] text-[#DB3F7A] focus:ring-[#DB3F7A]"
+                  />
+                  <span>{filter}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        </div>
+
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-sm text-white/75">
+          <p>
+            Showing {fromResult}-{toResult} of {finalList.length} activities
+          </p>
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="rounded-full border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.16em] text-white transition-all duration-300 hover:border-[#DB3F7A] hover:bg-[#DB3F7A]"
+          >
+            Clear filters
+          </button>
+        </div>
+      </section>
+
+      <section className="mt-8">
+        {paginatedActivities.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-white/25 bg-[#121214] p-8 text-center text-sm text-white/75">
+            <p className="text-base font-semibold text-white">No results found</p>
+            <p className="mt-2">Suggestions:</p>
+            <p className="mt-1">1. Try a shorter or different keyword.</p>
+            <p>2. Remove some time or category filters.</p>
+            <p>3. Click "Clear filters" to reset the full list.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {paginatedActivities.map((item) => (
+              <article
+                key={item.id}
+                className="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#121214] text-white shadow-[0_24px_48px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#DB3F7A]/70"
+              >
+                <div className="relative h-44 overflow-hidden">
+                  <img
+                    src={item.thumbnail}
+                    alt={item.title}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                </div>
+
+                <div className="flex h-[calc(100%-11rem)] flex-col gap-4 p-5">
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] uppercase tracking-[0.2em] text-white/70">
+                    <span>{highlightText(item.category, debouncedSearch)}</span>
+                    <span className="rounded-full border border-[#DB3F7A]/50 px-3 py-1 text-[10px] tracking-[0.15em] text-white/90">
+                      {item.status}
+                    </span>
+                  </div>
+
+                  <h3 className="monument-extra-bold text-2xl uppercase leading-tight text-white">
+                    {highlightText(item.title, debouncedSearch)}
+                  </h3>
+
+                  <p className="text-sm font-light leading-7 text-white/75">
+                    {highlightText(item.description, debouncedSearch)}
+                  </p>
+
+                  <div className="mt-auto flex flex-wrap gap-2 text-xs uppercase tracking-[0.08em] text-white/80">
+                    <span className="rounded-full bg-white/10 px-3 py-1">
+                      {item.dateLabel}
+                    </span>
+                    <span className="rounded-full bg-white/10 px-3 py-1">
+                      {highlightText(item.location, debouncedSearch)}
+                    </span>
+                  </div>
+
+                  <Link
+                    to={`/activities/${item.slug}`}
+                    className="mt-3 inline-flex w-fit rounded-full border border-[#DB3F7A]/60 px-4 py-2 text-xs uppercase tracking-[0.12em] text-white transition-all duration-300 hover:border-[#DB3F7A] hover:bg-[#DB3F7A]"
+                  >
+                    View Details
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="mt-8 rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-5 sm:p-6 md:p-8">
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+            disabled={clampedPage === 1}
+            className="rounded-full border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.14em] text-white disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Previous
+          </button>
+
+          {pageNumbers.map((page) => (
+            <button
+              key={page}
+              type="button"
+              onClick={() => setCurrentPage(page)}
+              className={`h-9 min-w-9 rounded-full border px-3 text-sm transition-all duration-300 ${
+                page === clampedPage
+                  ? "border-[#DB3F7A] bg-[#DB3F7A] text-[#fff1f7]"
+                  : "border-white/25 text-white/85 hover:border-[#DB3F7A]/70"
+              }`}
+            >
+              {page}
+            </button>
+          ))}
 
           <button
             type="button"
-            className="monument-regular w-fit rounded-full border border-[#ffcf9e] px-6 py-2 text-xs uppercase tracking-[0.2em] text-[#ffcf9e] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#ffcf9e] hover:text-[#211106]"
+            onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+            disabled={clampedPage === totalPages}
+            className="rounded-full border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.14em] text-white disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Register Interest
+            Next
           </button>
+
+          <div className="ml-auto flex w-full items-center justify-end gap-2 md:w-auto">
+            <label
+              htmlFor="jump-page"
+              className="text-xs uppercase tracking-[0.14em] text-white/70"
+            >
+              Jump to page
+            </label>
+            <input
+              id="jump-page"
+              value={jumpToPage}
+              onChange={(event) => {
+                setJumpToPage(event.target.value.replace(/\D/g, ""));
+                setJumpError("");
+              }}
+              onKeyDown={handleJumpPage}
+              placeholder="Enter"
+              className="w-20 rounded-full border border-white/25 bg-[#141416] px-3 py-2 text-center text-sm text-white outline-none placeholder:text-white/45 focus:border-[#DB3F7A]"
+            />
+          </div>
         </div>
+
+        {jumpError ? (
+          <p className="mt-3 text-sm text-[#DB3F7A]">{jumpError}</p>
+        ) : null}
       </section>
     </main>
   );

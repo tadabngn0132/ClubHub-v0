@@ -1,4 +1,4 @@
-export const sampleActivityData = [
+const rawSampleActivityData = [
   {
     id: 1,
     thumbnailUrl:
@@ -550,3 +550,154 @@ export const sampleActivityData = [
     registrationsCount: 175,
   },
 ];
+
+const REFERENCE_DATE = new Date("2026-04-01T12:00:00.000Z");
+
+const slugify = (value) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
+const getActivityType = (name) => {
+  const normalized = name.toLowerCase();
+
+  if (
+    normalized.includes("workshop") ||
+    normalized.includes("masterclass") ||
+    normalized.includes("intensive")
+  ) {
+    return "WORKSHOP";
+  }
+
+  if (
+    normalized.includes("battle") ||
+    normalized.includes("championship") ||
+    normalized.includes("competition")
+  ) {
+    return "COMPETITION";
+  }
+
+  if (
+    normalized.includes("showcase") ||
+    normalized.includes("performance") ||
+    normalized.includes("show") ||
+    normalized.includes("gala")
+  ) {
+    return "PERFORMANCE";
+  }
+
+  if (
+    normalized.includes("class") ||
+    normalized.includes("session") ||
+    normalized.includes("lớp") ||
+    normalized.includes("khoá")
+  ) {
+    return "TRAINING";
+  }
+
+  return "SOCIAL";
+};
+
+const getCapacity = (registrationsCount, status) => {
+  if (status === "Đầy") {
+    return registrationsCount;
+  }
+
+  if (status === "Sắp đầy") {
+    return registrationsCount + 5;
+  }
+
+  if (status === "Còn chỗ") {
+    return registrationsCount + 25;
+  }
+
+  return registrationsCount + 40;
+};
+
+const getPublishStatus = (startDate, endDate) => {
+  if (endDate < REFERENCE_DATE) {
+    return "COMPLETED";
+  }
+
+  if (startDate <= REFERENCE_DATE && endDate >= REFERENCE_DATE) {
+    return "ONGOING";
+  }
+
+  return "PUBLISHED";
+};
+
+export const sampleActivityData = rawSampleActivityData.map((item, index) => {
+  const [venueNameRaw, venueAddressRaw] = item.location.split(" - ");
+  const venueName = venueNameRaw?.trim() || item.location;
+  const venueAddress = venueAddressRaw?.trim() || "Vietnam";
+
+  const startDate = new Date(`${item.date}T19:00:00.000Z`);
+  const endDate = new Date(`${item.date}T21:30:00.000Z`);
+  const registrationDeadline = new Date(startDate);
+  registrationDeadline.setDate(registrationDeadline.getDate() - 1);
+
+  const maxParticipants = getCapacity(item.registrationsCount, item.status);
+  const slug = `${slugify(item.name)}-${item.id}`;
+  const nowIso = new Date().toISOString();
+  const activityStatus = getPublishStatus(startDate, endDate);
+
+  return {
+    id: item.id,
+
+    // Prisma Activity model compatible fields
+    title: item.name,
+    description: `${item.name} thuộc thể loại ${item.type}, diễn ra tại ${item.location}.`,
+    shortDescription: `${item.name} - ${item.type}`,
+    slug,
+    startDate: startDate.toISOString(),
+    endDate: endDate.toISOString(),
+    locationType: "OFFLINE",
+    meetingPlatform: null,
+    meetingLink: null,
+    meetingId: null,
+    meetingPassword: null,
+    venueName,
+    venueAddress,
+    roomNumber: venueName,
+    type: getActivityType(item.name),
+    status: activityStatus,
+    thumbnailUrl: item.thumbnailUrl,
+    thumbnailPublicId: null,
+    maxParticipants,
+    registrationDeadline: registrationDeadline.toISOString(),
+    requireRegistration: true,
+    organizerId: (index % 8) + 1,
+    isPublic: true,
+    isFeatured: item.registrationsCount >= 100,
+    priority: item.registrationsCount >= 100 ? 2 : 0,
+    isDeleted: false,
+    createdAt: new Date(startDate.getTime() - 1000 * 60 * 60 * 24 * 30).toISOString(),
+    updatedAt: nowIso,
+
+    // Extra relation-like sample payloads
+    images: [
+      {
+        id: item.id * 10 + 1,
+        imageUrl: item.thumbnailUrl,
+        imagePublicId: null,
+        activityId: item.id,
+        isDeleted: false,
+      },
+    ],
+    videos: [],
+
+    // Frontend convenience fields
+    name: item.name,
+    category: item.type,
+    date: item.date,
+    location: item.location,
+    registrationsCount: item.registrationsCount,
+    registrationStatusLabel: item.status,
+    availableSlots: Math.max(maxParticipants - item.registrationsCount, 0),
+  };
+});
