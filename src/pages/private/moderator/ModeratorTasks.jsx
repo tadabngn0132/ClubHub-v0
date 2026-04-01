@@ -5,16 +5,20 @@ import {
   hardDeleteTaskById,
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import {
   formatDate,
   formatUppercaseToCapitalized,
 } from "../../../utils/formatters.js";
+import { TASK_STATUS_OPTIONS } from "../../../utils/constants";
 
 const ModeratorTasks = () => {
   const dispatch = useDispatch();
   const { tasks, isLoading, error } = useSelector((state) => state.task);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("dueDate_desc");
 
   useEffect(() => {
     dispatch(getAllTasksList());
@@ -39,6 +43,53 @@ const ModeratorTasks = () => {
     }
   };
 
+  const filteredTasks = useMemo(() => {
+    const keyword = searchTerm.trim().toLowerCase();
+    let result = [...(tasks || [])];
+
+    if (keyword) {
+      result = result.filter((task) =>
+        [
+          task.title,
+          task.description,
+          task.status,
+          task.assigneeScope,
+          task.assignedBy?.fullname,
+        ]
+          .join(" ")
+          .toLowerCase()
+          .includes(keyword),
+      );
+    }
+
+    if (statusFilter !== "all") {
+      result = result.filter(
+        (task) => String(task.status || "").toUpperCase() === statusFilter,
+      );
+    }
+
+    result.sort((a, b) => {
+      if (sortBy === "title_asc") {
+        return String(a.title || "").localeCompare(String(b.title || ""));
+      }
+      if (sortBy === "title_desc") {
+        return String(b.title || "").localeCompare(String(a.title || ""));
+      }
+      if (sortBy === "dueDate_asc") {
+        return new Date(a.dueDate) - new Date(b.dueDate);
+      }
+      return new Date(b.dueDate) - new Date(a.dueDate);
+    });
+
+    return result;
+  }, [tasks, searchTerm, statusFilter, sortBy]);
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("all");
+    setSortBy("dueDate_desc");
+  };
+
   if (isLoading) {
     return <Loading />;
   }
@@ -52,7 +103,7 @@ const ModeratorTasks = () => {
               <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">
                 Tasks
               </h1>
-              <p className="mt-1 text-slate-300">{tasks.length} tasks</p>
+              <p className="mt-1 text-slate-300">{filteredTasks.length} tasks</p>
             </div>
 
             <Link
@@ -69,6 +120,44 @@ const ModeratorTasks = () => {
             {error}
           </div>
         )}
+
+        <div className="grid gap-3 md:grid-cols-4">
+          <input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search title, description, assignor..."
+            className="md:col-span-2 rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+          />
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+          >
+            <option value="all">All Statuses</option>
+            {TASK_STATUS_OPTIONS.map((status) => (
+              <option key={status} value={status}>
+                {formatUppercaseToCapitalized(status)}
+              </option>
+            ))}
+          </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+          >
+            <option value="dueDate_desc">Due Date: Newest</option>
+            <option value="dueDate_asc">Due Date: Oldest</option>
+            <option value="title_asc">Title: A-Z</option>
+            <option value="title_desc">Title: Z-A</option>
+          </select>
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm font-medium text-slate-100 hover:border-[var(--pink-color)]"
+          >
+            Clear Filters
+          </button>
+        </div>
 
         <div className="overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-900/65">
           <div className="overflow-x-auto">
@@ -95,7 +184,7 @@ const ModeratorTasks = () => {
               </thead>
 
               <tbody>
-                {tasks.length === 0 ? (
+                {filteredTasks.length === 0 ? (
                   <tr>
                     <td
                       colSpan="9"
@@ -105,7 +194,7 @@ const ModeratorTasks = () => {
                     </td>
                   </tr>
                 ) : (
-                  tasks.map((task) => (
+                  filteredTasks.map((task) => (
                     <tr
                       key={task.id}
                       className="border-t border-slate-800 odd:bg-slate-900/30 even:bg-slate-800/20 hover:bg-slate-800/50"

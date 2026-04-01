@@ -7,9 +7,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ActivitiesBulkActionBar from "./ActivitiesBulkActionBar";
 
-const ActivitiesTableView = ({ role }) => {
+const ActivitiesTableView = ({ role, activities: providedActivities }) => {
   const dispatch = useDispatch();
-  const { activities } = useSelector((state) => state.activity);
+  const { activities: storeActivities } = useSelector((state) => state.activity);
+  const activities = Array.isArray(providedActivities)
+    ? providedActivities
+    : storeActivities;
   const [selectedActivities, setSelectedActivities] = useState([]);
   const isAllSelected = activities.length > 0 && selectedActivities.length === activities.length;
 

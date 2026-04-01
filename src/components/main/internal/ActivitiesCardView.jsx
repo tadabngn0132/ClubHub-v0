@@ -5,9 +5,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const ActivitiesCardView = ({ role }) => {
+const ActivitiesCardView = ({ role, activities: providedActivities }) => {
   const dispatch = useDispatch();
-  const { activities } = useSelector((state) => state.activity);
+  const { activities: storeActivities } = useSelector((state) => state.activity);
+  const activities = Array.isArray(providedActivities)
+    ? providedActivities
+    : storeActivities;
 
   const handleDelete = (activityId) => {
     const softConfirmed = window.confirm(

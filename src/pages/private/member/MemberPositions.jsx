@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getPositionsList } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link } from "react-router-dom";
@@ -14,10 +14,54 @@ const MemberPositions = () => {
   const { positions, isLoading, error } = useSelector(
     (state) => state.position,
   );
+  const [searchTerm, setSearchTerm] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("title_asc");
 
   useEffect(() => {
     dispatch(getPositionsList());
   }, [dispatch]);
+
+  const filteredPositions = useMemo(() => {
+    const keyword = searchTerm.trim().toLowerCase();
+    let result = [...(positions || [])];
+
+    if (keyword) {
+      result = result.filter((position) =>
+        [position.title, position.level, position.systemRole]
+          .join(" ")
+          .toLowerCase()
+          .includes(keyword),
+      );
+    }
+
+    if (roleFilter !== "all") {
+      result = result.filter(
+        (position) => String(position.systemRole || "").toUpperCase() === roleFilter,
+      );
+    }
+
+    result.sort((a, b) => {
+      if (sortBy === "title_desc") {
+        return String(b.title || "").localeCompare(String(a.title || ""));
+      }
+      if (sortBy === "level_asc") {
+        return Number(a.level || 0) - Number(b.level || 0);
+      }
+      if (sortBy === "level_desc") {
+        return Number(b.level || 0) - Number(a.level || 0);
+      }
+      return String(a.title || "").localeCompare(String(b.title || ""));
+    });
+
+    return result;
+  }, [positions, searchTerm, roleFilter, sortBy]);
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setRoleFilter("all");
+    setSortBy("title_asc");
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -30,7 +74,7 @@ const MemberPositions = () => {
           <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">
             Positions
           </h1>
-          <p className="mt-1 text-slate-300">{positions.length} positions</p>
+          <p className="mt-1 text-slate-300">{filteredPositions.length} positions</p>
         </section>
 
         {error && (
@@ -38,6 +82,42 @@ const MemberPositions = () => {
             {error}
           </div>
         )}
+
+        <div className="grid gap-3 md:grid-cols-4">
+          <input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search title, level, role"
+            className="md:col-span-2 rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+          />
+          <select
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+            className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+          >
+            <option value="all">All Roles</option>
+            <option value="ADMIN">Admin</option>
+            <option value="MODERATOR">Moderator</option>
+            <option value="MEMBER">Member</option>
+          </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+          >
+            <option value="title_asc">Title: A-Z</option>
+            <option value="title_desc">Title: Z-A</option>
+            <option value="level_asc">Level: Low-High</option>
+            <option value="level_desc">Level: High-Low</option>
+          </select>
+          <button
+            type="button"
+            onClick={clearFilters}
+            className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm font-medium text-slate-100 hover:border-[var(--pink-color)]"
+          >
+            Clear Filters
+          </button>
+        </div>
 
         <div className="overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-900/65">
           <div className="overflow-x-auto">
@@ -52,7 +132,7 @@ const MemberPositions = () => {
               </thead>
 
               <tbody>
-                {positions.length === 0 ? (
+                {filteredPositions.length === 0 ? (
                   <tr>
                     <td
                       colSpan="4"
@@ -62,7 +142,7 @@ const MemberPositions = () => {
                     </td>
                   </tr>
                 ) : (
-                  positions.map((position) => (
+                  filteredPositions.map((position) => (
                     <tr
                       key={position.id}
                       className="border-t border-slate-800 odd:bg-slate-900/30 even:bg-slate-800/20 hover:bg-slate-800/50"

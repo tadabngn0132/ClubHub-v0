@@ -52,6 +52,18 @@ export const ACTIVITY_STATUSES = {
   POSTPONED: "POSTPONED",
 };
 
+export const USER_STATUS_OPTIONS = ["ACTIVE", "INACTIVE"];
+export const TASK_STATUS_OPTIONS = ["NEW", "IN_PROGRESS", "DONE", "CANCELLED", "ON_HOLD"];
+export const MEMBER_APPLICATION_FINAL_STATUS_OPTIONS = ["PENDING", "PASSED", "FAILED"];
+export const ACTIVITY_STATUS_OPTIONS = [
+  "DRAFT",
+  "PUBLISHED",
+  "ONGOING",
+  "COMPLETED",
+  "CANCELLED",
+  "POSTPONED",
+];
+
 export const TASK_STATUS = {
   NEW: "new",
   IN_PROGRESS: "in-progress",

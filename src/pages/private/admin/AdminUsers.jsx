@@ -5,7 +5,7 @@ import {
   hardDeleteUserById,
 } from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BulkActionBar from "../../../components/internal/BulkActionBar.jsx";
 import Pagination from "../../../components/internal/Pagination.jsx";
 import Loading from "../../../components/layout/internal/Loading.jsx";
@@ -14,12 +14,17 @@ import {
   formatStatusBadgeColor,
   formatRoleBadgeColor,
 } from "../../../utils/formatters.js";
+import { USER_STATUS_OPTIONS } from "../../../utils/constants";
 import { Toaster } from "react-hot-toast";
 
 const AdminUsers = () => {
   const dispatch = useDispatch();
   const { users, isLoading, error } = useSelector((state) => state.user);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [sortConfig, setSortConfig] = useState({ field: "id", direction: "asc" });
 
   useEffect(() => {
     dispatch(getUsersList());
@@ -44,11 +49,82 @@ const AdminUsers = () => {
     }
   };
 
-  // TODO: Implement sorting functionality here
   const handleSort = (field) => {
-    // Sorting logic will be implemented here
-    // Asc, Desc and Default states
+    setSortConfig((prev) => {
+      if (prev.field === field) {
+        return { field, direction: prev.direction === "asc" ? "desc" : "asc" };
+      }
+      return { field, direction: "asc" };
+    });
   };
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("all");
+    setRoleFilter("all");
+    setSortConfig({ field: "id", direction: "asc" });
+  };
+
+  const filteredUsers = useMemo(() => {
+    const keyword = searchTerm.trim().toLowerCase();
+    let result = [...(users || [])];
+
+    if (keyword) {
+      result = result.filter((user) => {
+        const departmentName = user?.userPosition?.[0]?.position?.department?.name || "";
+        const role = user?.userPosition?.[0]?.position?.systemRole || "";
+
+        return [
+          String(user.id),
+          user.fullname,
+          user.email,
+          user.major,
+          String(user.generation || ""),
+          departmentName,
+          role,
+          user.status,
+        ]
+          .join(" ")
+          .toLowerCase()
+          .includes(keyword);
+      });
+    }
+
+    if (statusFilter !== "all") {
+      result = result.filter(
+        (user) => String(user.status || "").toUpperCase() === statusFilter,
+      );
+    }
+
+    if (roleFilter !== "all") {
+      result = result.filter(
+        (user) =>
+          String(user?.userPosition?.[0]?.position?.systemRole || "").toUpperCase() === roleFilter,
+      );
+    }
+
+    result.sort((a, b) => {
+      const getValue = (user) => {
+        if (sortConfig.field === "name") return user.fullname || "";
+        if (sortConfig.field === "email") return user.email || "";
+        if (sortConfig.field === "generation") return Number(user.generation || 0);
+        if (sortConfig.field === "id") return Number(user.id || 0);
+        return "";
+      };
+
+      const valueA = getValue(a);
+      const valueB = getValue(b);
+
+      if (typeof valueA === "number" && typeof valueB === "number") {
+        return sortConfig.direction === "asc" ? valueA - valueB : valueB - valueA;
+      }
+
+      const compared = String(valueA).localeCompare(String(valueB));
+      return sortConfig.direction === "asc" ? compared : -compared;
+    });
+
+    return result;
+  }, [users, searchTerm, statusFilter, roleFilter, sortConfig]);
 
   if (isLoading) {
     return <Loading />;
@@ -61,9 +137,7 @@ const AdminUsers = () => {
       <div className="flex items-center-safe justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold mb-1">Members</h1>
-          <p className="text-sm text-gray-500">
-            {users ? users.length : 0} members
-          </p>{" "}
+          <p className="text-sm text-gray-500">{filteredUsers.length} members</p>{" "}
           {/* Dynamic member count */}
         </div>
 
@@ -80,6 +154,44 @@ const AdminUsers = () => {
       {selectedUsers.length > 0 && (
         <BulkActionBar selectedUsers={selectedUsers} />
       )}
+
+      <div className="mb-4 grid gap-3 md:grid-cols-4">
+        <input
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search by name, email, gen, major..."
+          className="md:col-span-2 rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+        />
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+        >
+          <option value="all">All Statuses</option>
+          {USER_STATUS_OPTIONS.map((status) => (
+            <option key={status} value={status}>
+              {formatUppercaseToCapitalized(status)}
+            </option>
+          ))}
+        </select>
+        <select
+          value={roleFilter}
+          onChange={(e) => setRoleFilter(e.target.value)}
+          className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+        >
+          <option value="all">All Roles</option>
+          <option value="ADMIN">Admin</option>
+          <option value="MODERATOR">Moderator</option>
+          <option value="MEMBER">Member</option>
+        </select>
+        <button
+          type="button"
+          onClick={clearFilters}
+          className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm font-medium text-slate-100 hover:border-[var(--pink-color)]"
+        >
+          Clear Filters
+        </button>
+      </div>
 
       <div className="overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-900/65">
         <div className="overflow-x-auto">
@@ -112,7 +224,7 @@ const AdminUsers = () => {
               </tr>
             </thead>
             <tbody className="text-slate-300">
-              {users && users.length === 0 ? (
+              {filteredUsers.length === 0 ? (
                 <tr className="border-t border-slate-800 odd:bg-slate-900/30 even:bg-slate-800/20">
                   <td colSpan="11" className="px-4 py-10 text-center">
                     No members found.
@@ -127,7 +239,7 @@ const AdminUsers = () => {
                   </td>
                 </tr>
               ) : (
-                users.map((user) => (
+                filteredUsers.map((user) => (
                   <tr
                     key={user.id}
                     className="border-t border-slate-800 odd:bg-slate-900/30 even:bg-slate-800/20 hover:bg-slate-800/50"
