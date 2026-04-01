@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useSocket } from '../../../hooks/useSocket';
 import { getAllRoomsForCurrentUser } from '../../../store/slices/messageSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const ChatRooms = ({ userId, onSelectConversation }) => {
+const ChatRooms = ({ onSelectConversation }) => {
   const [rooms, setRooms] = useState([]);
-  const { onEvent } = useSocket();
+  const { token } = useSelector((state) => state.auth);
+  const { onEvent } = useSocket(token);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,7 +17,7 @@ const ChatRooms = ({ userId, onSelectConversation }) => {
     dispatch(getAllRoomsForCurrentUser())
       .unwrap()
       .then((data) => {
-        setRooms(data);
+        setRooms(data?.data || []);
       })
       .catch((err) => {
         console.error('Failed to fetch rooms:', err);
@@ -25,9 +26,18 @@ const ChatRooms = ({ userId, onSelectConversation }) => {
 
   // Listen for new messages
   useEffect(() => {
-    return onEvent('message:receive', (message) => {
+    const unsubscribeReceive = onEvent('message:receive', () => {
       fetchrooms();
     });
+
+    const unsubscribeSent = onEvent('message:sent', () => {
+      fetchrooms();
+    });
+
+    return () => {
+      unsubscribeReceive();
+      unsubscribeSent();
+    };
   }, [onEvent]);
 
   return (

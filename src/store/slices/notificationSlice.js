@@ -172,7 +172,7 @@ const notificationSlice = createSlice({
       })
       .addCase(getAllNotificationsList.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.notifications = action.payload.datas;
+        state.notifications = action.payload.datas || action.payload.data || [];
         state.notificationStatus = "fulfilled";
       })
       .addCase(getAllNotificationsList.rejected, (state, action) => {
@@ -188,7 +188,7 @@ const notificationSlice = createSlice({
       })
       .addCase(getUserNotifications.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.notifications = action.payload.datas;
+        state.notifications = action.payload.datas || action.payload.data || [];
         state.notificationStatus = "fulfilled";
       })
       .addCase(getUserNotifications.rejected, (state, action) => {
@@ -225,8 +225,10 @@ const notificationSlice = createSlice({
       })
       .addCase(deleteNotificationById.fulfilled, (state, action) => {
         state.isLoading = false;
+        const deletedId =
+          action.payload?.dataId || action.payload?.data?.id || action.payload?.id;
         state.notifications = state.notifications.filter(
-          (notif) => notif.id !== action.payload.dataId,
+          (notif) => notif.id !== deletedId,
         );
         state.notificationStatus = "fulfilled";
       })

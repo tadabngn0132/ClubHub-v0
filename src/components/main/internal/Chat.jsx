@@ -1,49 +1,67 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSocket } from "../../../hooks/useSocket";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getMessagesByRoom } from "../../../store/slices/messageSlice";
 
 const Chat = ({ userId, otherUserId, otherUserName }) => {
   const dispatch = useDispatch();
-  const { emitEvent, onEvent } = useSocket();
+  const { token } = useSelector((state) => state.auth);
+  const { emitEvent, emitEventWithAck, onEvent } = useSocket(token);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const [isOtherTyping, setIsOtherTyping] = useState(false);
   const messagesEndRef = useRef(null);
   const typingTimeoutRef = useRef(null);
+  const pendingMessageIdRef = useRef(null);
 
   const roomId = [userId, otherUserId].sort().join("-"); // Consistent room ID
 
+  const fetchHistory = useCallback(async () => {
+    dispatch(getMessagesByRoom(roomId))
+      .unwrap()
+      .then((data) => {
+        setMessages(data.data || []);
+        pendingMessageIdRef.current = null;
+        scrollToBottom();
+      })
+      .catch((error) => {
+        console.error("Failed to load messages:", error);
+      });
+  }, [dispatch, roomId]);
+
   // Load chat history
   useEffect(() => {
-    const fetchHistory = async () => {
-      dispatch(getMessagesByRoom(roomId))
-        .unwrap()
-        .then((data) => {
-          setMessages(data.data);
-          scrollToBottom();
-        })
-        .catch((error) => {
-          console.error("Failed to load messages:", error);
-        });
-    };
-
     fetchHistory();
-  }, [dispatch, roomId]);
+  }, [fetchHistory]);
 
   // Listen for incoming messages
   useEffect(() => {
     return onEvent("message:receive", (message) => {
-      if (
-        (message.senderId === otherUserId && message.receiverId === userId) ||
-        (message.senderId === userId && message.receiverId === otherUserId)
-      ) {
-        setMessages((prev) => [...prev, message]);
+      if (message?.roomId === roomId) {
+        setMessages((prev) => {
+          const exists = prev.some((item) => item.id === message.id);
+          if (exists) {
+            return prev;
+          }
+
+          return [...prev, message];
+        });
         scrollToBottom();
       }
     });
-  }, [userId, otherUserId, onEvent]);
+  }, [roomId, onEvent]);
+
+  useEffect(() => {
+    const unsubscribeSent = onEvent("message:sent", () => {
+      // Replace temporary optimistic message by fetching canonical message list.
+      fetchHistory();
+    });
+
+    return () => {
+      unsubscribeSent();
+    };
+  }, [onEvent, fetchHistory]);
 
   // Listen for typing indicators
   useEffect(() => {
@@ -75,34 +93,62 @@ const Chat = ({ userId, otherUserId, otherUserName }) => {
     // Send typing indicator
     if (!typing) {
       setTyping(true);
-      emitEvent("user:typing", { senderId: userId, receiverId: otherUserId });
+      emitEvent("user:typing", { receiverId: otherUserId });
     }
 
     // Debounce stop typing
     clearTimeout(typingTimeoutRef.current);
     typingTimeoutRef.current = setTimeout(() => {
       setTyping(false);
-      emitEvent("user:stop-typing", {
-        senderId: userId,
-        receiverId: otherUserId,
-      });
+      emitEvent("user:stop-typing", { receiverId: otherUserId });
     }, 1000);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!input.trim()) return;
 
+    const content = input.trim();
+    const optimisticId = `temp-${Date.now()}`;
+    pendingMessageIdRef.current = optimisticId;
+
     const messageData = {
-      senderId: userId,
       receiverId: otherUserId,
-      content: input,
+      content,
       roomId,
     };
 
-    emitEvent("message:send", messageData);
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: optimisticId,
+        senderId: userId,
+        receiverId: otherUserId,
+        roomId,
+        content,
+        createdAt: new Date().toISOString(),
+      },
+    ]);
+
+    const ack = await emitEventWithAck("message:send", messageData);
+
+    if (!ack?.success) {
+      setMessages((prev) => prev.filter((msg) => msg.id !== optimisticId));
+      pendingMessageIdRef.current = null;
+      console.error("Failed to send message:", ack?.message || "Unknown error");
+    }
+
     setInput("");
     setTyping(false);
+
+    // Ensure typing state on server is reset after send.
+    emitEvent("user:stop-typing", { receiverId: otherUserId });
   };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(typingTimeoutRef.current);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col h-full bg-white">

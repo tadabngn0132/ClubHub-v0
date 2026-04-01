@@ -1,23 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ChatRooms from '../../../components/main/internal/ChatRooms';
 import Chat from '../../../components/main/internal/Chat';
 import { useSocket } from '../../../hooks/useSocket';
+import { useSelector } from 'react-redux';
 
 const AdminChat = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
-  const { emitEvent } = useSocket();
-  const userId = parseInt(localStorage.getItem('userId'));
-
-  // Notify server when user comes online
-  useEffect(() => {
-    emitEvent('user:online', userId);
-  }, [userId, emitEvent]);
+  const { currentUser, token } = useSelector((state) => state.auth);
+  useSocket(token);
+  const userId = currentUser?.id;
 
   if (!selectedConversation) {
     return (
       <div className="flex h-screen">
         <ChatRooms
-          userId={userId}
           onSelectConversation={(otherId, otherName) =>
             setSelectedConversation({ userId: otherId, name: otherName })
           }
@@ -32,7 +28,6 @@ const AdminChat = () => {
   return (
     <div className="flex h-screen">
       <ChatRooms
-        userId={userId}
         onSelectConversation={(otherId, otherName) =>
           setSelectedConversation({ userId: otherId, name: otherName })
         }
