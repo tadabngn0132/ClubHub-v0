@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
 
 const ContactForm = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,13 @@ const ContactForm = () => {
         </label>
         <input
           type="text"
-          {...register("subject", { required: "Subject is required" })}
+          {...register("subject", {
+            required: "Subject is required",
+            minLength: {
+              value: 3,
+              message: VALIDATION_MESSAGES.subjectMinLength,
+            },
+          })}
         />
         {errors.subject && (
           <p className="text-red-500">{errors.subject.message}</p>
@@ -37,7 +44,13 @@ const ContactForm = () => {
         </label>
         <textarea
           rows="5"
-          {...register("message", { required: "Message is required" })}
+          {...register("message", {
+            required: "Message is required",
+            minLength: {
+              value: 10,
+              message: VALIDATION_MESSAGES.messageMinLength,
+            },
+          })}
         />
         {errors.message && (
           <p className="text-red-500">{errors.message.message}</p>

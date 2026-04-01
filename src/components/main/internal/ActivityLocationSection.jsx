@@ -1,5 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import { useState } from "react";
+import { VALIDATION_MESSAGES, VALIDATION_RULES } from "../../../utils/validationRules";
 
 const ActivityLocationSection = () => {
   const {
@@ -80,7 +81,7 @@ const ActivityLocationSection = () => {
             name="meeting_platform"
             id="meeting_platform"
             {...register("meetingPlatform", {
-              required: "Meeting platform cannot be empty",
+              required: VALIDATION_MESSAGES.meetingPlatformRequired,
             })}
             className={inputClassName}
           >
@@ -100,9 +101,7 @@ const ActivityLocationSection = () => {
             type="text"
             name="meeting_link"
             id="meeting_link"
-            {...register("meetingLink", {
-              required: "Meeting link cannot be empty",
-            })}
+            {...register("meetingLink", VALIDATION_RULES.activityMeetingLink)}
             className={inputClassName}
           />
           {errors.meetingLink && (
@@ -141,7 +140,7 @@ const ActivityLocationSection = () => {
             name="venue_name"
             id="venue_name"
             {...register("venueName", {
-              required: "Venue name cannot be empty",
+              required: VALIDATION_MESSAGES.venueNameRequired,
             })}
             className={inputClassName}
           />
@@ -157,7 +156,7 @@ const ActivityLocationSection = () => {
             name="venue_address"
             id="venue_address"
             {...register("venueAddress", {
-              required: "Venue address cannot be empty",
+              required: VALIDATION_MESSAGES.venueAddressRequired,
             })}
             className={inputClassName}
           />

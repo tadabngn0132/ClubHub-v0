@@ -21,6 +21,7 @@ import ChangePassword from "../../components/main/internal/ChangePasswordForm.js
 import ModeratorAddUser from "../../pages/private/moderator/ModeratorAddUser.jsx";
 import ModeratorEditUser from "../../pages/private/moderator/ModeratorEditUser.jsx";
 import ModeratorAI from "../../pages/private/moderator/ModeratorAI.jsx";
+import MemberApplicationProcess from "../../pages/private/shared/MemberApplicationProcess.jsx";
 
 export const moderatorRoutes = [
   {
@@ -188,6 +189,30 @@ export const moderatorRoutes = [
     element: (
       <ModeratorLayout>
         <ModeratorViewMemberApplication />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/member-applications/cv-review/:applicationId",
+    element: (
+      <ModeratorLayout>
+        <MemberApplicationProcess role="moderator" stage="cv-review" />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/member-applications/interview/:applicationId",
+    element: (
+      <ModeratorLayout>
+        <MemberApplicationProcess role="moderator" stage="interview" />
+      </ModeratorLayout>
+    ),
+  },
+  {
+    path: "/moderator/member-applications/final-review/:applicationId",
+    element: (
+      <ModeratorLayout>
+        <MemberApplicationProcess role="moderator" stage="final-review" />
       </ModeratorLayout>
     ),
   },

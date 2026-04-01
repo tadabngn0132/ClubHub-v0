@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ASSIGNEE_SCOPE } from "../../../utils/constants";
 import { getDepartmentsList } from "../../../store/slices/departmentSlice";
 import { getUsersList } from "../../../store/slices/userSlice";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
 
 const TaskForm = ({ task, onSubmit }) => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const TaskForm = ({ task, onSubmit }) => {
         className="flex flex-col gap-4"
       >
         <h1 className="text-3xl font-bold mb-4">
-          {mode === "add" ? "Add New Task" : "Edit Task"}
+          {!task ? "Add New Task" : "Edit Task"}
         </h1>
 
         {/* Task Name field */}
@@ -57,7 +58,13 @@ const TaskForm = ({ task, onSubmit }) => {
           type="text"
           id="title"
           name="title"
-          {...register("title", { required: "Task name is required" })}
+          {...register("title", {
+            required: VALIDATION_MESSAGES.taskTitleMinLength,
+            minLength: {
+              value: 3,
+              message: VALIDATION_MESSAGES.taskTitleMinLength,
+            },
+          })}
           className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {errors.title && <p className="text-red-500">{errors.title.message}</p>}
@@ -70,7 +77,11 @@ const TaskForm = ({ task, onSubmit }) => {
           id="description"
           name="description"
           {...register("description", {
-            required: "Task description is required",
+            required: VALIDATION_MESSAGES.taskDescriptionMinLength,
+            minLength: {
+              value: 10,
+              message: VALIDATION_MESSAGES.taskDescriptionMinLength,
+            },
           })}
           className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         ></textarea>
@@ -222,7 +233,7 @@ const TaskForm = ({ task, onSubmit }) => {
           type="submit"
           className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
         >
-          {mode === "add" ? "Add" : "Update"} Task
+          {!task ? "Add" : "Update"} Task
         </button>
       </form>
     </div>

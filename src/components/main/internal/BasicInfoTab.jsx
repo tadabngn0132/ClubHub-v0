@@ -2,6 +2,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useSelector } from "react-redux";
 import Loading from "../../../components/layout/internal/Loading.jsx";
+import { VALIDATION_MESSAGES, VALIDATION_RULES } from "../../../utils/validationRules";
 
 const BasicInfoTab = () => {
   const {
@@ -31,7 +32,13 @@ const BasicInfoTab = () => {
         id="fullname"
         placeholder="Nguyen Van Hai"
         className={inputClassName}
-        {...register("fullname", { required: "Full name cannot be empty" })}
+        {...register("fullname", {
+          required: VALIDATION_MESSAGES.fullNameMinLength,
+          minLength: {
+            value: 2,
+            message: VALIDATION_MESSAGES.fullNameMinLength,
+          },
+        })}
       />
       {errors.fullname && (
         <p className={errorClassName}>{errors.fullname.message}</p>
@@ -47,11 +54,7 @@ const BasicInfoTab = () => {
         placeholder="HaiNV240875@fpt.edu.vn"
         className={inputClassName}
         {...register("email", {
-          required: "Email cannot be empty",
-          pattern: {
-            value: /^[A-Za-z0-9]+@fpt\.edu\.vn$/,
-            message: "Email must have @fpt.edu.vn tail",
-          },
+          ...VALIDATION_RULES.userEmail,
         })}
       />
       {errors.email && (
@@ -68,9 +71,7 @@ const BasicInfoTab = () => {
         placeholder="0387512345"
         className={inputClassName}
         {...register("phoneNumber", {
-          required: "Phone number cannot be empty",
-          minLength: 10,
-          maxLength: 10,
+          ...VALIDATION_RULES.phoneNumber,
         })}
       />
       {errors.phoneNumber && (
@@ -86,7 +87,11 @@ const BasicInfoTab = () => {
         id="dateOfBirth"
         className={inputClassName}
         {...register("dateOfBirth", {
-          required: "Date of birth cannot be empty",
+          required: VALIDATION_MESSAGES.dateOfBirthRequired,
+          validate: (value) => {
+            if (!value) return VALIDATION_MESSAGES.dateOfBirthRequired;
+            return new Date(value).getTime() <= Date.now() || VALIDATION_MESSAGES.dateOfBirthFuture;
+          },
         })}
       />
       {errors.dateOfBirth && (
@@ -104,7 +109,7 @@ const BasicInfoTab = () => {
             id="male"
             value="male"
             className="h-4 w-4 border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
-            {...register("gender", { required: "Gender cannot be empty" })}
+            {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
           />
           Male
         </label>
@@ -115,7 +120,7 @@ const BasicInfoTab = () => {
             id="female"
             value="female"
             className="h-4 w-4 border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
-            {...register("gender", { required: "Gender cannot be empty" })}
+            {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
           />
           Female
         </label>
@@ -126,7 +131,7 @@ const BasicInfoTab = () => {
             id="other"
             value="other"
             className="h-4 w-4 border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
-            {...register("gender", { required: "Gender cannot be empty" })}
+            {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
           />
           Other
         </label>
@@ -144,7 +149,13 @@ const BasicInfoTab = () => {
         id="major"
         placeholder="Computing"
         className={inputClassName}
-        {...register("major", { required: "Major cannot be empty" })}
+        {...register("major", {
+          required: VALIDATION_MESSAGES.majorRequired,
+          minLength: {
+            value: 2,
+            message: VALIDATION_MESSAGES.majorRequired,
+          },
+        })}
       />
       {errors.major && (
         <p className={errorClassName}>{errors.major.message}</p>
@@ -159,7 +170,7 @@ const BasicInfoTab = () => {
         id="studentId"
         placeholder="GDH234567"
         className={inputClassName}
-        {...register("studentId", { required: "Student ID cannot be empty" })}
+        {...register("studentId", VALIDATION_RULES.studentId)}
       />
       {errors.studentId && (
         <p className={errorClassName}>{errors.studentId.message}</p>

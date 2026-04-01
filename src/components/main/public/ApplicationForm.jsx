@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { submitMemberApplication } from "../../../store/slices/memberApplicationSlice";
 import { useEffect } from "react";
 import { getDepartmentsList, resetDepartmentStatus } from "../../../store/slices/departmentSlice";
+import { VALIDATION_MESSAGES, VALIDATION_RULES } from "../../../utils/validationRules";
 
 const ApplicationForm = () => {
   const dispatch = useDispatch();
@@ -68,7 +69,13 @@ const ApplicationForm = () => {
           id="fullname"
           placeholder="Nguyen Van Hai"
           className={inputClassName}
-          {...register("fullname", { required: "Full name cannot be empty" })}
+          {...register("fullname", {
+            required: VALIDATION_MESSAGES.fullNameRequired,
+            minLength: {
+              value: 2,
+              message: VALIDATION_MESSAGES.fullNameRequired,
+            },
+          })}
         />
         {errors.fullname && (
           <p className={errorClassName}>{errors.fullname.message}</p>
@@ -84,11 +91,7 @@ const ApplicationForm = () => {
           placeholder="HaiNV240875@fpt.edu.vn"
           className={inputClassName}
           {...register("email", {
-            required: "Email cannot be empty",
-            pattern: {
-              value: /^[A-Za-z0-9]+@fpt\.edu\.vn$/,
-              message: "Email must have @fpt.edu.vn tail",
-            },
+            ...VALIDATION_RULES.applicationEmail,
           })}
         />
         {errors.email && (
@@ -105,15 +108,7 @@ const ApplicationForm = () => {
           placeholder="0387512345"
           className={inputClassName}
           {...register("phoneNumber", {
-            required: "Phone number cannot be empty",
-            minLength: {
-              value: 10,
-              message: "Phone number must contain exactly 10 digits",
-            },
-            maxLength: {
-              value: 10,
-              message: "Phone number must contain exactly 10 digits",
-            },
+            ...VALIDATION_RULES.phoneNumber,
           })}
         />
         {errors.phoneNumber && (
@@ -149,7 +144,11 @@ const ApplicationForm = () => {
           id="dateOfBirth"
           className={inputClassName}
           {...register("dateOfBirth", {
-            required: "Date of birth cannot be empty",
+            required: VALIDATION_MESSAGES.dateOfBirthRequired,
+            validate: (value) => {
+              if (!value) return VALIDATION_MESSAGES.dateOfBirthRequired;
+              return new Date(value).getTime() <= Date.now() || VALIDATION_MESSAGES.dateOfBirthFuture;
+            },
           })}
         />
         {errors.dateOfBirth && (
@@ -170,7 +169,7 @@ const ApplicationForm = () => {
               id="male"
               value="male"
               className="h-4 w-4 accent-pink-600"
-              {...register("gender", { required: "Gender cannot be empty" })}
+              {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
             />
             Male
           </label>
@@ -184,7 +183,7 @@ const ApplicationForm = () => {
               id="female"
               value="female"
               className="h-4 w-4 accent-pink-600"
-              {...register("gender", { required: "Gender cannot be empty" })}
+              {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
             />
             Female
           </label>
@@ -198,7 +197,7 @@ const ApplicationForm = () => {
               id="other"
               value="other"
               className="h-4 w-4 accent-pink-600"
-              {...register("gender", { required: "Gender cannot be empty" })}
+              {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
             />
             Other
           </label>
@@ -216,7 +215,13 @@ const ApplicationForm = () => {
           id="major"
           placeholder="Computing"
           className={inputClassName}
-          {...register("major", { required: "Major cannot be empty" })}
+          {...register("major", {
+            required: VALIDATION_MESSAGES.majorRequired,
+            minLength: {
+              value: 2,
+              message: VALIDATION_MESSAGES.majorRequired,
+            },
+          })}
         />
         {errors.major && (
           <p className={errorClassName}>{errors.major.message}</p>
@@ -231,7 +236,7 @@ const ApplicationForm = () => {
           id="studentId"
           placeholder="GDH234567"
           className={inputClassName}
-          {...register("studentId", { required: "Student ID cannot be empty" })}
+          {...register("studentId", VALIDATION_RULES.studentId)}
         />
         {errors.studentId && (
           <p className={errorClassName}>{errors.studentId.message}</p>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
 
 const ActivityDescriptionSection = () => {
   const {
@@ -19,20 +20,24 @@ const ActivityDescriptionSection = () => {
         Activity Description <span className="text-red-400">*</span>
       </label>
       <textarea
-        name="activity_description"
-        id="activity_description"
+        name="description"
+        id="description"
         rows="5"
         className={inputClassName}
-        {...register("activity_description", {
-          required: "Activity description cannot be empty",
+        {...register("description", {
+          required: VALIDATION_MESSAGES.activityDescriptionMinLength,
+          minLength: {
+            value: 10,
+            message: VALIDATION_MESSAGES.activityDescriptionMinLength,
+          },
           maxLength: {
-            value: 500,
-            message: "Activity description cannot exceed 500 characters",
+            value: 5000,
+            message: "Activity description cannot exceed 5000 characters",
           },
         })}
       ></textarea>
-      {errors.activity_description && (
-        <p className={errorClassName}>{errors.activity_description.message}</p>
+      {errors.description && (
+        <p className={errorClassName}>{errors.description.message}</p>
       )}
 
       {/* Is Public */}

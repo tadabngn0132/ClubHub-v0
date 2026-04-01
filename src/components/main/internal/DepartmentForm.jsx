@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
 
 const DepartmentForm = ({ department, onSubmit }) => {
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -27,7 +28,13 @@ const DepartmentForm = ({ department, onSubmit }) => {
           <input
             type="text"
             id="name"
-            {...register("name", { required: "Name is required" })}
+            {...register("name", {
+              required: VALIDATION_MESSAGES.departmentNameMinLength,
+              minLength: {
+                value: 2,
+                message: VALIDATION_MESSAGES.departmentNameMinLength,
+              },
+            })}
             className="block w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="Enter department name"
           />
@@ -47,7 +54,13 @@ const DepartmentForm = ({ department, onSubmit }) => {
           </label>
           <textarea
             id="description"
-            {...register("description", { required: "Description is required" })}
+            {...register("description", {
+              required: VALIDATION_MESSAGES.departmentDescriptionMinLength,
+              minLength: {
+                value: 10,
+                message: VALIDATION_MESSAGES.departmentDescriptionMinLength,
+              },
+            })}
             rows={4}
             className="block w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="Enter department description"
@@ -69,13 +82,10 @@ const DepartmentForm = ({ department, onSubmit }) => {
           <input
             type="checkbox"
             id="isActive"
-            {...register("isActive", { required: "Active status is required" })}
+            {...register("isActive")}
             className="h-5 w-5 cursor-pointer rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
           />
         </div>
-        {errors.isActive && (
-          <p className="-mt-3 text-sm font-medium text-red-400">{errors.isActive.message}</p>
-        )}
         
         <button
           type="submit"

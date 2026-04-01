@@ -1,11 +1,15 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
 
 const ActivityScheduleSection = () => {
   const {
     register,
+    watch,
     formState: { errors },
   } = useFormContext();
+
+  const startDateValue = watch("startDate");
 
   const inputClassName =
     "mt-2 w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
@@ -24,7 +28,7 @@ const ActivityScheduleSection = () => {
         id="start_date_time"
         className={inputClassName}
         {...register("startDate", {
-          required: "Activity start date/time cannot be empty",
+          required: VALIDATION_MESSAGES.activityStartDateRequired,
         })}
       />
       {errors.startDate && (
@@ -41,7 +45,13 @@ const ActivityScheduleSection = () => {
         id="end_date_time"
         className={inputClassName}
         {...register("endDate", {
-          required: "Activity end date/time cannot be empty",
+          required: VALIDATION_MESSAGES.activityEndDateRequired,
+          validate: (value) => {
+            if (!value) return VALIDATION_MESSAGES.activityEndDateRequired;
+            if (!startDateValue) return true;
+            return new Date(value).getTime() > new Date(startDateValue).getTime()
+              || VALIDATION_MESSAGES.activityEndDateInvalid;
+          },
         })}
       />
       {errors.endDate && (

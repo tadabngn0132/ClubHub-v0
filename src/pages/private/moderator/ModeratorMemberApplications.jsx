@@ -11,6 +11,27 @@ import toast, { Toaster } from "react-hot-toast";
 import { formatDate, formatUppercaseToCapitalized } from "../../../utils/formatters.js";
 import { MEMBER_APPLICATION_FINAL_STATUS_OPTIONS } from "../../../utils/constants";
 
+const normalizeStatus = (value) => String(value || "").trim().toUpperCase();
+
+const getInterviewSummary = (application) => {
+  const departmentApplications = application?.departmentApplications || [];
+  const summary = {
+    total: departmentApplications.length,
+    pending: 0,
+    passed: 0,
+    failed: 0,
+  };
+
+  departmentApplications.forEach((deptApp) => {
+    const status = normalizeStatus(deptApp.interviewStatus);
+    if (status === "PASSED") summary.passed += 1;
+    else if (status === "FAILED") summary.failed += 1;
+    else summary.pending += 1;
+  });
+
+  return summary;
+};
+
 const ModeratorMemberApplications = () => {
   const dispatch = useDispatch();
   const { memberApplications, isLoading, error } = useSelector(
@@ -207,6 +228,14 @@ const ModeratorMemberApplications = () => {
               <tbody className="divide-y divide-gray-800">
                 {filteredApplications.map((application) => {
                   const isSelected = selectedMemberApplications.includes(application.id);
+                  const cvStatus = normalizeStatus(application.cvStatus);
+                  const summary = getInterviewSummary(application);
+                  const canInterviewRound = cvStatus === "PASSED";
+                  const canFinalRound =
+                    canInterviewRound &&
+                    summary.total > 0 &&
+                    summary.pending === 0;
+                  const actionDisabledClass = "pointer-events-none opacity-40";
 
                   return (
                     <tr
@@ -244,16 +273,36 @@ const ModeratorMemberApplications = () => {
                             View
                           </Link>
                           <Link
-                            to={`/moderator/member-applications/interview/${application.id}`}
-                            className="rounded-md bg-blue-500/15 px-3 py-1.5 text-xs font-medium text-blue-300 transition hover:bg-blue-500/30"
+                            to={`/moderator/member-applications/cv-review/${application.id}`}
+                            className="rounded-md bg-amber-500/15 px-3 py-1.5 text-xs font-medium text-amber-300 transition hover:bg-amber-500/30"
                           >
-                            Interview
+                            CV Review
+                          </Link>
+                          <Link
+                            to={`/moderator/member-applications/interview/${application.id}`}
+                            className={`rounded-md bg-blue-500/15 px-3 py-1.5 text-xs font-medium text-blue-300 transition hover:bg-blue-500/30 ${
+                              canInterviewRound ? "" : actionDisabledClass
+                            }`}
+                            title={
+                              canInterviewRound
+                                ? "Interview round"
+                                : "Interview round is locked until CV status is PASSED"
+                            }
+                          >
+                            Interview Round
                           </Link>
                           <Link
                             to={`/moderator/member-applications/final-review/${application.id}`}
-                            className="rounded-md bg-green-500/15 px-3 py-1.5 text-xs font-medium text-green-300 transition hover:bg-green-500/30"
+                            className={`rounded-md bg-green-500/15 px-3 py-1.5 text-xs font-medium text-green-300 transition hover:bg-green-500/30 ${
+                              canFinalRound ? "" : actionDisabledClass
+                            }`}
+                            title={
+                              canFinalRound
+                                ? "Final round"
+                                : "Final round is locked until all interview results are completed"
+                            }
                           >
-                            Final Review
+                            Final Round
                           </Link>
                           <button
                             onClick={() => handleDelete(application.id)}

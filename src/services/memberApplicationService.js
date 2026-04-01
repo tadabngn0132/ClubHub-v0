@@ -40,3 +40,8 @@ export const updateMemberApplicationFinalReviewDetail = async (id, data) => {
   );
   return res.data;
 };
+
+export const updateManyMemberApplications = async (payload) => {
+  const res = await axiosClient.put("/member-applications/many/update", payload);
+  return res.data;
+};

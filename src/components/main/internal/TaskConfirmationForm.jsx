@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
 
 const TaskConfirmationForm = ({ taskCfData, onSubmit }) => {
     const {
@@ -66,7 +67,13 @@ const TaskConfirmationForm = ({ taskCfData, onSubmit }) => {
                   placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500
                   text-sm text-gray-100 bg-gray-800 resize-none"
                 placeholder="Enter your additional comments..."
-                {...register("additionalComments", { required: "Comments are required" })}
+                {...register("additionalComments", {
+                    required: VALIDATION_MESSAGES.commentMinLength,
+                    minLength: {
+                        value: 10,
+                        message: VALIDATION_MESSAGES.commentMinLength,
+                    },
+                })}
             />
             {errors.additionalComments && (
                 <p className="text-sm text-red-400 font-medium">{errors.additionalComments.message}</p>

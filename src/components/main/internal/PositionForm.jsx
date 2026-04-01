@@ -1,6 +1,15 @@
 import { useForm } from "react-hook-form";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
 
 const PositionForm = ({ position, onSubmit }) => {
+  const LEVEL_OPTIONS = [
+    "MEMBER",
+    "MIDDLE_VICE_HEAD",
+    "MIDDLE_HEAD",
+    "TOP_VICE_HEAD",
+    "TOP_HEAD",
+  ];
+
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
       title: position ? position.title : "",
@@ -23,7 +32,13 @@ const PositionForm = ({ position, onSubmit }) => {
           </label>
           <input
             id="title"
-            {...register("title", { required: "Title is required" })}
+            {...register("title", {
+              required: VALIDATION_MESSAGES.positionTitleMinLength,
+              minLength: {
+                value: 2,
+                message: VALIDATION_MESSAGES.positionTitleMinLength,
+              },
+            })}
             className="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="Enter position title"
           />
@@ -38,12 +53,18 @@ const PositionForm = ({ position, onSubmit }) => {
             Level
             <span className="text-red-400">*</span>
           </label>
-          <input
+          <select
             id="level"
             {...register("level", { required: "Level is required" })}
             className="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="Enter position level"
-          />
+          >
+            <option value="">Select level</option>
+            {LEVEL_OPTIONS.map((level) => (
+              <option key={level} value={level}>
+                {level}
+              </option>
+            ))}
+          </select>
           {errors.level && (
             <p className="text-sm font-medium text-red-400">{errors.level.message}</p>
           )}

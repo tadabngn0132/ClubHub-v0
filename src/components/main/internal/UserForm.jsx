@@ -3,7 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import BasicInfoTab from "./BasicInfoTab.jsx";
 import ClubInfoTab from "./ClubInfoTab.jsx";
 import ProfileInfoTab from "./ProfileInfoTab.jsx";
-import { formatDateToLocal, formatNumberToString, formatUppercaseToCapitalized } from "../../../utils/formatters.js";
+import { formatDateToLocal, formatNumberToString } from "../../../utils/formatters.js";
 
 const UserForm = ({ user, onSubmit }) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -18,7 +18,7 @@ const UserForm = ({ user, onSubmit }) => {
       major: user ? user.major : "",
       generation: user ? formatNumberToString(user.generation) : "",
       joinedAt: user ? formatDateToLocal(user.joinedAt) : "",
-      status: user ? formatUppercaseToCapitalized(user.status) : "Active",
+      status: user ? user.status : "ACTIVE",
       studentId: user ? user.studentId : "",
       avatarUrl: user ? user.avatarUrl : "",
       avatar: null,

@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { ACTIVITY_TYPES, ACTIVITY_STATUSES } from "../../../utils/constants";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
 
 const ActivityBasicInfoSection = () => {
   const {
@@ -23,8 +24,15 @@ const ActivityBasicInfoSection = () => {
         type="text"
         id="title"
         {...register("title", {
-          required: "Activity title cannot be empty.",
-          maxLength: 200,
+          required: VALIDATION_MESSAGES.activityTitleMinLength,
+          minLength: {
+            value: 3,
+            message: VALIDATION_MESSAGES.activityTitleMinLength,
+          },
+          maxLength: {
+            value: 200,
+            message: "Activity title cannot exceed 200 characters",
+          },
         })}
         className={inputClassName}
       />

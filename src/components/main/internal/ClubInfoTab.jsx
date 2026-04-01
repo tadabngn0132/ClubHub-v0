@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDepartmentsList } from "../../../store/slices/departmentSlice";
 import { getPositionsList } from "../../../store/slices/positionSlice";
 import { useEffect } from "react";
+import { VALIDATION_RULES } from "../../../utils/validationRules";
 
 const ClubInfoTab = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const ClubInfoTab = () => {
         id="generation"
         placeholder="2025"
         className={inputClassName}
-        {...register("generation", { required: "Generation cannot be empty" })}
+        {...register("generation", VALIDATION_RULES.generation)}
       />
       {errors.generation && (
         <p className={errorClassName}>{errors.generation.message}</p>
@@ -66,10 +67,10 @@ const ClubInfoTab = () => {
         className={inputClassName}
         {...register("status")}
       >
-        <option className="bg-gray-800 text-gray-100" value="Active">
+        <option className="bg-gray-800 text-gray-100" value="ACTIVE">
           Active
         </option>
-        <option className="bg-gray-800 text-gray-100" value="Inactive">
+        <option className="bg-gray-800 text-gray-100" value="INACTIVE">
           Inactive
         </option>
       </select>

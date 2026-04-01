@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { VALIDATION_MESSAGES, VALIDATION_RULES } from "../../../utils/validationRules";
 
 const ChangePasswordForm = ({ onSubmit }) => {
   const {
@@ -50,11 +51,8 @@ const ChangePasswordForm = ({ onSubmit }) => {
               className={inputClassName}
               placeholder="Enter your current password"
               {...register("currentPassword", {
-                required: "Password cannot be empty",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
+                required: "Current password is required",
+                ...VALIDATION_RULES.minPassword,
               })}
             />
             {/* Current Password error */}
@@ -75,11 +73,8 @@ const ChangePasswordForm = ({ onSubmit }) => {
               className={inputClassName}
               placeholder="Enter your new password"
               {...register("newPassword", {
-                required: "Password cannot be empty",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
+                required: VALIDATION_MESSAGES.passwordRequired,
+                ...VALIDATION_RULES.minPassword,
               })}
             />
             {/* New Password error */}
@@ -100,13 +95,10 @@ const ChangePasswordForm = ({ onSubmit }) => {
               className={inputClassName}
               placeholder="Confirm your new password"
               {...register("confirmNewPassword", {
-                required: "Password cannot be empty",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
+                required: VALIDATION_MESSAGES.passwordRequired,
+                ...VALIDATION_RULES.minPassword,
                 validate: (value) =>
-                  value === watch("newPassword") || "Passwords do not match",
+                  value === watch("newPassword") || VALIDATION_MESSAGES.passwordMismatch,
               })}
             />
             {/* Confirm New Password error */}

@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
 
 const MemberApplicationReviewForm = ({ memberApplication, action, onSubmit }) => {
   const { 
@@ -16,26 +17,28 @@ const MemberApplicationReviewForm = ({ memberApplication, action, onSubmit }) =>
     },
     mode: "onChange",
    });
-    
-  <div>
-    <form action="" onSubmit={handleSubmit(onSubmit)}>
+
+  return (
+    <div>
+      <form action="" onSubmit={handleSubmit(onSubmit)}>
         {(action === "cvreview") && (
             <>
                 <label htmlFor="cvReviewComment">CV Review Comment <span className="text-red-500">*</span></label>
-                <textarea id="cvReviewComment" name="cvReviewComment" rows="4" cols="50" {...register("cvReviewComment", { required: true })}></textarea>
-                {errors.cvReviewComment && <span className="text-red-500">This field is required</span>}
+                <textarea id="cvReviewComment" name="cvReviewComment" rows="4" cols="50" {...register("cvReviewComment", { required: VALIDATION_MESSAGES.cvReviewCommentRequired })}></textarea>
+                {errors.cvReviewComment && <span className="text-red-500">{errors.cvReviewComment.message}</span>}
             </>
         )}
 
         {(action === "finalreview") && (
             <>
                 <label htmlFor="finalReviewComment">Final Review Comment <span className="text-red-500">*</span></label>
-                <textarea id="finalReviewComment" name="finalReviewComment" rows="4" cols="50" {...register("finalReviewComment", { required: true })}></textarea>
-                {errors.finalReviewComment && <span className="text-red-500">This field is required</span>}
+                <textarea id="finalReviewComment" name="finalReviewComment" rows="4" cols="50" {...register("finalReviewComment", { required: VALIDATION_MESSAGES.finalReviewCommentRequired })}></textarea>
+                {errors.finalReviewComment && <span className="text-red-500">{errors.finalReviewComment.message}</span>}
             </>
         )}
-    </form>
-  </div>
+      </form>
+    </div>
+  );
 };
 
 export default MemberApplicationReviewForm;
