@@ -1,3 +1,7 @@
+import { useMemo, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+
 const Members = () => {
   const founders = [
     { name: "Dao Ha Trang", role: "Founder" },
@@ -26,6 +30,171 @@ const Members = () => {
     { name: "Le Duc Anh", role: "Head of Logistics" },
     { name: "Tran Thi Ha Anh", role: "Head of Human Resources" },
   ];
+
+  const danceStyles = [
+    "All Styles",
+    "Hip-hop",
+    "K-pop",
+    "Popping",
+    "Waacking",
+    "Breaking",
+    "Choreography",
+    "Girl Style",
+  ];
+
+  const positions = [
+    "All Positions",
+    "Performance",
+    "Media",
+    "Communication",
+    "Logistics",
+    "Content",
+    "Human Resources",
+    "Finance",
+  ];
+
+  const allMembers = [
+    {
+      name: "Quoc Anh",
+      style: "Hip-hop",
+      position: "Media",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDnzdqkY94ZWtWGBJOtjIl0ZRJzcB6adX8JYeY-uLgwLR54xWhbqKerMepPi15LL4gE_17w5BigiTjJjEEq8HdHttb-Q6UNAn408sVkL5SoUFQ8Z4SSLGXxHth7mdmTP8k73vFiwq1rFrwRfwV43IyhBHQ8qiw84pXB2DQG3__7E1i20iXt-8xAta-G7Ew1kjC2sJsA-DMqZ4eiJrMn1hN9ZIQaw93BrNEGcyNAMVVfKyXFVEmFAUnbMChEnUEpOQ88dC5qCVcSFKs",
+    },
+    {
+      name: "Bich Ngoc",
+      style: "Girl Style",
+      position: "Content",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuAAyAG9gXfmDsEbmhQgYe88fzacGMcvvqC3AFqjT4rB1wl-lrDm_fYO-cCv7J8dGTriD1HXntPV_ApaBZU9S781K-4ZqfY7k6dBDUWOwmZ8OEdaA0tpLHfs-bbtSP4XRkfnma2GgOggwEdD4ovIVtV0AjEEo6cRL1XcmOhJYixhPIQIPhdB8jbI73CFOcnY_fhlUQngzWmGzx5o3xb9mveJZdP691kfySzNYJ_cNlpc17pS1d33kc14PxvFM3oRyYQ_NSilfE4-Weo",
+    },
+    {
+      name: "Duc Thang",
+      style: "Breaking",
+      position: "Logistics",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDugrj-Kcp448gKyRd8oHssO7iyXMug8H012n8kFU55NC3VwaWB26KRBNBy9yQnDR9W-M0dmYincjFUJuMiBmw-nuAiC4g5F07z2BSOf513AhBqIfrAnVdneEOIwDlEbmcTcZRZTV1SzgVCE0fcpMz0HsPcqCi5pXGqmeBCAyDLVXYixcjCD-ySgqiQ6ZCNjWmy2YUS13ImD70J3f740ReKHc437YdzQSuUxdjPEKDEDXwpUkPO8iPPkTDfFSgYDTMYWDwN_iz4SMQ",
+    },
+    {
+      name: "Khanh Linh",
+      style: "Choreography",
+      position: "Human Resources",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDkpMj8DjzTRRQ7eUzNUNyrNoHoPKS0kqS_87Vf6MJsFT7YOPXjL3bWZ2sDJ7dqWMb9fCwaP9iaU0k0kg9xYJjPaW2rS1wz_t-yy_k6T-g2Le_xiF18TSak8WjUs4QfGqeEa-Nw51b9IE9FLhCdfcacuXqDDEfnTKqxuQhhw8OyUGOugZmozC6q_GtdjsbmTjuRYQxdcLp63pij2AREJbTjfA5ZGWqxKAsTss-EbvXawlcuy-Y6ZyZGviOUphg60rgFP-XBh_LpobM",
+    },
+    {
+      name: "Hoang Long",
+      style: "Popping",
+      position: "Media",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDs1-Aom-CUzjTmY4_gH_9z3t9ZEOEzX-XxHCNpjg-eOLCK1LJC845iUMmojzJYMALkH39sKF168s8bW1H5UG4DAYQdu7_9fJPnwISwI63T8Bj3Qs_Z7NN3bokXiuyOqzJ4xo3GJfqA2xaJ57I1f1mKC7sdW4TPqDmT9QHOOwqAsSrQ2E-Reyd1f31K8lbuacDxmCyACUPggN6Nqo9p5KwAOqoKhAkSy_sjo2TlVF1Z8TXb54qLE8Nxzo0-DG_7Mof5C61_GNm3dO0",
+    },
+    {
+      name: "Mai Anh",
+      style: "Waacking",
+      position: "Finance",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuBuImHFemtCv3gPuEA_w586sjONQ5WeiF9yTcgKtBnqriP2AusBq4wq3RBcXbPGZm8vtLPTmc3d2CnJ4945DAa_StPvwMFbarteUdAai5zH9L1D5huqtUMSjZsaBr-6uONe9hCZopPhrnc_MHUBwhqL9UHOYiHk8t_SMa16rzuZDGZ5fhUhV4s6MLgzRd08y7mi23sBk4yzrKa2U3R7XqCwiZ8kPgavUrD7YYNB7etfUCCbfkX3IqXXLcRBb1WESIZ5vuIXb8hVbJs",
+    },
+    {
+      name: "Thanh Nam",
+      style: "Hip-hop",
+      position: "Logistics",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuAztGD_BW1qKsjGw85-ofosE2lwBGSkvWlEU02VeVMmSZkoHugNqM038q95GMXBtu-Dqevv1a-p6yQ5BSvxR1iaSe1Ow6wYWX21UmjG6DhXBv_q9s_RfZBH8nLJPxQ4zLOPTi8pcNcyoLi6P0em94yqLBcT8dlJut56Q0tO_WsLC1ORlgnX1koyRYS7uZVDm2RYhIJQZdgBwVZyQAkhEXKIzcqIik5uFJCI0xmuir37VcDvlGxAZe0Frjv36bYQ7fe1bpmNbilhFJ8",
+    },
+    {
+      name: "Huyen Trang",
+      style: "K-pop",
+      position: "Media",
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCsrAUImzQc2kM_r7kuLuLjmJzzokqdI_wywnkS90mj_a2s_Z0fdW_ss4ly6wy7xutMBqxM4EqKIC-9IlNgricGhO8P-HF0F4vjyDudmWNvNkeqln2KZBolqJEHXDbe6eEQ4XHytLl6sfeTe7-v_5Jlct_frYfPnIDEmgKURGK8e29wwRZ0sYOfMbKIEuXB34hX-1leaHdNsfyheXGFraHg7s6D5gFBXkBm590dAmfv3uYtRg3bxNPsVVkCS26X3vcKgtgmBx5JZQk",
+    },
+  ];
+
+  const [query, setQuery] = useState("");
+  const [selectedStyle, setSelectedStyle] = useState("All Styles");
+  const [selectedPosition, setSelectedPosition] = useState("All Positions");
+  const [activeDancerIndex, setActiveDancerIndex] = useState(0);
+
+  const featuredDancers = [
+    {
+      name: "Nguyen Hien Giang",
+      tags: ["Performer", "Choreographer"],
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuBn96G6LKlnF161LVIxL9dmUpR_mWyoVhRdT17N7bY0Cd44-HwlsIW5c7xHF440_fiPlWXc9y1B-rbfapzyShFsc3S0GqqO7RJODpC9HTYHBWmyeSPxc8gMrDyMt14S_8Et1yD6Iv-y7QJ0Lj1Xov0sIh5xlyU1nFhYUsU0SBBMzMDu3vX35DQBIfp8aq4TUe1s6JqoJK2QPTM_4VIyhZjmadBZe8oqSliISfcz60W4Jo7cdLIrjt5w6P9hNeK--UUreJ7TWFudc1Y",
+    },
+    {
+      name: "Tran Bich Ngoc",
+      tags: ["Girl Style", "Content"],
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuAAyAG9gXfmDsEbmhQgYe88fzacGMcvvqC3AFqjT4rB1wl-lrDm_fYO-cCv7J8dGTriD1HXntPV_ApaBZU9S781K-4ZqfY7k6dBDUWOwmZ8OEdaA0tpLHfs-bbtSP4XRkfnma2GgOggwEdD4ovIVtV0AjEEo6cRL1XcmOhJYixhPIQIPhdB8jbI73CFOcnY_fhlUQngzWmGzx5o3xb9mveJZdP691kfySzNYJ_cNlpc17pS1d33kc14PxvFM3oRyYQ_NSilfE4-Weo",
+    },
+    {
+      name: "Duc Thang",
+      tags: ["Breaking", "Logistics"],
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDugrj-Kcp448gKyRd8oHssO7iyXMug8H012n8kFU55NC3VwaWB26KRBNBy9yQnDR9W-M0dmYincjFUJuMiBmw-nuAiC4g5F07z2BSOf513AhBqIfrAnVdneEOIwDlEbmcTcZRZTV1SzgVCE0fcpMz0HsPcqCi5pXGqmeBCAyDLVXYixcjCD-ySgqiQ6ZCNjWmy2YUS13ImD70J3f740ReKHc437YdzQSuUxdjPEKDEDXwpUkPO8iPPkTDfFSgYDTMYWDwN_iz4SMQ",
+    },
+    {
+      name: "Quoc Anh",
+      tags: ["Hip-hop", "Media"],
+      image:
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDnzdqkY94ZWtWGBJOtjIl0ZRJzcB6adX8JYeY-uLgwLR54xWhbqKerMepPi15LL4gE_17w5BigiTjJjEEq8HdHttb-Q6UNAn408sVkL5SoUFQ8Z4SSLGXxHth7mdmTP8k73vFiwq1rFrwRfwV43IyhBHQ8qiw84pXB2DQG3__7E1i20iXt-8xAta-G7Ew1kjC2sJsA-DMqZ4eiJrMn1hN9ZIQaw93BrNEGcyNAMVVfKyXFVEmFAUnbMChEnUEpOQ88dC5qCVcSFKs",
+    },
+  ];
+
+  const filteredMembers = useMemo(() => {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    return allMembers.filter((member) => {
+      const matchStyle =
+        selectedStyle === "All Styles" || member.style === selectedStyle;
+      const matchPosition =
+        selectedPosition === "All Positions" ||
+        member.position === selectedPosition;
+      const matchQuery =
+        normalizedQuery.length === 0 ||
+        `${member.name} ${member.style} ${member.position}`
+          .toLowerCase()
+          .includes(normalizedQuery);
+
+      return matchStyle && matchPosition && matchQuery;
+    });
+  }, [allMembers, query, selectedStyle, selectedPosition]);
+
+  const resetFilters = () => {
+    setQuery("");
+    setSelectedStyle("All Styles");
+    setSelectedPosition("All Positions");
+  };
+
+  const goToPrevDancer = () => {
+    setActiveDancerIndex((current) =>
+      current === 0 ? featuredDancers.length - 1 : current - 1,
+    );
+  };
+
+  const goToNextDancer = () => {
+    setActiveDancerIndex((current) =>
+      current === featuredDancers.length - 1 ? 0 : current + 1,
+    );
+  };
+
+  const getRelativeOffset = (index) => {
+    const total = featuredDancers.length;
+    let offset = index - activeDancerIndex;
+
+    if (offset > total / 2) {
+      offset -= total;
+    }
+
+    if (offset < -total / 2) {
+      offset += total;
+    }
+
+    return offset;
+  };
 
   return (
     <main className="w-full min-h-[var(--pub-main-min-height)] my-[var(--pub-main-margin-y)] px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)]">
@@ -174,6 +343,263 @@ const Members = () => {
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section className="mt-12 rounded-[2rem] border border-[#ef9f5c]/35 bg-[#120a05] p-5 sm:p-6 md:p-8">
+        <div className="mb-8 flex items-end gap-4">
+          <div className="h-11 w-2 rounded-full bg-[#f0a160]" />
+          <h2 className="monument-extra-bold text-2xl uppercase leading-none sm:text-3xl md:text-4xl">
+            Featured Dancers
+          </h2>
+        </div>
+
+        <div className="relative">
+          <button
+            type="button"
+            onClick={goToPrevDancer}
+            aria-label="Previous dancer"
+            className="absolute left-0 top-1/2 z-20 hidden -translate-x-1/2 -translate-y-1/2 items-center justify-center text-white transition-colors md:flex"
+          >
+            <FontAwesomeIcon icon={faAngleLeft} size="2xl" />
+          </button>
+
+          <button
+            type="button"
+            onClick={goToNextDancer}
+            aria-label="Next dancer"
+            className="absolute right-0 top-1/2 z-20 hidden translate-x-1/2 -translate-y-1/2 items-center justify-center text-white transition-colors md:flex"
+          >
+            <FontAwesomeIcon icon={faAngleRight} size="2xl" />
+          </button>
+
+          <div className="relative h-[34rem] overflow-hidden rounded-[1.8rem] md:h-[40rem]">
+            {featuredDancers.map((dancer, index) => {
+              const offset = getRelativeOffset(index);
+              const isActive = offset === 0;
+              const isSide = Math.abs(offset) === 1;
+
+              const translateMap = {
+                "-1": "translateX(-130%)",
+                0: "translateX(-50%)",
+                1: "translateX(30%)",
+              };
+
+              const verticalOffset = isActive
+                ? "translateY(10%)"
+                : isSide
+                  ? "translateY(-7%)"
+                  : "translateY(0)";
+
+              const cardWidth = isActive ? "66%" : isSide ? "30%" : "16%";
+
+              const transform = `${translateMap[String(offset)] || "translateX(-50%)"} ${verticalOffset} scale(${isActive ? 1 : isSide ? 0.85 : 0.75})`;
+              const genreText = dancer.tags.join(" / ");
+
+              return (
+                <article
+                  key={dancer.name}
+                  className={`absolute left-1/2 top-0 h-[88%] overflow-hidden rounded-[1.8rem] border border-white/10 bg-gradient-to-b from-[#5f5f5f] to-[#050505] shadow-[0_30px_60px_rgba(0,0,0,0.45)] transition-all duration-500 ease-out ${
+                    isActive
+                      ? "z-30 opacity-100"
+                      : isSide
+                        ? "z-20 opacity-45"
+                        : "pointer-events-none z-10 opacity-0"
+                  }`}
+                  style={{
+                    width: cardWidth,
+                    transform,
+                  }}
+                >
+                  <img
+                    src={dancer.image}
+                    alt={`${dancer.name} portrait`}
+                    className={`h-full w-full object-cover transition-all duration-500 ${
+                      isActive ? "grayscale-0" : "grayscale"
+                    }`}
+                    loading="lazy"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-l from-black/85 via-black/45 to-black/10" />
+
+                  <div className="absolute right-0 top-0 flex h-full w-[46%] flex-col items-end justify-between p-4 text-right sm:p-5 md:p-7">
+                    <p className="monument-extra-bold text-lg uppercase leading-tight text-white sm:text-2xl md:text-[1.75rem]">
+                      {dancer.name}
+                    </p>
+
+                    <div className="flex flex-col items-end text-right">
+                      <p
+                        className={`text-[11px] uppercase tracking-[0.22em] transition-colors duration-500 ${
+                          isActive ? "text-[#ffb4cf]" : "text-[#c8a8b5]"
+                        }`}
+                      >
+                        {genreText}
+                      </p>
+
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        <span className="rounded-full border border-[#ff82af]/60 bg-[#ff2d78]/20 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#ffd5e4]">
+                          Booking
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <div className="mt-4 flex justify-center gap-3 md:hidden">
+            <button
+              type="button"
+              onClick={goToPrevDancer}
+              className="h-10 w-10 rounded-full bg-white/10 text-white"
+              aria-label="Previous dancer"
+            >
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </button>
+            <button
+              type="button"
+              onClick={goToNextDancer}
+              className="h-10 w-10 rounded-full bg-white/10 text-white"
+              aria-label="Next dancer"
+            >
+              <FontAwesomeIcon icon={faAngleRight} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-12 rounded-[2rem] border border-[#ef9f5c]/35 bg-[#140b06] p-5 sm:p-6 md:p-8">
+        <div className="mb-8 flex items-end gap-4">
+          <div className="h-11 w-2 rounded-full bg-[#f0a160]" />
+          <h2 className="monument-extra-bold text-2xl uppercase leading-none sm:text-3xl md:text-4xl">
+            All Members & Filtering
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
+          <aside className="rounded-[1.5rem] border border-[#f0a160]/25 bg-[#1b0f08] p-5 lg:sticky lg:top-24 lg:self-start">
+            <p className="monument-regular text-xs uppercase tracking-[0.22em] text-[#ffc58f]">
+              Filter Crew
+            </p>
+
+            <div className="mt-7">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-[#d0956a]">
+                Dance Style
+              </p>
+              <div className="mt-3 flex flex-col gap-2">
+                {danceStyles.map((style) => (
+                  <button
+                    key={style}
+                    type="button"
+                    onClick={() => setSelectedStyle(style)}
+                    className={`rounded-full px-4 py-2 text-left text-sm transition-all ${
+                      selectedStyle === style
+                        ? "border border-[#ffc58f]/55 bg-[#3a1c0f] text-[#ffd6af]"
+                        : "border border-transparent bg-[#25150c] text-[#c99770] hover:text-[#ffd6af]"
+                    }`}
+                  >
+                    {style}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-7">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-[#d0956a]">
+                Position
+              </p>
+              <div className="mt-3 flex flex-col gap-2">
+                {positions.map((position) => (
+                  <button
+                    key={position}
+                    type="button"
+                    onClick={() => setSelectedPosition(position)}
+                    className={`rounded-full px-4 py-2 text-left text-sm transition-all ${
+                      selectedPosition === position
+                        ? "border border-[#ffc58f]/55 bg-[#3a1c0f] text-[#ffd6af]"
+                        : "border border-transparent bg-[#25150c] text-[#c99770] hover:text-[#ffd6af]"
+                    }`}
+                  >
+                    {position}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={resetFilters}
+              className="mt-8 w-full rounded-full border border-[#f0a160]/40 py-3 text-xs uppercase tracking-[0.2em] text-[#ffcc99] transition-colors hover:border-[#ffd1a2] hover:text-[#ffe2c2]"
+            >
+              Reset Filters
+            </button>
+          </aside>
+
+          <div>
+            <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="relative w-full max-w-xl">
+                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[#b9835e]">
+                  Search
+                </span>
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Find a member by name, style, or position..."
+                  className="w-full rounded-xl border border-[#f0a160]/30 bg-[#25150c] py-3 pl-20 pr-4 text-sm text-[#ffdcb8] placeholder:text-[#a67452] focus:border-[#ffc58f] focus:outline-none"
+                />
+              </div>
+
+              <p className="text-sm text-[#d8a67e]">
+                Showing {filteredMembers.length} member
+                {filteredMembers.length === 1 ? "" : "s"}
+              </p>
+            </div>
+
+            {filteredMembers.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-[#f0a160]/40 bg-[#201108] p-8 text-center">
+                <p className="text-lg text-[#ffd3ad]">No members found.</p>
+                <p className="mt-2 text-sm text-[#bc8862]">
+                  Try changing dance style, position, or clearing search
+                  keywords.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                {filteredMembers.map((member) => (
+                  <article
+                    key={member.name}
+                    className="group overflow-hidden rounded-2xl border border-[#f0a160]/25 bg-[#211006] shadow-[0_18px_36px_rgba(13,4,0,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-[#ffd1a2]/70"
+                  >
+                    <div className="aspect-[4/5] overflow-hidden">
+                      <img
+                        src={member.image}
+                        alt={`${member.name} portrait`}
+                        className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0"
+                        loading="lazy"
+                      />
+                    </div>
+
+                    <div className="p-5">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-[#ffc892]">
+                        {member.style} / {member.position}
+                      </p>
+                      <p className="monument-extra-bold mt-2 text-2xl uppercase text-[#ffdcb8]">
+                        {member.name}
+                      </p>
+                      <button
+                        type="button"
+                        className="mt-4 w-full rounded-full border border-[#f0a160]/40 bg-[#2b1409] py-2 text-[11px] uppercase tracking-[0.2em] text-[#ffd2ac] transition-colors hover:border-[#ffd2ac] hover:bg-[#3b1a0f]"
+                      >
+                        Profile
+                      </button>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </main>
