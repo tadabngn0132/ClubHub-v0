@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getToken } from "../utils/helper";
+import { getToken, setToken } from "../utils/helper";
 import toast from "react-hot-toast";
 
 let unauthorizedHandler = null;
@@ -15,22 +15,48 @@ const axiosClient = axios.create({
   withCredentials: true,
 });
 
-// TODO: Implement queue mechanism for handling 401 responses
-// TODO: Implement global variables for queueing
-// let isRefreshing = false;
-// let failedQueue = [];
+let isRefreshing = false;
+let failedQueue = [];
+let isHandlingUnauthorized = false;
 
-// // TODO: Implement queue functions
-// const processQueue = (error, token = null) => {
-//   failedQueue.forEach((prom) => {
-//     if (error) {
-//       prom.reject(error);
-//     } else {
-//       prom.resolve(token);
-//     }
-//   });
-//   failedQueue = [];
-// };
+const processQueue = (error, newToken = null) => {
+  failedQueue.forEach((promise) => {
+    if (error) {
+      promise.reject(error);
+    } else {
+      promise.resolve(newToken);
+    }
+  });
+
+  failedQueue = [];
+};
+
+const requestNewAccessToken = async () => {
+  const response = await axios.post(
+    "http://localhost:5995/api/auth/refresh-access-token",
+    {},
+    {
+      timeout: 5000,
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+
+  return response?.data?.data?.newAccessToken;
+};
+
+const isAuthRequest = (requestUrl = "") => {
+  return (
+    requestUrl.includes("/auth/login") ||
+    requestUrl.includes("/auth/register") ||
+    requestUrl.includes("/auth/forgot-password") ||
+    requestUrl.includes("/auth/reset-password") ||
+    requestUrl.includes("/auth/logout") ||
+    requestUrl.includes("/auth/refresh-access-token")
+  );
+};
 
 // Add a request interceptor
 axiosClient.interceptors.request.use(
@@ -89,30 +115,61 @@ axiosClient.interceptors.response.use(
         toast.error(error.response.data.message || "Bad request");
         break;
       case 401:
-        // TODO: Handle refresh token expiration or unauthorized access in queue function
         const requestUrl = error.config?.url || "";
-        const isLoginRequest = requestUrl.includes("/auth/login");
-        const isRegisterRequest = requestUrl.includes("/auth/register");
-        const isForgotPasswordRequest = requestUrl.includes("/auth/forgot-password");
-        const isResetPasswordRequest = requestUrl.includes("/auth/reset-password");
-        const isLogoutRequest = requestUrl.includes("/auth/logout");
+        const originalRequest = error.config || {};
+        const shouldSkipAutoLogout = isAuthRequest(requestUrl);
 
-        const shouldSkipAutoLogout =
-          isLoginRequest ||
-          isRegisterRequest ||
-          isForgotPasswordRequest ||
-          isResetPasswordRequest ||
-          isLogoutRequest;
-
-        if (shouldSkipAutoLogout) {
+        if (shouldSkipAutoLogout || originalRequest._retry) {
           toast.error(error.response?.data?.message || "Unauthorized");
           break;
         }
 
-        toast.error("Session expired. Please log in again.");
-        if (unauthorizedHandler) {
-          await unauthorizedHandler(error);
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
+          })
+            .then((newToken) => {
+              originalRequest.headers = originalRequest.headers || {};
+              originalRequest.headers.Authorization = `Bearer ${newToken}`;
+              return axiosClient(originalRequest);
+            })
+            .catch((queueError) => Promise.reject(queueError));
         }
+
+        originalRequest._retry = true;
+        isRefreshing = true;
+
+        try {
+          const newToken = await requestNewAccessToken();
+
+          if (!newToken) {
+            throw new Error("Failed to refresh access token");
+          }
+
+          setToken(newToken);
+          axiosClient.defaults.headers.common.Authorization = `Bearer ${newToken}`;
+          processQueue(null, newToken);
+
+          originalRequest.headers = originalRequest.headers || {};
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
+          return axiosClient(originalRequest);
+        } catch (refreshError) {
+          processQueue(refreshError, null);
+
+          if (!isHandlingUnauthorized) {
+            isHandlingUnauthorized = true;
+            toast.error("Session expired. Please log in again.");
+
+            if (unauthorizedHandler) {
+              await unauthorizedHandler(refreshError);
+            }
+
+            isHandlingUnauthorized = false;
+          }
+        } finally {
+          isRefreshing = false;
+        }
+
         break;
       case 403:
         // Handle forbidden access
