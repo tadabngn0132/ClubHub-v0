@@ -12,6 +12,7 @@ import MemberViewDepartment from "../../pages/private/member/MemberViewDepartmen
 import MemberPositions from "../../pages/private/member/MemberPositions.jsx";
 import MemberViewPosition from "../../pages/private/member/MemberViewPosition.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
+import MemberAI from "../../pages/private/member/MemberAI.jsx";
 
 export const memberRoutes = [
   {
@@ -43,6 +44,14 @@ export const memberRoutes = [
     element: (
       <MemberLayout>
         <MemberTasks />
+      </MemberLayout>
+    ),
+  },
+  {
+    path: "/member/ai",
+    element: (
+      <MemberLayout>
+        <MemberAI />
       </MemberLayout>
     ),
   },
