@@ -20,7 +20,6 @@ import ModeratorViewMemberApplication from "../../pages/private/moderator/Modera
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
 import ModeratorAddUser from "../../pages/private/moderator/ModeratorAddUser.jsx";
 import ModeratorEditUser from "../../pages/private/moderator/ModeratorEditUser.jsx";
-import ModeratorAI from "../../pages/private/moderator/ModeratorAI.jsx";
 import MemberApplicationProcess from "../../pages/private/shared/MemberApplicationProcess.jsx";
 
 export const moderatorRoutes = [
@@ -69,14 +68,6 @@ export const moderatorRoutes = [
     element: (
       <ModeratorLayout>
         <ModeratorTasks />
-      </ModeratorLayout>
-    ),
-  },
-  {
-    path: "/moderator/ai",
-    element: (
-      <ModeratorLayout>
-        <ModeratorAI />
       </ModeratorLayout>
     ),
   },

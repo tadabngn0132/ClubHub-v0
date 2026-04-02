@@ -9,7 +9,6 @@ const ModeratorSideBar = () => {
     { name: "Member Applications", link: "/moderator/member-applications" },
     { name: "Activities", link: "/moderator/activities" },
     { name: "Tasks", link: "/moderator/tasks" },
-    { name: "AI Assistant", link: "/moderator/ai" },
     { name: "Profile", link: "/moderator/profile" },
   ];
 

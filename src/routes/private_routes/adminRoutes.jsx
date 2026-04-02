@@ -25,7 +25,6 @@ import AdminMemberApplications from "../../pages/private/admin/AdminMemberApplic
 import AdminViewMemberApplication from "../../pages/private/admin/AdminViewMemberApplication.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
 import AdminPermissions from "../../pages/private/admin/AdminPermissions.jsx";
-import AdminAI from "../../pages/private/admin/AdminAI.jsx";
 import MemberApplicationProcess from "../../pages/private/shared/MemberApplicationProcess.jsx";
 
 export const adminRoutes = [
@@ -74,14 +73,6 @@ export const adminRoutes = [
     element: (
       <AdminLayout>
         <AdminTasks />
-      </AdminLayout>
-    ),
-  },
-  {
-    path: "/admin/ai",
-    element: (
-      <AdminLayout>
-        <AdminAI />
       </AdminLayout>
     ),
   },

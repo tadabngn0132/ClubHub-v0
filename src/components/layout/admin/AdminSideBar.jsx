@@ -8,7 +8,6 @@ const AdminSideBar = () => {
     { name: "Positions", link: "/admin/positions" },
     { name: "Activities", link: "/admin/activities" },
     { name: "Tasks", link: "/admin/tasks" },
-    { name: "AI Assistant", link: "/admin/ai" },
     { name: "Member Applications", link: "/admin/member-applications" },
     { name: "Profile", link: "/admin/profile" },
   ];

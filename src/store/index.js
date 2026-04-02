@@ -10,7 +10,6 @@ import notificationReducer from "./slices/notificationSlice";
 import departmentApplicationReducer from "./slices/departmentApplicationSlice";
 import activityParticipationReducer from "./slices/activityParticipationSlice";
 import chatRoomReducer from "./slices/chatRoomSlice";
-import aiReducer from "./slices/aiSlice";
 
 export const store = configureStore({
   reducer: {
@@ -25,7 +24,6 @@ export const store = configureStore({
     departmentApplication: departmentApplicationReducer,
     activityParticipation: activityParticipationReducer,
     chatRoom: chatRoomReducer,
-    ai: aiReducer,
   },
 });
 
