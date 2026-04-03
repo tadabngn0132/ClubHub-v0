@@ -74,59 +74,9 @@ const ActivityLocationSection = () => {
       {/* Need to implement more based on condition of location type */}
       {(locationType === "online" || locationType === "hybrid") && (
         <>
-          <label htmlFor="meeting_platform" className={labelClassName}>
-            Meeting Platform <span className="text-red-400">*</span>
+          <label htmlFor="" className={labelClassName}>
+            Meet link will be automatically generated and added to the activity details after saving.
           </label>
-          <select
-            name="meeting_platform"
-            id="meeting_platform"
-            {...register("meetingPlatform", {
-              required: VALIDATION_MESSAGES.meetingPlatformRequired,
-            })}
-            className={inputClassName}
-          >
-            <option value="Google Meet" className="bg-gray-800 text-gray-100">Google Meet</option>
-            <option value="Zoom" className="bg-gray-800 text-gray-100">Zoom</option>
-            <option value="Microsoft Teams" className="bg-gray-800 text-gray-100">Microsoft Teams</option>
-            <option value="Other" className="bg-gray-800 text-gray-100">Other</option>
-          </select>
-          {errors.meetingPlatform && (
-            <p className={errorClassName}>{errors.meetingPlatform.message}</p>
-          )}
-
-          <label htmlFor="meeting_link" className={labelClassName}>
-            Meeting Link <span className="text-red-400">*</span>
-          </label>
-          <input
-            type="text"
-            name="meeting_link"
-            id="meeting_link"
-            {...register("meetingLink", VALIDATION_RULES.activityMeetingLink)}
-            className={inputClassName}
-          />
-          {errors.meetingLink && (
-            <p className={errorClassName}>{errors.meetingLink.message}</p>
-          )}
-
-          <label htmlFor="meeting_id" className={labelClassName}>
-            Meeting ID <span className="text-red-400">*</span>
-          </label>
-          <input
-            type="text"
-            name="meeting_id"
-            id="meeting_id"
-            {...register("meetingId")}
-            className={inputClassName}
-          />
-
-          <label htmlFor="meeting_password" className={labelClassName}>Meeting Password</label>
-          <input
-            type="text"
-            name="meeting_password"
-            id="meeting_password"
-            {...register("meetingPassword")}
-            className={inputClassName}
-          />
         </>
       )}
 

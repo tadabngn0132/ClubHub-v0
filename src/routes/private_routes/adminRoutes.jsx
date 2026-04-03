@@ -26,6 +26,7 @@ import AdminViewMemberApplication from "../../pages/private/admin/AdminViewMembe
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
 import AdminPermissions from "../../pages/private/admin/AdminPermissions.jsx";
 import MemberApplicationProcess from "../../pages/private/shared/MemberApplicationProcess.jsx";
+import AdminDocuments from "../../pages/private/admin/AdminDocuments.jsx";
 
 export const adminRoutes = [
   {
@@ -260,4 +261,12 @@ export const adminRoutes = [
       </AdminLayout>
     ),
   },
+  {
+    path: "/admin/documents",
+    element: (
+      <AdminLayout>
+        <AdminDocuments />
+      </AdminLayout>
+    ),
+  }
 ];

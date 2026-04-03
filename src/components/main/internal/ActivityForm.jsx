@@ -19,10 +19,6 @@ const ActivityForm = ({ activity, onSubmit }) => {
       startDate: activity ? activity.startDate : "",
       endDate: activity ? activity.endDate : "",
       locationType: activity ? activity.locationType : "",
-      meetingPlatform: activity ? activity.meetingPlatform : "",
-      meetingLink: activity ? activity.meetingLink : "",
-      meetingId: activity ? activity.meetingId : "",
-      meetingPassword: activity ? activity.meetingPassword : "",
       venueName: activity ? activity.venueName : "",
       venueAddress: activity ? activity.venueAddress : "",
       roomNumber: activity ? activity.roomNumber : "",
@@ -60,10 +56,6 @@ const ActivityForm = ({ activity, onSubmit }) => {
     formData.append("startDate", data.startDate);
     formData.append("endDate", data.endDate);
     formData.append("locationType", data.locationType);
-    formData.append("meetingPlatform", data.meetingPlatform);
-    formData.append("meetingLink", data.meetingLink);
-    formData.append("meetingId", data.meetingId);
-    formData.append("meetingPassword", data.meetingPassword);
     formData.append("venueName", data.venueName);
     formData.append("venueAddress", data.venueAddress);
     formData.append("roomNumber", data.roomNumber);
