@@ -16,16 +16,14 @@ export const exportMemberListToSheet = async (data) => {
 };
 
 export const exportAttendanceReportToSheet = async (data) => {
-  const response = await axiosClient.post("/sheets/export-attendance-report", data);
+  const response = await axiosClient.post(
+    "/sheets/export-attendance-report",
+    data,
+  );
   return response.data;
 };
 
 export const fetchGoogleSheetEmbedLink = async (sheetId) => {
   const response = await axiosClient.get(`/sheets/${sheetId}/embed-link`);
-  return response.data;
-};
-
-export const listGoogleSheetsTemplates = async (userId) => {
-  const response = await axiosClient.get("/sheets/templates");
   return response.data;
 };
