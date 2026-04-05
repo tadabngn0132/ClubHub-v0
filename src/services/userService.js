@@ -34,3 +34,8 @@ export const hardDeleteAnUser = async (id) => {
   const res = await axiosClient.delete(`/users/${id}/hard`);
   return res.data;
 };
+
+export const unlockAnUserAccount = async (id) => {
+  const res = await axiosClient.put(`/users/unlock/${id}`);
+  return res.data;
+};

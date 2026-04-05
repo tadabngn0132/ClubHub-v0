@@ -7,6 +7,7 @@ import {
   updateAnUserProfile,
   softDeleteAnUser,
   hardDeleteAnUser,
+  unlockAnUserAccount,
 } from "../../services/userService";
 
 export const createUser = createAsyncThunk(
@@ -116,6 +117,23 @@ export const hardDeleteUserById = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const data = await hardDeleteAnUser(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const unlockUserAccount = createAsyncThunk(
+  "user/unlockUserAccount",
+  async (id, thunkAPI) => {
+    try {
+      const data = await unlockAnUserAccount(id);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -272,6 +290,22 @@ const userSlice = createSlice({
         state.userStatus = "fulfilled";
       })
       .addCase(hardDeleteUserById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.userStatus = "rejected";
+      })
+
+      // Unlock User Account
+      .addCase(unlockUserAccount.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.userStatus = "pending";
+      })
+      .addCase(unlockUserAccount.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userStatus = "fulfilled";
+      })
+      .addCase(unlockUserAccount.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         state.userStatus = "rejected";

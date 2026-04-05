@@ -6,6 +6,7 @@ import {
   getUserById,
   softDeleteUserById,
   hardDeleteUserById,
+  unlockUserAccount,
 } from "../../../store/slices/userSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { getActivitiesByUserId } from "../../../store/slices/activitySlice";
@@ -53,6 +54,10 @@ const AdminViewUser = () => {
       navigate("/admin/users");
       dispatch(resetUserStatus());
     }
+  };
+
+  const handleUnlock = () => {
+    dispatch(unlockUserAccount(userId));
   };
 
   useEffect(() => {
@@ -127,6 +132,12 @@ const AdminViewUser = () => {
                 className="rounded-xl border border-rose-400/60 bg-rose-500/15 px-4 py-2 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/25"
               >
                 Delete Member
+              </button>
+              <button
+                onClick={() => handleUnlock()}
+                className="rounded-xl border border-teal-400/60 bg-teal-500/15 px-4 py-2 text-sm font-semibold text-teal-200 transition hover:bg-teal-500/25"
+              >
+                Unlock Account
               </button>
             </div>
           </div>

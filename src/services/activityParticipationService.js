@@ -39,3 +39,18 @@ export const deleteParticipation = async (id) => {
   const res = await axiosClient.delete(`/activity-participations/${id}`);
   return res.data;
 };
+
+export const checkInParticipant = async (participationId) => {
+  const res = await axiosClient.put(
+    `/activity-participations/${participationId}/check-in`,
+  );
+  return res.data;
+};
+
+export const markParticipantNoShow = async (activityId, userId) => {
+  const res = await axiosClient.put(
+    `/activity-participations/${activityId}/no-show`,
+    { userId },
+  );
+  return res.data;
+};
