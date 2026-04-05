@@ -4,6 +4,7 @@ import {
   getAnUserById,
   getAllUsers,
   updateAnUser,
+  updateAnUserProfile,
   softDeleteAnUser,
   hardDeleteAnUser,
 } from "../../services/userService";
@@ -64,6 +65,23 @@ export const updateUserById = createAsyncThunk(
   async ({ id, userData }, thunkAPI) => {
     try {
       const data = await updateAnUser(id, userData);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const updateUserProfileById = createAsyncThunk(
+  "user/updateUserProfileById",
+  async ({ id, userData }, thunkAPI) => {
+    try {
+      const data = await updateAnUserProfile(id, userData);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -194,6 +212,28 @@ const userSlice = createSlice({
         }
       })
       .addCase(updateUserById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.userStatus = "rejected";
+      })
+
+      // Update User Profile By ID
+      .addCase(updateUserProfileById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.userStatus = "pending";
+      })
+      .addCase(updateUserProfileById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userStatus = "fulfilled";
+        const index = state.users.findIndex(
+          (user) => user.id === action.payload.data.id,
+        );
+        if (index !== -1) {
+          state.users[index] = action.payload.data;
+        }
+      })
+      .addCase(updateUserProfileById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         state.userStatus = "rejected";

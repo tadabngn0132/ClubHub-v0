@@ -20,8 +20,13 @@ export const updateAnUser = async (id, data) => {
   return res.data;
 };
 
+export const updateAnUserProfile = async (id, data) => {
+  const res = await axiosClient.put(`/users/profile/${id}`, data);
+  return res.data;
+};
+
 export const softDeleteAnUser = async (id) => {
-  const res = await axiosClient.delete(`/users/${id}/soft`);
+  const res = await axiosClient.put(`/users/${id}/soft`);
   return res.data;
 };
 

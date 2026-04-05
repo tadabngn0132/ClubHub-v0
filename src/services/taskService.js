@@ -38,4 +38,9 @@ export const hardDeleteTask = async (id) => {
 export const confirmTaskCompletion = async (id, data) => {
   const res = await axiosClient.put(`/tasks/${id}/confirm-completion`, data);
   return res.data;
-}
+};
+
+export const verifyTaskCompletion = async (id, data) => {
+  const res = await axiosClient.put(`/tasks/${id}/verify-completion`, data);
+  return res.data;
+};

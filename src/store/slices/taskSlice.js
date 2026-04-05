@@ -8,6 +8,7 @@ import {
   softDeleteTask,
   hardDeleteTask,
   confirmTaskCompletion,
+  verifyTaskCompletion,
 } from "../../services/taskService";
 
 export const createNewTask = createAsyncThunk(
@@ -132,9 +133,26 @@ export const hardDeleteTaskById = createAsyncThunk(
 
 export const confirmTaskCompletionById = createAsyncThunk(
   "task/confirmTaskCompletionById",
-  async ({ id, data }, thunkAPI) => {
+  async ({ id, taskConfirmData }, thunkAPI) => {
     try {
-      const data = await confirmTaskCompletion(id, data);
+      const data = await confirmTaskCompletion(id, taskConfirmData);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const verifyTaskCompletionById = createAsyncThunk(
+  "task/verifyTaskCompletionById",
+  async ({ id, taskVerifyData }, thunkAPI) => {
+    try {
+      const data = await verifyTaskCompletion(id, taskVerifyData);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -302,6 +320,22 @@ const taskSlice = createSlice({
         state.taskStatus = "fulfilled";
       })
       .addCase(confirmTaskCompletionById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.taskStatus = "rejected";
+      })
+
+      // Verify Task Completion
+      .addCase(verifyTaskCompletionById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.taskStatus = "pending";
+      })
+      .addCase(verifyTaskCompletionById.fulfilled, (state) => {
+        state.isLoading = false;
+        state.taskStatus = "fulfilled";
+      })
+      .addCase(verifyTaskCompletionById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         state.taskStatus = "rejected";

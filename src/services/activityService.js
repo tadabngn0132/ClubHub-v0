@@ -41,21 +41,32 @@ export const getAllActivitiesByUserId = async (userId) => {
 };
 
 export const createActivityImage = async (activityId, data) => {
-  const res = await axiosClient.post(`/activities/images/create/${activityId}`, data);
+  const res = await axiosClient.post(
+    `/activities/images/create/${activityId}`,
+    data,
+  );
   return res.data;
-}
+};
 
 export const createActivityVideo = async (activityId, data) => {
-  const res = await axiosClient.post(`/activities/videos/create/${activityId}`, data);
+  const res = await axiosClient.post(
+    `/activities/videos/create/${activityId}`,
+    data,
+  );
   return res.data;
-}
+};
 
 export const deleteActivityImage = async (videoId) => {
   const res = await axiosClient.delete(`/activities/images/delete/${videoId}`);
   return res.data;
-}
+};
 
 export const deleteActivityVideo = async (videoId) => {
   const res = await axiosClient.delete(`/activities/videos/delete/${videoId}`);
   return res.data;
-}
+};
+
+export const getICSFile = async (activityId) => {
+  const res = await axiosClient.get(`/activities/ics/${activityId}`);
+  return res.data;
+};
