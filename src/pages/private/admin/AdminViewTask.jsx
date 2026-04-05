@@ -193,6 +193,7 @@ const AdminViewTask = () => {
               </h2>
               {filterConfirmedAssignee.map((assignee) => (
                 <div key={assignee.assigneeId} className="mb-4">
+                  <p>{assignee.status}</p>
                   <p className="text-sm text-green-300">
                     <span className="font-semibold text-green-400">
                       Assignee:

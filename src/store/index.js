@@ -11,6 +11,7 @@ import departmentApplicationReducer from "./slices/departmentApplicationSlice";
 import activityParticipationReducer from "./slices/activityParticipationSlice";
 import chatRoomReducer from "./slices/chatRoomSlice";
 import aiReducer from "./slices/aiSlice";
+import dashboardReducer from "./slices/dashboardSlice";
 
 export const store = configureStore({
   reducer: {
@@ -26,6 +27,7 @@ export const store = configureStore({
     activityParticipation: activityParticipationReducer,
     chatRoom: chatRoomReducer,
     ai: aiReducer,
+    dashboard: dashboardReducer,
   },
 });
 

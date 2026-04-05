@@ -18,11 +18,17 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { fetchDashboardStats } from "../../../store/slices/dashboardSlice.js";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.auth);
+  const {
+    stats,
+    isLoading: statsLoading,
+    error: statsError,
+  } = useSelector((state) => state.dashboard);
 
   // Fetch necessary data for the dashboard
   const {
@@ -47,6 +53,7 @@ const AdminDashboard = () => {
   } = useSelector((state) => state.memberApplication);
 
   useEffect(() => {
+    dispatch(fetchDashboardStats());
     dispatch(getUsersList());
     dispatch(getAllTasksList());
     dispatch(getActivitiesList());
@@ -71,23 +78,23 @@ const AdminDashboard = () => {
 
   const summaryCards = [
     {
-      title: "Total Users",
-      value: users.length,
+      title: "Total Active Users",
+      value: `${stats?.userCount || 0} / ${users.length || 0}`,
       accent: "text-teal-300",
     },
     {
-      title: "Total Tasks",
-      value: tasks.length,
+      title: "Total Incomplete Tasks",
+      value: `${stats?.taskCount || 0} / ${tasks.length || 0}`,
       accent: "text-cyan-300",
     },
     {
-      title: "Total Activities",
-      value: activities.length,
+      title: "Total Upcoming Activities",
+      value: `${stats?.eventCount || 0} / ${activities.length || 0}`,
       accent: "text-amber-300",
     },
     {
       title: "Member Applications",
-      value: memberApplications.length,
+      value: `${stats?.memberApplicationCount || 0} / ${memberApplications.length || 0}`,
       accent: "text-fuchsia-300",
     },
   ];
