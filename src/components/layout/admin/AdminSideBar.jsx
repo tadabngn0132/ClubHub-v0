@@ -9,6 +9,8 @@ const AdminSideBar = () => {
     { name: "Activities", link: "/admin/activities" },
     { name: "Tasks", link: "/admin/tasks" },
     { name: "Documents", link: "/admin/documents" },
+    { name: "Chat", link: "/admin/chat" },
+    { name: "AI Chat", link: "/admin/ai-chat" },
     { name: "Member Applications", link: "/admin/member-applications" },
     { name: "Profile", link: "/admin/profile" },
   ];

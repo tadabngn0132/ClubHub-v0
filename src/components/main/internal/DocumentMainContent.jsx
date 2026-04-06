@@ -5,6 +5,16 @@ import FileViewerModal from "./FileViewerModal";
 import DocTemplateModal from "./DocTemplateModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+	createDocFromTemplate,
+	createTemplate,
+	fetchEmbedLink,
+} from "../../../store/slices/googleDocsSlice";
+import {
+	createSheetFromTemplateAsync,
+	createSheetTemplateAsync,
+	fetchGoogleSheetEmbedLinkAsync,
+} from "../../../store/slices/googleSheetsSlice";
 
 const seedFiles = [
 	{

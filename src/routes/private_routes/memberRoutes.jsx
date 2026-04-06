@@ -12,6 +12,8 @@ import MemberViewDepartment from "../../pages/private/member/MemberViewDepartmen
 import MemberPositions from "../../pages/private/member/MemberPositions.jsx";
 import MemberViewPosition from "../../pages/private/member/MemberViewPosition.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
+import MemberChat from "../../pages/private/Member/MemberChat.jsx";
+import MemberAIChat from "../../pages/private/Member/MemberAIChat.jsx";
 
 export const memberRoutes = [
   {
@@ -118,4 +120,20 @@ export const memberRoutes = [
       </MemberLayout>
     ),
   },
+  {
+    path: "/member/chat",
+    element: (
+      <MemberLayout>
+        <MemberChat />
+      </MemberLayout>
+    ),
+  },
+  {
+    path: "/member/ai-chat",
+    element: (
+      <MemberLayout>
+        <MemberAIChat />
+      </MemberLayout>
+    ),
+  }
 ];

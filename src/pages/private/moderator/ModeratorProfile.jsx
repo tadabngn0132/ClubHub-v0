@@ -4,6 +4,7 @@ import { getUserById, resetUserStatus } from "../../../store/slices/userSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import UserForm from "../../../components/main/internal/UserForm";
 import ChangePasswordForm from "../../../components/main/internal/ChangePasswordForm";
+import { changePasswordUser } from "../../../store/slices/authSlice";
 
 const ModeratorProfile = () => {
   const dispatch = useDispatch();
@@ -17,8 +18,12 @@ const ModeratorProfile = () => {
     ) : (
       <p className="text-sm text-slate-300">User data not available.</p>
     )) },
-    { id: 2, label: "Change Password", component: <ChangePasswordForm /> },
+    { id: 2, label: "Change Password", component: <ChangePasswordForm onSubmit={handleChangePassword} /> },
   ];
+
+  const handleChangePassword = (data) => {
+    dispatch(changePasswordUser(data));
+  };
 
   useEffect(() => {
     if (currentUser) {

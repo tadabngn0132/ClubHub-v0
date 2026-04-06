@@ -24,7 +24,7 @@ const ModeratorEditActivity = () => {
   }, [activityId, dispatch]);
 
   const handleEditActivity = (data) => {
-    dispatch(updateActivityById({ activityId, data }));
+    dispatch(updateActivityById({ id: activityId, activityData: data }));
 
     if (status === "fulfilled") {
       navigate("/moderator/activities");
