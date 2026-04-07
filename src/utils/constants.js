@@ -1,3 +1,5 @@
+import { all } from "axios";
+
 export const API_BASE_URL = "http://localhost:5000/api/v1";
 
 export const AUTH_STORAGE_MODE = {
@@ -106,3 +108,48 @@ export const PERMISSIONS = {
     "canVerifyTask": false,
   },
 }
+
+export const LAYOUT_CONFIG = {
+  admin: {
+    allowedRoles: ["admin"],
+    sideBarItems: [
+      { name: "Dashboard", link: "/admin/dashboard" },
+      { name: "Members", link: "/admin/users" },
+      { name: "Departments", link: "/admin/departments" },
+      { name: "Positions", link: "/admin/positions" },
+      { name: "Activities", link: "/admin/activities" },
+      { name: "Tasks", link: "/admin/tasks" },
+      { name: "Documents", link: "/admin/documents" },
+      { name: "Chat", link: "/admin/chat" },
+      { name: "AI Chat", link: "/admin/ai-chat" },
+      { name: "Member Applications", link: "/admin/member-applications" },
+      { name: "Profile", link: "/admin/profile" },
+    ]
+  },
+  moderator: {
+    allowedRoles: ["moderator"],
+    sideBarItems: [
+      { name: "Dashboard", link: "/moderator/dashboard" },
+      { name: "Members", link: "/moderator/users" },
+      { name: "Departments", link: "/moderator/departments" },
+      { name: "Positions", link: "/moderator/positions" },
+      { name: "Member Applications", link: "/moderator/member-applications" },
+      { name: "Activities", link: "/moderator/activities" },
+      { name: "Tasks", link: "/moderator/tasks" },
+      { name: "Profile", link: "/moderator/profile" },
+    ]
+  },
+  member: {
+    allowedRoles: ["member"],
+    sideBarItems: [
+      { name: "Dashboard", link: "/member/dashboard" },
+      { name: "Members", link: "/member/users" },
+      { name: "Departments", link: "/member/departments" },
+      { name: "Positions", link: "/member/positions" },
+      { name: "Activities", link: "/member/activities" },
+      { name: "Tasks", link: "/member/tasks" },
+      { name: "Profile", link: "/member/profile" },
+    ]
+  }
+}
+

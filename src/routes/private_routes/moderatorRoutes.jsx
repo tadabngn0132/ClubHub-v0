@@ -1,4 +1,4 @@
-import ModeratorLayout from "../../components/layout/moderator/ModeratorLayout.jsx";
+import SharedLayout from "../../components/layout/internal/SharedLayout.jsx";
 import ModeratorDashboard from "../../pages/private/moderator/ModeratorDashboard.jsx";
 import ModeratorActivities from "../../pages/private/moderator/ModeratorActivities.jsx";
 import ModeratorTasks from "../../pages/private/moderator/ModeratorTasks.jsx";
@@ -28,209 +28,209 @@ export const moderatorRoutes = [
   {
     path: "/moderator/dashboard",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorDashboard />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/activities",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorActivities />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/activities/edit/:activityId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorEditActivity />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/activities/view/:activityId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorViewActivity />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/activities/add",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorAddActivity />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/tasks",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorTasks />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/tasks/edit/:taskId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorEditTask />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/tasks/view/:taskId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorViewTask />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/tasks/add",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorAddTask />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/profile",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorProfile />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/users",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorUsers />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/users/view/:userId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorViewUser />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/users/add",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorAddUser />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/users/edit/:userId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorEditUser />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/departments",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorDepartments />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/departments/view/:departmentId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorViewDepartment />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/positions",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorPositions />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/positions/view/:positionId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorViewPosition />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/member-applications",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorMemberApplications />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/member-applications/view/:applicationId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorViewMemberApplication />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/member-applications/cv-review/:applicationId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <MemberApplicationProcess role="moderator" stage="cv-review" />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/member-applications/interview/:applicationId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <MemberApplicationProcess role="moderator" stage="interview" />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/member-applications/final-review/:applicationId",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <MemberApplicationProcess role="moderator" stage="final-review" />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/change-password",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ChangePassword />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/chat",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorChat />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/moderator/ai-chat",
     element: (
-      <ModeratorLayout>
+      <SharedLayout role="moderator">
         <ModeratorAIChat />
-      </ModeratorLayout>
+      </SharedLayout>
     ),
   }
 ];

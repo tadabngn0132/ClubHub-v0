@@ -1,4 +1,4 @@
-import AdminLayout from "../../components/layout/admin/AdminLayout.jsx";
+import SharedLayout from "../../components/layout/internal/SharedLayout.jsx";
 import AdminDashboard from "../../pages/private/admin/AdminDashboard.jsx";
 import AdminActivities from "../../pages/private/admin/AdminActivities.jsx";
 import AdminTasks from "../../pages/private/admin/AdminTasks.jsx";
@@ -34,257 +34,257 @@ export const adminRoutes = [
   {
     path: "/admin/dashboard",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminDashboard />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/activities",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminActivities />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/activities/edit/:activityId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminEditActivity />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/activities/view/:activityId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminViewActivity />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/activities/add",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminAddActivity />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/tasks",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminTasks />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/tasks/edit/:taskId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminEditTask />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/tasks/view/:taskId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminViewTask />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/tasks/add",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminAddTask />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/profile",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminProfile />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/users",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminUsers />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/users/view/:userId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminViewUser />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/users/edit/:userId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminEditUser />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/users/add",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminAddUser />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/departments",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminDepartments />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/departments/add",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminAddDepartment />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/departments/edit/:departmentId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminEditDepartment />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/departments/view/:departmentId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminViewDepartment />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/positions",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminPositions />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/positions/add",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminAddPosition />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/positions/edit/:positionId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminEditPosition />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/positions/view/:positionId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminViewPosition />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/member-applications",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminMemberApplications />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/member-applications/view/:applicationId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminViewMemberApplication />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/member-applications/cv-review/:applicationId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <MemberApplicationProcess role="admin" stage="cv-review" />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/member-applications/interview/:applicationId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <MemberApplicationProcess role="admin" stage="interview" />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/member-applications/final-review/:applicationId",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <MemberApplicationProcess role="admin" stage="final-review" />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/change-password",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <ChangePassword />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/permissions",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminPermissions />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/documents",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminDocuments />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/chat",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminChat />
-      </AdminLayout>
+      </SharedLayout>
     ),
   },
   {
     path: "/admin/ai-chat",
     element: (
-      <AdminLayout>
+      <SharedLayout role="admin">
         <AdminAIChat />
-      </AdminLayout>
+      </SharedLayout>
     ),
   }
 ];

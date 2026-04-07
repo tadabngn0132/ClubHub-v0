@@ -1,4 +1,4 @@
-import MemberLayout from "../../components/layout/member/MemberLayout.jsx";
+import SharedLayout from "../../components/layout/internal/SharedLayout.jsx";
 import MemberDashboard from "../../pages/private/member/MemberDashboard.jsx";
 import MemberActivities from "../../pages/private/member/MemberActivities.jsx";
 import MemberTasks from "../../pages/private/member/MemberTasks.jsx";
@@ -19,121 +19,121 @@ export const memberRoutes = [
   {
     path: "/member/dashboard",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberDashboard />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/activities",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberActivities />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/activities/view/:activityId",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberViewActivity />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/tasks",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberTasks />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/tasks/view/:taskId",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberViewTask />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/profile",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberProfile />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/users",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberUsers />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/users/view/:userId",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberViewUser />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/departments",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberDepartments />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/departments/view/:departmentId",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberViewDepartment />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/positions",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberPositions />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/positions/view/:positionId",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberViewPosition />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/change-password",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <ChangePassword />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/chat",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberChat />
-      </MemberLayout>
+      </SharedLayout >
     ),
   },
   {
     path: "/member/ai-chat",
     element: (
-      <MemberLayout>
+      <SharedLayout role="member">
         <MemberAIChat />
-      </MemberLayout>
+      </SharedLayout >
     ),
   }
 ];
