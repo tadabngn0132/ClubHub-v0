@@ -12,8 +12,8 @@ import MemberViewDepartment from "../../pages/private/member/MemberViewDepartmen
 import MemberPositions from "../../pages/private/member/MemberPositions.jsx";
 import MemberViewPosition from "../../pages/private/member/MemberViewPosition.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
-import MemberChat from "../../pages/private/Member/MemberChat.jsx";
-import MemberAIChat from "../../pages/private/Member/MemberAIChat.jsx";
+import MemberChat from "../../pages/private/member/MemberChat.jsx";
+import MemberAIChat from "../../pages/private/member/MemberAIChat.jsx";
 
 export const memberRoutes = [
   {
