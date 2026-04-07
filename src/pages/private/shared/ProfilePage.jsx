@@ -12,18 +12,26 @@ const ProfilePage = ({ roleLabel }) => {
   const { currentUser } = useSelector((state) => state.auth);
   const { user, isLoading, error } = useSelector((state) => state.user);
 
-  const tabs = [
-    { id: 1, label: "Profile", component: (user ? (
-      <UserForm user={user} />
-    ) : (
-      <p className="text-sm text-slate-300">User data not available.</p>
-    )) },
-    { id: 2, label: "Change Password", component: <ChangePasswordForm onSubmit={handleChangePassword} /> },
-  ];
-
   const handleChangePassword = (data) => {
     dispatch(changePasswordUser(data));
   };
+
+  const tabs = [
+    {
+      id: 1,
+      label: "Profile",
+      component: user ? (
+        <UserForm user={user} />
+      ) : (
+        <p className="text-sm text-slate-300">User data not available.</p>
+      ),
+    },
+    {
+      id: 2,
+      label: "Change Password",
+      component: <ChangePasswordForm onSubmit={handleChangePassword} />,
+    },
+  ];
 
   useEffect(() => {
     if (currentUser) {

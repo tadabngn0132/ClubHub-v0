@@ -1,22 +1,22 @@
 import axiosClient from "./axios";
 
 export const createGoogleDriveFolder = async (folderName) => {
-  const response = await axiosClient.post("/api/drive", { folderName });
+  const response = await axiosClient.post("/drive", { folderName });
   return response.data;
 };
 
 export const listGoogleDriveFolders = async () => {
-  const response = await axiosClient.get("/api/drive");
+  const response = await axiosClient.get("/drive");
   return response.data;
 };
 
 export const listGoogleDriveFilesInFolder = async (folderId) => {
-  const response = await axiosClient.get(`/api/drive/${folderId}/files`);
+  const response = await axiosClient.get(`/drive/${folderId}/files`);
   return response.data;
 };
 
 export const getGoogleDriveFileMetadata = async (fileId) => {
-  const response = await axiosClient.get(`/api/drive/files/${fileId}/metadata`);
+  const response = await axiosClient.get(`/drive/files/${fileId}/metadata`);
   return response.data;
 };
 
@@ -32,7 +32,7 @@ export const uploadFileToGoogleDriveFolder = async (
     fileName,
   );
   const response = await axiosClient.post(
-    `/api/drive/${folderId}/files`,
+    `/drive/${folderId}/files`,
     formData,
     {
       headers: {
@@ -49,7 +49,7 @@ export const getGoogleCalendarEventICS = async (
   calendarId = "primary",
 ) => {
   const response = await axiosClient.get(
-    `/api/calendar/${calendarId}/events/${eventId}/ics`,
+    `/calendar/${calendarId}/events/${eventId}/ics`,
     {
       params: {
         userId,
@@ -60,7 +60,7 @@ export const getGoogleCalendarEventICS = async (
 };
 
 export const getGoogleDocsTemplatesInDrive = async (userId) => {
-  const response = await axiosClient.get("/api/drive/templates/docs", {
+  const response = await axiosClient.get("/drive/templates/docs", {
     params: {
       userId,
     },
@@ -69,7 +69,7 @@ export const getGoogleDocsTemplatesInDrive = async (userId) => {
 };
 
 export const getGoogleSheetsTemplatesInDrive = async (userId) => {
-  const response = await axiosClient.get("/api/drive/templates/sheets", {
+  const response = await axiosClient.get("/drive/templates/sheets", {
     params: {
       userId,
     },
