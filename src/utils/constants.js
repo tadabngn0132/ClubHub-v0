@@ -82,3 +82,27 @@ export const ASSIGNEE_SCOPE = [
   { id: 7, name: "Content Department", value: "content-dept" },
   { id: 8, name: "Media Department", value: "media-dept" },
 ];
+
+export const PERMISSIONS = {
+  "ADMIN": {
+    "canView": true,
+    "canEdit": true,
+    "canSoftDelete": true,
+    "canHardDelete": true,
+    "canVerifyTask": true,
+  },
+  "MODERATOR": {
+    "canView": true,
+    "canEdit": true,
+    "canSoftDelete": true,
+    "canHardDelete": false,
+    "canVerifyTask": true,
+  },
+  "MEMBER": {
+    "canView": true,
+    "canEdit": false,
+    "canSoftDelete": false,
+    "canHardDelete": false,
+    "canVerifyTask": false,
+  },
+}
