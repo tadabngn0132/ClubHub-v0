@@ -24,7 +24,6 @@ import AdminViewPosition from "../../pages/private/admin/AdminViewPosition.jsx";
 import AdminMemberApplications from "../../pages/private/admin/AdminMemberApplications.jsx";
 import AdminViewMemberApplication from "../../pages/private/admin/AdminViewMemberApplication.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
-import AdminPermissions from "../../pages/private/admin/AdminPermissions.jsx";
 import MemberApplicationProcess from "../../pages/private/shared/MemberApplicationProcess.jsx";
 import AdminDocuments from "../../pages/private/admin/AdminDocuments.jsx";
 import AdminChat from "../../pages/private/admin/AdminChat.jsx";
@@ -252,14 +251,6 @@ export const adminRoutes = [
     element: (
       <SharedLayout role="admin">
         <ChangePassword />
-      </SharedLayout>
-    ),
-  },
-  {
-    path: "/admin/permissions",
-    element: (
-      <SharedLayout role="admin">
-        <AdminPermissions />
       </SharedLayout>
     ),
   },

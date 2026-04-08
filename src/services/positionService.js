@@ -20,7 +20,12 @@ export const updatePosition = async (id, positionData) => {
   return response.data;
 };
 
-export const deletePosition = async (id) => {
+export const softDeletePosition = async (id) => {
+  const response = await axiosClient.put(`/positions/${id}`);
+  return response.data;
+};
+
+export const hardDeletePosition = async (id) => {
   const response = await axiosClient.delete(`/positions/${id}`);
   return response.data;
 };

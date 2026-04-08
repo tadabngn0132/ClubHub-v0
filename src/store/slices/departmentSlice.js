@@ -4,7 +4,8 @@ import {
   getAllDepartments,
   getDepartmentById,
   updateDepartment,
-  deleteDepartment,
+  softDeleteDepartment,
+  hardDeleteDepartment,
 } from "../../services/departmentService.js";
 
 export const createNewDepartment = createAsyncThunk(
@@ -75,11 +76,28 @@ export const updateDepartmentById = createAsyncThunk(
   },
 );
 
-export const deleteDepartmentById = createAsyncThunk(
-  "department/deleteDepartmentById",
+export const softDeleteDepartmentById = createAsyncThunk(
+  "department/softDeleteDepartmentById",
   async (id, thunkAPI) => {
     try {
-      const data = await deleteDepartment(id);
+      const data = await softDeleteDepartment(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const hardDeleteDepartmentById = createAsyncThunk(
+  "department/hardDeleteDepartmentById",
+  async (id, thunkAPI) => {
+    try {
+      const data = await hardDeleteDepartment(id);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -181,20 +199,40 @@ const departmentSlice = createSlice({
         state.departmentStatus = "rejected";
       })
 
-      // Handle deleteDepartmentById
-      .addCase(deleteDepartmentById.pending, (state) => {
+      // Handle softDeleteDepartmentById
+      .addCase(softDeleteDepartmentById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
         state.departmentStatus = "pending";
       })
-      .addCase(deleteDepartmentById.fulfilled, (state, action) => {
+      .addCase(softDeleteDepartmentById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.departments = state.departments.filter(
           (dept) => dept.id !== action.payload.data.id,
         );
         state.departmentStatus = "fulfilled";
       })
-      .addCase(deleteDepartmentById.rejected, (state, action) => {
+      .addCase(softDeleteDepartmentById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+        state.departmentStatus = "rejected";
+      });
+
+    // Handle hardDeleteDepartmentById
+    builder
+      .addCase(hardDeleteDepartmentById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.departmentStatus = "pending";
+      })
+      .addCase(hardDeleteDepartmentById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.departments = state.departments.filter(
+          (dept) => dept.id !== action.payload.data.id,
+        );
+        state.departmentStatus = "fulfilled";
+      })
+      .addCase(hardDeleteDepartmentById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
         state.departmentStatus = "rejected";

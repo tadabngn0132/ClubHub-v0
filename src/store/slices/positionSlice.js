@@ -4,7 +4,8 @@ import {
   getAllPositions,
   getPositionById,
   updatePosition,
-  deletePosition,
+  softDeletePosition,
+  hardDeletePosition,
 } from "../../services/positionService.js";
 
 export const createNewPosition = createAsyncThunk(
@@ -75,11 +76,28 @@ export const updatePositionDetails = createAsyncThunk(
   },
 );
 
-export const deletePositionById = createAsyncThunk(
-  "position/deletePositionById",
+export const softDeletePositionById = createAsyncThunk(
+  "position/softDeletePositionById",
   async (id, thunkAPI) => {
     try {
-      const data = await deletePosition(id);
+      const data = await softDeletePosition(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const hardDeletePositionById = createAsyncThunk(
+  "position/hardDeletePositionById",
+  async (id, thunkAPI) => {
+    try {
+      const data = await hardDeletePosition(id);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -181,20 +199,39 @@ const positionSlice = createSlice({
         state.positionStatus = "rejected";
       })
 
-      // Handle deletePositionById
-      .addCase(deletePositionById.pending, (state) => {
+      // Handle softDeletePositionById
+      .addCase(softDeletePositionById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
         state.positionStatus = "pending";
       })
-      .addCase(deletePositionById.fulfilled, (state, action) => {
+      .addCase(softDeletePositionById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.positions = state.positions.filter(
           (position) => position.id !== action.payload.data.id,
         );
         state.positionStatus = "fulfilled";
       })
-      .addCase(deletePositionById.rejected, (state, action) => {
+      .addCase(softDeletePositionById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+        state.positionStatus = "rejected";
+      })
+
+      // Handle hardDeletePositionById
+      .addCase(hardDeletePositionById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.positionStatus = "pending";
+      })
+      .addCase(hardDeletePositionById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.positions = state.positions.filter(
+          (position) => position.id !== action.payload.data.id,
+        );
+        state.positionStatus = "fulfilled";
+      })
+      .addCase(hardDeletePositionById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
         state.positionStatus = "rejected";

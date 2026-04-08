@@ -23,7 +23,12 @@ export const updateDepartment = async (id, departmentData) => {
   return response.data;
 };
 
-export const deleteDepartment = async (id) => {
+export const softDeleteDepartment = async (id) => {
+  const response = await axiosClient.put(`/departments/${id}`);
+  return response.data;
+};
+
+export const hardDeleteDepartment = async (id) => {
   const response = await axiosClient.delete(`/departments/${id}`);
   return response.data;
 };
