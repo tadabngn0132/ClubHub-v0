@@ -109,7 +109,6 @@ const About = () => {
 
   const galleryImages = [
     "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?auto=format&fit=crop&w=900&q=80",
-    "https://images.unsplash.com/photo-1547153760-18fc9498041f?auto=format&fit=crop&w=900&q=80",
     "https://images.unsplash.com/photo-1485217988980-11786ced9454?auto=format&fit=crop&w=900&q=80",
     "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?auto=format&fit=crop&w=900&q=80",
     "https://images.unsplash.com/photo-1535525153412-5a42439a210d?auto=format&fit=crop&w=900&q=80",

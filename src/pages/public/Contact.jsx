@@ -5,8 +5,6 @@ import {
   faInstagram,
   faTiktok,
   faYoutube,
-  faGoogle,
-  faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import {
   faEnvelope,
@@ -64,31 +62,31 @@ const Contact = () => {
       {
         icon: faPhone,
         title: "President",
-        value: "+84 987 654 321",
+        value: "+84 943 551 749",
         note: "Nguyen Thai Manh",
-        action: "tel:+84987654321",
+        action: "tel:+84943551749",
         actionType: "link",
       },
       {
         icon: faPhone,
         title: "Vice President",
-        value: "+84 988 765 432",
+        value: "+84 705 610 637",
         note: "Tran Bich Ngoc",
-        action: "tel:+84988765432",
+        action: "tel:+84705610637",
         actionType: "link",
       },
       {
         icon: faMapLocationDot,
         title: "Location",
-        value: "FPT University, Campus 1",
-        note: "Lot E, Dong Nai Province",
-        action: "https://maps.google.com/?q=FPT+University+Dong+Nai",
+        value: "Greenwich Vietnam - Hanoi Campus",
+        note: "2 Pham Van Bach Street, Cau Giay District, Hanoi",
+        action: "https://maps.app.goo.gl/HC63k5vrnX6mfdTCA",
         actionType: "external",
       },
       {
         icon: faClock,
         title: "Hours",
-        value: "Mon - Fri, 8:00 AM - 9:00 PM",
+        value: "Mon - Fri, 10:00 AM - 6:00 PM",
         note: "Closed on weekends & holidays",
         action: null,
         actionType: "none",
@@ -101,14 +99,14 @@ const Contact = () => {
     () => [
       {
         name: "Facebook Messenger",
-        url: "https://m.me/greenwichdancecrew",
+        url: "https://www.facebook.com/gdcgwdance",
         icon: faFacebook,
         bgColor: "bg-blue-600/20 hover:bg-blue-600/30",
         textColor: "text-blue-500",
       },
       {
         name: "Instagram DM",
-        url: "https://instagram.com/greenwichdancecrew",
+        url: "https://www.instagram.com/gdc.gwhn/",
         icon: faInstagram,
         bgColor: "bg-pink-600/20 hover:bg-pink-600/30",
         textColor: "text-pink-500",
@@ -122,7 +120,7 @@ const Contact = () => {
       },
       {
         name: "YouTube",
-        url: "https://www.youtube.com/@greenwichdancecrew",
+        url: "https://www.youtube.com/@GDC-GreenwichDanceCrew",
         icon: faYoutube,
         bgColor: "bg-red-600/20 hover:bg-red-600/30",
         textColor: "text-red-500",
@@ -392,13 +390,6 @@ const Contact = () => {
                 )}
               </div>
 
-              {/* reCAPTCHA Notice */}
-              <p className="text-xs text-white/50">
-                This site is protected by reCAPTCHA and the Google
-                <a href="https://policies.google.com/privacy" className="text-[#DB3F7A] hover:text-[#DB3F7A]/80 ml-1">Privacy Policy</a> and
-                <a href="https://policies.google.com/terms" className="text-[#DB3F7A] hover:text-[#DB3F7A]/80 ml-1">Terms of Service</a> apply.
-              </p>
-
               {/* Submit Status Messages */}
               {submitStatus === "success" && (
                 <div className="rounded-lg bg-green-500/10 border border-green-500/50 p-4 flex items-start gap-3">
@@ -459,7 +450,7 @@ const Contact = () => {
           {/* Info Card */}
           <div className="rounded-2xl border border-white/10 bg-[#0d0d0f] p-6">
             <h3 className="monument-extra-bold text-lg uppercase text-white mb-4">
-              FPT University
+              Greenwich Vietnam - Hanoi Campus
             </h3>
             <div className="space-y-3">
               <div>
@@ -467,7 +458,7 @@ const Contact = () => {
                   Campus
                 </p>
                 <p className="text-sm text-white/85">
-                  Lot E, Dong Nai Province, Vietnam
+                  2 Pham Van Bach Street, Cau Giay District, Hanoi
                 </p>
               </div>
               <div>
@@ -475,11 +466,11 @@ const Contact = () => {
                   Building
                 </p>
                 <p className="text-sm text-white/85">
-                  Main Campus, Building A
+                  Golden Park Tower
                 </p>
               </div>
               <a
-                href="https://maps.google.com/?q=FPT+University+Dong+Nai"
+                href="https://maps.app.goo.gl/HC63k5vrnX6mfdTCA"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-lg bg-[#DB3F7A]/20 border border-[#DB3F7A]/50 text-[#DB3F7A] hover:bg-[#DB3F7A]/30 transition-colors text-sm font-semibold"
@@ -493,8 +484,8 @@ const Contact = () => {
           {/* Google Maps Embed */}
           <div className="lg:col-span-2 rounded-2xl border border-white/10 overflow-hidden bg-[#1c1c1e] h-80">
             <iframe
-              title="FPT University Dong Nai Campus"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.5341393477006!2d106.76831599999999!3d10.840000100000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1sFPT+University+Dong+Nai!2sLot+E,+Dong+Nai+Province,+Vietnam!5e0!3m2!1sen!2s!4v1234567890"
+              title="Greenwich Vietnam - Hanoi Campus"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.2201201463718!2d105.78785887584131!3d21.0238766879453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454b329f68977%3A0x6ddf5ff1e829fc56!2sGreenwich%20Vi%E1%BB%87t%20Nam!5e0!3m2!1sen!2s!4v1775706219318!5m2!1sen!2s"
               width="100%"
               height="100%"
               style={{ border: 0 }}

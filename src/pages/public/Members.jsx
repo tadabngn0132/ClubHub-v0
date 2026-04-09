@@ -198,12 +198,12 @@ const Members = () => {
 
   return (
     <main className="w-full min-h-[var(--pub-main-min-height)] my-[var(--pub-main-margin-y)] px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)]">
-      <section className="relative overflow-hidden rounded-[2.5rem] border border-[#f7d8be]/40 bg-[radial-gradient(circle_at_14%_22%,_#ffe7ce_0%,_#f5c28d_38%,_#bd5928_100%)] p-6 text-[#1f1108] sm:p-8 md:p-12">
-        <div className="pointer-events-none absolute -left-14 top-8 h-44 w-44 rounded-full bg-[#ffd8af]/45 blur-2xl" />
-        <div className="pointer-events-none absolute -right-10 bottom-0 h-60 w-60 rounded-full bg-[#8c3008]/20 blur-3xl" />
+      <section className="relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[radial-gradient(circle_at_16%_20%,_#1c1c1e_0%,_#0f0f10_55%,_#080809_100%)] p-6 text-white sm:p-8 md:p-12">
+        <div className="pointer-events-none absolute -left-14 top-8 h-44 w-44 rounded-full bg-[#DB3F7A]/15 blur-2xl" />
+        <div className="pointer-events-none absolute -right-10 bottom-0 h-60 w-60 rounded-full bg-[#DB3F7A]/10 blur-3xl" />
 
         <div className="relative flex flex-col gap-8">
-          <p className="monument-regular text-xs uppercase tracking-[0.3em] text-[#5f2c14]">
+          <p className="monument-regular text-xs uppercase tracking-[0.3em] text-[#DB3F7A]">
             Members
           </p>
 
@@ -220,19 +220,19 @@ const Members = () => {
           </p>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="rounded-2xl border border-[#7e3614]/35 bg-[#1d1109]/10 p-4">
+            <div className="rounded-2xl border border-white/15 bg-white/5 p-4">
               <p className="text-2xl monument-extra-bold">03</p>
               <p className="mt-1 text-xs uppercase tracking-[0.2em]">
                 Founders
               </p>
             </div>
-            <div className="rounded-2xl border border-[#7e3614]/35 bg-[#1d1109]/10 p-4">
+            <div className="rounded-2xl border border-white/15 bg-white/5 p-4">
               <p className="text-2xl monument-extra-bold">02</p>
               <p className="mt-1 text-xs uppercase tracking-[0.2em]">
                 Executive Board
               </p>
             </div>
-            <div className="rounded-2xl border border-[#7e3614]/35 bg-[#1d1109]/10 p-4">
+            <div className="rounded-2xl border border-white/15 bg-white/5 p-4">
               <p className="text-2xl monument-extra-bold">06</p>
               <p className="mt-1 text-xs uppercase tracking-[0.2em]">
                 Department Heads
@@ -244,23 +244,23 @@ const Members = () => {
 
       <section className="mt-10">
         <div className="mb-5 flex items-end gap-4">
-          <div className="h-11 w-2 rounded-full bg-[#f0a160]" />
+          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
           <h2 className="monument-extra-bold text-3xl uppercase leading-none sm:text-4xl">
             Founders
           </h2>
         </div>
 
-        <div className="relative overflow-hidden rounded-[2rem] border border-[#f0a160]/35 bg-[#251107] p-6 sm:p-8">
-          <div className="pointer-events-none absolute right-10 top-8 h-28 w-28 rounded-full bg-[#f8b477]/20 blur-2xl" />
+        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-6 sm:p-8">
+          <div className="pointer-events-none absolute right-10 top-8 h-28 w-28 rounded-full bg-[#DB3F7A]/12 blur-2xl" />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {founders.map((member, index) => (
               <article
                 key={member.name}
-                className={`rounded-2xl border border-[#f5c395]/30 p-5 text-[#ffdcb8] shadow-[0_20px_40px_rgba(16,5,0,0.25)] transition-all duration-300 hover:-translate-y-1 ${
-                  index % 2 === 0 ? "bg-[#3a1d0f]" : "bg-[#2f170c]"
+                className={`rounded-2xl border border-white/10 p-5 text-white shadow-[0_20px_40px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 ${
+                  index % 2 === 0 ? "bg-[#121214]" : "bg-[#141416]"
                 }`}
               >
-                <p className="text-[11px] uppercase tracking-[0.25em] text-[#ffc993]">
+                <p className="text-[11px] uppercase tracking-[0.25em] text-[#DB3F7A]">
                   {member.role}
                 </p>
                 <p className="monument-extra-bold mt-2 text-2xl uppercase">
@@ -270,7 +270,7 @@ const Members = () => {
             ))}
           </div>
 
-          <div className="mt-6 grid grid-cols-1 gap-3 text-sm font-light leading-7 text-[#ffcc99] md:grid-cols-2">
+          <div className="mt-6 grid grid-cols-1 gap-3 text-sm font-light leading-7 text-white/75 md:grid-cols-2">
             <p>
               Founders set the creative direction and culture standards across
               all club seasons.
@@ -285,28 +285,28 @@ const Members = () => {
 
       <section className="mt-10">
         <div className="mb-5 flex items-end gap-4">
-          <div className="h-11 w-2 rounded-full bg-[#f0a160]" />
+          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
           <h2 className="monument-extra-bold text-3xl uppercase leading-none sm:text-4xl">
             Executive Board
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 rounded-[2rem] border border-[#ef9f5c]/35 bg-[#211006] p-6 md:grid-cols-2 md:p-8">
+        <div className="grid grid-cols-1 gap-5 rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-6 md:grid-cols-2 md:p-8">
           {executiveBoard.map((member, index) => (
             <article
               key={member.name}
-              className={`relative overflow-hidden rounded-[1.75rem] border border-[#f4bc8a]/30 p-6 text-[#ffdcb8] shadow-[0_24px_50px_rgba(13,4,0,0.28)] ${
-                index === 0 ? "bg-[#3a190b]" : "bg-[#2e1409]"
+              className={`relative overflow-hidden rounded-[1.75rem] border border-white/10 p-6 text-white shadow-[0_24px_50px_rgba(0,0,0,0.35)] ${
+                index === 0 ? "bg-[#121214]" : "bg-[#141416]"
               }`}
             >
-              <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-[#ffc98f]/20 blur-2xl" />
-              <p className="relative text-[11px] uppercase tracking-[0.25em] text-[#ffc893]">
+              <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-[#DB3F7A]/15 blur-2xl" />
+              <p className="relative text-[11px] uppercase tracking-[0.25em] text-[#DB3F7A]">
                 {member.role}
               </p>
               <p className="relative monument-extra-bold mt-2 text-3xl uppercase leading-tight">
                 {member.name}
               </p>
-              <p className="relative mt-4 text-sm font-light leading-7 text-[#ffcc99]">
+              <p className="relative mt-4 text-sm font-light leading-7 text-white/75">
                 {member.bio}
               </p>
             </article>
@@ -316,24 +316,24 @@ const Members = () => {
 
       <section className="mt-10">
         <div className="mb-5 flex items-end gap-4">
-          <div className="h-11 w-2 rounded-full bg-[#f0a160]" />
+          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
           <h2 className="monument-extra-bold text-3xl uppercase leading-none sm:text-4xl">
             Heads of Departments
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 rounded-[2rem] border border-[#efa15f]/35 bg-[#211006] p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-3 lg:p-6">
+        <div className="grid grid-cols-1 gap-4 rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-4 sm:grid-cols-2 sm:p-5 lg:grid-cols-3 lg:p-6">
           {departments.map((member, index) => (
             <article
               key={member.name}
-              className={`group relative overflow-hidden rounded-[1.5rem] border border-[#f2bf8f]/25 p-5 text-[#ffdcb8] shadow-[0_22px_44px_rgba(13,4,0,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-[#ffd1a2]/70 ${
-                index % 2 === 0 ? "bg-[#3a1c0f]" : "bg-[#2f160a]"
+              className={`group relative overflow-hidden rounded-[1.5rem] border border-white/10 p-5 text-white shadow-[0_22px_44px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#DB3F7A]/70 ${
+                index % 2 === 0 ? "bg-[#121214]" : "bg-[#141416]"
               }`}
             >
-              <div className="pointer-events-none absolute -right-8 -top-8 h-20 w-20 rounded-full bg-[#ffcc97]/20 blur-2xl" />
+              <div className="pointer-events-none absolute -right-8 -top-8 h-20 w-20 rounded-full bg-[#DB3F7A]/12 blur-2xl" />
 
               <div className="relative flex h-full min-h-[12.5rem] flex-col justify-between gap-6">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-[#ffc892]">
+                <p className="text-[11px] uppercase tracking-[0.22em] text-[#DB3F7A]">
                   {member.role}
                 </p>
 
@@ -346,9 +346,9 @@ const Members = () => {
         </div>
       </section>
 
-      <section className="mt-12 rounded-[2rem] border border-[#ef9f5c]/35 bg-[#120a05] p-5 sm:p-6 md:p-8">
+      <section className="mt-12 rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-5 sm:p-6 md:p-8">
         <div className="mb-8 flex items-end gap-4">
-          <div className="h-11 w-2 rounded-full bg-[#f0a160]" />
+          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
           <h2 className="monument-extra-bold text-2xl uppercase leading-none sm:text-3xl md:text-4xl">
             Featured Dancers
           </h2>
@@ -430,14 +430,14 @@ const Members = () => {
                     <div className="flex flex-col items-end text-right">
                       <p
                         className={`text-[11px] uppercase tracking-[0.22em] transition-colors duration-500 ${
-                          isActive ? "text-[#ffb4cf]" : "text-[#c8a8b5]"
+                          isActive ? "text-[#DB3F7A]" : "text-white/65"
                         }`}
                       >
                         {genreText}
                       </p>
 
                       <div className="mt-4 flex flex-wrap gap-2">
-                        <span className="rounded-full border border-[#ff82af]/60 bg-[#ff2d78]/20 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#ffd5e4]">
+                        <span className="rounded-full border border-[#DB3F7A]/60 bg-[#DB3F7A]/25 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#fff1f7]">
                           Booking
                         </span>
                       </div>
@@ -469,22 +469,22 @@ const Members = () => {
         </div>
       </section>
 
-      <section className="mt-12 rounded-[2rem] border border-[#ef9f5c]/35 bg-[#140b06] p-5 sm:p-6 md:p-8">
+      <section className="mt-12 rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-5 sm:p-6 md:p-8">
         <div className="mb-8 flex items-end gap-4">
-          <div className="h-11 w-2 rounded-full bg-[#f0a160]" />
+          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
           <h2 className="monument-extra-bold text-2xl uppercase leading-none sm:text-3xl md:text-4xl">
             All Members & Filtering
           </h2>
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[260px_1fr]">
-          <aside className="rounded-[1.5rem] border border-[#f0a160]/25 bg-[#1b0f08] p-5 lg:sticky lg:top-24 lg:self-start">
-            <p className="monument-regular text-xs uppercase tracking-[0.22em] text-[#ffc58f]">
+          <aside className="rounded-[1.5rem] border border-white/10 bg-[#121214] p-5 lg:sticky lg:top-24 lg:self-start">
+            <p className="monument-regular text-xs uppercase tracking-[0.22em] text-[#DB3F7A]">
               Filter Crew
             </p>
 
             <div className="mt-7">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-[#d0956a]">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-white/60">
                 Dance Style
               </p>
               <div className="mt-3 flex flex-col gap-2">
@@ -495,8 +495,8 @@ const Members = () => {
                     onClick={() => setSelectedStyle(style)}
                     className={`rounded-full px-4 py-2 text-left text-sm transition-all ${
                       selectedStyle === style
-                        ? "border border-[#ffc58f]/55 bg-[#3a1c0f] text-[#ffd6af]"
-                        : "border border-transparent bg-[#25150c] text-[#c99770] hover:text-[#ffd6af]"
+                        ? "border border-[#DB3F7A]/55 bg-[#DB3F7A]/20 text-[#fff1f7]"
+                        : "border border-transparent bg-[#1a1a1d] text-white/65 hover:text-white"
                     }`}
                   >
                     {style}
@@ -506,7 +506,7 @@ const Members = () => {
             </div>
 
             <div className="mt-7">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-[#d0956a]">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-white/60">
                 Position
               </p>
               <div className="mt-3 flex flex-col gap-2">
@@ -517,8 +517,8 @@ const Members = () => {
                     onClick={() => setSelectedPosition(position)}
                     className={`rounded-full px-4 py-2 text-left text-sm transition-all ${
                       selectedPosition === position
-                        ? "border border-[#ffc58f]/55 bg-[#3a1c0f] text-[#ffd6af]"
-                        : "border border-transparent bg-[#25150c] text-[#c99770] hover:text-[#ffd6af]"
+                        ? "border border-[#DB3F7A]/55 bg-[#DB3F7A]/20 text-[#fff1f7]"
+                        : "border border-transparent bg-[#1a1a1d] text-white/65 hover:text-white"
                     }`}
                   >
                     {position}
@@ -530,7 +530,7 @@ const Members = () => {
             <button
               type="button"
               onClick={resetFilters}
-              className="mt-8 w-full rounded-full border border-[#f0a160]/40 py-3 text-xs uppercase tracking-[0.2em] text-[#ffcc99] transition-colors hover:border-[#ffd1a2] hover:text-[#ffe2c2]"
+              className="mt-8 w-full rounded-full border border-white/25 py-3 text-xs uppercase tracking-[0.2em] text-white/85 transition-colors hover:border-[#DB3F7A] hover:bg-[#DB3F7A] hover:text-white"
             >
               Reset Filters
             </button>
@@ -539,7 +539,7 @@ const Members = () => {
           <div>
             <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="relative w-full max-w-xl">
-                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-[#b9835e]">
+                <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-white/45">
                   Search
                 </span>
                 <input
@@ -547,20 +547,20 @@ const Members = () => {
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
                   placeholder="Find a member by name, style, or position..."
-                  className="w-full rounded-xl border border-[#f0a160]/30 bg-[#25150c] py-3 pl-20 pr-4 text-sm text-[#ffdcb8] placeholder:text-[#a67452] focus:border-[#ffc58f] focus:outline-none"
+                  className="w-full rounded-xl border border-white/20 bg-[#141416] py-3 pl-20 pr-4 text-sm text-white placeholder:text-white/40 focus:border-[#DB3F7A] focus:outline-none"
                 />
               </div>
 
-              <p className="text-sm text-[#d8a67e]">
+              <p className="text-sm text-white/70">
                 Showing {filteredMembers.length} member
                 {filteredMembers.length === 1 ? "" : "s"}
               </p>
             </div>
 
             {filteredMembers.length === 0 ? (
-              <div className="rounded-2xl border border-dashed border-[#f0a160]/40 bg-[#201108] p-8 text-center">
-                <p className="text-lg text-[#ffd3ad]">No members found.</p>
-                <p className="mt-2 text-sm text-[#bc8862]">
+              <div className="rounded-2xl border border-dashed border-white/25 bg-[#121214] p-8 text-center">
+                <p className="text-lg text-white">No members found.</p>
+                <p className="mt-2 text-sm text-white/65">
                   Try changing dance style, position, or clearing search
                   keywords.
                 </p>
@@ -570,7 +570,7 @@ const Members = () => {
                 {filteredMembers.map((member) => (
                   <article
                     key={member.name}
-                    className="group overflow-hidden rounded-2xl border border-[#f0a160]/25 bg-[#211006] shadow-[0_18px_36px_rgba(13,4,0,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-[#ffd1a2]/70"
+                    className="group overflow-hidden rounded-2xl border border-white/10 bg-[#121214] shadow-[0_18px_36px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#DB3F7A]/70"
                   >
                     <div className="aspect-[4/5] overflow-hidden">
                       <img
@@ -582,15 +582,15 @@ const Members = () => {
                     </div>
 
                     <div className="p-5">
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-[#ffc892]">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-[#DB3F7A]">
                         {member.style} / {member.position}
                       </p>
-                      <p className="monument-extra-bold mt-2 text-2xl uppercase text-[#ffdcb8]">
+                      <p className="monument-extra-bold mt-2 text-2xl uppercase text-white">
                         {member.name}
                       </p>
                       <button
                         type="button"
-                        className="mt-4 w-full rounded-full border border-[#f0a160]/40 bg-[#2b1409] py-2 text-[11px] uppercase tracking-[0.2em] text-[#ffd2ac] transition-colors hover:border-[#ffd2ac] hover:bg-[#3b1a0f]"
+                        className="mt-4 w-full rounded-full border border-white/25 bg-[#1a1a1d] py-2 text-[11px] uppercase tracking-[0.2em] text-white/90 transition-colors hover:border-[#DB3F7A] hover:bg-[#DB3F7A]"
                       >
                         Profile
                       </button>
