@@ -13,7 +13,6 @@ import MemberPositions from "../../pages/private/member/MemberPositions.jsx";
 import MemberViewPosition from "../../pages/private/member/MemberViewPosition.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
 import MemberChat from "../../pages/private/member/MemberChat.jsx";
-import MemberAIChat from "../../pages/private/member/MemberAIChat.jsx";
 
 export const memberRoutes = [
   {
@@ -21,7 +20,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberDashboard />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -29,7 +28,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberActivities />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -37,7 +36,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberViewActivity />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -45,7 +44,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberTasks />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -53,7 +52,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberViewTask />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -61,7 +60,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberProfile />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -69,7 +68,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberUsers />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -77,7 +76,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberViewUser />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -85,7 +84,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberDepartments />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -93,7 +92,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberViewDepartment />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -101,7 +100,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberPositions />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -109,7 +108,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberViewPosition />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -117,7 +116,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <ChangePassword />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
   {
@@ -125,15 +124,7 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberChat />
-      </SharedLayout >
+      </SharedLayout>
     ),
   },
-  {
-    path: "/member/ai-chat",
-    element: (
-      <SharedLayout role="member">
-        <MemberAIChat />
-      </SharedLayout >
-    ),
-  }
 ];

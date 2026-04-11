@@ -30,7 +30,11 @@ const dashboardSlice = createSlice({
     isLoading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetDashboardError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // fetchDashboardStats
@@ -49,5 +53,5 @@ const dashboardSlice = createSlice({
   },
 });
 
-export const {} = dashboardSlice.actions;
+export const { resetDashboardError } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

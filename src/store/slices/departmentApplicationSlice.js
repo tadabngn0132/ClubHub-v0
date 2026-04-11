@@ -144,6 +144,9 @@ const departmentApplicationSlice = createSlice({
     resetDepartmentApplicationStatus: (state) => {
       state.departmentApplicationStatus = "idle";
     },
+    resetDepartmentApplicationError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -301,5 +304,8 @@ const departmentApplicationSlice = createSlice({
   },
 });
 
-export const { resetDepartmentApplicationStatus } = departmentApplicationSlice.actions;
+export const {
+  resetDepartmentApplicationStatus,
+  resetDepartmentApplicationError,
+} = departmentApplicationSlice.actions;
 export default departmentApplicationSlice.reducer;

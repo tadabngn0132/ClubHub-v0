@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import {
   updateUserById,
   getUserById,
-  resetUserStatus
+  resetUserStatus,
+  resetUserError,
 } from "../../../store/slices/userSlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
@@ -20,20 +21,23 @@ const ModeratorEditUser = () => {
     dispatch(getUserById(userId));
   }, [dispatch]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetUserError());
+    }
+  }, [error]);
+
   const handleEditUser = (data) => {
     dispatch(updateUserById({ userId, data }));
     if (status === "fulfilled") {
       navigate("/moderator/users");
     }
     dispatch(resetUserStatus());
-  }
+  };
 
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (error) {
-    toast.error(error);
   }
 
   return (

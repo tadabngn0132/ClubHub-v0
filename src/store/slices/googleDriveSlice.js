@@ -140,7 +140,11 @@ const googleDriveSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetGoogleDriveError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Handle createFolder
@@ -250,5 +254,5 @@ const googleDriveSlice = createSlice({
   },
 });
 
-export const {} = googleDriveSlice.actions;
+export const { resetGoogleDriveError } = googleDriveSlice.actions;
 export default googleDriveSlice.reducer;

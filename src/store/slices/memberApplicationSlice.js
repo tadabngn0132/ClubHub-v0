@@ -147,6 +147,9 @@ const memberApplicationSlice = createSlice({
     resetMemberApplicationStatus: (state) => {
       state.memberApplicationStatus = "idle";
     },
+    resetMemberApplicationError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -245,7 +248,8 @@ const memberApplicationSlice = createSlice({
           state.memberApplication &&
           state.memberApplication.id === action.payload.dataId
         ) {
-          state.memberApplication.cvReviewDetail = action.payload.cvReviewDetail;
+          state.memberApplication.cvReviewDetail =
+            action.payload.cvReviewDetail;
         }
         state.memberApplicationStatus = "fulfilled";
       })
@@ -282,5 +286,6 @@ const memberApplicationSlice = createSlice({
   },
 });
 
-export const { resetMemberApplicationStatus } = memberApplicationSlice.actions;
+export const { resetMemberApplicationStatus, resetMemberApplicationError } =
+  memberApplicationSlice.actions;
 export default memberApplicationSlice.reducer;

@@ -4,6 +4,7 @@ import ErrorBoundary from "./components/layout/public/ErrorBoundary";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import AuthCallback from "./pages/auth/AuthCallback";
+import AIChat from "./components/main/internal/AIChat";
 
 import {
   publicRoutes,
@@ -16,6 +17,7 @@ import { useTokenRefresh } from "./hooks/useTokenRefresh";
 import { useSelector } from "react-redux";
 import { getToken, getCurrentUser } from "./utils/helper";
 import { PRIVATE_ROUTE_PREFIXES } from "./utils/constants";
+import { Toaster } from "react-hot-toast";
 
 function TokenRefreshGate({ isLoggedInToWebsite }) {
   const { pathname } = useLocation();
@@ -32,11 +34,13 @@ function TokenRefreshGate({ isLoggedInToWebsite }) {
 function App() {
   const { isLoggedIn, token, currentUser } = useSelector((state) => state.auth);
 
-  const isLoggedInToWebsite = isLoggedIn || (token && currentUser) || (getToken() && getCurrentUser());
+  const isLoggedInToWebsite =
+    isLoggedIn || (token && currentUser) || (getToken() && getCurrentUser());
 
   return (
     <BrowserRouter basename="/">
       <TokenRefreshGate isLoggedInToWebsite={isLoggedInToWebsite} />
+      <Toaster position="top-right" reverseOrder={false} />
 
       <Routes>
         <Route path="/sign-in" element={<SignIn />} />
@@ -61,6 +65,8 @@ function App() {
           return <Route key={index} path={path} element={element} />;
         })}
       </Routes>
+
+      {isLoggedInToWebsite && <AIChat />}
     </BrowserRouter>
   );
 }

@@ -172,7 +172,11 @@ const chatRoomSlice = createSlice({
     isLoading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetChatRoomsError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Handle createNewChatRoom
@@ -327,5 +331,5 @@ const chatRoomSlice = createSlice({
   },
 });
 
-export const {} = chatRoomSlice.actions;
+export const { resetChatRoomsError } = chatRoomSlice.actions;
 export default chatRoomSlice.reducer;

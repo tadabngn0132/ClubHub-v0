@@ -7,12 +7,13 @@ import {
   softDeleteUserById,
   hardDeleteUserById,
   unlockUserAccount,
+  resetUserStatus,
+  resetUserError,
 } from "../../../store/slices/userSlice";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { getActivitiesByUserId } from "../../../store/slices/activitySlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import { useNavigate } from "react-router-dom";
-import { resetUserStatus } from "../../../store/slices/userSlice";
 import {
   formatDate,
   formatUppercaseToCapitalized,
@@ -22,7 +23,7 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
   const { userId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, loading, error, userStatus } = useSelector(
+  const { user, isLoading, error, userStatus } = useSelector(
     (state) => state.user,
   );
   const {
@@ -31,27 +32,34 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
     error: activitiesError,
   } = useSelector((state) => state.activity);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetUserError());
+    }
+  }, [error]);
+
   const handleDelete = () => {
     // Dispatch delete action here
     if (permissions?.canSoftDelete) {
-        const softConfirmed = window.confirm(
-            "Do you want to deactivate this user?",
-        );
+      const softConfirmed = window.confirm(
+        "Do you want to deactivate this user?",
+      );
 
-        if (softConfirmed) {
-            dispatch(softDeleteUserById(userId));
-            return;
-        }
+      if (softConfirmed) {
+        dispatch(softDeleteUserById(userId));
+        return;
+      }
     }
 
     if (permissions?.canHardDelete) {
-        const hardConfirmed = window.confirm(
+      const hardConfirmed = window.confirm(
         "Do you want to permanently delete this user? This action cannot be undone.",
-        );
+      );
 
-        if (hardConfirmed) {
+      if (hardConfirmed) {
         dispatch(hardDeleteUserById(userId));
-        }
+      }
     }
 
     if (userStatus === "fulfilled") {
@@ -69,12 +77,8 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
     dispatch(getActivitiesByUserId(userId));
   }, [dispatch, userId]);
 
-  if (loading) {
+  if (isLoading) {
     return <Loading />;
-  }
-
-  if (error) {
-    toast.error(error);
   }
 
   if (!user) {
@@ -89,8 +93,6 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
 
   return (
     <div className="min-h-screen text-slate-100">
-      <Toaster position="top-right" reverseOrder={false} />
-
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
         <div className="flex items-center justify-between">
           <Link
@@ -105,7 +107,7 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-5">
               <img
-                src={user.avatarUrl}
+                src={user.avatarUrl || null}
                 alt="Avatar"
                 className="h-20 w-20 rounded-2xl border-2 border-teal-400/60 object-cover shadow-lg shadow-teal-500/20 md:h-24 md:w-24"
               />
@@ -125,32 +127,32 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
             </div>
 
             <div className="flex flex-wrap gap-3">
-                {role !== "MEMBER" && (
-                    <>
-                        <Link
-                            to={`${basePath}/edit/${userId}`}
-                            className="rounded-xl bg-teal-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-teal-400"
-                        >
-                            Edit Member
-                        </Link>
-                        <button
-                            onClick={() => handleDelete()}
-                            className="rounded-xl border border-rose-400/60 bg-rose-500/15 px-4 py-2 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/25"
-                        >
-                            Delete Member
-                        </button>
-                    </>
-                )}
+              {role !== "MEMBER" && (
+                <>
+                  <Link
+                    to={`${basePath}/edit/${userId}`}
+                    className="rounded-xl bg-teal-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-teal-400"
+                  >
+                    Edit Member
+                  </Link>
+                  <button
+                    onClick={() => handleDelete()}
+                    className="rounded-xl border border-rose-400/60 bg-rose-500/15 px-4 py-2 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/25"
+                  >
+                    Delete Member
+                  </button>
+                </>
+              )}
 
-                {role === "ADMIN" && (
-                    <button
-                        onClick={() => handleUnlock()}
-                        className="rounded-xl border border-teal-400/60 bg-teal-500/15 px-4 py-2 text-sm font-semibold text-teal-200 transition hover:bg-teal-500/25"
-                        disabled={user.failedLoginAttempts !== 5}
-                    >
-                        Unlock Account
-                    </button>
-                )}
+              {role === "ADMIN" && (
+                <button
+                  onClick={() => handleUnlock()}
+                  className="rounded-xl border border-teal-400/60 bg-teal-500/15 px-4 py-2 text-sm font-semibold text-teal-200 transition hover:bg-teal-500/25"
+                  disabled={user.failedLoginAttempts !== 5}
+                >
+                  Unlock Account
+                </button>
+              )}
             </div>
           </div>
         </header>

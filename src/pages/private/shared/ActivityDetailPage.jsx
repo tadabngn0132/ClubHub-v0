@@ -6,10 +6,11 @@ import {
   hardDeleteActivityById,
   createNewActivityImage,
   createNewActivityVideo,
+  resetActivityError,
 } from "../../../store/slices/activitySlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { resetActivityStatus } from "../../../store/slices/activitySlice";
 import { useParams } from "react-router-dom";
@@ -27,34 +28,37 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     dispatch(getActivityById(activityId));
   }, [dispatch, activityId]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetActivityError());
+    }
+  }, [error]);
+
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-
   const handleDelete = () => {
     if (permissions?.canSoftDelete) {
-        const softConfirmed = window.confirm(
+      const softConfirmed = window.confirm(
         "Do you want to deactivate this activity?",
-        );
+      );
 
-        if (softConfirmed) {
+      if (softConfirmed) {
         dispatch(softDeleteActivityById(activityId));
         return;
-        }
+      }
     }
 
     if (permissions?.canHardDelete) {
-        const hardConfirmed = window.confirm(
+      const hardConfirmed = window.confirm(
         "Do you want to permanently delete this activity? This action cannot be undone.",
-        );
+      );
 
-        if (hardConfirmed) {
+      if (hardConfirmed) {
         dispatch(hardDeleteActivityById(activityId));
-        }
+      }
     }
 
     if (activityStatus === "fulfilled") {
@@ -72,7 +76,8 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
             return;
           }
 
-          if (video.size > 100 * 1024 * 1024) { // 100MB limit
+          if (video.size > 100 * 1024 * 1024) {
+            // 100MB limit
             toast.error(`Video ${video.name} exceeds the 100MB size limit.`);
             return;
           }
@@ -90,8 +95,10 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           );
 
           const resData = await response.json();
-          
-          return dispatch(createNewActivityVideo({ activityId, videoData: resData }));
+
+          return dispatch(
+            createNewActivityVideo({ activityId, videoData: resData }),
+          );
         } catch (error) {
           console.error("Error uploading video:", error);
           toast.error("Failed to upload video. Please try again.");
@@ -111,7 +118,8 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
             return;
           }
 
-          if (image.size > 5 * 1024 * 1024) { // 5MB limit
+          if (image.size > 5 * 1024 * 1024) {
+            // 5MB limit
             toast.error(`Image ${image.name} exceeds the 5MB size limit.`);
             return;
           }
@@ -125,11 +133,13 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
             {
               method: "POST",
               body: formData,
-            }
+            },
           );
 
           const resData = await response.json();
-          return dispatch(createNewActivityImage({ activityId, imageData: resData }));
+          return dispatch(
+            createNewActivityImage({ activityId, imageData: resData }),
+          );
         } catch (error) {
           console.error("Error uploading image:", error);
           toast.error("Failed to upload image. Please try again.");
@@ -142,7 +152,6 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
 
   return (
     <div className="flex flex-col space-y-4 p-4">
-      <Toaster position="top-right" reverseOrder={false} />
       <img src={activity?.thumbnailUrl} alt={activity?.title} />
       <Link to={basePath}>Back to Activities</Link>
 
@@ -150,12 +159,12 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
         <h1>Name: {activity?.title}</h1>
 
         <div className="flex space-x-4">
-            {permissions?.canEdit && (
-                <Link to={`${basePath}/edit/${activityId}`}>Edit Activity</Link>
-            )}
-            {role !== "MEMBER" && (
-                <button onClick={handleDelete}>Delete Activity</button>
-            )}
+          {permissions?.canEdit && (
+            <Link to={`${basePath}/edit/${activityId}`}>Edit Activity</Link>
+          )}
+          {role !== "MEMBER" && (
+            <button onClick={handleDelete}>Delete Activity</button>
+          )}
         </div>
       </div>
 
@@ -250,7 +259,10 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
         <p>No videos available for this activity.</p>
       )}
 
-      <ActivityMediaForm onImagesSubmit={handleImagesSubmit} onVideosSubmit={handleVideosUploading} />
+      <ActivityMediaForm
+        onImagesSubmit={handleImagesSubmit}
+        onVideosSubmit={handleVideosUploading}
+      />
     </div>
   );
 };

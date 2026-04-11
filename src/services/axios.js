@@ -1,7 +1,10 @@
 import axios from "axios";
 import { getToken, setToken, touchSessionActivity } from "../utils/helper";
 import toast from "react-hot-toast";
-import { PRIVATE_ROUTE_PREFIXES, PRIVATE_API_PREFIXES } from "../utils/constants";
+import {
+  PRIVATE_ROUTE_PREFIXES,
+  PRIVATE_API_PREFIXES,
+} from "../utils/constants";
 
 let unauthorizedHandler = null;
 
@@ -72,7 +75,9 @@ const normalizePath = (requestUrl = "") => {
 
 const isOnPrivateRoute = () => {
   const currentPath = window.location.pathname || "";
-  return PRIVATE_ROUTE_PREFIXES.some((prefix) => currentPath.startsWith(prefix));
+  return PRIVATE_ROUTE_PREFIXES.some((prefix) =>
+    currentPath.startsWith(prefix),
+  );
 };
 
 const isPrivateApiRequest = (requestUrl = "") => {
@@ -113,7 +118,9 @@ axiosClient.interceptors.response.use(
     switch (response.status) {
       case 200:
         // Handle success
-        toast.success(response.data.message || "Request successful");
+        if (response.config.method !== "get") {
+          toast.success(response.data.message || "Request successful");
+        }
         break;
       case 201:
         // Handle resource created

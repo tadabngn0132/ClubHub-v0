@@ -123,6 +123,9 @@ const departmentSlice = createSlice({
     resetDepartmentStatus: (state) => {
       state.departmentStatus = "idle";
     },
+    resetDepartmentError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -240,5 +243,6 @@ const departmentSlice = createSlice({
   },
 });
 
-export const { resetDepartmentStatus } = departmentSlice.actions;
+export const { resetDepartmentStatus, resetDepartmentError } =
+  departmentSlice.actions;
 export default departmentSlice.reducer;

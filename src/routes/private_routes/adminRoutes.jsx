@@ -27,7 +27,6 @@ import ChangePassword from "../../components/main/internal/ChangePasswordForm.js
 import MemberApplicationProcess from "../../pages/private/shared/MemberApplicationProcess.jsx";
 import AdminDocuments from "../../pages/private/admin/AdminDocuments.jsx";
 import AdminChat from "../../pages/private/admin/AdminChat.jsx";
-import AdminAIChat from "../../pages/private/admin/AdminAIChat.jsx";
 
 export const adminRoutes = [
   {
@@ -270,12 +269,4 @@ export const adminRoutes = [
       </SharedLayout>
     ),
   },
-  {
-    path: "/admin/ai-chat",
-    element: (
-      <SharedLayout role="admin">
-        <AdminAIChat />
-      </SharedLayout>
-    ),
-  }
 ];

@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import {
   updateDepartmentById,
   getDepartmentDetails,
-  resetDepartmentStatus
+  resetDepartmentStatus,
+  resetDepartmentError,
 } from "../../../store/slices/departmentSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast from "react-hot-toast";
@@ -13,7 +14,9 @@ import toast from "react-hot-toast";
 const AdminEditDepartment = () => {
   const { departmentId } = useParams();
   const dispatch = useDispatch();
-  const { department, isLoading, error, status } = useSelector((state) => state.department);
+  const { department, isLoading, error, status } = useSelector(
+    (state) => state.department,
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,6 +25,13 @@ const AdminEditDepartment = () => {
     }
     dispatch(resetDepartmentStatus());
   }, [departmentId, dispatch]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetDepartmentError());
+    }
+  }, [error]);
 
   const handleEditDepartment = (data) => {
     dispatch(updateDepartmentById({ departmentId, data }));
@@ -33,10 +43,6 @@ const AdminEditDepartment = () => {
 
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (error) {
-    toast.error(error);
   }
 
   return (

@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   createUser,
-  resetUserStatus
+  resetUserStatus,
+  resetUserError,
 } from "../../../store/slices/userSlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
@@ -13,22 +14,25 @@ const AdminAddUser = () => {
   const { isLoading, error, status } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetUserError());
+    }
+  }, [error]);
+
   const handleAddUser = (data) => {
     dispatch(createUser(data));
     if (status === "fulfilled") {
       navigate("/admin/users");
     }
     dispatch(resetUserStatus());
-  }
+  };
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-  
   return <UserForm onSubmit={handleAddUser} />;
 };
 

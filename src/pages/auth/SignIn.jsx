@@ -3,9 +3,13 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { loginUser } from "../../store/slices/authSlice";
-import toast, { Toaster } from "react-hot-toast";
+import {
+  faEye,
+  faEyeSlash,
+  faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { loginUser, resetAuthError } from "../../store/slices/authSlice";
+import toast from "react-hot-toast";
 import gdcLogo from "../../assets/logos/GDC_logo.svg";
 import uogLogo from "../../assets/logos/2025-Greenwich-White-Eng.png";
 import bgVideo from "../../assets/videos/flirting_1080p.webm";
@@ -63,9 +67,12 @@ const SignIn = () => {
     }
   };
 
-  if (error) {
-    toast.error(error);
-  }
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetAuthError());
+    }
+  }, [error]);
 
   const handlePasswordView = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -77,7 +84,6 @@ const SignIn = () => {
 
   return (
     <div className="flex w-full min-h-[var(--pub-main-min-h)] items-center-safe justify-center-safe lg:pl-[var(--pub-container-padding-x)] lg:pr-[var(--pub-container-padding-x)]">
-      <Toaster position="top-right" reverseOrder={false} />
       <div className="flex justify-between bg-black w-full xl:w-11/12 2xl:w-10/12 rounded-[3rem] relative">
         <div className="hidden lg:flex lg:flex-col lg:p-10 lg:pt-8 lg:justify-between">
           <video
@@ -226,7 +232,9 @@ const SignIn = () => {
                       className="accent-[var(--pink-color)] mt-[1px]"
                       {...register("rememberMe")}
                     />
-                    <span className="font-semibold tracking-[0.01em]">Remember me</span>
+                    <span className="font-semibold tracking-[0.01em]">
+                      Remember me
+                    </span>
                     <span
                       className="text-[11px] text-[#545454] self-start mt-0.5"
                       title="When enabled, your session is persisted and auto-expires after the selected duration."
@@ -244,7 +252,9 @@ const SignIn = () => {
                 </div>
 
                 <div className="flex items-center gap-3 text-[11px] text-black">
-                  <span className="font-medium text-[#3d3d3d]">Keep me signed in for</span>
+                  <span className="font-medium text-[#3d3d3d]">
+                    Keep me signed in for
+                  </span>
                   <select
                     className="min-w-[92px] bg-[#e0e0e0]/50 rounded-lg px-1.75 py-0.75 outline-none border border-transparent focus:border-[var(--pink-color)] disabled:opacity-55 disabled:cursor-not-allowed text-[#222] font-medium"
                     disabled={!rememberMe}

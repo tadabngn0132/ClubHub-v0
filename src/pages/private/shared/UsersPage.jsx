@@ -15,7 +15,6 @@ import {
   formatRoleBadgeColor,
 } from "../../../utils/formatters.js";
 import { USER_STATUS_OPTIONS } from "../../../utils/constants";
-import { Toaster } from "react-hot-toast";
 
 const UsersPage = ({ role, basePath, permissions }) => {
   const dispatch = useDispatch();
@@ -24,7 +23,10 @@ const UsersPage = ({ role, basePath, permissions }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [roleFilter, setRoleFilter] = useState("all");
-  const [sortConfig, setSortConfig] = useState({ field: "id", direction: "asc" });
+  const [sortConfig, setSortConfig] = useState({
+    field: "id",
+    direction: "asc",
+  });
 
   useEffect(() => {
     dispatch(getUsersList());
@@ -32,24 +34,24 @@ const UsersPage = ({ role, basePath, permissions }) => {
 
   const handleDelete = (userId) => {
     if (permissions?.canSoftDelete) {
-        const softConfirmed = window.confirm(
+      const softConfirmed = window.confirm(
         "Do you want to deactivate this user?",
-        );
+      );
 
-        if (softConfirmed) {
+      if (softConfirmed) {
         dispatch(softDeleteUserById(userId));
         return;
-        }
+      }
     }
 
     if (!permissions?.canHardDelete) {
-        const hardConfirmed = window.confirm(
+      const hardConfirmed = window.confirm(
         "Do you want to permanently delete this user? This action cannot be undone.",
-        );
+      );
 
-        if (hardConfirmed) {
+      if (hardConfirmed) {
         dispatch(hardDeleteUserById(userId));
-        }
+      }
     }
   };
 
@@ -75,7 +77,8 @@ const UsersPage = ({ role, basePath, permissions }) => {
 
     if (keyword) {
       result = result.filter((user) => {
-        const departmentName = user?.userPosition?.[0]?.position?.department?.name || "";
+        const departmentName =
+          user?.userPosition?.[0]?.position?.department?.name || "";
         const role = user?.userPosition?.[0]?.position?.systemRole || "";
 
         return [
@@ -103,7 +106,9 @@ const UsersPage = ({ role, basePath, permissions }) => {
     if (roleFilter !== "all") {
       result = result.filter(
         (user) =>
-          String(user?.userPosition?.[0]?.position?.systemRole || "").toUpperCase() === roleFilter,
+          String(
+            user?.userPosition?.[0]?.position?.systemRole || "",
+          ).toUpperCase() === roleFilter,
       );
     }
 
@@ -111,7 +116,8 @@ const UsersPage = ({ role, basePath, permissions }) => {
       const getValue = (user) => {
         if (sortConfig.field === "name") return user.fullname || "";
         if (sortConfig.field === "email") return user.email || "";
-        if (sortConfig.field === "generation") return Number(user.generation || 0);
+        if (sortConfig.field === "generation")
+          return Number(user.generation || 0);
         if (sortConfig.field === "id") return Number(user.id || 0);
         return "";
       };
@@ -120,7 +126,9 @@ const UsersPage = ({ role, basePath, permissions }) => {
       const valueB = getValue(b);
 
       if (typeof valueA === "number" && typeof valueB === "number") {
-        return sortConfig.direction === "asc" ? valueA - valueB : valueB - valueA;
+        return sortConfig.direction === "asc"
+          ? valueA - valueB
+          : valueB - valueA;
       }
 
       const compared = String(valueA).localeCompare(String(valueB));
@@ -136,12 +144,13 @@ const UsersPage = ({ role, basePath, permissions }) => {
 
   return (
     <div className="min-w-0 w-full overflow-x-hidden">
-      <Toaster position="top-right" reverseOrder={false} />
       {/* TODO: Implement loading state using spinner or skeleton */}
       <div className="flex items-center-safe justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold mb-1">Members</h1>
-          <p className="text-sm text-gray-500">{filteredUsers.length} members</p>{" "}
+          <p className="text-sm text-gray-500">
+            {filteredUsers.length} members
+          </p>{" "}
           {/* Dynamic member count */}
         </div>
 
@@ -151,9 +160,9 @@ const UsersPage = ({ role, basePath, permissions }) => {
               to={`/${basePath}/add`}
               className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
             >
-            Add Member
-          </Link>
-        </span>
+              Add Member
+            </Link>
+          </span>
         )}
       </div>
 
@@ -233,18 +242,19 @@ const UsersPage = ({ role, basePath, permissions }) => {
               {filteredUsers.length === 0 ? (
                 <tr className="border-t border-slate-800 odd:bg-slate-900/30 even:bg-slate-800/20">
                   <td colSpan="11" className="px-4 py-10 text-center">
-                    No members found.
-
-                    {role === "ADMIN" && (
+                    <div className="flex flex-col items-center gap-2">
+                      No members found.
+                      {role === "ADMIN" && (
                         <span>
-                            <Link
-                                to={`/${basePath}/add`}
-                                className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
-                            >
-                                Add Member
-                            </Link>
+                          <Link
+                            to={`/${basePath}/add`}
+                            className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+                          >
+                            Add Member
+                          </Link>
                         </span>
-                    )}
+                      )}
+                    </div>
                   </td>
                 </tr>
               ) : (
@@ -273,7 +283,7 @@ const UsersPage = ({ role, basePath, permissions }) => {
                     <td className="px-2 py-2">
                       {/* TODO: Implement lazy loading for avatars */}
                       <img
-                        src={user.avatar}
+                        src={user.avatarUrl || null}
                         alt={user.name}
                         className="h-10 w-10 rounded-full object-cover"
                       />
@@ -336,20 +346,20 @@ const UsersPage = ({ role, basePath, permissions }) => {
                           View
                         </Link>
                         {role !== "MEMBER" && (
-                            <>
-                                <Link
-                                to={`${basePath}/edit/${user.id}`}
-                                className="rounded-md bg-emerald-500/20 px-2 py-1 font-semibold text-emerald-300 transition hover:bg-emerald-500/35"
-                                >
-                                Edit
-                                </Link>
-                                <button
-                                onClick={() => handleDelete(user.id)}
-                                className="rounded-md bg-rose-500/20 px-2 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
-                                >
-                                Del
-                                </button>
-                            </>
+                          <>
+                            <Link
+                              to={`${basePath}/edit/${user.id}`}
+                              className="rounded-md bg-emerald-500/20 px-2 py-1 font-semibold text-emerald-300 transition hover:bg-emerald-500/35"
+                            >
+                              Edit
+                            </Link>
+                            <button
+                              onClick={() => handleDelete(user.id)}
+                              className="rounded-md bg-rose-500/20 px-2 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
+                            >
+                              Del
+                            </button>
+                          </>
                         )}
                       </div>
                     </td>

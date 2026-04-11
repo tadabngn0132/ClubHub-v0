@@ -3,12 +3,16 @@ import {
   getAllTasksList,
   softDeleteTaskById,
   hardDeleteTaskById,
+  resetTaskStatus,
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import toast, { Toaster } from "react-hot-toast";
-import { formatUppercaseToCapitalized, formatDate } from "../../../utils/formatters.js";
+import toast from "react-hot-toast";
+import {
+  formatUppercaseToCapitalized,
+  formatDate,
+} from "../../../utils/formatters.js";
 import { TASK_STATUS_OPTIONS } from "../../../utils/constants";
 
 const TasksPage = ({ role, basePath, permissions }) => {
@@ -23,26 +27,33 @@ const TasksPage = ({ role, basePath, permissions }) => {
     dispatch(getAllTasksList());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetTaskStatus());
+    }
+  }, [error]);
+
   const handleDelete = (taskId) => {
     if (permissions?.canSoftDelete) {
-        const softConfirmed = window.confirm(
+      const softConfirmed = window.confirm(
         "Do you want to deactivate this task?",
-        );
+      );
 
-        if (softConfirmed) {
+      if (softConfirmed) {
         dispatch(softDeleteTaskById(taskId));
         return;
-        }
+      }
     }
 
     if (!permissions?.canHardDelete) {
-        const hardConfirmed = window.confirm(
+      const hardConfirmed = window.confirm(
         "Do you want to permanently delete this task? This action cannot be undone.",
-        );
+      );
 
-        if (hardConfirmed) {
+      if (hardConfirmed) {
         dispatch(hardDeleteTaskById(taskId));
-        }
+      }
     }
   };
 
@@ -97,13 +108,8 @@ const TasksPage = ({ role, basePath, permissions }) => {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-
   return (
     <div className="min-h-screen text-slate-100">
-      <Toaster position="top-right" reverseOrder={false} />
       <div className="flex w-full flex-col gap-6">
         <section>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -111,16 +117,18 @@ const TasksPage = ({ role, basePath, permissions }) => {
               <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">
                 Tasks
               </h1>
-              <p className="mt-1 text-slate-300">{filteredTasks.length} tasks</p>
+              <p className="mt-1 text-slate-300">
+                {filteredTasks.length} tasks
+              </p>
             </div>
 
             {role !== "MEMBER" && (
-                <Link
+              <Link
                 to={`${basePath}/add`}
                 className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
-                >
+              >
                 Create New Task
-                </Link>
+              </Link>
             )}
           </div>
         </section>
@@ -185,7 +193,7 @@ const TasksPage = ({ role, basePath, permissions }) => {
                   <th className="px-3 py-3">Title</th>
                   <th className="px-3 py-3">Description</th>
                   <th className="px-3 py-3">Due Date</th>
-                  <th className="px-3 py-3 text-center">Is Check Cf</th>
+                  <th className="px-3 py-3 text-center">Check Cf</th>
                   <th className="px-3 py-3">Status</th>
                   <th className="px-3 py-3">Assignee Scope</th>
                   <th className="px-3 py-3">Assignor</th>
@@ -200,18 +208,19 @@ const TasksPage = ({ role, basePath, permissions }) => {
                       colSpan="9"
                       className="px-4 py-10 text-center text-slate-300"
                     >
-                      No tasks found.
-
-                      {role !== "MEMBER" && (
-                        <div className="mt-4">
-                          <Link
-                            to={`${basePath}/add`}
-                            className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
-                          >
-                            Create New Task
-                          </Link>
-                        </div>
-                      )}
+                      <div className="flex flex-col items-center gap-2">
+                        No tasks found.
+                        {role !== "MEMBER" && (
+                          <div className="mt-4">
+                            <Link
+                              to={`${basePath}/add`}
+                              className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+                            >
+                              Create New Task
+                            </Link>
+                          </div>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ) : (
@@ -265,18 +274,18 @@ const TasksPage = ({ role, basePath, permissions }) => {
                           </Link>
                           {role !== "MEMBER" && (
                             <>
-                                <Link
-                                    to={`${basePath}/edit/${task.id}`}
-                                    className="rounded-md bg-emerald-500/20 px-2 py-1 font-semibold text-emerald-300 transition hover:bg-emerald-500/35"
-                                >
-                                    Edit
-                                </Link>
-                                <button
-                                    onClick={() => handleDelete(task.id)}
-                                    className="rounded-md bg-rose-500/20 px-2 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
-                                >
-                                    Delete
-                                </button>
+                              <Link
+                                to={`${basePath}/edit/${task.id}`}
+                                className="rounded-md bg-emerald-500/20 px-2 py-1 font-semibold text-emerald-300 transition hover:bg-emerald-500/35"
+                              >
+                                Edit
+                              </Link>
+                              <button
+                                onClick={() => handleDelete(task.id)}
+                                className="rounded-md bg-rose-500/20 px-2 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
+                              >
+                                Delete
+                              </button>
                             </>
                           )}
                         </div>

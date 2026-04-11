@@ -83,7 +83,11 @@ const messageSlice = createSlice({
     isLoading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetMessageError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Handle createNewMessage
@@ -142,5 +146,5 @@ const messageSlice = createSlice({
   },
 });
 
-export const {} = messageSlice.actions;
+export const { resetMessageError } = messageSlice.actions;
 export default messageSlice.reducer;

@@ -99,7 +99,11 @@ const googleSheetsSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetGoogleSheetsError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Handle createSheetFromTemplateAsync
@@ -172,5 +176,5 @@ const googleSheetsSlice = createSlice({
   },
 });
 
-export const {} = googleSheetsSlice.actions;
+export const { resetGoogleSheetsError } = googleSheetsSlice.actions;
 export default googleSheetsSlice.reducer;

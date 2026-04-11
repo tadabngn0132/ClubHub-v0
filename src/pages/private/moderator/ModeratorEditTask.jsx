@@ -6,6 +6,7 @@ import {
   updateTaskById,
   getTaskDetails,
   resetTaskStatus,
+  resetTaskError,
 } from "../../../store/slices/taskSlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
@@ -22,6 +23,13 @@ const ModeratorEditTask = () => {
     }
   }, [taskId, dispatch]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetTaskError());
+    }
+  }, [error]);
+
   const handleEditTask = (data) => {
     dispatch(updateTaskById({ taskId, taskData: data }));
 
@@ -34,10 +42,6 @@ const ModeratorEditTask = () => {
 
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (error) {
-    toast.error(error);
   }
 
   return (

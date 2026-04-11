@@ -120,7 +120,7 @@ const notificationSlice = createSlice({
     notificationStatus: "idle",
   },
   reducers: {
-    clearError: (state) => {
+    resetNotificationError: (state) => {
       state.error = null;
     },
     clearNotifications: (state) => {
@@ -226,7 +226,9 @@ const notificationSlice = createSlice({
       .addCase(deleteNotificationById.fulfilled, (state, action) => {
         state.isLoading = false;
         const deletedId =
-          action.payload?.dataId || action.payload?.data?.id || action.payload?.id;
+          action.payload?.dataId ||
+          action.payload?.data?.id ||
+          action.payload?.id;
         state.notifications = state.notifications.filter(
           (notif) => notif.id !== deletedId,
         );
@@ -240,6 +242,9 @@ const notificationSlice = createSlice({
   },
 });
 
-export const { clearError, clearNotifications, resetNotificationStatus } =
-  notificationSlice.actions;
+export const {
+  resetNotificationError,
+  clearNotifications,
+  resetNotificationStatus,
+} = notificationSlice.actions;
 export default notificationSlice.reducer;

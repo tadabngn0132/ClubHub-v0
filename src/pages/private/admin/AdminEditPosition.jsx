@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import {
   updatePositionDetails,
   getPositionDetails,
-  resetPositionStatus
+  resetPositionStatus,
+  resetPositionError,
 } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
@@ -13,12 +14,21 @@ import toast from "react-hot-toast";
 const AdminEditPosition = () => {
   const { positionId } = useParams();
   const dispatch = useDispatch();
-  const { position, isLoading, error, positionStatus } = useSelector((state) => state.position);
+  const { position, isLoading, error, positionStatus } = useSelector(
+    (state) => state.position,
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getPositionDetails(positionId));
   }, [dispatch, positionId]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetPositionError());
+    }
+  }, [error]);
 
   const handleEditPosition = (data) => {
     dispatch(updatePositionDetails({ positionId, data }));
@@ -32,10 +42,6 @@ const AdminEditPosition = () => {
 
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (error) {
-    toast.error(error);
   }
 
   return (

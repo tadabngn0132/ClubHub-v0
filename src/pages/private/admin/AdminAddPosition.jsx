@@ -3,15 +3,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   createNewPosition,
-  resetPositionStatus
+  resetPositionStatus,
+  resetPositionError,
 } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
 
 const AdminAddPosition = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, positionStatus } = useSelector((state) => state.position);
+  const { isLoading, error, positionStatus } = useSelector(
+    (state) => state.position,
+  );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetPositionError());
+    }
+  }, [error]);
 
   const handleAddPosition = (data) => {
     dispatch(createNewPosition(data));
@@ -19,14 +29,10 @@ const AdminAddPosition = () => {
       navigate("/admin/positions");
     }
     dispatch(resetPositionStatus());
-  }
+  };
 
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (error) {
-    toast.error(error);
   }
 
   return (

@@ -26,7 +26,11 @@ const aiSlice = createSlice({
     isLoading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetAIError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Handle generate AI response
@@ -45,5 +49,5 @@ const aiSlice = createSlice({
   },
 });
 
-export const {} = aiSlice.actions;
+export const { resetAIError } = aiSlice.actions;
 export default aiSlice.reducer;

@@ -152,7 +152,10 @@ const authSlice = createSlice({
       setAuthStorageMode(AUTH_STORAGE_MODE.LOCAL);
       setToken(action.payload.accessToken);
       setCurrentUser(action.payload.userData);
-    }
+    },
+    resetAuthError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -272,5 +275,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { resetAuthStatus, setGoogleAuthData } = authSlice.actions;
+export const { resetAuthStatus, resetAuthError, setGoogleAuthData } =
+  authSlice.actions;
 export default authSlice.reducer;

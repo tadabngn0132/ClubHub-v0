@@ -141,6 +141,9 @@ const activityParticipationSlice = createSlice({
     resetActivityParticipantStatus: (state) => {
       state.activityParticipantStatus = "idle";
     },
+    resetActivityParticipationError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -271,5 +274,8 @@ const activityParticipationSlice = createSlice({
   },
 });
 
-export const { resetActivityParticipantStatus } = activityParticipationSlice.actions;
+export const {
+  resetActivityParticipantStatus,
+  resetActivityParticipationError,
+} = activityParticipationSlice.actions;
 export default activityParticipationSlice.reducer;

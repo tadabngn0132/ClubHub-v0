@@ -1,11 +1,14 @@
-import { getActivitiesList } from "../../../store/slices/activitySlice";
+import {
+  getActivitiesList,
+  resetActivityError,
+} from "../../../store/slices/activitySlice";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ActivitiesCardView from "../../../components/main/internal/ActivitiesCardView";
 import ActivitiesTableView from "../../../components/main/internal/ActivitiesTableView";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import ActivitiesCalendarView from "../../../components/main/internal/ActivitiesCalendarView.jsx";
 import { ACTIVITY_STATUS_OPTIONS } from "../../../utils/constants";
 import { formatUppercaseToCapitalized } from "../../../utils/formatters";
@@ -30,6 +33,13 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     dispatch(getActivitiesList());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetActivityError());
+    }
+  }, [error]);
+
   const filteredActivities = useMemo(() => {
     const keyword = searchTerm.trim().toLowerCase();
     let result = [...(activities || [])];
@@ -45,17 +55,26 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
 
     if (statusFilter !== "all") {
       result = result.filter(
-        (activity) => String(activity.status || "").toUpperCase() === statusFilter,
+        (activity) =>
+          String(activity.status || "").toUpperCase() === statusFilter,
       );
     }
 
     result.sort((a, b) => {
       if (sortBy === "newest") return new Date(b.date) - new Date(a.date);
       if (sortBy === "oldest") return new Date(a.date) - new Date(b.date);
-      if (sortBy === "a-z") return String(a.name || "").localeCompare(String(b.name || ""));
-      if (sortBy === "z-a") return String(b.name || "").localeCompare(String(a.name || ""));
-      if (sortBy === "registration-desc") return Number(b.registrationsCount || 0) - Number(a.registrationsCount || 0);
-      if (sortBy === "registration-asc") return Number(a.registrationsCount || 0) - Number(b.registrationsCount || 0);
+      if (sortBy === "a-z")
+        return String(a.name || "").localeCompare(String(b.name || ""));
+      if (sortBy === "z-a")
+        return String(b.name || "").localeCompare(String(a.name || ""));
+      if (sortBy === "registration-desc")
+        return (
+          Number(b.registrationsCount || 0) - Number(a.registrationsCount || 0)
+        );
+      if (sortBy === "registration-asc")
+        return (
+          Number(a.registrationsCount || 0) - Number(b.registrationsCount || 0)
+        );
       return 0;
     });
 
@@ -72,19 +91,18 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-
   return (
     <div className="min-h-screen">
-      <Toaster position="top-right" reverseOrder={false} />
       <div className="mx-auto w-full max-w-7xl">
         <div className="mb-5">
           <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="mb-1 text-3xl font-bold tracking-tight text-gray-100">Activities</h1>
-              <p className="text-sm text-gray-400">{filteredActivities.length} activities</p>
+              <h1 className="mb-1 text-3xl font-bold tracking-tight text-gray-100">
+                Activities
+              </h1>
+              <p className="text-sm text-gray-400">
+                {filteredActivities.length} activities
+              </p>
             </div>
 
             {canCreate && (
@@ -93,9 +111,9 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
                   to={`${basePath}/add`}
                   className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
                 >
-                    Create New Activity
+                  Create New Activity
                 </Link>
-            </span>
+              </span>
             )}
           </div>
 

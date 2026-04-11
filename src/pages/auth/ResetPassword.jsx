@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { resetPasswordUser } from "../../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { resetAuthStatus } from "../../store/slices/authSlice";
 
@@ -45,7 +45,6 @@ const ResetPassword = () => {
         navigate("/sign-in");
       }
       dispatch(resetAuthStatus());
-      
     } catch (error) {
       toast.error(error.message);
       console.error(error);
@@ -55,7 +54,6 @@ const ResetPassword = () => {
 
   return (
     <div className="flex min-h-[100vh] items-center-safe justify-center-safe">
-      <Toaster position="top-right" reverseOrder={false} />
       <form
         onSubmit={handleSubmit(handleResetPassword)}
         className="flex flex-col bg-white/10 w-3/12 p-3.5 rounded-2xl gap-5.5"

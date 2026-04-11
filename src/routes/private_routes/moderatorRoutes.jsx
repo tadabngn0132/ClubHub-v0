@@ -22,7 +22,6 @@ import ModeratorAddUser from "../../pages/private/moderator/ModeratorAddUser.jsx
 import ModeratorEditUser from "../../pages/private/moderator/ModeratorEditUser.jsx";
 import MemberApplicationProcess from "../../pages/private/shared/MemberApplicationProcess.jsx";
 import ModeratorChat from "../../pages/private/moderator/ModeratorChat.jsx";
-import ModeratorAIChat from "../../pages/private/moderator/ModeratorAIChat.jsx";
 
 export const moderatorRoutes = [
   {
@@ -225,12 +224,4 @@ export const moderatorRoutes = [
       </SharedLayout>
     ),
   },
-  {
-    path: "/moderator/ai-chat",
-    element: (
-      <SharedLayout role="moderator">
-        <ModeratorAIChat />
-      </SharedLayout>
-    ),
-  }
 ];

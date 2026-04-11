@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import { formatDate, formatUppercaseToCapitalized } from "../../../utils/formatters.js";
+import {
+  formatDate,
+  formatUppercaseToCapitalized,
+} from "../../../utils/formatters.js";
 import {
   getMemberApplicationDetails,
   updateMemberApplicationCVReview,
@@ -18,7 +21,10 @@ import { updateManyMemberApplications } from "../../../services/memberApplicatio
 
 const STATUS_OPTIONS = ["PASSED", "FAILED"];
 
-const normalizeStatus = (value) => String(value || "").trim().toUpperCase();
+const normalizeStatus = (value) =>
+  String(value || "")
+    .trim()
+    .toUpperCase();
 
 const getInterviewSummary = (deptApplications = []) => {
   const summary = {
@@ -74,12 +80,18 @@ const MemberApplicationProcess = ({ role, stage }) => {
   useEffect(() => {
     if (!memberApplication) return;
     setCvForm({
-      status: normalizeStatus(memberApplication.cvStatus) === "FAILED" ? "FAILED" : "PASSED",
+      status:
+        normalizeStatus(memberApplication.cvStatus) === "FAILED"
+          ? "FAILED"
+          : "PASSED",
       comment: memberApplication.cvReviewComment || "",
     });
     setFinalForm((prev) => ({
       ...prev,
-      status: normalizeStatus(memberApplication.finalStatus) === "FAILED" ? "FAILED" : "PASSED",
+      status:
+        normalizeStatus(memberApplication.finalStatus) === "FAILED"
+          ? "FAILED"
+          : "PASSED",
       comment: memberApplication.finalReviewComment || "",
     }));
   }, [memberApplication]);
@@ -88,7 +100,10 @@ const MemberApplicationProcess = ({ role, stage }) => {
     const next = {};
     (deptApplications || []).forEach((item) => {
       next[item.id] = {
-        status: normalizeStatus(item.interviewStatus) === "FAILED" ? "FAILED" : "PASSED",
+        status:
+          normalizeStatus(item.interviewStatus) === "FAILED"
+            ? "FAILED"
+            : "PASSED",
         comment: item.interviewComment || "",
       };
     });
@@ -105,10 +120,10 @@ const MemberApplicationProcess = ({ role, stage }) => {
   const isCvDone = cvStatus !== "PENDING";
   const canInterview = cvStatus === "PASSED";
   const isInterviewDone =
-    interviewSummary.total > 0 &&
-    interviewSummary.pending === 0;
+    interviewSummary.total > 0 && interviewSummary.pending === 0;
   const hasInterviewPass = interviewSummary.passed > 0;
-  const allInterviewFailed = isInterviewDone && interviewSummary.failed === interviewSummary.total;
+  const allInterviewFailed =
+    isInterviewDone && interviewSummary.failed === interviewSummary.total;
   const canFinalReview = canInterview && isInterviewDone && hasInterviewPass;
 
   const passedDepartments = useMemo(
@@ -206,7 +221,9 @@ const MemberApplicationProcess = ({ role, stage }) => {
 
   const handleMarkFinalFailed = async () => {
     if (!allInterviewFailed) {
-      toast.error("Final fail is only auto-applied when all interviews FAILED.");
+      toast.error(
+        "Final fail is only auto-applied when all interviews FAILED.",
+      );
       return;
     }
 
@@ -256,7 +273,9 @@ const MemberApplicationProcess = ({ role, stage }) => {
     }
 
     if (!finalForm.rootDepartmentId || !finalForm.positionId) {
-      toast.error("Please choose accepted department and position for user creation.");
+      toast.error(
+        "Please choose accepted department and position for user creation.",
+      );
       return;
     }
 
@@ -308,8 +327,6 @@ const MemberApplicationProcess = ({ role, stage }) => {
 
   return (
     <div className="min-h-screen text-slate-100">
-      <Toaster position="top-right" reverseOrder={false} />
-
       <div className="mx-auto w-full max-w-6xl space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -317,7 +334,8 @@ const MemberApplicationProcess = ({ role, stage }) => {
               {headerTitle}
             </h1>
             <p className="mt-1 text-slate-300">
-              {memberApplication?.fullname || "N/A"} - {memberApplication?.email || "N/A"}
+              {memberApplication?.fullname || "N/A"} -{" "}
+              {memberApplication?.email || "N/A"}
             </p>
           </div>
 
@@ -331,22 +349,33 @@ const MemberApplicationProcess = ({ role, stage }) => {
 
         <div className="grid gap-3 md:grid-cols-4">
           <div className="rounded-xl border border-slate-700 bg-slate-900/70 p-3">
-            <p className="text-xs uppercase tracking-wide text-slate-400">CV Status</p>
+            <p className="text-xs uppercase tracking-wide text-slate-400">
+              CV Status
+            </p>
             <p className="mt-1 text-sm font-semibold">{cvStatus || "N/A"}</p>
           </div>
           <div className="rounded-xl border border-slate-700 bg-slate-900/70 p-3">
-            <p className="text-xs uppercase tracking-wide text-slate-400">Interview Summary</p>
+            <p className="text-xs uppercase tracking-wide text-slate-400">
+              Interview Summary
+            </p>
             <p className="mt-1 text-sm font-semibold">
-              {interviewSummary.passed} passed / {interviewSummary.failed} failed / {interviewSummary.pending} pending
+              {interviewSummary.passed} passed / {interviewSummary.failed}{" "}
+              failed / {interviewSummary.pending} pending
             </p>
           </div>
           <div className="rounded-xl border border-slate-700 bg-slate-900/70 p-3">
-            <p className="text-xs uppercase tracking-wide text-slate-400">Final Status</p>
+            <p className="text-xs uppercase tracking-wide text-slate-400">
+              Final Status
+            </p>
             <p className="mt-1 text-sm font-semibold">{finalStatus || "N/A"}</p>
           </div>
           <div className="rounded-xl border border-slate-700 bg-slate-900/70 p-3">
-            <p className="text-xs uppercase tracking-wide text-slate-400">Applied At</p>
-            <p className="mt-1 text-sm font-semibold">{formatDate(memberApplication?.appliedAt)}</p>
+            <p className="text-xs uppercase tracking-wide text-slate-400">
+              Applied At
+            </p>
+            <p className="mt-1 text-sm font-semibold">
+              {formatDate(memberApplication?.appliedAt)}
+            </p>
           </div>
         </div>
 
@@ -400,7 +429,9 @@ const MemberApplicationProcess = ({ role, stage }) => {
             )}
 
             {deptApplications.length === 0 ? (
-              <p className="text-sm text-slate-300">No department choices found for this application.</p>
+              <p className="text-sm text-slate-300">
+                No department choices found for this application.
+              </p>
             ) : (
               deptApplications.map((deptApp) => {
                 const formValue = interviewFormMap[deptApp.id] || {
@@ -409,13 +440,17 @@ const MemberApplicationProcess = ({ role, stage }) => {
                 };
 
                 return (
-                  <div key={deptApp.id} className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
+                  <div
+                    key={deptApp.id}
+                    className="rounded-xl border border-slate-700 bg-slate-950/50 p-4"
+                  >
                     <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                       <h3 className="font-semibold text-slate-100">
                         {deptApp.department?.name || "Unknown Department"}
                       </h3>
                       <span className="text-xs text-slate-400">
-                        Current: {normalizeStatus(deptApp.interviewStatus) || "PENDING"}
+                        Current:{" "}
+                        {normalizeStatus(deptApp.interviewStatus) || "PENDING"}
                       </span>
                     </div>
 
@@ -481,13 +516,15 @@ const MemberApplicationProcess = ({ role, stage }) => {
           >
             {!canFinalReview && !allInterviewFailed && (
               <div className="rounded-lg border border-amber-500/40 bg-amber-500/15 px-3 py-2 text-sm text-amber-200">
-                Final review is locked. Requirement: CV PASSED, all interview results reviewed, and at least one department PASSED.
+                Final review is locked. Requirement: CV PASSED, all interview
+                results reviewed, and at least one department PASSED.
               </div>
             )}
 
             {allInterviewFailed && (
               <div className="rounded-lg border border-rose-500/40 bg-rose-500/15 px-3 py-2 text-sm text-rose-200">
-                All interview results are FAILED. According to business rule, final result must be FAILED.
+                All interview results are FAILED. According to business rule,
+                final result must be FAILED.
               </div>
             )}
 
@@ -497,7 +534,10 @@ const MemberApplicationProcess = ({ role, stage }) => {
                   <select
                     value={finalForm.status}
                     onChange={(e) =>
-                      setFinalForm((prev) => ({ ...prev, status: e.target.value }))
+                      setFinalForm((prev) => ({
+                        ...prev,
+                        status: e.target.value,
+                      }))
                     }
                     disabled={isSubmitting}
                     className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm disabled:opacity-60"
@@ -508,7 +548,10 @@ const MemberApplicationProcess = ({ role, stage }) => {
                   <select
                     value={finalForm.rootDepartmentId}
                     onChange={(e) =>
-                      setFinalForm((prev) => ({ ...prev, rootDepartmentId: e.target.value }))
+                      setFinalForm((prev) => ({
+                        ...prev,
+                        rootDepartmentId: e.target.value,
+                      }))
                     }
                     disabled={!canFinalReview || isSubmitting}
                     className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm disabled:opacity-60"
@@ -516,7 +559,8 @@ const MemberApplicationProcess = ({ role, stage }) => {
                     <option value="">Select Accepted Department</option>
                     {passedDepartments.map((item) => (
                       <option key={item.id} value={item.departmentId}>
-                        {item.department?.name || `Department #${item.departmentId}`}
+                        {item.department?.name ||
+                          `Department #${item.departmentId}`}
                       </option>
                     ))}
                   </select>
@@ -524,7 +568,10 @@ const MemberApplicationProcess = ({ role, stage }) => {
                   <select
                     value={finalForm.positionId}
                     onChange={(e) =>
-                      setFinalForm((prev) => ({ ...prev, positionId: e.target.value }))
+                      setFinalForm((prev) => ({
+                        ...prev,
+                        positionId: e.target.value,
+                      }))
                     }
                     disabled={!canFinalReview || isSubmitting}
                     className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm disabled:opacity-60"

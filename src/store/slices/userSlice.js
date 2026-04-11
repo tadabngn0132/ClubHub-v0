@@ -159,6 +159,9 @@ const userSlice = createSlice({
     resetUserStatus: (state) => {
       state.userStatus = "idle";
     },
+    resetUserError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -313,5 +316,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { resetUserStatus } = userSlice.actions;
+export const { resetUserStatus, resetUserError } = userSlice.actions;
 export default userSlice.reducer;

@@ -3,16 +3,23 @@ import {
   getAllMemberApplicationsList,
   softDeleteMemberApplicationById,
   hardDeleteMemberApplicationById,
-  resetMemberApplicationStatus
+  resetMemberApplicationStatus,
+  resetMemberApplicationError,
 } from "../../../store/slices/memberApplicationSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import toast, { Toaster } from "react-hot-toast";
-import { formatDate, formatUppercaseToCapitalized } from "../../../utils/formatters.js";
+import toast from "react-hot-toast";
+import {
+  formatDate,
+  formatUppercaseToCapitalized,
+} from "../../../utils/formatters.js";
 import { MEMBER_APPLICATION_FINAL_STATUS_OPTIONS } from "../../../utils/constants";
 
-const normalizeStatus = (value) => String(value || "").trim().toUpperCase();
+const normalizeStatus = (value) =>
+  String(value || "")
+    .trim()
+    .toUpperCase();
 
 const getInterviewSummary = (application) => {
   const departmentApplications = application?.departmentApplications || [];
@@ -49,6 +56,13 @@ const AdminMemberApplications = () => {
     dispatch(getAllMemberApplicationsList());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetMemberApplicationError());
+    }
+  }, [error]);
+
   const applications = memberApplications || [];
   const selectedCount = selectedMemberApplications.length;
   const isAllSelected =
@@ -56,7 +70,9 @@ const AdminMemberApplications = () => {
 
   const handleSelectAll = (event) => {
     if (event.target.checked) {
-      setSelectedMemberApplications(applications.map((application) => application.id));
+      setSelectedMemberApplications(
+        applications.map((application) => application.id),
+      );
       return;
     }
 
@@ -108,7 +124,12 @@ const AdminMemberApplications = () => {
 
     if (keyword) {
       result = result.filter((application) =>
-        [application.fullname, application.email, application.cvStatus, application.finalStatus]
+        [
+          application.fullname,
+          application.email,
+          application.cvStatus,
+          application.finalStatus,
+        ]
           .join(" ")
           .toLowerCase()
           .includes(keyword),
@@ -117,7 +138,8 @@ const AdminMemberApplications = () => {
 
     if (statusFilter !== "all") {
       result = result.filter(
-        (application) => String(application.finalStatus || "").toUpperCase() === statusFilter,
+        (application) =>
+          String(application.finalStatus || "").toUpperCase() === statusFilter,
       );
     }
 
@@ -147,10 +169,6 @@ const AdminMemberApplications = () => {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-
   const getStatusBadgeClass = (status) => {
     const normalizedStatus = String(status || "").toUpperCase();
 
@@ -171,14 +189,14 @@ const AdminMemberApplications = () => {
 
   return (
     <div className="min-h-screen">
-      <Toaster position="top-right" reverseOrder={false} />
       <div className="mx-auto w-full max-w-6xl">
         <div className="mb-6">
           <h1 className="text-2xl font-bold tracking-tight text-gray-100 md:text-3xl">
             Member Applications
           </h1>
           <p className="mt-2 text-sm text-gray-400">
-            {filteredApplications.length} member applications | {selectedCount} selected
+            {filteredApplications.length} member applications | {selectedCount}{" "}
+            selected
           </p>
         </div>
 
@@ -246,7 +264,9 @@ const AdminMemberApplications = () => {
               </thead>
               <tbody className="divide-y divide-gray-800">
                 {filteredApplications.map((application) => {
-                  const isSelected = selectedMemberApplications.includes(application.id);
+                  const isSelected = selectedMemberApplications.includes(
+                    application.id,
+                  );
                   const cvStatus = normalizeStatus(application.cvStatus);
                   const summary = getInterviewSummary(application);
                   const canInterviewRound = cvStatus === "PASSED";
@@ -273,9 +293,15 @@ const AdminMemberApplications = () => {
                           className="h-4 w-4 cursor-pointer rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
                         />
                       </td>
-                      <td className="px-3 py-3 font-medium text-gray-100">{application.fullname || "N/A"}</td>
-                      <td className="px-3 py-3 text-gray-300">{application.email || "N/A"}</td>
-                      <td className="px-3 py-3 text-gray-300">{formatDate(application.appliedAt) || "N/A"}</td>
+                      <td className="px-3 py-3 font-medium text-gray-100">
+                        {application.fullname || "N/A"}
+                      </td>
+                      <td className="px-3 py-3 text-gray-300">
+                        {application.email || "N/A"}
+                      </td>
+                      <td className="px-3 py-3 text-gray-300">
+                        {formatDate(application.appliedAt) || "N/A"}
+                      </td>
                       <td className="px-3 py-3">
                         <span
                           className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-wide ${getStatusBadgeClass(application.cvStatus)}`}

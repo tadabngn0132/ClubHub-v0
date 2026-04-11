@@ -7,10 +7,11 @@ import {
   confirmTaskCompletionById,
   resetTaskStatus,
   verifyTaskCompletionById,
+  resetTaskError,
 } from "../../../store/slices/taskSlice";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import {
@@ -33,34 +34,37 @@ const TaskDetailPage = ({ role, basePath, permissions }) => {
     dispatch(getTaskDetails(taskId));
   }, [dispatch, taskId]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetTaskError());
+    }
+  }, [error]);
+
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-
   const handleDelete = () => {
     if (permissions?.canSoftDelete) {
-        const softConfirmed = window.confirm(
+      const softConfirmed = window.confirm(
         "Do you want to deactivate this task?",
-        );
+      );
 
-        if (softConfirmed) {
+      if (softConfirmed) {
         dispatch(softDeleteTaskById(taskId));
         return;
-        }
+      }
     }
 
     if (permissions?.canHardDelete) {
-        const hardConfirmed = window.confirm(
+      const hardConfirmed = window.confirm(
         "Do you want to permanently delete this task? This action cannot be undone.",
-        );
+      );
 
-        if (hardConfirmed) {
+      if (hardConfirmed) {
         dispatch(hardDeleteTaskById(taskId));
-        }
+      }
     }
 
     if (taskStatus === "fulfilled") {
@@ -109,7 +113,6 @@ const TaskDetailPage = ({ role, basePath, permissions }) => {
 
   return (
     <div className="min-h-screen">
-      <Toaster position="top-right" reverseOrder={false} />
       <div className="mx-auto w-full max-w-5xl">
         <Link
           to={basePath}
@@ -130,20 +133,20 @@ const TaskDetailPage = ({ role, basePath, permissions }) => {
             </h1>
 
             {role !== "MEMBER" && (
-                <div className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 p-2 text-sm shadow-md">
-                    <Link
-                        to={`${basePath}/edit/${taskId}`}
-                        className="rounded-md bg-blue-500/15 px-3 py-1.5 font-medium text-blue-300 transition hover:bg-blue-500/30"
-                    >
-                        Edit
-                    </Link>
-                    <button
-                        onClick={handleDelete}
-                        className="rounded-md bg-rose-500/15 px-3 py-1.5 font-medium text-rose-300 transition hover:bg-rose-500/30"
-                    >
-                        Delete
-                    </button>
-                </div>
+              <div className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 p-2 text-sm shadow-md">
+                <Link
+                  to={`${basePath}/edit/${taskId}`}
+                  className="rounded-md bg-blue-500/15 px-3 py-1.5 font-medium text-blue-300 transition hover:bg-blue-500/30"
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={handleDelete}
+                  className="rounded-md bg-rose-500/15 px-3 py-1.5 font-medium text-rose-300 transition hover:bg-rose-500/30"
+                >
+                  Delete
+                </button>
+              </div>
             )}
           </div>
 

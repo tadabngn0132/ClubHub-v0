@@ -5,11 +5,15 @@ import {
   softDeleteDepartmentById,
   hardDeleteDepartmentById,
   resetDepartmentStatus,
+  resetDepartmentError,
 } from "../../../store/slices/departmentSlice";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link } from "react-router-dom";
-import { formatDeptStatusBadgeColor, formatUppercaseToCapitalized } from "../../../utils/formatters";
+import {
+  formatDeptStatusBadgeColor,
+  formatUppercaseToCapitalized,
+} from "../../../utils/formatters";
 import { USER_STATUS_OPTIONS } from "../../../utils/constants";
 
 const DepartmentsPage = ({ role, basePath }) => {
@@ -25,31 +29,38 @@ const DepartmentsPage = ({ role, basePath }) => {
     dispatch(getDepartmentsList());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetDepartmentError());
+    }
+  }, [error]);
+
   const handleDelete = (id) => {
     if (role !== "ADMIN") {
       return;
     }
 
     const softConfirmed = window.confirm(
-    "Do you want to deactivate this department?",
+      "Do you want to deactivate this department?",
     );
 
     if (softConfirmed) {
-    dispatch(softDeleteDepartmentById(id));
-    return;
+      dispatch(softDeleteDepartmentById(id));
+      return;
     }
 
     const hardConfirmed = window.confirm(
-    "Do you want to permanently delete this department? This action cannot be undone.",
+      "Do you want to permanently delete this department? This action cannot be undone.",
     );
 
     if (hardConfirmed) {
-    dispatch(hardDeleteDepartmentById(id));
+      dispatch(hardDeleteDepartmentById(id));
     }
 
     if (departmentStatus === "fulfilled") {
-        navigate(basePath);
-        dispatch(resetDepartmentStatus());
+      navigate(basePath);
+      dispatch(resetDepartmentStatus());
     }
   };
 
@@ -79,7 +90,9 @@ const DepartmentsPage = ({ role, basePath }) => {
 
     if (statusFilter !== "all") {
       const expectedActive = statusFilter === "ACTIVE";
-      result = result.filter((department) => Boolean(department.isActive) === expectedActive);
+      result = result.filter(
+        (department) => Boolean(department.isActive) === expectedActive,
+      );
     }
 
     result.sort((a, b) => {
@@ -102,17 +115,16 @@ const DepartmentsPage = ({ role, basePath }) => {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-
   return (
     <div>
-      <Toaster position="top-right" reverseOrder={false} />
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">Departments</h1>
-          <p className="mt-1 text-slate-300">{filteredDepartments.length} departments</p>
+          <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">
+            Departments
+          </h1>
+          <p className="mt-1 text-slate-300">
+            {filteredDepartments.length} departments
+          </p>
         </div>
 
         {role === "ADMIN" && (
@@ -182,7 +194,6 @@ const DepartmentsPage = ({ role, basePath }) => {
                     className="px-4 py-10 text-center text-slate-300"
                   >
                     No departments found.
-
                     {role === "ADMIN" && (
                       <Link
                         to="/admin/departments/add"

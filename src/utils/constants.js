@@ -55,8 +55,18 @@ export const ACTIVITY_STATUSES = {
 };
 
 export const USER_STATUS_OPTIONS = ["ACTIVE", "INACTIVE"];
-export const TASK_STATUS_OPTIONS = ["NEW", "IN_PROGRESS", "DONE", "CANCELLED", "ON_HOLD"];
-export const MEMBER_APPLICATION_FINAL_STATUS_OPTIONS = ["PENDING", "PASSED", "FAILED"];
+export const TASK_STATUS_OPTIONS = [
+  "NEW",
+  "IN_PROGRESS",
+  "DONE",
+  "CANCELLED",
+  "ON_HOLD",
+];
+export const MEMBER_APPLICATION_FINAL_STATUS_OPTIONS = [
+  "PENDING",
+  "PASSED",
+  "FAILED",
+];
 export const ACTIVITY_STATUS_OPTIONS = [
   "DRAFT",
   "PUBLISHED",
@@ -86,28 +96,28 @@ export const ASSIGNEE_SCOPE = [
 ];
 
 export const PERMISSIONS = {
-  "ADMIN": {
-    "canView": true,
-    "canEdit": true,
-    "canSoftDelete": true,
-    "canHardDelete": true,
-    "canVerifyTask": true,
+  ADMIN: {
+    canView: true,
+    canEdit: true,
+    canSoftDelete: true,
+    canHardDelete: true,
+    canVerifyTask: true,
   },
-  "MODERATOR": {
-    "canView": true,
-    "canEdit": true,
-    "canSoftDelete": true,
-    "canHardDelete": false,
-    "canVerifyTask": true,
+  MODERATOR: {
+    canView: true,
+    canEdit: true,
+    canSoftDelete: true,
+    canHardDelete: false,
+    canVerifyTask: true,
   },
-  "MEMBER": {
-    "canView": true,
-    "canEdit": false,
-    "canSoftDelete": false,
-    "canHardDelete": false,
-    "canVerifyTask": false,
+  MEMBER: {
+    canView: true,
+    canEdit: false,
+    canSoftDelete: false,
+    canHardDelete: false,
+    canVerifyTask: false,
   },
-}
+};
 
 export const LAYOUT_CONFIG = {
   admin: {
@@ -121,10 +131,9 @@ export const LAYOUT_CONFIG = {
       { name: "Tasks", link: "/admin/tasks" },
       { name: "Documents", link: "/admin/documents" },
       { name: "Chat", link: "/admin/chat" },
-      { name: "AI Chat", link: "/admin/ai-chat" },
       { name: "Member Applications", link: "/admin/member-applications" },
       { name: "Profile", link: "/admin/profile" },
-    ]
+    ],
   },
   moderator: {
     allowedRoles: ["moderator"],
@@ -137,7 +146,7 @@ export const LAYOUT_CONFIG = {
       { name: "Activities", link: "/moderator/activities" },
       { name: "Tasks", link: "/moderator/tasks" },
       { name: "Profile", link: "/moderator/profile" },
-    ]
+    ],
   },
   member: {
     allowedRoles: ["member"],
@@ -149,7 +158,6 @@ export const LAYOUT_CONFIG = {
       { name: "Activities", link: "/member/activities" },
       { name: "Tasks", link: "/member/tasks" },
       { name: "Profile", link: "/member/profile" },
-    ]
-  }
-}
-
+    ],
+  },
+};

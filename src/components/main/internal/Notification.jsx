@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getUserNotifications,
   resetNotificationStatus,
+  resetNotificationError,
 } from "../../../store/slices/notificationSlice";
 import { useEffect } from "react";
 import Loading from "../../../components/layout/internal/Loading";
@@ -11,7 +12,9 @@ import { formatDate } from "../../../utils/formatters";
 const Notification = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
-  const { notifications, isLoading, error, status } = useSelector((state) => state.notification);
+  const { notifications, isLoading, error, status } = useSelector(
+    (state) => state.notification,
+  );
 
   useEffect(() => {
     if (currentUser) {
@@ -19,25 +22,32 @@ const Notification = () => {
     }
   }, [currentUser, dispatch]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+
+      dispatch(resetNotificationError());
+    }
+  }, [error]);
+
   const handleResetNotificationsStatus = () => {
     if (currentUser) {
       dispatch(getUserNotifications(currentUser.id));
     }
     dispatch(resetNotificationStatus());
-  }
+  };
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error) {
-    toast.error(error);
-  }
-
   return (
     <div className="p-4">
       <h1>Notifications</h1>
-      <button onClick={handleResetNotificationsStatus} className="px-4 py-2 bg-blue-500 text-white rounded">
+      <button
+        onClick={handleResetNotificationsStatus}
+        className="px-4 py-2 bg-blue-500 text-white rounded"
+      >
         Mark all as read
       </button>
       {notifications.map((notification) => (

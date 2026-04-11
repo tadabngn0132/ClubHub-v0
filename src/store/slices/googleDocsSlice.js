@@ -65,7 +65,11 @@ const googleDocsSlice = createSlice({
     isLoading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetGoogleDocsError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Handle createDocFromTemplate
@@ -113,5 +117,5 @@ const googleDocsSlice = createSlice({
   },
 });
 
-export const {} = googleDocsSlice.actions;
+export const { resetGoogleDocsError } = googleDocsSlice.actions;
 export default googleDocsSlice.reducer;
