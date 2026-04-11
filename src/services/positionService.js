@@ -21,11 +21,11 @@ export const updatePosition = async (id, positionData) => {
 };
 
 export const softDeletePosition = async (id) => {
-  const response = await axiosClient.put(`/positions/${id}`);
+  const response = await axiosClient.put(`/positions/${id}/soft`);
   return response.data;
 };
 
 export const hardDeletePosition = async (id) => {
-  const response = await axiosClient.delete(`/positions/${id}`);
+  const response = await axiosClient.delete(`/positions/${id}/hard`);
   return response.data;
 };

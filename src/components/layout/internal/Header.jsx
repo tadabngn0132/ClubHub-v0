@@ -11,7 +11,10 @@ import {
 import logo from "../../../assets/logos/GDC_logo.svg";
 import Dropdown from "./Dropdown";
 import { useState, useEffect, useMemo, useRef } from "react";
-import { formatRoleBadgeColor, formatUppercaseToCapitalized } from "../../../utils/formatters";
+import {
+  formatRoleBadgeColor,
+  formatUppercaseToCapitalized,
+} from "../../../utils/formatters";
 import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../../hooks/useSocket";
 import { getUserNotifications } from "../../../store/slices/notificationSlice";
@@ -99,10 +102,12 @@ const Header = ({ role }) => {
   };
 
   const handleDeleteNotification = async (notificationId) => {
-    const ack = await emitEventWithAck("notification:delete", notificationId);
+    const ack = await emitEventWithAck("notification:softDelete", {
+      notificationId,
+    });
 
     if (!ack?.success) {
-      console.error("Delete notification failed", ack?.message);
+      console.error("Soft delete notification failed", ack?.message);
     }
 
     if (currentUser?.id) {
@@ -153,8 +158,12 @@ const Header = ({ role }) => {
           {isNotificationOpen && (
             <div className="absolute right-0 top-7 z-[1200] w-80 overflow-hidden rounded-xl border border-white/15 bg-[#0f0f11] shadow-[0_12px_36px_rgba(0,0,0,0.45)]">
               <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-                <p className="text-sm font-semibold text-white">Notifications</p>
-                <span className="text-xs text-white/55">{unreadCount} unread</span>
+                <p className="text-sm font-semibold text-white">
+                  Notifications
+                </p>
+                <span className="text-xs text-white/55">
+                  {unreadCount} unread
+                </span>
               </div>
 
               <div className="max-h-80 overflow-y-auto">
@@ -217,7 +226,11 @@ const Header = ({ role }) => {
           onClick={toggleDropdown}
           className="cursor-pointer rounded-full overflow-hidden"
         >
-          <img className="w-8 h-8" src={currentUser?.avatarUrl || null} alt="Avatar" />
+          <img
+            className="w-8 h-8"
+            src={currentUser?.avatarUrl || null}
+            alt="Avatar"
+          />
         </div>
         <Dropdown visible={isDropdownVisible} role={currentUser?.role} />
       </div>

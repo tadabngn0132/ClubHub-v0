@@ -3,9 +3,12 @@ import {
   createNotification,
   getNotificationById,
   getAllNotifications,
-  getNotificationsByUserId,
   updateNotification,
-  deleteNotification,
+  softDeleteNotification,
+  hardDeleteNotification,
+  getNotificationsByUserId,
+  softDeleteNotificationsByUserId,
+  hardDeleteNotificationsByUserId,
 } from "../../services/notificationService";
 
 export const createNewNotification = createAsyncThunk(
@@ -59,23 +62,6 @@ export const getAllNotificationsList = createAsyncThunk(
   },
 );
 
-export const getUserNotifications = createAsyncThunk(
-  "notification/getUserNotifications",
-  async (userId, thunkAPI) => {
-    try {
-      const data = await getNotificationsByUserId(userId);
-
-      if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message);
-      }
-
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  },
-);
-
 export const updateNotificationById = createAsyncThunk(
   "notification/updateNotificationById",
   async ({ id, notificationData }, thunkAPI) => {
@@ -93,11 +79,79 @@ export const updateNotificationById = createAsyncThunk(
   },
 );
 
-export const deleteNotificationById = createAsyncThunk(
-  "notification/deleteNotificationById",
+export const softDeleteNotificationById = createAsyncThunk(
+  "notification/softDeleteNotificationById",
   async (id, thunkAPI) => {
     try {
-      const data = await deleteNotification(id);
+      const data = await softDeleteNotification(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const hardDeleteNotificationById = createAsyncThunk(
+  "notification/hardDeleteNotificationById",
+  async (id, thunkAPI) => {
+    try {
+      const data = await hardDeleteNotification(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const getUserNotifications = createAsyncThunk(
+  "notification/getUserNotifications",
+  async (userId, thunkAPI) => {
+    try {
+      const data = await getNotificationsByUserId(userId);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const softDeleteUserNotifications = createAsyncThunk(
+  "notification/softDeleteUserNotifications",
+  async (userId, thunkAPI) => {
+    try {
+      const data = await softDeleteNotificationsByUserId(userId);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const hardDeleteUserNotifications = createAsyncThunk(
+  "notification/hardDeleteUserNotifications",
+  async (userId, thunkAPI) => {
+    try {
+      const data = await hardDeleteNotificationsByUserId(userId);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -218,12 +272,12 @@ const notificationSlice = createSlice({
         state.notificationStatus = "rejected";
       })
 
-      // Delete Notification
-      .addCase(deleteNotificationById.pending, (state) => {
+      // Soft Delete Notification
+      .addCase(softDeleteNotificationById.pending, (state) => {
         state.isLoading = true;
         state.notificationStatus = "pending";
       })
-      .addCase(deleteNotificationById.fulfilled, (state, action) => {
+      .addCase(softDeleteNotificationById.fulfilled, (state, action) => {
         state.isLoading = false;
         const deletedId =
           action.payload?.dataId ||
@@ -234,7 +288,69 @@ const notificationSlice = createSlice({
         );
         state.notificationStatus = "fulfilled";
       })
-      .addCase(deleteNotificationById.rejected, (state, action) => {
+      .addCase(softDeleteNotificationById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.notificationStatus = "rejected";
+      })
+
+      // Hard Delete Notification
+      .addCase(hardDeleteNotificationById.pending, (state) => {
+        state.isLoading = true;
+        state.notificationStatus = "pending";
+      })
+      .addCase(hardDeleteNotificationById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const deletedId =
+          action.payload?.dataId ||
+          action.payload?.data?.id ||
+          action.payload?.id;
+        state.notifications = state.notifications.filter(
+          (notif) => notif.id !== deletedId,
+        );
+        state.notificationStatus = "fulfilled";
+      })
+      .addCase(hardDeleteNotificationById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.notificationStatus = "rejected";
+      })
+
+      // Soft Delete User Notifications
+      .addCase(softDeleteUserNotifications.pending, (state) => {
+        state.isLoading = true;
+        state.notificationStatus = "pending";
+      })
+      .addCase(softDeleteUserNotifications.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const deletedIds =
+          action.payload?.dataIds || action.payload?.data?.ids || [];
+        state.notifications = state.notifications.filter(
+          (notif) => !deletedIds.includes(notif.id),
+        );
+        state.notificationStatus = "fulfilled";
+      })
+      .addCase(softDeleteUserNotifications.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.notificationStatus = "rejected";
+      })
+
+      // Hard Delete User Notifications
+      .addCase(hardDeleteUserNotifications.pending, (state) => {
+        state.isLoading = true;
+        state.notificationStatus = "pending";
+      })
+      .addCase(hardDeleteUserNotifications.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const deletedIds =
+          action.payload?.dataIds || action.payload?.data?.ids || [];
+        state.notifications = state.notifications.filter(
+          (notif) => !deletedIds.includes(notif.id),
+        );
+        state.notificationStatus = "fulfilled";
+      })
+      .addCase(hardDeleteUserNotifications.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         state.notificationStatus = "rejected";

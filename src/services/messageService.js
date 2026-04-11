@@ -5,23 +5,22 @@ export const createMessage = async (messageData) => {
   return response.data;
 };
 
-export const updateMessage = async (messageId, updatedData) => {
-  const response = await axiosClient.put(`/messages/${messageId}`, updatedData);
+export const getMessagesByChatRoomId = async (chatRoomId) => {
+  const response = await axiosClient.get(`/messages/chatroom/${chatRoomId}`);
   return response.data;
-}
+};
 
-export const getMessagesByRoomId = async (roomId) => {
-  const response = await axiosClient.get(`/messages/room/${roomId}`);
+export const updateMessage = async (id, messageData) => {
+  const response = await axiosClient.put(`/messages/${id}`, messageData);
   return response.data;
-}
+};
 
-export const deleteMessage = async (messageId) => {
-  const response = await axiosClient.delete(`/messages/${messageId}`);
+export const softDeleteMessage = async (id) => {
+  const response = await axiosClient.put(`/messages/${id}/soft`);
   return response.data;
-}
+};
 
-export const getAllRoomsForUser = async () => {
-  const response = await axiosClient.get("/rooms");
+export const hardDeleteMessage = async (id) => {
+  const response = await axiosClient.delete(`/messages/${id}/hard`);
   return response.data;
-}
-
+};

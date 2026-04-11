@@ -12,6 +12,9 @@ import activityParticipationReducer from "./slices/activityParticipationSlice";
 import chatRoomReducer from "./slices/chatRoomSlice";
 import aiReducer from "./slices/aiSlice";
 import dashboardReducer from "./slices/dashboardSlice";
+import googleDocsReducer from "./slices/googleDocsSlice";
+import googleSheetsReducer from "./slices/googleSheetsSlice";
+import googleDriveReducer from "./slices/googleDriveSlice";
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +31,9 @@ export const store = configureStore({
     chatRoom: chatRoomReducer,
     ai: aiReducer,
     dashboard: dashboardReducer,
+    googleDocs: googleDocsReducer,
+    googleSheets: googleSheetsReducer,
+    googleDrive: googleDriveReducer,
   },
 });
 

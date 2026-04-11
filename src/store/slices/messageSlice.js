@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createMessage,
+  getMessagesByChatRoomId,
   updateMessage,
-  getMessagesByRoomId,
-  deleteMessage,
-  getAllRoomsForUser,
+  softDeleteMessage,
+  hardDeleteMessage,
 } from "../../services/messageService";
 
 export const createNewMessage = createAsyncThunk(
@@ -28,7 +28,7 @@ export const getMessagesByRoom = createAsyncThunk(
   "message/getMessagesByRoom",
   async (roomId, thunkAPI) => {
     try {
-      const data = await getMessagesByRoomId(roomId);
+      const data = await getMessagesByChatRoomId(roomId);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -41,11 +41,28 @@ export const getMessagesByRoom = createAsyncThunk(
   },
 );
 
-export const deleteMessageById = createAsyncThunk(
-  "message/deleteMessageById",
+export const updateMessageById = createAsyncThunk(
+  "message/updateMessageById",
+  async ({ messageId, updateData }, thunkAPI) => {
+    try {
+      const data = await updateMessage(messageId, updateData);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const softDeleteMessageById = createAsyncThunk(
+  "message/softDeleteMessageById",
   async (messageId, thunkAPI) => {
     try {
-      const data = await deleteMessage(messageId);
+      const data = await softDeleteMessage(messageId);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -58,11 +75,11 @@ export const deleteMessageById = createAsyncThunk(
   },
 );
 
-export const getAllRoomsForCurrentUser = createAsyncThunk(
-  "message/getAllRoomsForCurrentUser",
-  async (_, thunkAPI) => {
+export const hardDeleteMessageById = createAsyncThunk(
+  "message/hardDeleteMessageById",
+  async (messageId, thunkAPI) => {
     try {
-      const data = await getAllRoomsForUser();
+      const data = await hardDeleteMessage(messageId);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -116,32 +133,52 @@ const messageSlice = createSlice({
         state.error = action.payload || "Failed to fetch messages";
       })
 
-      // Handle deleteMessageById
-      .addCase(deleteMessageById.pending, (state) => {
+      // Handle updateMessageById
+      .addCase(updateMessageById.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(deleteMessageById.fulfilled, (state, action) => {
+      .addCase(updateMessageById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.messages.findIndex(
+          (message) => message.id === action.payload.data.id,
+        );
+        if (index !== -1) {
+          state.messages[index] = action.payload.data;
+        }
+      })
+      .addCase(updateMessageById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || "Failed to update message";
+      })
+
+      // Handle softDeleteMessageById
+      .addCase(softDeleteMessageById.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(softDeleteMessageById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.messages = state.messages.filter(
           (message) => message.id !== action.payload.data.messageId,
         );
       })
-      .addCase(deleteMessageById.rejected, (state, action) => {
+      .addCase(softDeleteMessageById.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload || "Failed to delete message";
+        state.error = action.payload || "Failed to soft delete message";
       })
 
-      // Handle getAllRoomsForCurrentUser
-      .addCase(getAllRoomsForCurrentUser.pending, (state) => {
+      // Handle hardDeleteMessageById
+      .addCase(hardDeleteMessageById.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllRoomsForCurrentUser.fulfilled, (state, action) => {
+      .addCase(hardDeleteMessageById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.rooms = action.payload.data;
+        state.messages = state.messages.filter(
+          (message) => message.id !== action.payload.data.messageId,
+        );
       })
-      .addCase(getAllRoomsForCurrentUser.rejected, (state, action) => {
+      .addCase(hardDeleteMessageById.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload || "Failed to fetch rooms";
+        state.error = action.payload || "Failed to hard delete message";
       });
   },
 });

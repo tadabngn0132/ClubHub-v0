@@ -16,19 +16,16 @@ export const getDepartmentById = async (id) => {
 };
 
 export const updateDepartment = async (id, departmentData) => {
-  const response = await axiosClient.put(
-    `/departments/${id}`,
-    departmentData,
-  );
+  const response = await axiosClient.put(`/departments/${id}`, departmentData);
   return response.data;
 };
 
 export const softDeleteDepartment = async (id) => {
-  const response = await axiosClient.put(`/departments/${id}`);
+  const response = await axiosClient.put(`/departments/${id}/soft`);
   return response.data;
 };
 
 export const hardDeleteDepartment = async (id) => {
-  const response = await axiosClient.delete(`/departments/${id}`);
+  const response = await axiosClient.delete(`/departments/${id}/hard`);
   return response.data;
 };

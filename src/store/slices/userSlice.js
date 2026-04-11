@@ -8,6 +8,7 @@ import {
   softDeleteAnUser,
   hardDeleteAnUser,
   unlockAnUserAccount,
+  getUserDashboardStats,
 } from "../../services/userService";
 
 export const createUser = createAsyncThunk(
@@ -146,6 +147,23 @@ export const unlockUserAccount = createAsyncThunk(
   },
 );
 
+export const getAllUserDashboardStats = createAsyncThunk(
+  "user/getAllUserDashboardStats",
+  async (userId, thunkAPI) => {
+    try {
+      const data = await getUserDashboardStats(userId);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -154,6 +172,7 @@ const userSlice = createSlice({
     isLoading: false,
     error: null,
     userStatus: "idle",
+    dashboardStats: null,
   },
   reducers: {
     resetUserStatus: (state) => {
@@ -312,6 +331,20 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
         state.userStatus = "rejected";
+      })
+
+      // Get User Dashboard Stats
+      .addCase(getAllUserDashboardStats.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getAllUserDashboardStats.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.dashboardStats = action.payload.data;
+      })
+      .addCase(getAllUserDashboardStats.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });

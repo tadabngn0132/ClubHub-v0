@@ -15,8 +15,18 @@ export const getNotificationById = async (id) => {
   return res.data;
 };
 
-export const deleteNotification = async (id) => {
-  const res = await axiosClient.delete(`/notifications/${id}`);
+export const updateNotification = async (id, msg) => {
+  const res = await axiosClient.put(`/notifications/${id}`, { message: msg });
+  return res.data;
+};
+
+export const softDeleteNotification = async (id) => {
+  const res = await axiosClient.put(`/notifications/${id}/soft`);
+  return res.data;
+};
+
+export const hardDeleteNotification = async (id) => {
+  const res = await axiosClient.delete(`/notifications/${id}/hard`);
   return res.data;
 };
 
@@ -25,12 +35,12 @@ export const getNotificationsByUserId = async (userId) => {
   return res.data;
 };
 
-export const updateNotification = async (id, msg) => {
-  const res = await axiosClient.put(`/notifications/${id}`, { message: msg });
+export const softDeleteNotificationsByUserId = async (userId) => {
+  const res = await axiosClient.put(`/notifications/user/${userId}/soft`);
   return res.data;
 };
 
-export const deleteNotificationsByUserId = async (userId) => {
-  const res = await axiosClient.delete(`/notifications/user/${userId}`);
+export const hardDeleteNotificationsByUserId = async (userId) => {
+  const res = await axiosClient.delete(`/notifications/user/${userId}/hard`);
   return res.data;
 };
