@@ -27,6 +27,8 @@ import ChangePassword from "../../components/main/internal/ChangePasswordForm.js
 import MemberApplicationProcess from "../../pages/private/shared/MemberApplicationProcess.jsx";
 import AdminDocuments from "../../pages/private/admin/AdminDocuments.jsx";
 import AdminChat from "../../pages/private/admin/AdminChat.jsx";
+import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
+import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx";
 
 export const adminRoutes = [
   {
@@ -266,6 +268,22 @@ export const adminRoutes = [
     element: (
       <SharedLayout role="admin">
         <AdminChat />
+      </SharedLayout>
+    ),
+  },
+  {
+    path: "/admin/forbidden",
+    element: (
+      <SharedLayout role="admin">
+        <ForbiddenError role="admin" />
+      </SharedLayout>
+    ),
+  },
+  {
+    path: "/admin/*",
+    element: (
+      <SharedLayout role="admin">
+        <NotFoundError role="admin" />
       </SharedLayout>
     ),
   },

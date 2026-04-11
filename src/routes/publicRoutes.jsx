@@ -6,6 +6,7 @@ import Activities from "../pages/public/Activities.jsx";
 import ActivityDetails from "../pages/public/ActivityDetails.jsx";
 import Contact from "../pages/public/Contact.jsx";
 import AddMemberApplication from "../pages/public/AddMemberApplication.jsx";
+import ErrorBoundary from "../components/layout/public/ErrorBoundary.jsx";
 
 export const publicRoutes = [
   {
@@ -61,6 +62,14 @@ export const publicRoutes = [
     element: (
       <PublicLayout>
         <AddMemberApplication />
+      </PublicLayout>
+    ),
+  },
+  {
+    path: "*",
+    element: (
+      <PublicLayout>
+        <ErrorBoundary />
       </PublicLayout>
     ),
   },

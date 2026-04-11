@@ -13,6 +13,8 @@ import MemberPositions from "../../pages/private/member/MemberPositions.jsx";
 import MemberViewPosition from "../../pages/private/member/MemberViewPosition.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
 import MemberChat from "../../pages/private/member/MemberChat.jsx";
+import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
+import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx";
 
 export const memberRoutes = [
   {
@@ -124,6 +126,22 @@ export const memberRoutes = [
     element: (
       <SharedLayout role="member">
         <MemberChat />
+      </SharedLayout>
+    ),
+  },
+  {
+    path: "/member/forbidden",
+    element: (
+      <SharedLayout role="member">
+        <ForbiddenError role="member" />
+      </SharedLayout>
+    ),
+  },
+  {
+    path: "/member/*",
+    element: (
+      <SharedLayout role="member">
+        <NotFoundError role="member" />
       </SharedLayout>
     ),
   },

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../store/slices/authSlice";
 
-const Dropdown = ({ visible }) => {
+const Dropdown = ({ visible, role }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,13 +20,13 @@ const Dropdown = ({ visible }) => {
       className={`absolute right-4 top-13 z-50 w-52 flex-col overflow-hidden rounded-xl border border-slate-700 bg-slate-900/95 p-1 shadow-xl shadow-black/40 backdrop-blur-sm transition-all duration-200 ${visibilityClass}`}
     >
       <Link
-        to="/profile"
+        to={`/${role}/profile`}
         className="rounded-lg px-3 py-2 text-sm font-medium text-slate-200 transition-colors duration-150 hover:bg-slate-800 hover:text-white"
       >
         Profile
       </Link>
       <Link
-        to="/settings"
+        to={`/${role}/settings`}
         className="rounded-lg px-3 py-2 text-sm font-medium text-slate-200 transition-colors duration-150 hover:bg-slate-800 hover:text-white"
       >
         Settings

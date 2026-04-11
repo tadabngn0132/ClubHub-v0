@@ -219,7 +219,7 @@ const Header = ({ role }) => {
         >
           <img className="w-8 h-8" src={currentUser?.avatarUrl || null} alt="Avatar" />
         </div>
-        <Dropdown visible={isDropdownVisible} />
+        <Dropdown visible={isDropdownVisible} role={currentUser?.role} />
       </div>
     </div>
   );
