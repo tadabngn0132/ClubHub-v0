@@ -8,12 +8,10 @@ import {
   createNewActivityVideo,
   resetActivityError,
 } from "../../../store/slices/activitySlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { resetActivityStatus } from "../../../store/slices/activitySlice";
-import { useParams } from "react-router-dom";
 import ActivityMediaForm from "../../../components/main/internal/ActivityMediaForm.jsx";
 
 const ActivityDetailPage = ({ role, basePath, permissions }) => {
@@ -34,6 +32,13 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
       dispatch(resetActivityError());
     }
   }, [error]);
+
+  useEffect(() => {
+    if (activityStatus === "fulfilled") {
+      navigate(basePath);
+    }
+    dispatch(resetActivityStatus());
+  }, [activityStatus]);
 
   if (isLoading) {
     return <Loading />;
@@ -59,11 +64,6 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
       if (hardConfirmed) {
         dispatch(hardDeleteActivityById(activityId));
       }
-    }
-
-    if (activityStatus === "fulfilled") {
-      navigate(basePath);
-      dispatch(resetActivityStatus());
     }
   };
 

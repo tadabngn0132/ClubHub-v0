@@ -9,11 +9,9 @@ import {
   verifyTaskCompletionById,
   resetTaskError,
 } from "../../../store/slices/taskSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import {
   formatDate,
   formatUppercaseToCapitalized,
@@ -41,6 +39,13 @@ const TaskDetailPage = ({ role, basePath, permissions }) => {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (taskStatus === "fulfilled") {
+      navigate(basePath);
+    }
+    dispatch(resetTaskStatus());
+  }, [taskStatus]);
+
   if (isLoading) {
     return <Loading />;
   }
@@ -65,11 +70,6 @@ const TaskDetailPage = ({ role, basePath, permissions }) => {
       if (hardConfirmed) {
         dispatch(hardDeleteTaskById(taskId));
       }
-    }
-
-    if (taskStatus === "fulfilled") {
-      navigate(basePath);
-      dispatch(resetTaskStatus());
     }
   };
 

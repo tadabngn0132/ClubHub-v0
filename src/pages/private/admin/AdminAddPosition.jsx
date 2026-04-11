@@ -23,12 +23,15 @@ const AdminAddPosition = () => {
     }
   }, [error]);
 
-  const handleAddPosition = (data) => {
-    dispatch(createNewPosition(data));
+  useEffect(() => {
     if (positionStatus === "fulfilled") {
       navigate("/admin/positions");
     }
     dispatch(resetPositionStatus());
+  }, [positionStatus]);
+
+  const handleAddPosition = async (data) => {
+    await dispatch(createNewPosition(data)).unwrap();
   };
 
   if (isLoading) {

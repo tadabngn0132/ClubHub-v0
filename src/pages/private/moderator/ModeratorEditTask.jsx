@@ -14,7 +14,9 @@ import toast from "react-hot-toast";
 const ModeratorEditTask = () => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
-  const { task, isLoading, error, status } = useSelector((state) => state.task);
+  const { task, isLoading, error, taskStatus } = useSelector(
+    (state) => state.task,
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,14 +32,15 @@ const ModeratorEditTask = () => {
     }
   }, [error]);
 
-  const handleEditTask = (data) => {
-    dispatch(updateTaskById({ taskId, taskData: data }));
-
-    if (status === "fulfilled") {
+  useEffect(() => {
+    if (taskStatus === "fulfilled") {
       navigate("/moderator/tasks");
     }
-
     dispatch(resetTaskStatus());
+  }, [taskStatus]);
+
+  const handleEditTask = async (data) => {
+    await dispatch(updateTaskById({ taskId, taskData: data })).unwrap();
   };
 
   if (isLoading) {

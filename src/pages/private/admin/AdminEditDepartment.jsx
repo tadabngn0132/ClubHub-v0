@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 const AdminEditDepartment = () => {
   const { departmentId } = useParams();
   const dispatch = useDispatch();
-  const { department, isLoading, error, status } = useSelector(
+  const { department, isLoading, error, departmentStatus } = useSelector(
     (state) => state.department,
   );
   const navigate = useNavigate();
@@ -33,12 +33,17 @@ const AdminEditDepartment = () => {
     }
   }, [error]);
 
-  const handleEditDepartment = (data) => {
-    dispatch(updateDepartmentById({ departmentId, data }));
-    if (status === "fulfilled") {
+  useEffect(() => {
+    if (departmentStatus === "fulfilled") {
       navigate("/admin/departments");
     }
     dispatch(resetDepartmentStatus());
+  }, [departmentStatus]);
+
+  const handleEditDepartment = async (data) => {
+    await dispatch(
+      updateDepartmentById({ departmentId, data }),
+    ).unwrap();
   };
 
   if (isLoading) {

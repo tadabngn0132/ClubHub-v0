@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { resetPasswordUser } from "../../store/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,10 +9,17 @@ import { resetAuthStatus } from "../../store/slices/authSlice";
 const ResetPassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { status } = useSelector((state) => state.auth);
+  const { authStatus } = useSelector((state) => state.auth);
   const [searchParams] = useSearchParams();
   const email = searchParams.get("email");
   const resetToken = searchParams.get("token");
+
+  useEffect(() => {
+    if (authStatus === "fulfilled") {
+        navigate("/sign-in");
+      }
+    dispatch(resetAuthStatus());
+  }, [authStatus]);
 
   const {
     register,
@@ -40,11 +48,7 @@ const ResetPassword = () => {
         newPassword: data.newPassword,
       };
 
-      dispatch(resetPasswordUser(resetData));
-      if (status === "fulfilled") {
-        navigate("/sign-in");
-      }
-      dispatch(resetAuthStatus());
+      await dispatch(resetPasswordUser(resetData)).unwrap();
     } catch (error) {
       toast.error(error.message);
       console.error(error);

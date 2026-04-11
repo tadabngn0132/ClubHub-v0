@@ -36,7 +36,7 @@ const ClubInfoTab = () => {
         id="generation"
         placeholder="2025"
         className={inputClassName}
-        {...register("generation", VALIDATION_RULES.generation)}
+        {...register("generation", VALIDATION_RULES.genevalidration)}
       />
       {errors.generation && (
         <p className={errorClassName}>{errors.generation.message}</p>

@@ -7,20 +7,36 @@ import {
     resetPositionStatus,
 } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   formatUppercaseToCapitalized,
   formatPositionLevel,
 } from "../../../utils/formatters.js";
+import toast from "react-hot-toast";
 
 const PositionDetailPage = ({ role, basePath }) => {
   const { positionId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { position, isLoading, error, positionStatus } = useSelector((state) => state.position);
 
   useEffect(() => {
     dispatch(getPositionDetails(positionId));
   }, [dispatch, positionId]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(resetPositionError());
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (positionStatus === "fulfilled") {
+      navigate(basePath);
+    }
+    dispatch(resetPositionStatus());
+  }, [positionStatus]);
 
   const handleDelete = () => {
     if (role !== "ADMIN") {
@@ -42,11 +58,6 @@ const PositionDetailPage = ({ role, basePath }) => {
 
     if (hardConfirmed) {
     dispatch(hardDeletePositionById(positionId));
-    }
-
-    if (positionStatus === "fulfilled") {
-        navigate(basePath);
-        dispatch(resetPositionStatus());
     }
 };
 

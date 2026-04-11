@@ -9,7 +9,7 @@ import {
 } from "../../../store/slices/positionSlice";
 import toast from "react-hot-toast";
 import Loading from "../../../components/layout/internal/Loading";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   formatRoleBadgeColor,
   formatUppercaseToCapitalized,
@@ -18,6 +18,7 @@ import {
 
 const PositionsPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { positions, isLoading, error, positionStatus } = useSelector(
     (state) => state.position,
   );
@@ -35,6 +36,13 @@ const PositionsPage = ({ role, basePath }) => {
       dispatch(resetPositionError());
     }
   }, [error]);
+
+  useEffect(() => {
+    if (positionStatus === "fulfilled") {
+      navigate(basePath);
+    }
+    dispatch(resetPositionStatus());
+  }, [positionStatus]);
 
   const handleDelete = (id) => {
     if (role !== "ADMIN") {
@@ -56,11 +64,6 @@ const PositionsPage = ({ role, basePath }) => {
 
     if (hardConfirmed) {
       dispatch(hardDeletePositionById(id));
-    }
-
-    if (positionStatus === "fulfilled") {
-      navigate(basePath);
-      dispatch(resetPositionStatus());
     }
   };
 

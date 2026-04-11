@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 const ModeratorEditActivity = () => {
   const { activityId } = useParams();
   const dispatch = useDispatch();
-  const { activity, isLoading, error, status } = useSelector(
+  const { activity, isLoading, error, activityStatus } = useSelector(
     (state) => state.activity,
   );
   const navigate = useNavigate();
@@ -33,14 +33,15 @@ const ModeratorEditActivity = () => {
     }
   }, [error]);
 
-  const handleEditActivity = (data) => {
-    dispatch(updateActivityById({ id: activityId, activityData: data }));
-
-    if (status === "fulfilled") {
+  useEffect(() => {
+    if (activityStatus === "fulfilled") {
       navigate("/moderator/activities");
     }
-
     dispatch(resetActivityStatus());
+  }, [activityStatus]);
+
+  const handleEditActivity = async (data) => {
+    await dispatch(updateActivityById({ id: activityId, activityData: data })).unwrap();
   };
 
   if (isLoading) {

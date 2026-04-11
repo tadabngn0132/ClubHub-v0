@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 const AdminAddUser = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, status } = useSelector((state) => state.user);
+  const { isLoading, error, userStatus } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,12 +21,15 @@ const AdminAddUser = () => {
     }
   }, [error]);
 
-  const handleAddUser = (data) => {
-    dispatch(createUser(data));
-    if (status === "fulfilled") {
+  useEffect(() => {
+    if (userStatus === "fulfilled") {
       navigate("/admin/users");
     }
     dispatch(resetUserStatus());
+  }, [userStatus]);
+
+  const handleAddUser = async (data) => {
+    await dispatch(createUser(data)).unwrap();
   };
 
   if (isLoading) {

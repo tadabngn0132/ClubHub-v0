@@ -9,7 +9,7 @@ import {
 } from "../../../store/slices/departmentSlice";
 import toast from "react-hot-toast";
 import Loading from "../../../components/layout/internal/Loading";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   formatDeptStatusBadgeColor,
   formatUppercaseToCapitalized,
@@ -18,6 +18,7 @@ import { USER_STATUS_OPTIONS } from "../../../utils/constants";
 
 const DepartmentsPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { departments, isLoading, error, departmentStatus } = useSelector(
     (state) => state.department,
   );
@@ -35,6 +36,13 @@ const DepartmentsPage = ({ role, basePath }) => {
       dispatch(resetDepartmentError());
     }
   }, [error]);
+
+  useEffect(() => {
+    if (departmentStatus === "fulfilled") {
+      navigate(basePath);
+    }
+    dispatch(resetDepartmentStatus());
+  }, [departmentStatus]);
 
   const handleDelete = (id) => {
     if (role !== "ADMIN") {
@@ -56,11 +64,6 @@ const DepartmentsPage = ({ role, basePath }) => {
 
     if (hardConfirmed) {
       dispatch(hardDeleteDepartmentById(id));
-    }
-
-    if (departmentStatus === "fulfilled") {
-      navigate(basePath);
-      dispatch(resetDepartmentStatus());
     }
   };
 

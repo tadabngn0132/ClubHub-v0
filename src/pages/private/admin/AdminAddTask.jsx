@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 const AdminAddTask = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, status } = useSelector((state) => state.task);
+  const { isLoading, error, taskStatus } = useSelector((state) => state.task);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,14 +21,15 @@ const AdminAddTask = () => {
     }
   }, [error]);
 
-  const handleAddTask = (data) => {
-    dispatch(createNewTask(data));
-
-    if (status === "fulfilled") {
+  useEffect(() => {
+    if (taskStatus === "fulfilled") {
       navigate("/admin/tasks");
     }
-
     dispatch(resetTaskStatus());
+  }, [taskStatus]);
+
+  const handleAddTask = async (data) => {
+    await dispatch(createNewTask(data)).unwrap();
   };
 
   if (isLoading) {

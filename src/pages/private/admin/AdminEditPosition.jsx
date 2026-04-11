@@ -30,14 +30,17 @@ const AdminEditPosition = () => {
     }
   }, [error]);
 
-  const handleEditPosition = (data) => {
-    dispatch(updatePositionDetails({ positionId, data }));
-
+  useEffect(() => {
     if (positionStatus === "fulfilled") {
       navigate("/admin/positions");
     }
-
     dispatch(resetPositionStatus());
+  }, [positionStatus]);
+
+  const handleEditPosition = async (data) => {
+    await dispatch(
+      updatePositionDetails({ positionId, data }),
+    ).unwrap();
   };
 
   if (isLoading) {

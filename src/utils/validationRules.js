@@ -3,13 +3,14 @@ export const VALIDATION_PATTERNS = {
   phoneNumber: /^0\d{9}$/,
   studentId: /^[A-Za-z]{2}[A-Za-z0-9]{6,10}$/,
   url: /^https?:\/\//i,
-  generation: /^\d{4}$/,
+  generation: /^\d+$/,
 };
 
 export const VALIDATION_MESSAGES = {
   emailRequired: "Email is required",
   emailFptFormat: "Email must be Example123456@fpt.edu.vn",
-  emailFptUniversityFormat: "Email must be a valid FPT University email address",
+  emailFptUniversityFormat:
+    "Email must be a valid FPT University email address",
 
   fullNameRequired: "Full name is required",
   fullNameMinLength: "Full name must contain at least 2 characters",
@@ -29,14 +30,15 @@ export const VALIDATION_MESSAGES = {
   studentIdInvalid: "Student ID format is invalid",
 
   generationRequired: "Generation cannot be empty",
-  generationInvalid: "Generation must be a 4-digit year",
+  generationInvalid: "Generation must be a valid number",
 
   passwordRequired: "New password is required",
   passwordMinLength: "Passwords must be at least 8 characters",
   passwordMismatch: "Passwords do not match",
 
   activityTitleMinLength: "Activity title must contain at least 3 characters",
-  activityDescriptionMinLength: "Activity description must contain at least 10 characters",
+  activityDescriptionMinLength:
+    "Activity description must contain at least 10 characters",
   activityStartDateRequired: "Activity start date is required",
   activityEndDateRequired: "Activity end date is required",
   activityEndDateInvalid: "Activity end date must be greater than start date",
@@ -47,7 +49,8 @@ export const VALIDATION_MESSAGES = {
   venueAddressRequired: "Venue address is required",
 
   taskTitleMinLength: "Task title must contain at least 3 characters",
-  taskDescriptionMinLength: "Task description must contain at least 10 characters",
+  taskDescriptionMinLength:
+    "Task description must contain at least 10 characters",
 
   subjectMinLength: "Subject must contain at least 3 characters",
   messageMinLength: "Message must contain at least 10 characters",

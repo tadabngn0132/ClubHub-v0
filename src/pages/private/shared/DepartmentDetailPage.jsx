@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   getDepartmentDetails,
   softDeleteDepartmentById,
@@ -10,7 +9,7 @@ import {
 } from "../../../store/slices/departmentSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast from "react-hot-toast";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 const DepartmentDetailPage = ({ role, basePath }) => {
   const { departmentId } = useParams();
@@ -30,6 +29,13 @@ const DepartmentDetailPage = ({ role, basePath }) => {
       dispatch(resetDepartmentError());
     }
   }, [error]);
+
+  useEffect(() => {
+    if (departmentStatus === "fulfilled") {
+      navigate(basePath);
+    }
+    dispatch(resetDepartmentStatus());
+  }, [departmentStatus]);
 
   const handleDelete = () => {
     if (role !== "ADMIN") {
@@ -51,11 +57,6 @@ const DepartmentDetailPage = ({ role, basePath }) => {
 
     if (hardConfirmed) {
       dispatch(hardDeleteDepartmentById(departmentId));
-    }
-
-    if (departmentStatus === "fulfilled") {
-      navigate(basePath);
-      dispatch(resetDepartmentStatus());
     }
   };
 

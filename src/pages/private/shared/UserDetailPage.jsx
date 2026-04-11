@@ -1,6 +1,5 @@
-import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import {
   getUserById,
@@ -13,7 +12,6 @@ import {
 import toast from "react-hot-toast";
 import { getActivitiesByUserId } from "../../../store/slices/activitySlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import { useNavigate } from "react-router-dom";
 import {
   formatDate,
   formatUppercaseToCapitalized,
@@ -39,6 +37,13 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
     }
   }, [error]);
 
+  useEffect(() => {
+    if (userStatus === "fulfilled") {
+      navigate(basePath);
+    }
+    dispatch(resetUserStatus());
+  }, [userStatus]);
+
   const handleDelete = () => {
     // Dispatch delete action here
     if (permissions?.canSoftDelete) {
@@ -60,11 +65,6 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
       if (hardConfirmed) {
         dispatch(hardDeleteUserById(userId));
       }
-    }
-
-    if (userStatus === "fulfilled") {
-      navigate(basePath);
-      dispatch(resetUserStatus());
     }
   };
 

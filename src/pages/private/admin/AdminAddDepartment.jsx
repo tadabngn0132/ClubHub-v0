@@ -8,10 +8,13 @@ import {
 } from "../../../store/slices/departmentSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const AdminAddDepartment = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, status } = useSelector((state) => state.department);
+  const { isLoading, error, deparmentStatus } = useSelector(
+    (state) => state.department,
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,12 +24,15 @@ const AdminAddDepartment = () => {
     }
   }, [error]);
 
-  const handleAddDepartment = (data) => {
-    dispatch(createNewDepartment(data));
-    if (status === "fulfilled") {
+  useEffect(() => {
+    if (deparmentStatus === "fulfilled") {
       navigate("/admin/departments");
     }
     dispatch(resetDepartmentStatus());
+  }, [deparmentStatus]);
+
+  const handleAddDepartment = async (data) => {
+    await dispatch(createNewDepartment(data)).unwrap();
   };
 
   if (isLoading) {

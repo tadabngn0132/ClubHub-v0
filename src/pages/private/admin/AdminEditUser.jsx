@@ -14,12 +14,14 @@ import toast from "react-hot-toast";
 const AdminEditUser = () => {
   const { userId } = useParams();
   const dispatch = useDispatch();
-  const { user, isLoading, error, status } = useSelector((state) => state.user);
+  const { user, isLoading, error, userStatus } = useSelector(
+    (state) => state.user,
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getUserById(userId));
-  }, [dispatch]);
+  }, [dispatch, userId]);
 
   useEffect(() => {
     if (error) {
@@ -28,12 +30,16 @@ const AdminEditUser = () => {
     }
   }, [error]);
 
-  const handleEditUser = (data) => {
-    dispatch(updateUserById({ userId, data }));
-    if (status === "fulfilled") {
+  useEffect(() => {
+    if (userStatus === "fulfilled") {
       navigate("/admin/users");
     }
+
     dispatch(resetUserStatus());
+  }, [userStatus]);
+
+  const handleEditUser = async (data) => {
+    await dispatch(updateUserById({ id: userId, userData: data })).unwrap();
   };
 
   if (isLoading) {
