@@ -15,6 +15,7 @@ import dashboardReducer from "./slices/dashboardSlice";
 import googleDocsReducer from "./slices/googleDocsSlice";
 import googleSheetsReducer from "./slices/googleSheetsSlice";
 import googleDriveReducer from "./slices/googleDriveSlice";
+import messageReducer from "./slices/messageSlice";
 
 export const store = configureStore({
   reducer: {
@@ -34,6 +35,7 @@ export const store = configureStore({
     googleDocs: googleDocsReducer,
     googleSheets: googleSheetsReducer,
     googleDrive: googleDriveReducer,
+    message: messageReducer,
   },
 });
 

@@ -9,10 +9,18 @@ const ChatPage = () => {
   const { currentUser, token } = useSelector((state) => state.auth);
   useSocket(token);
 
+  const handleSelectConversation = (conversation) => {
+    setSelectedConversation(conversation);
+  };
+
   return (
     <div className="flex h-screen">
-      <ChatRooms />
-      <Chat />
+      <ChatRooms
+        userId={currentUser?.id}
+        onSelectRoom={handleSelectConversation}
+        selectedRoomId={selectedConversation?.id}
+      />
+      <Chat selectedRoomId={selectedConversation?.id} />
     </div>
   );
 };

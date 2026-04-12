@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../../hooks/useSocket";
 import { getUserNotifications } from "../../../store/slices/notificationSlice";
 
-const Header = ({ role }) => {
+const Header = ({ role, onHandleSideBarToggle }) => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.auth);
   const { notifications } = useSelector((state) => state.notification);
@@ -116,9 +116,16 @@ const Header = ({ role }) => {
   };
 
   return (
-    <div className="flex items-center justify-between p-4 pt-3 pb-3 shadow-md fixed top-0 left-0 w-full z-1000 bg-black">
+    <div className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-black/95 p-4 pb-3 pt-3 shadow-md backdrop-blur-sm">
       <div className="flex items-center space-x-4">
-        <FontAwesomeIcon icon={faBars} size="lg" />
+        <button
+          type="button"
+          onClick={onHandleSideBarToggle}
+          className="inline-flex w-6 items-center justify-center rounded-lg text-white/90 transition hover:bg-white/10 hover:text-white cursor-pointer"
+          aria-label="Toggle sidebar"
+        >
+          <FontAwesomeIcon icon={faBars} size="lg" />
+        </button>
         {/* Logo */}
         <div className="flex items-start-safe">
           <Link className="hover:opacity-75" to="/">

@@ -1,4 +1,4 @@
-import { all } from "axios";
+
 
 export const API_BASE_URL = "http://localhost:5000/api/v1";
 
@@ -123,41 +123,41 @@ export const LAYOUT_CONFIG = {
   admin: {
     allowedRoles: ["admin"],
     sideBarItems: [
-      { name: "Dashboard", link: "/admin/dashboard" },
-      { name: "Members", link: "/admin/users" },
-      { name: "Departments", link: "/admin/departments" },
-      { name: "Positions", link: "/admin/positions" },
-      { name: "Activities", link: "/admin/activities" },
-      { name: "Tasks", link: "/admin/tasks" },
-      { name: "Documents", link: "/admin/documents" },
-      { name: "Chat", link: "/admin/chat" },
-      { name: "Member Applications", link: "/admin/member-applications" },
-      { name: "Profile", link: "/admin/profile" },
+      { name: "Dashboard", link: "/admin/dashboard", icon: "faGauge" },
+      { name: "Members", link: "/admin/users", icon: "faUsers" },
+      { name: "Departments", link: "/admin/departments", icon: "faBuilding" },
+      { name: "Positions", link: "/admin/positions", icon: "faIdBadge" },
+      { name: "Activities", link: "/admin/activities", icon: "faCalendarDays" },
+      { name: "Tasks", link: "/admin/tasks", icon: "faListCheck" },
+      { name: "Documents", link: "/admin/documents", icon: "faFileLines" },
+      { name: "Chat", link: "/admin/chat", icon: "faComments" },
+      { name: "Member Applications", link: "/admin/member-applications", icon: "faFilePen" },
+      { name: "Profile", link: "/admin/profile", icon: "faUserGear" },
     ],
   },
   moderator: {
     allowedRoles: ["moderator"],
     sideBarItems: [
-      { name: "Dashboard", link: "/moderator/dashboard" },
-      { name: "Members", link: "/moderator/users" },
-      { name: "Departments", link: "/moderator/departments" },
-      { name: "Positions", link: "/moderator/positions" },
-      { name: "Member Applications", link: "/moderator/member-applications" },
-      { name: "Activities", link: "/moderator/activities" },
-      { name: "Tasks", link: "/moderator/tasks" },
-      { name: "Profile", link: "/moderator/profile" },
+      { name: "Dashboard", link: "/moderator/dashboard", icon: "faGauge" },
+      { name: "Members", link: "/moderator/users", icon: "faUsers" },
+      { name: "Departments", link: "/moderator/departments", icon: "faBuilding" },
+      { name: "Positions", link: "/moderator/positions", icon: "faIdBadge" },
+      { name: "Member Applications", link: "/moderator/member-applications", icon: "faFilePen" },
+      { name: "Activities", link: "/moderator/activities", icon: "faCalendarDays" },
+      { name: "Tasks", link: "/moderator/tasks", icon: "faListCheck" },
+      { name: "Profile", link: "/moderator/profile", icon: "faUserGear" },
     ],
   },
   member: {
     allowedRoles: ["member"],
     sideBarItems: [
-      { name: "Dashboard", link: "/member/dashboard" },
-      { name: "Members", link: "/member/users" },
-      { name: "Departments", link: "/member/departments" },
-      { name: "Positions", link: "/member/positions" },
-      { name: "Activities", link: "/member/activities" },
-      { name: "Tasks", link: "/member/tasks" },
-      { name: "Profile", link: "/member/profile" },
+      { name: "Dashboard", link: "/member/dashboard", icon: "faGauge" },
+      { name: "Members", link: "/member/users", icon: "faUsers" },
+      { name: "Departments", link: "/member/departments", icon: "faBuilding" },
+      { name: "Positions", link: "/member/positions", icon: "faIdBadge" },
+      { name: "Activities", link: "/member/activities", icon: "faCalendarDays" },
+      { name: "Tasks", link: "/member/tasks", icon: "faListCheck" },
+      { name: "Profile", link: "/member/profile", icon: "faUserGear" },
     ],
   },
 };

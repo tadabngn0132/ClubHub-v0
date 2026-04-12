@@ -8,6 +8,12 @@ import {
   createNewActivityVideo,
   resetActivityError,
 } from "../../../store/slices/activitySlice";
+import {
+  getActivityParticipationsByActivityId,
+  deleteActivityParticipation,
+  resetActivityParticipantStatus,
+  resetActivityParticipationError,
+} from "../../../store/slices/activityParticipationSlice.js";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
@@ -17,21 +23,26 @@ import ActivityMediaForm from "../../../components/main/internal/ActivityMediaFo
 const ActivityDetailPage = ({ role, basePath, permissions }) => {
   const { activityId } = useParams();
   const dispatch = useDispatch();
-  const { activity, isLoading, error, activityStatus } = useSelector(
+  const { activity, isLoading: isActivityLoading, error: activityError, activityStatus } = useSelector(
     (state) => state.activity,
+  );
+  const { participations, isLoading: isParticipationsLoading, error: participationError } = useSelector(
+    (state) => state.activityParticipation,
   );
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getActivityById(activityId));
+    dispatch(getActivityParticipationsByActivityId(activityId));
   }, [dispatch, activityId]);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error);
+    if (activityError || participationError) {
+      toast.error(activityError || participationError);
       dispatch(resetActivityError());
+      dispatch(resetActivityParticipationError());
     }
-  }, [error]);
+  }, [activityError, participationError]);
 
   useEffect(() => {
     if (activityStatus === "fulfilled") {
@@ -40,7 +51,7 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     dispatch(resetActivityStatus());
   }, [activityStatus]);
 
-  if (isLoading) {
+  if (isActivityLoading) {
     return <Loading />;
   }
 

@@ -96,7 +96,6 @@ const messageSlice = createSlice({
   name: "message",
   initialState: {
     messages: [],
-    rooms: [],
     isLoading: false,
     error: null,
   },

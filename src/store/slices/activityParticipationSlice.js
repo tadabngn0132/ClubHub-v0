@@ -7,6 +7,8 @@ import {
   getParticipationsByUserId,
   updateParticipationById,
   deleteParticipation,
+  checkInParticipant,
+  markParticipantNoShow,
 } from "../../services/activityParticipationService";
 
 export const createNewActivityParticipation = createAsyncThunk(
@@ -116,6 +118,40 @@ export const deleteActivityParticipation = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const data = await deleteParticipation(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const checkInActivityParticipant = createAsyncThunk(
+  "checkInActivityParticipant",
+  async (participationId, thunkAPI) => {
+    try {
+      const data = await checkInParticipant(participationId);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const markActivityParticipantNoShow = createAsyncThunk(
+  "markActivityParticipantNoShow",
+  async ({ activityId, userId }, thunkAPI) => {
+    try {
+      const data = await markParticipantNoShow(activityId, userId);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -267,6 +303,48 @@ const activityParticipationSlice = createSlice({
         );
       })
       .addCase(deleteActivityParticipation.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.activityParticipantStatus = "rejected";
+      })
+
+      // Handle checkInActivityParticipant
+      .addCase(checkInActivityParticipant.pending, (state) => {
+        state.isLoading = true;
+        state.activityParticipantStatus = "pending";
+      })
+      .addCase(checkInActivityParticipant.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.activityParticipantStatus = "fulfilled";
+        const index = state.registrations.findIndex(
+          (reg) => reg.id === action.payload.data.id,
+        );
+        if (index !== -1) {
+          state.registrations[index] = action.payload.data;
+        }
+      })
+      .addCase(checkInActivityParticipant.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.activityParticipantStatus = "rejected";
+      })
+
+      // Handle markActivityParticipantNoShow
+      .addCase(markActivityParticipantNoShow.pending, (state) => {
+        state.isLoading = true;
+        state.activityParticipantStatus = "pending";
+      })
+      .addCase(markActivityParticipantNoShow.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.activityParticipantStatus = "fulfilled";
+        const index = state.registrations.findIndex(
+          (reg) => reg.id === action.payload.data.id,
+        );
+        if (index !== -1) {
+          state.registrations[index] = action.payload.data;
+        }
+      })
+      .addCase(markActivityParticipantNoShow.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         state.activityParticipantStatus = "rejected";

@@ -137,7 +137,7 @@ const googleDriveSlice = createSlice({
   initialState: {
     folders: [],
     files: {},
-    loading: false,
+    isLoading: false,
     error: null,
   },
   reducers: {
@@ -149,69 +149,69 @@ const googleDriveSlice = createSlice({
     builder
       // Handle createFolder
       .addCase(createFolder.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(createFolder.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.folders.push(action.payload.data);
       })
       .addCase(createFolder.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle listFolders
       .addCase(listFolders.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(listFolders.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.folders = action.payload.data;
       })
       .addCase(listFolders.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle listFilesInFolder
       .addCase(listFilesInFolder.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(listFilesInFolder.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         const { folderId, files } = action.payload.data;
         state.files[folderId] = files;
       })
       .addCase(listFilesInFolder.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle getFileMetadata
       .addCase(getFileMetadata.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(getFileMetadata.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         const { fileId, metadata } = action.payload.data;
         state.files[fileId] = metadata;
       })
       .addCase(getFileMetadata.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle uploadFileToFolder
       .addCase(uploadFileToFolder.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(uploadFileToFolder.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         const { folderId, file } = action.payload.data;
         if (state.files[folderId]) {
           state.files[folderId].push(file);
@@ -220,35 +220,35 @@ const googleDriveSlice = createSlice({
         }
       })
       .addCase(uploadFileToFolder.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle fetchGoogleDocTemplates
       .addCase(fetchGoogleDocTemplates.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(fetchGoogleDocTemplates.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.googleDocTemplates = action.payload.data;
       })
       .addCase(fetchGoogleDocTemplates.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       })
 
       // Handle fetchGoogleSheetTemplates
       .addCase(fetchGoogleSheetTemplates.pending, (state) => {
-        state.loading = true;
+        state.isLoading = true;
         state.error = null;
       })
       .addCase(fetchGoogleSheetTemplates.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.googleSheetTemplates = action.payload.data;
       })
       .addCase(fetchGoogleSheetTemplates.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoading = false;
         state.error = action.payload;
       });
   },

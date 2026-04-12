@@ -1,7 +1,7 @@
 import DocumentPages from "../shared/DocumentPages";
 
-const AdminDocuments = () => {
+const ModeratorDocuments = () => {
     return <DocumentPages />
 };
 
-export default AdminDocuments;
+export default ModeratorDocuments;
