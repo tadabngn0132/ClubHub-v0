@@ -19,6 +19,7 @@ import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
 import { resetActivityStatus } from "../../../store/slices/activitySlice";
 import ActivityMediaForm from "../../../components/main/internal/ActivityMediaForm.jsx";
+import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
 
 const ActivityDetailPage = ({ role, basePath, permissions }) => {
   const { activityId } = useParams();
@@ -33,6 +34,8 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     useSelector((state) => state.activityParticipation);
   const { currentUser } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [deleteMode, setDeleteMode] = useState("");
 
   useEffect(() => {
     dispatch(getActivityById(activityId));
@@ -57,26 +60,24 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     return <Loading />;
   }
 
+  const handleOpenConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
+  };
+
+  const handleDeleteConfigured = (mode) => {
+    setDeleteMode(mode);
+    handleOpenConfirmationModal();
+  };
+
   const handleDelete = () => {
-    if (permissions?.canSoftDelete) {
-      const softConfirmed = window.confirm(
-        "Do you want to deactivate this activity?",
-      );
-
-      if (softConfirmed) {
-        dispatch(softDeleteActivityById(activityId));
-        return;
-      }
-    }
-
-    if (permissions?.canHardDelete) {
-      const hardConfirmed = window.confirm(
-        "Do you want to permanently delete this activity? This action cannot be undone.",
-      );
-
-      if (hardConfirmed) {
-        dispatch(hardDeleteActivityById(activityId));
-      }
+    if (deleteMode === "soft") {
+      dispatch(softDeleteActivityById(activityId));
+    } else if (deleteMode === "hard") {
+      dispatch(hardDeleteActivityById(activityId));
     }
   };
 
@@ -222,12 +223,21 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           )}
           {role !== "MEMBER" && (
             <>
-              <button onClick={handleDelete}>Delete Activity</button>
               <Link to={`${basePath}/${activityId}/participants`}>
                 View Participants
               </Link>
+              <button onClick={() => handleDeleteConfigured("soft")}>
+                Soft Delete
+              </button>
             </>
           )}
+
+          {role === "ADMIN" && (
+            <button onClick={() => handleDeleteConfigured("hard")}>
+              Hard Delete
+            </button>
+          )}
+
           <button
             onClick={handleRegister}
             disabled={handleDisableRegistrationButton()}
@@ -345,6 +355,17 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           onVideosSubmit={handleVideosUploading}
         />
       )}
+
+      <ConfirmationModal
+        open={isConfirmationModalOpen}
+        title="Confirm Deletion"
+        message={`Are you sure you want to ${deleteMode === "soft" ? "soft" : "hard"} delete this activity?`}
+        variant={deleteMode === "soft" ? "warning" : "danger"}
+        confirmButtonText="Delete"
+        cancelButtonText="Cancel"
+        onCancel={handleCloseConfirmationModal}
+        onConfirm={() => handleDelete()}
+      />
     </div>
   );
 };

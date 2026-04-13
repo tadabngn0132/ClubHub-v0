@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getActivityParticipationsByUserId } from "../../../store/slices/activityParticipationSlice";
+import {
+  getActivityParticipationsByUserId,
+  updateActivityParticipationById,
+} from "../../../store/slices/activityParticipationSlice";
 
 const MyEventsPage = () => {
   // TODO: Implement My Events page to display a list of activities the student has registered for. This page will show details of each registered activity, including the title, description, date, and time. Students will also have the option to cancel their registration for any activity they no longer wish to attend. The page will fetch the student's registered activities from the backend and update in real-time as they register or cancel their participation.
@@ -12,6 +15,15 @@ const MyEventsPage = () => {
     dispatch(getActivityParticipationsByUserId(currentUser.id));
   }, [dispatch, currentUser.id]);
 
+  const handleCancelRegistration = (registrationId) => {
+    dispatch(
+      updateActivityParticipationById({
+        id: registrationId,
+        updates: { status: "cancelled" },
+      }),
+    );
+  };
+
   return (
     <div>
       <h1>My Events</h1>
@@ -20,6 +32,11 @@ const MyEventsPage = () => {
           <li key={registration.id}>
             <h2>{registration.activity.title}</h2>
             <p>{registration.activity.description}</p>
+            <button
+              onClick={() => handleCancelRegistration(registration.id)}
+            >
+              Cancel Registration
+            </button>
           </li>
         ))}
       </ul>

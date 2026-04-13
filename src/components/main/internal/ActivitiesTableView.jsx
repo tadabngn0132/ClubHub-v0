@@ -6,7 +6,7 @@ import ActivitiesBulkActionBar from "./ActivitiesBulkActionBar";
 const ActivitiesTableView = ({
   role,
   activities: providedActivities,
-  onDelete,
+  onDeleteConfigured,
 }) => {
   const { activities: storeActivities } = useSelector(
     (state) => state.activity,
@@ -139,12 +139,20 @@ const ActivitiesTableView = ({
                               Edit
                             </Link>
                             <button
-                              onClick={() => onDelete(activity.id)}
+                              onClick={() => onDeleteConfigured(activity.id, "soft")}
                               className="rounded-md bg-rose-500/15 px-3 py-1.5 text-xs font-medium text-rose-300 transition hover:bg-rose-500/30"
                             >
-                              Delete
+                              Soft Delete
                             </button>
                           </>
+                        )}
+                        {role === "admin" && (
+                          <button
+                            onClick={() => onDeleteConfigured(activity.id, "hard")}
+                            className="rounded-md bg-red-500/15 px-3 py-1.5 text-xs font-medium text-red-300 transition hover:bg-red-500/30"
+                          >
+                            Hard Delete
+                          </button>
                         )}
                       </div>
                     </td>

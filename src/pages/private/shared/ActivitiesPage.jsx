@@ -14,8 +14,9 @@ import toast from "react-hot-toast";
 import ActivitiesCalendarView from "../../../components/main/internal/ActivitiesCalendarView.jsx";
 import { ACTIVITY_STATUS_OPTIONS } from "../../../utils/constants";
 import { formatUppercaseToCapitalized } from "../../../utils/formatters";
+import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
 
-const ActivitiesPage = ({ role, canCreate, basePath, permissions }) => {
+const ActivitiesPage = ({ role, canCreate, basePath }) => {
   const dispatch = useDispatch();
   const { activities, isLoading, error } = useSelector(
     (state) => state.activity,
@@ -24,30 +25,9 @@ const ActivitiesPage = ({ role, canCreate, basePath, permissions }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
-
-  const tabs = [
-    {
-      name: "Table View",
-      component: (
-        <ActivitiesTableView
-          role={role}
-          activities={filteredActivities}
-          onDelete={handleDelete}
-        />
-      ),
-    },
-    {
-      name: "Card View",
-      component: (
-        <ActivitiesCardView
-          role={role}
-          activities={filteredActivities}
-          onDelete={handleDelete}
-        />
-      ),
-    },
-    { name: "Calendar View", component: ActivitiesCalendarView },
-  ];
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
+  const [deleteMode, setDeleteMode] = useState("");
 
   useEffect(() => {
     dispatch(getActivitiesList());
@@ -107,28 +87,51 @@ const ActivitiesPage = ({ role, canCreate, basePath, permissions }) => {
     setSortBy("newest");
   };
 
-  const handleDelete = (activityId) => {
-    if (permissions?.canSoftDelete) {
-      const softConfirmed = window.confirm(
-        "Do you want to deactivate this activity?",
-      );
+  const handleOpenConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
 
-      if (softConfirmed) {
-        dispatch(softDeleteActivityById(activityId));
-        return;
-      }
-    }
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
+  };
 
-    if (permissions?.canHardDelete) {
-      const hardConfirmed = window.confirm(
-        "Do you want to permanently delete this activity? This action cannot be undone.",
-      );
+  const handleDeleteConfigured = (activityId, mode) => {
+    setSelectedActivityId(activityId);
+    setDeleteMode(mode);
+    handleOpenConfirmationModal();
+  };
 
-      if (hardConfirmed) {
-        dispatch(hardDeleteActivityById(activityId));
-      }
+  const handleDelete = (selectedActivityId) => {
+    if (deleteMode === "soft") {
+      dispatch(softDeleteActivityById(selectedActivityId));
+    } else if (deleteMode === "hard") {
+      dispatch(hardDeleteActivityById(selectedActivityId));
     }
   };
+
+  const tabs = [
+    {
+      name: "Table View",
+      component: (
+        <ActivitiesTableView
+          role={role}
+          activities={filteredActivities}
+          onDeleteConfigured={handleDeleteConfigured}
+        />
+      ),
+    },
+    {
+      name: "Card View",
+      component: (
+        <ActivitiesCardView
+          role={role}
+          activities={filteredActivities}
+          onDeleteConfigured={handleDeleteConfigured}
+        />
+      ),
+    },
+    { name: "Calendar View", component: <ActivitiesCalendarView /> },
+  ];
 
   if (isLoading) {
     return <Loading />;
@@ -231,10 +234,21 @@ const ActivitiesPage = ({ role, canCreate, basePath, permissions }) => {
               key={index}
               style={{ display: activeTab === index ? "block" : "none" }}
             >
-              <tab.component />
+              {tab.component}
             </div>
           ))}
         </div>
+
+        <ConfirmationModal
+          open={isConfirmationModalOpen}
+          title="Confirm Deletion"
+          message={`Are you sure you want to ${deleteMode === "soft" ? "soft" : "hard"} delete this activity?`}
+          variant={deleteMode === "soft" ? "warning" : "danger"}
+          confirmButtonText="Delete"
+          cancelButtonText="Cancel"
+          onCancel={handleCloseConfirmationModal}
+          onConfirm={() => handleDelete(selectedActivityId)}
+        />
       </div>
     </div>
   );

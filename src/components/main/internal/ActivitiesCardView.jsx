@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const ActivitiesCardView = ({
   role,
   activities: providedActivities,
-  onDelete,
+  onDeleteConfigured,
 }) => {
   const { activities: storeActivities } = useSelector(
     (state) => state.activity,
@@ -57,7 +57,10 @@ const ActivitiesCardView = ({
               </Link>
               {(role === "admin" || role === "moderator") && (
                 <>
-                  <Link to={`/${role}/activities/${activity.id}/participants`} className="rounded-md bg-green-500/15 px-3 py-1.5 text-xs font-medium text-green-300 transition hover:bg-green-500/30">
+                  <Link
+                    to={`/${role}/activities/${activity.id}/participants`}
+                    className="rounded-md bg-green-500/15 px-3 py-1.5 text-xs font-medium text-green-300 transition hover:bg-green-500/30"
+                  >
                     View Participants
                   </Link>
                   <Link
@@ -67,12 +70,20 @@ const ActivitiesCardView = ({
                     Edit
                   </Link>
                   <button
-                    onClick={() => onDelete(activity.id)}
+                    onClick={() => onDeleteConfigured(activity.id, "soft")}
                     className="rounded-md bg-rose-500/15 px-3 py-1.5 text-xs font-medium text-rose-300 transition hover:bg-rose-500/30"
                   >
-                    Delete
+                    Soft Delete
                   </button>
                 </>
+              )}
+              {role === "admin" && (
+                <button
+                  onClick={() => onDeleteConfigured(activity.id, "hard")}
+                  className="rounded-md bg-red-500/15 px-3 py-1.5 text-xs font-medium text-red-300 transition hover:bg-red-500/30"
+                >
+                  Hard Delete
+                </button>
               )}
             </div>
           </div>

@@ -16,6 +16,7 @@ import {
   formatDate,
   formatUppercaseToCapitalized,
 } from "../../../utils/formatters.js";
+import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
 
 const UserDetailPage = ({ role, basePath, permissions }) => {
   const { userId } = useParams();
@@ -29,6 +30,8 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
     isLoading: activitiesLoading,
     error: activitiesError,
   } = useSelector((state) => state.activity);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [deleteMode, setDeleteMode] = useState("");
 
   useEffect(() => {
     if (error) {
@@ -44,27 +47,24 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
     dispatch(resetUserStatus());
   }, [userStatus]);
 
+  const handleOpenConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
+  };
+
+  const handleDeleteConfigured = (mode) => {
+    setDeleteMode(mode);
+    handleOpenConfirmationModal();
+  };
+
   const handleDelete = () => {
-    // Dispatch delete action here
-    if (permissions?.canSoftDelete) {
-      const softConfirmed = window.confirm(
-        "Do you want to deactivate this user?",
-      );
-
-      if (softConfirmed) {
-        dispatch(softDeleteUserById(userId));
-        return;
-      }
-    }
-
-    if (permissions?.canHardDelete) {
-      const hardConfirmed = window.confirm(
-        "Do you want to permanently delete this user? This action cannot be undone.",
-      );
-
-      if (hardConfirmed) {
-        dispatch(hardDeleteUserById(userId));
-      }
+    if (deleteMode === "soft") {
+      dispatch(softDeleteUserById(userId));
+    } else if (deleteMode === "hard") {
+      dispatch(hardDeleteUserById(userId));
     }
   };
 
@@ -136,22 +136,30 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
                     Edit Member
                   </Link>
                   <button
-                    onClick={() => handleDelete()}
+                    onClick={() => handleDeleteConfigured("soft")}
                     className="rounded-xl border border-rose-400/60 bg-rose-500/15 px-4 py-2 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/25"
                   >
-                    Delete Member
+                    Soft Delete
                   </button>
                 </>
               )}
 
               {role === "ADMIN" && (
-                <button
-                  onClick={() => handleUnlock()}
-                  className="rounded-xl border border-teal-400/60 bg-teal-500/15 px-4 py-2 text-sm font-semibold text-teal-200 transition hover:bg-teal-500/25"
-                  disabled={user.failedLoginAttempts !== 5}
-                >
-                  Unlock Account
-                </button>
+                <>
+                  <button
+                    onClick={() => handleDeleteConfigured("hard")}
+                    className="rounded-xl border border-rose-600/70 bg-rose-500/20 px-4 py-2 text-sm font-semibold text-rose-300 transition hover:bg-rose-500/35"
+                  >
+                    Hard Delete
+                  </button>
+                  <button
+                    onClick={() => handleUnlock()}
+                    className="rounded-xl border border-teal-400/60 bg-teal-500/15 px-4 py-2 text-sm font-semibold text-teal-200 transition hover:bg-teal-500/25"
+                    disabled={user.failedLoginAttempts !== 5}
+                  >
+                    Unlock Account
+                  </button>
+                </>
               )}
             </div>
           </div>
@@ -342,6 +350,17 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
             )}
           </div>
         </section>
+
+        <ConfirmationModal
+          open={isConfirmationModalOpen}
+          title="Confirm Deletion"
+          message={`Are you sure you want to ${deleteMode === "soft" ? "soft" : "hard"} delete this user?`}
+          variant={deleteMode === "soft" ? "warning" : "danger"}
+          confirmButtonText="Delete"
+          cancelButtonText="Cancel"
+          onCancel={handleCloseConfirmationModal}
+          onConfirm={() => handleDelete()}
+        />
       </div>
     </div>
   );

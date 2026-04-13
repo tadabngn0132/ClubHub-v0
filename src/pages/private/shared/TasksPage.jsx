@@ -14,14 +14,18 @@ import {
   formatDate,
 } from "../../../utils/formatters.js";
 import { TASK_STATUS_OPTIONS } from "../../../utils/constants";
+import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
 
-const TasksPage = ({ role, basePath, permissions }) => {
+const TasksPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
   const { tasks, isLoading, error } = useSelector((state) => state.task);
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("dueDate_desc");
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+  const [deleteMode, setDeleteMode] = useState("");
 
   useEffect(() => {
     dispatch(getAllTasksList());
@@ -34,26 +38,25 @@ const TasksPage = ({ role, basePath, permissions }) => {
     }
   }, [error]);
 
-  const handleDelete = (taskId) => {
-    if (permissions?.canSoftDelete) {
-      const softConfirmed = window.confirm(
-        "Do you want to deactivate this task?",
-      );
+  const handleOpenConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
 
-      if (softConfirmed) {
-        dispatch(softDeleteTaskById(taskId));
-        return;
-      }
-    }
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
+  };
 
-    if (!permissions?.canHardDelete) {
-      const hardConfirmed = window.confirm(
-        "Do you want to permanently delete this task? This action cannot be undone.",
-      );
+  const handleDeleteConfigured = (taskId, mode) => {
+    setSelectedTaskId(taskId);
+    setDeleteMode(mode);
+    handleOpenConfirmationModal();
+  };
 
-      if (hardConfirmed) {
-        dispatch(hardDeleteTaskById(taskId));
-      }
+  const handleDelete = (selectedTaskId) => {
+    if (deleteMode === "soft") {
+      dispatch(softDeleteTaskById(selectedTaskId));
+    } else if (deleteMode === "hard") {
+      dispatch(hardDeleteTaskById(selectedTaskId));
     }
   };
 
@@ -281,12 +284,21 @@ const TasksPage = ({ role, basePath, permissions }) => {
                                 Edit
                               </Link>
                               <button
-                                onClick={() => handleDelete(task.id)}
+                                onClick={() => handleDeleteConfigured(task.id, "soft")}
                                 className="rounded-md bg-rose-500/20 px-2 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
                               >
-                                Delete
+                                Soft Delete
                               </button>
                             </>
+                          )}
+
+                          {role === "ADMIN" && (
+                            <button
+                              onClick={() => handleDeleteConfigured(task.id, "hard")}
+                              className="rounded-md bg-red-500/20 px-2 py-1 font-semibold text-red-300 transition hover:bg-red-500/35"
+                            >
+                              Hard Delete
+                            </button>
                           )}
                         </div>
                       </td>
@@ -297,6 +309,17 @@ const TasksPage = ({ role, basePath, permissions }) => {
             </table>
           </div>
         </div>
+
+        <ConfirmationModal
+          open={isConfirmationModalOpen}
+          title="Confirm Deletion"
+          message={`Are you sure you want to ${deleteMode === "soft" ? "soft" : "hard"} delete this task?`}
+          variant={deleteMode === "soft" ? "warning" : "danger"}
+          confirmButtonText="Delete"
+          cancelButtonText="Cancel"
+          onCancel={handleCloseConfirmationModal}
+          onConfirm={() => handleDelete(selectedTaskId)}
+        />
       </div>
     </div>
   );

@@ -15,8 +15,9 @@ import {
   formatRoleBadgeColor,
 } from "../../../utils/formatters.js";
 import { USER_STATUS_OPTIONS } from "../../../utils/constants";
+import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
 
-const UsersPage = ({ role, basePath, permissions }) => {
+const UsersPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
   const { users, isLoading, error } = useSelector((state) => state.user);
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -27,31 +28,33 @@ const UsersPage = ({ role, basePath, permissions }) => {
     field: "id",
     direction: "asc",
   });
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [deleteMode, setDeleteMode] = useState("");
 
   useEffect(() => {
     dispatch(getUsersList());
   }, [dispatch]);
 
-  const handleDelete = (userId) => {
-    if (permissions?.canSoftDelete) {
-      const softConfirmed = window.confirm(
-        "Do you want to deactivate this user?",
-      );
+  const handleOpenConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
 
-      if (softConfirmed) {
-        dispatch(softDeleteUserById(userId));
-        return;
-      }
-    }
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
+  };
 
-    if (!permissions?.canHardDelete) {
-      const hardConfirmed = window.confirm(
-        "Do you want to permanently delete this user? This action cannot be undone.",
-      );
+  const handleDeleteConfigured = (userId, mode) => {
+    setSelectedUserId(userId);
+    setDeleteMode(mode);
+    handleOpenConfirmationModal();
+  };
 
-      if (hardConfirmed) {
-        dispatch(hardDeleteUserById(userId));
-      }
+  const handleDelete = (selectedUserId) => {
+    if (deleteMode === "soft") {
+      dispatch(softDeleteUserById(selectedUserId));
+    } else if (deleteMode === "hard") {
+      dispatch(hardDeleteUserById(selectedUserId));
     }
   };
 
@@ -354,12 +357,25 @@ const UsersPage = ({ role, basePath, permissions }) => {
                               Edit
                             </Link>
                             <button
-                              onClick={() => handleDelete(user.id)}
+                              onClick={() =>
+                                handleDeleteConfigured(user.id, "soft")
+                              }
                               className="rounded-md bg-rose-500/20 px-2 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
                             >
-                              Del
+                              Soft Delete
                             </button>
                           </>
+                        )}
+
+                        {role === "ADMIN" && (
+                          <button
+                            onClick={() =>
+                              handleDeleteConfigured(user.id, "hard")
+                            }
+                            className="rounded-md bg-red-500/20 px-2 py-1 font-semibold text-red-300 transition hover:bg-red-500/35"
+                          >
+                            Hard Delete
+                          </button>
                         )}
                       </div>
                     </td>
@@ -373,6 +389,16 @@ const UsersPage = ({ role, basePath, permissions }) => {
       {users && users.length > 25 && (
         <Pagination currentPage={5} totalPages={10} onPageChange={() => {}} />
       )}
+      <ConfirmationModal
+        open={isConfirmationModalOpen}
+        title="Confirm Deletion"
+        message={`Are you sure you want to ${deleteMode === "soft" ? "soft" : "hard"} delete this member?`}
+        variant={deleteMode === "soft" ? "warning" : "danger"}
+        confirmButtonText="Delete"
+        cancelButtonText="Cancel"
+        onCancel={handleCloseConfirmationModal}
+        onConfirm={() => handleDelete(selectedUserId)}
+      />
     </div>
   );
 };
