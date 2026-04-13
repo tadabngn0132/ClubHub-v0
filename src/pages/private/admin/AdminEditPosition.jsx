@@ -39,7 +39,7 @@ const AdminEditPosition = () => {
 
   const handleEditPosition = async (data) => {
     await dispatch(
-      updatePositionDetails({ positionId, data }),
+      updatePositionDetails({ id: positionId, positionData: data }),
     ).unwrap();
   };
 
