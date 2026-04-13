@@ -14,6 +14,7 @@ import {
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { sampleActivityData } from "../../data/sampleActivityData";
+import ActivityRegistrationForm from "../../components/main/internal/ActivityRegistrationForm";
 
 const mapStatus = (status) => {
   const value = String(status || "").toUpperCase();
@@ -43,30 +44,58 @@ const formatTime = (isoValue) => {
 
 const getAgendaByType = (type) => {
   const commonAgenda = [
-    { time: "18:30", title: "Check-in", note: "On-site welcome and attendance confirmation." },
-    { time: "19:00", title: "Opening", note: "Host briefing and event flow overview." },
+    {
+      time: "18:30",
+      title: "Check-in",
+      note: "On-site welcome and attendance confirmation.",
+    },
+    {
+      time: "19:00",
+      title: "Opening",
+      note: "Host briefing and event flow overview.",
+    },
     { time: "20:45", title: "Wrap-up", note: "Announcements and group photo." },
   ];
 
   if (type === "WORKSHOP") {
     return [
       ...commonAgenda,
-      { time: "19:20", title: "Technique Block", note: "Core drills and detailed corrections." },
-      { time: "20:10", title: "Practice Round", note: "Group execution and feedback session." },
+      {
+        time: "19:20",
+        title: "Technique Block",
+        note: "Core drills and detailed corrections.",
+      },
+      {
+        time: "20:10",
+        title: "Practice Round",
+        note: "Group execution and feedback session.",
+      },
     ];
   }
 
   if (type === "PERFORMANCE") {
     return [
       ...commonAgenda,
-      { time: "19:30", title: "Main Performance", note: "Featured lineup and stage concepts." },
-      { time: "20:20", title: "Guest Segment", note: "Special acts and collaboration stage." },
+      {
+        time: "19:30",
+        title: "Main Performance",
+        note: "Featured lineup and stage concepts.",
+      },
+      {
+        time: "20:20",
+        title: "Guest Segment",
+        note: "Special acts and collaboration stage.",
+      },
     ];
   }
 
   return [
     ...commonAgenda,
-    { time: "19:25", title: "Core Session", note: "Main interactive activity block." },
+    {
+      time: "19:25",
+      title: "Core Session",
+      note: "Main interactive activity block.",
+    },
     { time: "20:15", title: "Open Sharing", note: "Q&A and networking." },
   ];
 };
@@ -104,7 +133,8 @@ const getGalleryImages = (thumbnailUrl) => [
 ];
 
 const getVideoUrlByType = (type) => {
-  if (type === "PERFORMANCE") return "https://www.youtube.com/embed/ScMzIvxBSi4";
+  if (type === "PERFORMANCE")
+    return "https://www.youtube.com/embed/ScMzIvxBSi4";
   if (type === "WORKSHOP") return "https://www.youtube.com/embed/ysz5S6PUM-U";
   return "https://www.youtube.com/embed/tgbNymZ7vqY";
 };
@@ -166,7 +196,8 @@ const ActivityDetails = () => {
       date: formatDate(startDate),
       time: `${formatTime(startDate)} - ${formatTime(endDate)} UTC`,
       startDate,
-      location: activity.location || `${activity.venueName} - ${activity.venueAddress}`,
+      location:
+        activity.location || `${activity.venueName} - ${activity.venueAddress}`,
       venueName: activity.venueName,
       venueAddress: activity.venueAddress,
       thumbnailUrl: activity.thumbnailUrl,
@@ -175,7 +206,10 @@ const ActivityDetails = () => {
       maxParticipants: activity.maxParticipants || 0,
       availableSlots:
         activity.availableSlots ??
-        Math.max((activity.maxParticipants || 0) - (activity.registrationsCount || 0), 0),
+        Math.max(
+          (activity.maxParticipants || 0) - (activity.registrationsCount || 0),
+          0,
+        ),
       requireRegistration: activity.requireRegistration,
     };
   }, [activity]);
@@ -201,9 +235,16 @@ const ActivityDetails = () => {
       .slice(0, 4);
   }, [uiActivity]);
 
-  const agenda = useMemo(() => getAgendaByType(uiActivity?.type), [uiActivity?.type]);
+  const agenda = useMemo(
+    () => getAgendaByType(uiActivity?.type),
+    [uiActivity?.type],
+  );
   const speakerProfiles = useMemo(
-    () => SPEAKERS.map((speaker, index) => ({ ...speaker, id: `${speaker.name}-${index}` })),
+    () =>
+      SPEAKERS.map((speaker, index) => ({
+        ...speaker,
+        id: `${speaker.name}-${index}`,
+      })),
     [],
   );
   const galleryImages = useMemo(
@@ -287,7 +328,11 @@ const ActivityDetails = () => {
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
     };
 
-    window.open(urlMap[platform], "_blank", "noopener,noreferrer,width=760,height=540");
+    window.open(
+      urlMap[platform],
+      "_blank",
+      "noopener,noreferrer,width=760,height=540",
+    );
   };
 
   const validateForm = () => {
@@ -346,8 +391,12 @@ const ActivityDetails = () => {
   if (!uiActivity) {
     return (
       <main className="mx-auto mt-8 mb-12 w-full max-w-4xl rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-8 text-white md:p-12">
-        <p className="text-sm uppercase tracking-[0.2em] text-white/60">Activity Details</p>
-        <h1 className="monument-extra-bold mt-4 text-3xl uppercase">Activity Not Found</h1>
+        <p className="text-sm uppercase tracking-[0.2em] text-white/60">
+          Activity Details
+        </p>
+        <h1 className="monument-extra-bold mt-4 text-3xl uppercase">
+          Activity Not Found
+        </h1>
         <p className="mt-4 text-white/75">
           The activity you are looking for does not exist or has been removed.
         </p>
@@ -426,33 +475,42 @@ const ActivityDetails = () => {
       <section className="mt-8 grid gap-6 lg:grid-cols-12">
         <div className="space-y-6 lg:col-span-8">
           <article className="rounded-[1.5rem] border border-white/10 bg-[#0d0d0f] p-6 md:p-8">
-            <h2 className="monument-extra-bold text-2xl uppercase">About This Event</h2>
+            <h2 className="monument-extra-bold text-2xl uppercase">
+              About This Event
+            </h2>
             <div className="mt-4 space-y-4 text-sm leading-7 text-white/80 md:text-base">
               <p>{uiActivity.description}</p>
               <p>
-                This activity is designed to blend practical learning, team collaboration,
-                and final execution outcomes in one complete experience cycle.
+                This activity is designed to blend practical learning, team
+                collaboration, and final execution outcomes in one complete
+                experience cycle.
               </p>
               <p>
-                Whether you are joining as a new member or returning participant, this
-                event provides a clear structure, mentor support, and room for creative
-                contribution.
+                Whether you are joining as a new member or returning
+                participant, this event provides a clear structure, mentor
+                support, and room for creative contribution.
               </p>
             </div>
           </article>
 
           {agenda?.length ? (
             <article className="rounded-[1.5rem] border border-white/10 bg-[#0d0d0f] p-6 md:p-8">
-              <h2 className="monument-extra-bold text-2xl uppercase">Event Agenda</h2>
+              <h2 className="monument-extra-bold text-2xl uppercase">
+                Event Agenda
+              </h2>
               <div className="mt-5 space-y-4">
                 {agenda.map((item, index) => (
                   <div
                     key={`${item.time}-${item.title}`}
                     className="grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 md:grid-cols-[110px_1fr]"
                   >
-                    <p className="text-sm font-semibold text-[#DB3F7A]">{item.time}</p>
+                    <p className="text-sm font-semibold text-[#DB3F7A]">
+                      {item.time}
+                    </p>
                     <div>
-                      <p className="text-sm font-semibold text-white">{item.title}</p>
+                      <p className="text-sm font-semibold text-white">
+                        {item.title}
+                      </p>
                       <p className="mt-1 text-sm text-white/70">{item.note}</p>
                     </div>
                     {index !== agenda.length - 1 ? null : null}
@@ -463,7 +521,9 @@ const ActivityDetails = () => {
           ) : null}
 
           <article className="rounded-[1.5rem] border border-white/10 bg-[#0d0d0f] p-6 md:p-8">
-            <h2 className="monument-extra-bold text-2xl uppercase">Speakers & Performers</h2>
+            <h2 className="monument-extra-bold text-2xl uppercase">
+              Speakers & Performers
+            </h2>
             <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {speakerProfiles.map((profile) => (
                 <div
@@ -476,11 +536,15 @@ const ActivityDetails = () => {
                     loading="lazy"
                     className="h-28 w-28 rounded-full object-cover"
                   />
-                  <p className="mt-4 text-sm font-semibold text-white">{profile.name}</p>
+                  <p className="mt-4 text-sm font-semibold text-white">
+                    {profile.name}
+                  </p>
                   <p className="text-xs uppercase tracking-[0.12em] text-[#DB3F7A]">
                     {profile.role}
                   </p>
-                  <p className="mt-2 text-sm leading-6 text-white/70">{profile.bio}</p>
+                  <p className="mt-2 text-sm leading-6 text-white/70">
+                    {profile.bio}
+                  </p>
                 </div>
               ))}
             </div>
@@ -488,7 +552,9 @@ const ActivityDetails = () => {
 
           {uiActivity.status === "Completed" ? (
             <article className="rounded-[1.5rem] border border-white/10 bg-[#0d0d0f] p-6 md:p-8">
-              <h2 className="monument-extra-bold text-2xl uppercase">Media Gallery</h2>
+              <h2 className="monument-extra-bold text-2xl uppercase">
+                Media Gallery
+              </h2>
 
               <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
                 {galleryImages.map((image, index) => (
@@ -568,12 +634,18 @@ const ActivityDetails = () => {
 
           {uiActivity.status === "Upcoming" ? (
             <article className="rounded-[1.5rem] border border-white/10 bg-[#0d0d0f] p-6">
-              <h2 className="monument-extra-bold text-xl uppercase">Registration Form</h2>
+              <h2 className="monument-extra-bold text-xl uppercase">
+                Registration Form
+              </h2>
               <p className="mt-2 text-sm text-white/70">
-                Fill in your details to register. reCAPTCHA v3 validation is required before submit.
+                Fill in your details to register. reCAPTCHA v3 validation is
+                required before submit.
               </p>
 
-              <form className="mt-5 space-y-4" onSubmit={handleSubmitRegistration}>
+              <form
+                className="mt-5 space-y-4"
+                onSubmit={handleSubmitRegistration}
+              >
                 <div>
                   <label className="mb-1 block text-xs uppercase tracking-[0.14em] text-white/70">
                     Full Name
@@ -581,12 +653,17 @@ const ActivityDetails = () => {
                   <input
                     value={formData.fullName}
                     onChange={(event) =>
-                      setFormData((prev) => ({ ...prev, fullName: event.target.value }))
+                      setFormData((prev) => ({
+                        ...prev,
+                        fullName: event.target.value,
+                      }))
                     }
                     className="w-full rounded-xl border border-white/20 bg-[#141416] px-3 py-2 text-sm text-white outline-none focus:border-[#DB3F7A]"
                   />
                   {formErrors.fullName ? (
-                    <p className="mt-1 text-xs text-[#DB3F7A]">{formErrors.fullName}</p>
+                    <p className="mt-1 text-xs text-[#DB3F7A]">
+                      {formErrors.fullName}
+                    </p>
                   ) : null}
                 </div>
 
@@ -598,12 +675,17 @@ const ActivityDetails = () => {
                     type="email"
                     value={formData.email}
                     onChange={(event) =>
-                      setFormData((prev) => ({ ...prev, email: event.target.value }))
+                      setFormData((prev) => ({
+                        ...prev,
+                        email: event.target.value,
+                      }))
                     }
                     className="w-full rounded-xl border border-white/20 bg-[#141416] px-3 py-2 text-sm text-white outline-none focus:border-[#DB3F7A]"
                   />
                   {formErrors.email ? (
-                    <p className="mt-1 text-xs text-[#DB3F7A]">{formErrors.email}</p>
+                    <p className="mt-1 text-xs text-[#DB3F7A]">
+                      {formErrors.email}
+                    </p>
                   ) : null}
                 </div>
 
@@ -614,12 +696,17 @@ const ActivityDetails = () => {
                   <input
                     value={formData.phone}
                     onChange={(event) =>
-                      setFormData((prev) => ({ ...prev, phone: event.target.value }))
+                      setFormData((prev) => ({
+                        ...prev,
+                        phone: event.target.value,
+                      }))
                     }
                     className="w-full rounded-xl border border-white/20 bg-[#141416] px-3 py-2 text-sm text-white outline-none focus:border-[#DB3F7A]"
                   />
                   {formErrors.phone ? (
-                    <p className="mt-1 text-xs text-[#DB3F7A]">{formErrors.phone}</p>
+                    <p className="mt-1 text-xs text-[#DB3F7A]">
+                      {formErrors.phone}
+                    </p>
                   ) : null}
                 </div>
 
@@ -631,17 +718,23 @@ const ActivityDetails = () => {
                     rows={4}
                     value={formData.reason}
                     onChange={(event) =>
-                      setFormData((prev) => ({ ...prev, reason: event.target.value }))
+                      setFormData((prev) => ({
+                        ...prev,
+                        reason: event.target.value,
+                      }))
                     }
                     className="w-full rounded-xl border border-white/20 bg-[#141416] px-3 py-2 text-sm text-white outline-none focus:border-[#DB3F7A]"
                   />
                   {formErrors.reason ? (
-                    <p className="mt-1 text-xs text-[#DB3F7A]">{formErrors.reason}</p>
+                    <p className="mt-1 text-xs text-[#DB3F7A]">
+                      {formErrors.reason}
+                    </p>
                   ) : null}
                 </div>
 
                 <p className="text-xs text-white/55">
-                  Protected by reCAPTCHA v3. In local development, a mock token is used if site key is not configured.
+                  Protected by reCAPTCHA v3. In local development, a mock token
+                  is used if site key is not configured.
                 </p>
 
                 {formErrors.submit ? (
@@ -662,7 +755,9 @@ const ActivityDetails = () => {
       </section>
 
       <section className="mt-8 rounded-[1.5rem] border border-white/10 bg-[#0d0d0f] p-6 md:p-8">
-        <h2 className="monument-extra-bold text-2xl uppercase">Related Activities</h2>
+        <h2 className="monument-extra-bold text-2xl uppercase">
+          Related Activities
+        </h2>
         <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {relatedActivities.map((item) => (
             <Link
@@ -680,8 +775,12 @@ const ActivityDetails = () => {
                 <p className="text-[11px] uppercase tracking-[0.16em] text-white/65">
                   {mapStatus(item.status)}
                 </p>
-                <p className="mt-2 text-sm font-semibold text-white line-clamp-2">{item.title}</p>
-                <p className="mt-1 text-xs text-white/65">{formatDate(item.startDate)}</p>
+                <p className="mt-2 text-sm font-semibold text-white line-clamp-2">
+                  {item.title}
+                </p>
+                <p className="mt-1 text-xs text-white/65">
+                  {formatDate(item.startDate)}
+                </p>
               </div>
             </Link>
           ))}
@@ -739,11 +838,12 @@ const ActivityDetails = () => {
             </p>
             <h3 className="mt-3 text-xl font-semibold">Confirmation Sent</h3>
             <p className="mt-3 text-sm text-white/75">
-              Thank you, {submittedForm?.fullName}. A confirmation email has been queued for
-              {" "}
-              {submittedForm?.email}.
+              Thank you, {submittedForm?.fullName}. A confirmation email has
+              been queued for {submittedForm?.email}.
             </p>
-            <p className="mt-2 text-xs text-white/55">Reference token: {submittedForm?.recaptchaToken}</p>
+            <p className="mt-2 text-xs text-white/55">
+              Reference token: {submittedForm?.recaptchaToken}
+            </p>
 
             <button
               type="button"

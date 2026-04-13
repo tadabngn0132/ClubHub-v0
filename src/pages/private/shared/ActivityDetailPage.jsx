@@ -9,7 +9,7 @@ import {
   resetActivityError,
 } from "../../../store/slices/activitySlice";
 import {
-  getActivityParticipationsByActivityId,
+  createNewActivityParticipation,
   deleteActivityParticipation,
   resetActivityParticipantStatus,
   resetActivityParticipationError,
@@ -23,17 +23,19 @@ import ActivityMediaForm from "../../../components/main/internal/ActivityMediaFo
 const ActivityDetailPage = ({ role, basePath, permissions }) => {
   const { activityId } = useParams();
   const dispatch = useDispatch();
-  const { activity, isLoading: isActivityLoading, error: activityError, activityStatus } = useSelector(
-    (state) => state.activity,
-  );
-  const { participations, isLoading: isParticipationsLoading, error: participationError } = useSelector(
-    (state) => state.activityParticipation,
-  );
+  const {
+    activity,
+    isLoading: isActivityLoading,
+    error: activityError,
+    activityStatus,
+  } = useSelector((state) => state.activity);
+  const { isLoading: isParticipationsLoading, error: participationError } =
+    useSelector((state) => state.activityParticipation);
+  const { currentUser } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getActivityById(activityId));
-    dispatch(getActivityParticipationsByActivityId(activityId));
   }, [dispatch, activityId]);
 
   useEffect(() => {
@@ -75,6 +77,16 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
       if (hardConfirmed) {
         dispatch(hardDeleteActivityById(activityId));
       }
+    }
+  };
+
+  const handleDeleteParticipation = (participationId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to cancel your registration for this activity?",
+    );
+
+    if (confirmed) {
+      dispatch(deleteActivityParticipation(participationId));
     }
   };
 
@@ -161,6 +173,41 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     }
   };
 
+  const handleDisableRegistrationButton = () => {
+    if (activity?.requireRegistration === false) {
+      return true;
+    }
+
+    if (
+      activity?.registrationDeadline &&
+      new Date() > new Date(activity.registrationDeadline)
+    ) {
+      return true;
+    }
+
+    if (
+      activity?.maxParticipants &&
+      activity?.activityParticipations?.length >= activity.maxParticipants
+    ) {
+      return true;
+    }
+
+    if (
+      activity?.activityParticipations?.some(
+        (p) => p.userId === currentUser.id && p.status === "REGISTERED",
+      )
+    ) {
+      return true;
+    }
+    return false;
+  };
+
+  const handleRegister = () => {
+    dispatch(
+      createNewActivityParticipation({ activityId, userId: currentUser.id }),
+    );
+  };
+
   return (
     <div className="flex flex-col space-y-4 p-4">
       <img src={activity?.thumbnailUrl} alt={activity?.title} />
@@ -176,9 +223,17 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           {role !== "MEMBER" && (
             <>
               <button onClick={handleDelete}>Delete Activity</button>
-              <Link to={`${basePath}/${activityId}/participants`}>View Participants</Link>
+              <Link to={`${basePath}/${activityId}/participants`}>
+                View Participants
+              </Link>
             </>
           )}
+          <button
+            onClick={handleRegister}
+            disabled={handleDisableRegistrationButton()}
+          >
+            Register for Activity
+          </button>
         </div>
       </div>
 
@@ -230,6 +285,13 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           <div key={participant.id}>
             <p>Participant Name: {participant.name}</p>
             <p>Participant Email: {participant.email}</p>
+            <p>Participant Phone: {participant.phoneNumber}</p>
+
+            {role === "ADMIN" && (
+              <button onClick={() => handleDeleteParticipation(participant.id)}>
+                Delete
+              </button>
+            )}
           </div>
         ))
       ) : (
@@ -250,7 +312,9 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
 
       <p>Priority: {activity?.priority}</p>
 
-      {activity?.images && activity?.images.length > 0 ? (
+      {activity?.images &&
+      activity?.images.length > 0 &&
+      activity?.status === "COMPLETED" ? (
         activity?.images.map((image, index) => (
           <img
             key={index}
@@ -262,7 +326,9 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
         <p>No images available for this activity.</p>
       )}
 
-      {activity?.videos && activity?.videos.length > 0 ? (
+      {activity?.videos &&
+      activity?.videos.length > 0 &&
+      activity?.status === "COMPLETED" ? (
         activity?.videos.map((video, index) => (
           <video key={index} controls>
             <source src={video.url} type="video/mp4" />
@@ -273,10 +339,12 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
         <p>No videos available for this activity.</p>
       )}
 
-      <ActivityMediaForm
-        onImagesSubmit={handleImagesSubmit}
-        onVideosSubmit={handleVideosUploading}
-      />
+      {role !== "MEMBER" && (
+        <ActivityMediaForm
+          onImagesSubmit={handleImagesSubmit}
+          onVideosSubmit={handleVideosUploading}
+        />
+      )}
     </div>
   );
 };
