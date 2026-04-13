@@ -1,35 +1,17 @@
-import {
-  softDeleteActivityById,
-  hardDeleteActivityById,
-} from "../../../store/slices/activitySlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const ActivitiesCardView = ({ role, activities: providedActivities }) => {
-  const dispatch = useDispatch();
-  const { activities: storeActivities } = useSelector((state) => state.activity);
+const ActivitiesCardView = ({
+  role,
+  activities: providedActivities,
+  onDelete,
+}) => {
+  const { activities: storeActivities } = useSelector(
+    (state) => state.activity,
+  );
   const activities = Array.isArray(providedActivities)
     ? providedActivities
     : storeActivities;
-
-  const handleDelete = (activityId) => {
-    const softConfirmed = window.confirm(
-      "Do you want to deactivate this activity?",
-    );
-
-    if (softConfirmed) {
-      dispatch(softDeleteActivityById(activityId));
-      return;
-    }
-
-    const hardConfirmed = window.confirm(
-      "Do you want to permanently delete this activity? This action cannot be undone.",
-    );
-
-    if (hardConfirmed) {
-      dispatch(hardDeleteActivityById(activityId));
-    }
-  };
 
   return (
     <div className="mb-10 grid w-full grid-cols-1 gap-4 p-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -53,33 +35,44 @@ const ActivitiesCardView = ({ role, activities: providedActivities }) => {
               </p>
             </div>
 
-            <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-gray-100">{activity.name || "Untitled activity"}</h3>
-            <p className="mb-1 text-sm text-gray-300">Date: {activity.date || "N/A"}</p>
-            <p className="mb-1 text-sm text-gray-300">Location: {activity.location || "N/A"}</p>
-            <p className="mb-4 text-sm text-gray-400">{activity.registrationsCount || 0} participants</p>
+            <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-gray-100">
+              {activity.name || "Untitled activity"}
+            </h3>
+            <p className="mb-1 text-sm text-gray-300">
+              Date: {activity.date || "N/A"}
+            </p>
+            <p className="mb-1 text-sm text-gray-300">
+              Location: {activity.location || "N/A"}
+            </p>
+            <p className="mb-4 text-sm text-gray-400">
+              {activity.registrationsCount || 0} participants
+            </p>
 
             <div className="mt-auto flex flex-wrap gap-2">
-            <Link
-              to={`/${role}/activities/view/${activity.id}`}
+              <Link
+                to={`/${role}/activities/view/${activity.id}`}
                 className="rounded-md bg-sky-500/15 px-3 py-1.5 text-xs font-medium text-sky-300 transition hover:bg-sky-500/30"
-            >
-              View
-            </Link>
+              >
+                View
+              </Link>
               {(role === "admin" || role === "moderator") && (
-                <Link
-                  to={`/${role}/activities/edit/${activity.id}`}
-                  className="rounded-md bg-blue-500/15 px-3 py-1.5 text-xs font-medium text-blue-300 transition hover:bg-blue-500/30"
-                >
-                  Edit
-                </Link>
-              )}
-              {role === "admin" && (
-                <button
-                  onClick={() => handleDelete(activity.id)}
-                  className="rounded-md bg-rose-500/15 px-3 py-1.5 text-xs font-medium text-rose-300 transition hover:bg-rose-500/30"
-                >
-                  Delete
-                </button>
+                <>
+                  <Link to={`/${role}/activities/${activity.id}/participants`} className="rounded-md bg-green-500/15 px-3 py-1.5 text-xs font-medium text-green-300 transition hover:bg-green-500/30">
+                    View Participants
+                  </Link>
+                  <Link
+                    to={`/${role}/activities/edit/${activity.id}`}
+                    className="rounded-md bg-blue-500/15 px-3 py-1.5 text-xs font-medium text-blue-300 transition hover:bg-blue-500/30"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => onDelete(activity.id)}
+                    className="rounded-md bg-rose-500/15 px-3 py-1.5 text-xs font-medium text-rose-300 transition hover:bg-rose-500/30"
+                  >
+                    Delete
+                  </button>
+                </>
               )}
             </div>
           </div>

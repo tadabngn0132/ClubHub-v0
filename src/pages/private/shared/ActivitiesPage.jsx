@@ -1,5 +1,7 @@
 import {
   getActivitiesList,
+  softDeleteActivityById,
+  hardDeleteActivityById,
   resetActivityError,
 } from "../../../store/slices/activitySlice";
 import { useEffect, useMemo, useState } from "react";
@@ -13,7 +15,7 @@ import ActivitiesCalendarView from "../../../components/main/internal/Activities
 import { ACTIVITY_STATUS_OPTIONS } from "../../../utils/constants";
 import { formatUppercaseToCapitalized } from "../../../utils/formatters";
 
-const ActivitiesPage = ({ role, canCreate, basePath }) => {
+const ActivitiesPage = ({ role, canCreate, basePath, permissions }) => {
   const dispatch = useDispatch();
   const { activities, isLoading, error } = useSelector(
     (state) => state.activity,
@@ -24,8 +26,26 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
   const [sortBy, setSortBy] = useState("newest");
 
   const tabs = [
-    { name: "Table View", component: ActivitiesTableView },
-    { name: "Card View", component: ActivitiesCardView },
+    {
+      name: "Table View",
+      component: (
+        <ActivitiesTableView
+          role={role}
+          activities={filteredActivities}
+          onDelete={handleDelete}
+        />
+      ),
+    },
+    {
+      name: "Card View",
+      component: (
+        <ActivitiesCardView
+          role={role}
+          activities={filteredActivities}
+          onDelete={handleDelete}
+        />
+      ),
+    },
     { name: "Calendar View", component: ActivitiesCalendarView },
   ];
 
@@ -85,6 +105,29 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     setSearchTerm("");
     setStatusFilter("all");
     setSortBy("newest");
+  };
+
+  const handleDelete = (activityId) => {
+    if (permissions?.canSoftDelete) {
+      const softConfirmed = window.confirm(
+        "Do you want to deactivate this activity?",
+      );
+
+      if (softConfirmed) {
+        dispatch(softDeleteActivityById(activityId));
+        return;
+      }
+    }
+
+    if (permissions?.canHardDelete) {
+      const hardConfirmed = window.confirm(
+        "Do you want to permanently delete this activity? This action cannot be undone.",
+      );
+
+      if (hardConfirmed) {
+        dispatch(hardDeleteActivityById(activityId));
+      }
+    }
   };
 
   if (isLoading) {
@@ -188,7 +231,7 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
               key={index}
               style={{ display: activeTab === index ? "block" : "none" }}
             >
-              <tab.component role={role} activities={filteredActivities} />
+              <tab.component />
             </div>
           ))}
         </div>

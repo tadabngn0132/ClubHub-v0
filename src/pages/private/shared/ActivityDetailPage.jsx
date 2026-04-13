@@ -174,7 +174,10 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
             <Link to={`${basePath}/edit/${activityId}`}>Edit Activity</Link>
           )}
           {role !== "MEMBER" && (
-            <button onClick={handleDelete}>Delete Activity</button>
+            <>
+              <button onClick={handleDelete}>Delete Activity</button>
+              <Link to={`${basePath}/${activityId}/participants`}>View Participants</Link>
+            </>
           )}
         </div>
       </div>

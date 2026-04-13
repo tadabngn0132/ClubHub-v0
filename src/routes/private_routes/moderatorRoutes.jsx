@@ -24,6 +24,7 @@ import MemberApplicationProcess from "../../pages/private/shared/MemberApplicati
 import ModeratorChat from "../../pages/private/moderator/ModeratorChat.jsx";
 import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
 import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx";
+import ModeratorActivityParticipants from "../../pages/private/moderator/ModeratorActivityParticipants.jsx";
 
 export const moderatorRoutes = [
   {
@@ -39,6 +40,14 @@ export const moderatorRoutes = [
     element: (
       <SharedLayout role="moderator">
         <ModeratorActivities />
+      </SharedLayout>
+    ),
+  },
+  {
+    path: "/moderator/activities/:activityId/participants",
+    element: (
+      <SharedLayout role="moderator">
+        <ModeratorActivityParticipants />
       </SharedLayout>
     ),
   },

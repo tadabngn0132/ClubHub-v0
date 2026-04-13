@@ -29,6 +29,7 @@ import AdminDocuments from "../../pages/private/admin/AdminDocuments.jsx";
 import AdminChat from "../../pages/private/admin/AdminChat.jsx";
 import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
 import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx";
+import AdminActivityParticipants from "../../pages/private/admin/AdminActivityParticipants.jsx";
 
 export const adminRoutes = [
   {
@@ -44,6 +45,14 @@ export const adminRoutes = [
     element: (
       <SharedLayout role="admin">
         <AdminActivities />
+      </SharedLayout>
+    ),
+  },
+  {
+    path: "/admin/activities/:activityId/participants",
+    element: (
+      <SharedLayout role="admin">
+        <AdminActivityParticipants />
       </SharedLayout>
     ),
   },

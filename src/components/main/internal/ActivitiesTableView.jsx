@@ -1,20 +1,22 @@
-import {
-  softDeleteActivityById,
-  hardDeleteActivityById,
-} from "../../../store/slices/activitySlice";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ActivitiesBulkActionBar from "./ActivitiesBulkActionBar";
 
-const ActivitiesTableView = ({ role, activities: providedActivities }) => {
-  const dispatch = useDispatch();
-  const { activities: storeActivities } = useSelector((state) => state.activity);
+const ActivitiesTableView = ({
+  role,
+  activities: providedActivities,
+  onDelete,
+}) => {
+  const { activities: storeActivities } = useSelector(
+    (state) => state.activity,
+  );
   const activities = Array.isArray(providedActivities)
     ? providedActivities
     : storeActivities;
   const [selectedActivities, setSelectedActivities] = useState([]);
-  const isAllSelected = activities.length > 0 && selectedActivities.length === activities.length;
+  const isAllSelected =
+    activities.length > 0 && selectedActivities.length === activities.length;
 
   const toggleSelectAll = (checked) => {
     if (checked) {
@@ -23,25 +25,6 @@ const ActivitiesTableView = ({ role, activities: providedActivities }) => {
     }
 
     setSelectedActivities([]);
-  };
-
-  const handleDelete = (activityId) => {
-    const softConfirmed = window.confirm(
-      "Do you want to deactivate this activity?",
-    );
-
-    if (softConfirmed) {
-      dispatch(softDeleteActivityById(activityId));
-      return;
-    }
-
-    const hardConfirmed = window.confirm(
-      "Do you want to permanently delete this activity? This action cannot be undone.",
-    );
-
-    if (hardConfirmed) {
-      dispatch(hardDeleteActivityById(activityId));
-    }
   };
 
   return (
@@ -91,10 +74,15 @@ const ActivitiesTableView = ({ role, activities: providedActivities }) => {
                         checked={isSelected}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            setSelectedActivities([...selectedActivities, activity.id]);
+                            setSelectedActivities([
+                              ...selectedActivities,
+                              activity.id,
+                            ]);
                           } else {
                             setSelectedActivities(
-                              selectedActivities.filter((id) => id !== activity.id),
+                              selectedActivities.filter(
+                                (id) => id !== activity.id,
+                              ),
                             );
                           }
                         }}
@@ -109,20 +97,28 @@ const ActivitiesTableView = ({ role, activities: providedActivities }) => {
                         className="h-14 w-20 rounded-md object-cover"
                       />
                     </td>
-                    <td className="px-4 py-3 font-medium text-gray-100">{activity.name || "N/A"}</td>
+                    <td className="px-4 py-3 font-medium text-gray-100">
+                      {activity.name || "N/A"}
+                    </td>
                     <td className="px-4 py-3">
                       <span className="rounded-full border border-violet-500/40 bg-violet-500/20 px-2.5 py-1 text-xs font-semibold uppercase text-violet-200">
                         {activity.type || "N/A"}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-300">{activity.date || "N/A"}</td>
-                    <td className="px-4 py-3 text-gray-300">{activity.location || "N/A"}</td>
+                    <td className="px-4 py-3 text-gray-300">
+                      {activity.date || "N/A"}
+                    </td>
+                    <td className="px-4 py-3 text-gray-300">
+                      {activity.location || "N/A"}
+                    </td>
                     <td className="px-4 py-3">
                       <span className="rounded-full border border-emerald-500/40 bg-emerald-500/20 px-2.5 py-1 text-xs font-semibold uppercase text-emerald-200">
                         {activity.status || "N/A"}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-300">{activity.registrationsCount || 0}</td>
+                    <td className="px-4 py-3 text-gray-300">
+                      {activity.registrationsCount || 0}
+                    </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap items-center gap-2">
                         <Link
@@ -132,20 +128,23 @@ const ActivitiesTableView = ({ role, activities: providedActivities }) => {
                           View
                         </Link>
                         {(role === "admin" || role === "moderator") && (
-                          <Link
-                            to={`/${role}/activities/edit/${activity.id}`}
-                            className="rounded-md bg-blue-500/15 px-3 py-1.5 text-xs font-medium text-blue-300 transition hover:bg-blue-500/30"
-                          >
-                            Edit
-                          </Link>
-                        )}
-                        {role === "admin" && (
-                          <button
-                            onClick={() => handleDelete(activity.id)}
-                            className="rounded-md bg-rose-500/15 px-3 py-1.5 text-xs font-medium text-rose-300 transition hover:bg-rose-500/30"
-                          >
-                            Delete
-                          </button>
+                          <>
+                            <Link to={`/${role}/activities/${activity.id}/participants`} className="rounded-md bg-green-500/15 px-3 py-1.5 text-xs font-medium text-green-300 transition hover:bg-green-500/30">
+                              View Participants
+                            </Link>
+                            <Link
+                              to={`/${role}/activities/edit/${activity.id}`}
+                              className="rounded-md bg-blue-500/15 px-3 py-1.5 text-xs font-medium text-blue-300 transition hover:bg-blue-500/30"
+                            >
+                              Edit
+                            </Link>
+                            <button
+                              onClick={() => onDelete(activity.id)}
+                              className="rounded-md bg-rose-500/15 px-3 py-1.5 text-xs font-medium text-rose-300 transition hover:bg-rose-500/30"
+                            >
+                              Delete
+                            </button>
+                          </>
                         )}
                       </div>
                     </td>
