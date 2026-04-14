@@ -20,6 +20,11 @@ export const updateNotification = async (id, msg) => {
   return res.data;
 };
 
+export const markAllNotificationsAsRead = async (userId) => {
+  const res = await axiosClient.put(`/notifications/user/${userId}/mark-all-read`);
+  return res.data;
+};
+
 export const softDeleteNotification = async (id) => {
   const res = await axiosClient.put(`/notifications/${id}/soft`);
   return res.data;

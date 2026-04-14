@@ -9,6 +9,7 @@ import {
   getNotificationsByUserId,
   softDeleteNotificationsByUserId,
   hardDeleteNotificationsByUserId,
+  markAllNotificationsAsRead
 } from "../../services/notificationService";
 
 export const createNewNotification = createAsyncThunk(
@@ -67,6 +68,23 @@ export const updateNotificationById = createAsyncThunk(
   async ({ id, notificationData }, thunkAPI) => {
     try {
       const data = await updateNotification(id, notificationData);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const markAllNotificationsAsReadByUserId = createAsyncThunk(
+  "notification/markAllNotificationsAsReadByUserId",
+  async (userId, thunkAPI) => {
+    try {
+      const data = await markAllNotificationsAsRead(userId);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -267,6 +285,25 @@ const notificationSlice = createSlice({
         }
       })
       .addCase(updateNotificationById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.notificationStatus = "rejected";
+      })
+
+      // Mark All Notifications as Read
+      .addCase(markAllNotificationsAsReadByUserId.pending, (state) => {
+        state.isLoading = true;
+        state.notificationStatus = "pending";
+      })
+      .addCase(markAllNotificationsAsReadByUserId.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.notificationStatus = "fulfilled";
+        const userId = action.meta.arg;
+        state.notifications = state.notifications.map((notif) =>
+          notif.userId === userId ? { ...notif, isRead: true } : notif,
+        );
+      })
+      .addCase(markAllNotificationsAsReadByUserId.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         state.notificationStatus = "rejected";
