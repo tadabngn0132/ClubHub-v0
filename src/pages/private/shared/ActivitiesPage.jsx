@@ -104,8 +104,10 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
   const handleDelete = (selectedActivityId) => {
     if (deleteMode === "soft") {
       dispatch(softDeleteActivityById(selectedActivityId));
+      handleCloseConfirmationModal();
     } else if (deleteMode === "hard") {
       dispatch(hardDeleteActivityById(selectedActivityId));
+      handleCloseConfirmationModal();
     }
   };
 

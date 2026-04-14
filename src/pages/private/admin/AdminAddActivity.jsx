@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   createActivity,
-  resetActivityStatus,
   resetActivityError,
 } from "../../../store/slices/activitySlice";
 import Loading from "../../../components/layout/internal/Loading";
@@ -12,7 +11,7 @@ import toast from "react-hot-toast";
 
 const AdminAddActivity = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, activityStatus } = useSelector(
+  const { isLoading, error } = useSelector(
     (state) => state.activity,
   );
   const navigate = useNavigate();
@@ -24,15 +23,9 @@ const AdminAddActivity = () => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (activityStatus === "fulfilled") {
-      navigate("/admin/activities");
-    }
-    dispatch(resetActivityStatus());
-  }, [activityStatus]);
-
   const handleAddActivity = async (data) => {
     await dispatch(createActivity(data)).unwrap();
+    navigate("/admin/activities");
   };
 
   if (isLoading) {

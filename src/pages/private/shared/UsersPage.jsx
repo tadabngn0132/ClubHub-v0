@@ -36,6 +36,7 @@ const UsersPage = ({ role, basePath }) => {
     dispatch(getUsersList());
   }, [dispatch]);
 
+
   const handleOpenConfirmationModal = () => {
     setIsConfirmationModalOpen(true);
   };
@@ -53,8 +54,10 @@ const UsersPage = ({ role, basePath }) => {
   const handleDelete = (selectedUserId) => {
     if (deleteMode === "soft") {
       dispatch(softDeleteUserById(selectedUserId));
+      handleCloseConfirmationModal();
     } else if (deleteMode === "hard") {
       dispatch(hardDeleteUserById(selectedUserId));
+      handleCloseConfirmationModal();
     }
   };
 
@@ -157,10 +160,10 @@ const UsersPage = ({ role, basePath }) => {
           {/* Dynamic member count */}
         </div>
 
-        {role === "ADMIN" && permissions?.canCreate && (
+        {role === "ADMIN" && (
           <span>
             <Link
-              to={`/${basePath}/add`}
+              to={`${basePath}/add`}
               className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
             >
               Add Member

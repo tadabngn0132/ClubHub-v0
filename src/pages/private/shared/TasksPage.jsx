@@ -55,8 +55,10 @@ const TasksPage = ({ role, basePath }) => {
   const handleDelete = (selectedTaskId) => {
     if (deleteMode === "soft") {
       dispatch(softDeleteTaskById(selectedTaskId));
+      handleCloseConfirmationModal();
     } else if (deleteMode === "hard") {
       dispatch(hardDeleteTaskById(selectedTaskId));
+      handleCloseConfirmationModal();
     }
   };
 

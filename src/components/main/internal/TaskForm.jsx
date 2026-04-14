@@ -21,7 +21,7 @@ const TaskForm = ({ task, onSubmit }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
   } = useForm({
     defaultValues: {
       title: task ? task.title : "",
@@ -38,6 +38,13 @@ const TaskForm = ({ task, onSubmit }) => {
     },
     mode: "onChange",
   });
+
+  const handleDisableSave = () => {
+    if (task) {
+      return !isDirty;
+    }
+    return !isValid;
+  };
 
   return (
     <div className="px-4">
@@ -232,6 +239,7 @@ const TaskForm = ({ task, onSubmit }) => {
         <button
           type="submit"
           className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+          disabled={handleDisableSave()}
         >
           {!task ? "Add" : "Update"} Task
         </button>

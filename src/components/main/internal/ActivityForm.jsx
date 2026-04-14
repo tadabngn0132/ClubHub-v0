@@ -38,8 +38,6 @@ const ActivityForm = ({ activity, onSubmit }) => {
     reValidateMode: "onChange",
   });
 
-  const { isValid } = methods.formState;
-
   const tabs = [
     { name: "Basic Info", component: ActivityBasicInfoSection },
     { name: "Location", component: ActivityLocationSection },
@@ -74,6 +72,13 @@ const ActivityForm = ({ activity, onSubmit }) => {
     }
 
     onSubmit(formData);
+  };
+
+  const handleDisableSave = () => {
+    if (activity) {
+      return !methods.formState.isDirty;
+    }
+    return !methods.formState.isValid;
   };
 
   return (
@@ -127,7 +132,7 @@ const ActivityForm = ({ activity, onSubmit }) => {
             <button
               type="submit"
               className="rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
-              disabled={!isValid}
+              disabled={handleDisableSave()}
             >
               {activity ? "Save Changes" : "Submit"}
             </button>
