@@ -1,7 +1,7 @@
-import DocumentPages from "../shared/DocumentPages";
+import DocumentsPage from "../shared/DocumentsPage";
 
 const AdminDocuments = () => {
-    return <DocumentPages />
+    return <DocumentsPage />
 };
 
 export default AdminDocuments;
