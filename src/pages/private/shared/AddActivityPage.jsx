@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-const AdminAddActivity = () => {
+const AddActivityPage = ({ basePath }) => {
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector(
     (state) => state.activity,
@@ -28,7 +28,7 @@ const AdminAddActivity = () => {
 
   const handleAddActivity = async (data) => {
     await dispatch(createActivity(data)).unwrap();
-    navigate("/admin/activities");
+    navigate(basePath);
   };
 
   if (isLoading) {
@@ -37,7 +37,7 @@ const AdminAddActivity = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Link to="/admin/activities" className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white">
+      <Link to={basePath} className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white">
         <FontAwesomeIcon icon={faArrowLeft} /> Back to Activities
       </Link>
       <ActivityForm onSubmit={handleAddActivity} />
@@ -45,4 +45,4 @@ const AdminAddActivity = () => {
   );
 };
 
-export default AdminAddActivity;
+export default AddActivityPage;

@@ -1,53 +1,7 @@
-import UserForm from "../../../components/main/internal/UserForm.jsx";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import {
-  updateUserById,
-  getUserById,
-  resetUserStatus,
-  resetUserError,
-} from "../../../store/slices/userSlice";
-import Loading from "../../../components/layout/internal/Loading.jsx";
-import toast from "react-hot-toast";
+import AddUserPage from "../shared/AddUserPage";
 
-const ModeratorEditUser = () => {
-  const { userId } = useParams();
-  const dispatch = useDispatch();
-  const { isLoading, error, userStatus } = useSelector((state) => state.user);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    dispatch(getUserById(userId));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      dispatch(resetUserError());
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (userStatus === "fulfilled") {
-      navigate("/moderator/users");
-    }
-    dispatch(resetUserStatus());
-  }, [userStatus]);
-
-  const handleEditUser = async (data) => {
-    await dispatch(updateUserById({ userId, data })).unwrap();
-  };
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  return (
-    <div>
-      <UserForm onSubmit={handleEditUser} />
-    </div>
-  );
+const ModeratorAddUser = () => {
+  return <AddUserPage basePath="/moderator/users" />;
 };
 
-export default ModeratorEditUser;
+export default ModeratorAddUser;
