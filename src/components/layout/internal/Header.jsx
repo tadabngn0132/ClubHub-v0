@@ -14,6 +14,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import {
   formatRoleBadgeColor,
   formatUppercaseToCapitalized,
+  formatUppercaseToLowercase,
 } from "../../../utils/formatters";
 import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../../hooks/useSocket";
@@ -239,7 +240,7 @@ const Header = ({ role, onHandleSideBarToggle }) => {
             alt="Avatar"
           />
         </div>
-        <Dropdown visible={isDropdownVisible} role={currentUser?.role} />
+        <Dropdown visible={isDropdownVisible} role={formatUppercaseToLowercase(currentUser?.userPosition?.[0]?.position?.systemRole)} />
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ const Dropdown = ({ visible, role }) => {
         Profile
       </Link>
       <Link
-        to={`/${role}/settings`}
+        to={`/${role}/setting`}
         className="rounded-lg px-3 py-2 text-sm font-medium text-slate-200 transition-colors duration-150 hover:bg-slate-800 hover:text-white"
       >
         Settings

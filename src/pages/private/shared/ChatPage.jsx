@@ -14,7 +14,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-[calc(100vh-10rem)] gap-4 p-4 bg-gray-900 rounded-2xl">
       <ChatRooms
         userId={currentUser?.id}
         onSelectRoom={handleSelectConversation}
