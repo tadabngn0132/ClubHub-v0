@@ -15,6 +15,7 @@ import {
   formatUppercaseToCapitalized,
 } from "../../../utils/formatters";
 import { USER_STATUS_OPTIONS } from "../../../utils/constants";
+import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
 
 const DepartmentsPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
@@ -25,6 +26,9 @@ const DepartmentsPage = ({ role, basePath }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [sortBy, setSortBy] = useState("name_asc");
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState(null);
+  const [deleteMode, setDeleteMode] = useState("");
 
   useEffect(() => {
     dispatch(getDepartmentsList());
@@ -44,26 +48,27 @@ const DepartmentsPage = ({ role, basePath }) => {
     dispatch(resetDepartmentStatus());
   }, [departmentStatus]);
 
-  const handleDelete = (id) => {
-    if (role !== "ADMIN") {
-      return;
-    }
+  const handleOpenConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
 
-    const softConfirmed = window.confirm(
-      "Do you want to deactivate this department?",
-    );
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
+  };
 
-    if (softConfirmed) {
-      dispatch(softDeleteDepartmentById(id));
-      return;
-    }
+  const handleDeleteConfigured = (departmentId, mode) => {
+    setSelectedDepartmentId(departmentId);
+    setDeleteMode(mode);
+    handleOpenConfirmationModal();
+  };
 
-    const hardConfirmed = window.confirm(
-      "Do you want to permanently delete this department? This action cannot be undone.",
-    );
-
-    if (hardConfirmed) {
-      dispatch(hardDeleteDepartmentById(id));
+  const handleDelete = (selectedDepartmentId) => {
+    if (deleteMode === "soft") {
+      dispatch(softDeleteDepartmentById(selectedDepartmentId));
+      handleCloseConfirmationModal();
+    } else if (deleteMode === "hard") {
+      dispatch(hardDeleteDepartmentById(selectedDepartmentId));
+      handleCloseConfirmationModal();
     }
   };
 
@@ -252,10 +257,16 @@ const DepartmentsPage = ({ role, basePath }) => {
                               Edit
                             </Link>
                             <button
-                              onClick={() => handleDelete(department.id)}
+                              onClick={() => handleDeleteConfigured(department.id, "soft")}
                               className="rounded-md bg-rose-500/20 px-3 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
                             >
-                              Delete
+                              Soft Delete
+                            </button>
+                            <button
+                              onClick={() => handleDeleteConfigured(department.id, "hard")}
+                              className="rounded-md bg-rose-600/30 px-3 py-1 font-semibold text-rose-400 transition hover:bg-rose-600/50"
+                            >
+                              Hard Delete
                             </button>
                           </>
                         )}
@@ -268,6 +279,17 @@ const DepartmentsPage = ({ role, basePath }) => {
           </table>
         </div>
       </div>
+
+      <ConfirmationModal
+        open={isConfirmationModalOpen}
+        title="Confirm Deletion"
+        message={`Are you sure you want to ${deleteMode === "soft" ? "soft" : "hard"} delete this department?`}
+        variant={deleteMode === "soft" ? "warning" : "danger"}
+        confirmButtonText="Delete"
+        cancelButtonText="Cancel"
+        onCancel={handleCloseConfirmationModal}
+        onConfirm={() => handleDelete(selectedDepartmentId)}
+      />
     </div>
   );
 };

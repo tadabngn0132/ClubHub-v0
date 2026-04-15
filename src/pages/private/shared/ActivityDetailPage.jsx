@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   getActivityById,
   softDeleteActivityById,
@@ -11,7 +11,6 @@ import {
 import {
   createNewActivityParticipation,
   deleteActivityParticipation,
-  resetActivityParticipantStatus,
   resetActivityParticipationError,
 } from "../../../store/slices/activityParticipationSlice.js";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -28,7 +27,6 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     activity,
     isLoading: isActivityLoading,
     error: activityError,
-    activityStatus,
   } = useSelector((state) => state.activity);
   const { isLoading: isParticipationsLoading, error: participationError } =
     useSelector((state) => state.activityParticipation);
@@ -48,13 +46,6 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
       dispatch(resetActivityParticipationError());
     }
   }, [activityError, participationError]);
-
-  useEffect(() => {
-    if (activityStatus === "fulfilled") {
-      navigate(basePath);
-    }
-    dispatch(resetActivityStatus());
-  }, [activityStatus]);
 
   if (isActivityLoading) {
     return <Loading />;
@@ -76,8 +67,10 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
   const handleDelete = () => {
     if (deleteMode === "soft") {
       dispatch(softDeleteActivityById(activityId));
+      navigate(basePath);
     } else if (deleteMode === "hard") {
       dispatch(hardDeleteActivityById(activityId));
+      navigate(basePath);
     }
   };
 

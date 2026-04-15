@@ -15,6 +15,7 @@ import ChangePassword from "../../components/main/internal/ChangePasswordForm.js
 import MemberChat from "../../pages/private/member/MemberChat.jsx";
 import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
 import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx";
+import MemberSetting from "../../pages/private/member/MemberSetting.jsx";
 
 export const memberRoutes = [
   {
@@ -128,6 +129,14 @@ export const memberRoutes = [
         <MemberChat />
       </SharedLayout>
     ),
+  },
+  {
+    path: "/member/setting",
+    element: (
+      <SharedLayout role="member">
+        <MemberSetting />
+      </SharedLayout>
+    )
   },
   {
     path: "/member/forbidden",

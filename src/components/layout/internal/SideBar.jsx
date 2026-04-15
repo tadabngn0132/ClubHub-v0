@@ -11,6 +11,7 @@ import {
   faComments,
   faFilePen,
   faUserGear,
+  faGear,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SolidIconMap = {
@@ -24,6 +25,7 @@ const SolidIconMap = {
   faComments: faComments,
   faFilePen: faFilePen,
   faUserGear: faUserGear,
+  faGear: faGear,
 };
 
 const SideBar = ({ sideBarItemList, isSideBarOpen }) => {

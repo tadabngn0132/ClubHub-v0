@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   getDepartmentDetails,
   softDeleteDepartmentById,
   hardDeleteDepartmentById,
-  resetDepartmentStatus,
   resetDepartmentError,
 } from "../../../store/slices/departmentSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast from "react-hot-toast";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import ConfirmationModal from "../../../components/main/internal/ConfirmationModal";
 
 const DepartmentDetailPage = ({ role, basePath }) => {
   const { departmentId } = useParams();
@@ -18,6 +18,8 @@ const DepartmentDetailPage = ({ role, basePath }) => {
   const { department, isLoading, error, departmentStatus } = useSelector(
     (state) => state.department,
   );
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [deleteMode, setDeleteMode] = useState("");
 
   useEffect(() => {
     dispatch(getDepartmentDetails(departmentId));
@@ -30,33 +32,26 @@ const DepartmentDetailPage = ({ role, basePath }) => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (departmentStatus === "fulfilled") {
-      navigate(basePath);
-    }
-    dispatch(resetDepartmentStatus());
-  }, [departmentStatus]);
+  const handleOpenConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
+  };
+
+  const handleDeleteConfigured = (mode) => {
+    setDeleteMode(mode);
+    handleOpenConfirmationModal();
+  };
 
   const handleDelete = () => {
-    if (role !== "ADMIN") {
-      return;
-    }
-
-    const softConfirmed = window.confirm(
-      "Do you want to deactivate this department?",
-    );
-
-    if (softConfirmed) {
+    if (deleteMode === "soft") {
       dispatch(softDeleteDepartmentById(departmentId));
-      return;
-    }
-
-    const hardConfirmed = window.confirm(
-      "Do you want to permanently delete this department? This action cannot be undone.",
-    );
-
-    if (hardConfirmed) {
+      navigate(basePath);
+    } else if (deleteMode === "hard") {
       dispatch(hardDeleteDepartmentById(departmentId));
+      navigate(basePath);
     }
   };
 
@@ -73,9 +68,14 @@ const DepartmentDetailPage = ({ role, basePath }) => {
         {role === "ADMIN" && (
           <div>
             <Link to={`/admin/departments/edit/${departmentId}`}>
-              Edit Department
+              Edit
             </Link>
-            <button onClick={handleDelete}>Delete Department</button>
+            <button onClick={() => handleDeleteConfigured("soft")}>
+              Soft Delete
+            </button>
+            <button onClick={() => handleDeleteConfigured("hard")}>
+              Hard Delete
+            </button>
           </div>
         )}
       </div>
@@ -87,6 +87,17 @@ const DepartmentDetailPage = ({ role, basePath }) => {
 
       <p>Description: {department?.description}</p>
       <p>Status: {department?.isActive ? "Active" : "Inactive"}</p>
+
+      <ConfirmationModal
+        open={isConfirmationModalOpen}
+        title="Confirm Deletion"
+        message={`Are you sure you want to ${deleteMode === "soft" ? "soft" : "hard"} delete this department?`}
+        variant={deleteMode === "soft" ? "warning" : "danger"}
+        confirmButtonText="Delete"
+        cancelButtonText="Cancel"
+        onCancel={handleCloseConfirmationModal}
+        onConfirm={() => handleDelete()}
+      />
     </div>
   );
 };

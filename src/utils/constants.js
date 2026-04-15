@@ -133,6 +133,7 @@ export const LAYOUT_CONFIG = {
       { name: "Chat", link: "/admin/chat", icon: "faComments" },
       { name: "Member Applications", link: "/admin/member-applications", icon: "faFilePen" },
       { name: "Profile", link: "/admin/profile", icon: "faUserGear" },
+      { name: "Settings", link: "/admin/setting", icon: "faGear" },
     ],
   },
   moderator: {
@@ -146,6 +147,7 @@ export const LAYOUT_CONFIG = {
       { name: "Activities", link: "/moderator/activities", icon: "faCalendarDays" },
       { name: "Tasks", link: "/moderator/tasks", icon: "faListCheck" },
       { name: "Profile", link: "/moderator/profile", icon: "faUserGear" },
+      { name: "Settings", link: "/moderator/setting", icon: "faGear" },
     ],
   },
   member: {
@@ -158,6 +160,7 @@ export const LAYOUT_CONFIG = {
       { name: "Activities", link: "/member/activities", icon: "faCalendarDays" },
       { name: "Tasks", link: "/member/tasks", icon: "faListCheck" },
       { name: "Profile", link: "/member/profile", icon: "faUserGear" },
+      { name: "Settings", link: "/member/setting", icon: "faGear" },
     ],
   },
 };

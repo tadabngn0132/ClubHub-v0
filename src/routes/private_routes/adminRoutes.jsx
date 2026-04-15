@@ -30,6 +30,7 @@ import AdminChat from "../../pages/private/admin/AdminChat.jsx";
 import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
 import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx";
 import AdminActivityParticipants from "../../pages/private/admin/AdminActivityParticipants.jsx";
+import AdminSetting from "../../pages/private/admin/AdminSetting.jsx";
 
 export const adminRoutes = [
   {
@@ -277,6 +278,14 @@ export const adminRoutes = [
     element: (
       <SharedLayout role="admin">
         <AdminChat />
+      </SharedLayout>
+    ),
+  },
+  {
+    path: "/admin/setting",
+    element: (
+      <SharedLayout role="admin">
+        <AdminSetting />
       </SharedLayout>
     ),
   },

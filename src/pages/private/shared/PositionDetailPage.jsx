@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
     getPositionDetails,
     softDeletePositionById,
     hardDeletePositionById,
-    resetPositionStatus,
+    resetPositionError,
 } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -13,12 +13,15 @@ import {
   formatPositionLevel,
 } from "../../../utils/formatters.js";
 import toast from "react-hot-toast";
+import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
 
 const PositionDetailPage = ({ role, basePath }) => {
   const { positionId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { position, isLoading, error, positionStatus } = useSelector((state) => state.position);
+  const { position, isLoading, error } = useSelector((state) => state.position);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [deleteMode, setDeleteMode] = useState("");
 
   useEffect(() => {
     dispatch(getPositionDetails(positionId));
@@ -31,35 +34,28 @@ const PositionDetailPage = ({ role, basePath }) => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (positionStatus === "fulfilled") {
-      navigate(basePath);
-    }
-    dispatch(resetPositionStatus());
-  }, [positionStatus]);
+  const handleOpenConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
+  };
+
+  const handleDeleteConfigured = (mode) => {
+    setDeleteMode(mode);
+    handleOpenConfirmationModal();
+  };
 
   const handleDelete = () => {
-    if (role !== "ADMIN") {
-    return;
+    if (deleteMode === "soft") {
+      dispatch(softDeletePositionById(positionId));
+      navigate(basePath);
+    } else if (deleteMode === "hard") {
+      dispatch(hardDeletePositionById(positionId));
+      navigate(basePath);
     }
-
-    const softConfirmed = window.confirm(
-    "Do you want to deactivate this position?",
-    );
-
-    if (softConfirmed) {
-    dispatch(softDeletePositionById(positionId));
-    return;
-    }
-
-    const hardConfirmed = window.confirm(
-    "Do you want to permanently delete this position? This action cannot be undone.",
-    );
-
-    if (hardConfirmed) {
-    dispatch(hardDeletePositionById(positionId));
-    }
-};
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -96,7 +92,7 @@ const PositionDetailPage = ({ role, basePath }) => {
                 <Link to={`${basePath}/edit/${positionId}`}>
                     Edit Position
                 </Link>
-                <button onClick={handleDelete}>Delete Position</button>
+                <button onClick={() => handleDeleteConfigured("soft")}>Delete Position</button>
             </div>
           )}
         </section>
@@ -122,6 +118,17 @@ const PositionDetailPage = ({ role, basePath }) => {
             </p>
           </article>
         </section>
+
+        <ConfirmationModal
+          open={isConfirmationModalOpen}
+          title="Confirm Deletion"
+          message={`Are you sure you want to ${deleteMode === "soft" ? "soft" : "hard"} delete this position?`}
+          variant={deleteMode === "soft" ? "warning" : "danger"}
+          confirmButtonText="Delete"
+          cancelButtonText="Cancel"
+          onCancel={handleCloseConfirmationModal}
+          onConfirm={() => handleDelete()}
+        />
       </div>
     </div>
   );

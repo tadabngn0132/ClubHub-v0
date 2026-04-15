@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   getTaskDetails,
   softDeleteTaskById,
   hardDeleteTaskById,
   confirmTaskCompletionById,
-  resetTaskStatus,
   verifyTaskCompletionById,
   resetTaskError,
 } from "../../../store/slices/taskSlice";
@@ -20,11 +19,11 @@ import TaskConfirmationForm from "../../../components/main/internal/TaskConfirma
 import TaskVerificationForm from "../../../components/main/internal/TaskVerificationForm.jsx";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
 
-const TaskDetailPage = ({ role, basePath, permissions }) => {
+const TaskDetailPage = ({ role, basePath }) => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
-  const { task, isLoading, error, taskStatus } = useSelector(
+  const { task, isLoading, error } = useSelector(
     (state) => state.task,
   );
   const navigate = useNavigate();
@@ -41,13 +40,6 @@ const TaskDetailPage = ({ role, basePath, permissions }) => {
       dispatch(resetTaskError());
     }
   }, [error]);
-
-  useEffect(() => {
-    if (taskStatus === "fulfilled") {
-      navigate(basePath);
-    }
-    dispatch(resetTaskStatus());
-  }, [taskStatus]);
 
   if (isLoading) {
     return <Loading />;
@@ -69,8 +61,10 @@ const TaskDetailPage = ({ role, basePath, permissions }) => {
   const handleDelete = () => {
     if (deleteMode === "soft") {
       dispatch(softDeleteTaskById(taskId));
+      navigate(basePath);
     } else if (deleteMode === "hard") {
       dispatch(hardDeleteTaskById(taskId));
+      navigate(basePath);
     }
   };
 

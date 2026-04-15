@@ -1,12 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   getUserById,
   softDeleteUserById,
   hardDeleteUserById,
   unlockUserAccount,
-  resetUserStatus,
   resetUserError,
 } from "../../../store/slices/userSlice";
 import toast from "react-hot-toast";
@@ -18,11 +17,11 @@ import {
 } from "../../../utils/formatters.js";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
 
-const UserDetailPage = ({ role, basePath, permissions }) => {
+const UserDetailPage = ({ role, basePath }) => {
   const { userId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isLoading, error, userStatus } = useSelector(
+  const { user, isLoading, error } = useSelector(
     (state) => state.user,
   );
   const {
@@ -34,18 +33,16 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
   const [deleteMode, setDeleteMode] = useState("");
 
   useEffect(() => {
+    dispatch(getUserById(userId));
+    dispatch(getActivitiesByUserId(userId));
+  }, [dispatch, userId]);
+
+  useEffect(() => {
     if (error) {
       toast.error(error);
       dispatch(resetUserError());
     }
   }, [error]);
-
-  useEffect(() => {
-    if (userStatus === "fulfilled") {
-      navigate(basePath);
-    }
-    dispatch(resetUserStatus());
-  }, [userStatus]);
 
   const handleOpenConfirmationModal = () => {
     setIsConfirmationModalOpen(true);
@@ -63,19 +60,16 @@ const UserDetailPage = ({ role, basePath, permissions }) => {
   const handleDelete = () => {
     if (deleteMode === "soft") {
       dispatch(softDeleteUserById(userId));
+      navigate(basePath);
     } else if (deleteMode === "hard") {
       dispatch(hardDeleteUserById(userId));
+      navigate(basePath);
     }
   };
 
   const handleUnlock = () => {
     dispatch(unlockUserAccount(userId));
   };
-
-  useEffect(() => {
-    dispatch(getUserById(userId));
-    dispatch(getActivitiesByUserId(userId));
-  }, [dispatch, userId]);
 
   if (isLoading) {
     return <Loading />;

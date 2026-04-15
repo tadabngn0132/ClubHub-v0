@@ -7,7 +7,7 @@ import ChangePasswordForm from "../../../components/main/internal/ChangePassword
 import { changePasswordUser } from "../../../store/slices/authSlice";
 import NotificationPreferences from "../../../components/main/internal/NotificationPreferences";
 
-const SettingPage = ({ roleLabel }) => {
+const SettingPage = () => {
   const dispatch = useDispatch();
   const [currentTab, setCurrentTab] = useState("Profile");
   const { currentUser } = useSelector((state) => state.auth);
@@ -58,7 +58,7 @@ const SettingPage = ({ roleLabel }) => {
       <div className="flex w-full flex-col gap-6">
         <section>
           <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">
-            {roleLabel} Settings
+            Settings
           </h1>
           <p className="mt-1 text-slate-300">
             Manage your profile details and security settings.
