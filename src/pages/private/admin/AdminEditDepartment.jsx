@@ -5,16 +5,18 @@ import { useEffect } from "react";
 import {
   updateDepartmentById,
   getDepartmentDetails,
-  resetDepartmentStatus,
   resetDepartmentError,
 } from "../../../store/slices/departmentSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const AdminEditDepartment = () => {
   const { departmentId } = useParams();
   const dispatch = useDispatch();
-  const { department, isLoading, error, departmentStatus } = useSelector(
+  const { department, isLoading, error } = useSelector(
     (state) => state.department,
   );
   const navigate = useNavigate();
@@ -23,7 +25,6 @@ const AdminEditDepartment = () => {
     if (departmentId) {
       dispatch(getDepartmentDetails(departmentId));
     }
-    dispatch(resetDepartmentStatus());
   }, [departmentId, dispatch]);
 
   useEffect(() => {
@@ -33,17 +34,11 @@ const AdminEditDepartment = () => {
     }
   }, [error]);
 
-  useEffect(() => {
-    if (departmentStatus === "fulfilled") {
-      navigate("/admin/departments");
-    }
-    dispatch(resetDepartmentStatus());
-  }, [departmentStatus]);
-
   const handleEditDepartment = async (data) => {
     await dispatch(
       updateDepartmentById({ departmentId, data }),
     ).unwrap();
+    navigate("/admin/departments");
   };
 
   if (isLoading) {
@@ -51,7 +46,10 @@ const AdminEditDepartment = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
+      <Link to="/admin/departments" className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white">
+        <FontAwesomeIcon icon={faArrowLeft} /> Back to Departments
+      </Link>
       <DepartmentForm department={department} onSubmit={handleEditDepartment} />
     </div>
   );
