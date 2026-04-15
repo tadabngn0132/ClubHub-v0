@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useNavigate } from "react";
+import { useEffect } from "react";
 import {
     listFolders,
     listFilesInFolder,
@@ -18,7 +18,6 @@ import toast from "react-hot-toast";
 
 const DocumentsPage = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const {
         isLoading: driveLoading,
         error: driveError,
