@@ -103,6 +103,38 @@ const messageSlice = createSlice({
     resetMessageError: (state) => {
       state.error = null;
     },
+    receiveRealtimeMessage: (state, action) => {
+      const incomingMessage = action.payload;
+      if (!incomingMessage?.id) return;
+
+      const existingIndex = state.messages.findIndex(
+        (message) => message.id === incomingMessage.id,
+      );
+
+      if (existingIndex === -1) {
+        state.messages.push(incomingMessage);
+      } else {
+        state.messages[existingIndex] = incomingMessage;
+      }
+    },
+    updateRealtimeMessage: (state, action) => {
+      const updatedMessage = action.payload;
+      if (!updatedMessage?.id) return;
+
+      const existingIndex = state.messages.findIndex(
+        (message) => message.id === updatedMessage.id,
+      );
+
+      if (existingIndex !== -1) {
+        state.messages[existingIndex] = updatedMessage;
+      }
+    },
+    removeRealtimeMessage: (state, action) => {
+      const messageId = action.payload;
+      state.messages = state.messages.filter(
+        (message) => message.id !== messageId,
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -112,7 +144,16 @@ const messageSlice = createSlice({
       })
       .addCase(createNewMessage.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.messages.push(action.payload.data);
+        const createdMessage = action.payload.data;
+        const existingIndex = state.messages.findIndex(
+          (message) => message.id === createdMessage.id,
+        );
+
+        if (existingIndex === -1) {
+          state.messages.push(createdMessage);
+        } else {
+          state.messages[existingIndex] = createdMessage;
+        }
       })
       .addCase(createNewMessage.rejected, (state, action) => {
         state.isLoading = false;
@@ -182,5 +223,10 @@ const messageSlice = createSlice({
   },
 });
 
-export const { resetMessageError } = messageSlice.actions;
+export const {
+  resetMessageError,
+  receiveRealtimeMessage,
+  updateRealtimeMessage,
+  removeRealtimeMessage,
+} = messageSlice.actions;
 export default messageSlice.reducer;
