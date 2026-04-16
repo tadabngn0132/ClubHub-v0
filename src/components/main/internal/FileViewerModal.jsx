@@ -1,244 +1,317 @@
-import { useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-	faChevronLeft,
-	faChevronRight,
-	faDownload,
-	faFileCircleQuestion,
-	faFilePdf,
-	faFilePowerpoint,
-	faFileWord,
-	faImage,
-	faLink,
-	faMagnifyingGlassMinus,
-	faMagnifyingGlassPlus,
-	faTableCellsLarge,
-	faUpRightFromSquare,
-	faXmark,
+  faXmark,
+  faExternalLinkAlt,
+  faDownload,
+  faFileLines,
+  faFileExcel,
+  faFilePdf,
+  faFile,
+  faSpinner,
+  faTriangleExclamation,
+  faExpand,
+  faCompress,
 } from "@fortawesome/free-solid-svg-icons";
 
-const typeMetaMap = {
-	pdf: {
-		label: "PDF Document",
-		accentClassName: "text-red-500 bg-red-50 border-red-100",
-		icon: faFilePdf,
-		hint: "Preview Mode",
-	},
-	doc: {
-		label: "Google Docs",
-		accentClassName: "text-blue-500 bg-blue-50 border-blue-100",
-		icon: faFileWord,
-		hint: "Editable Preview",
-	},
-	sheet: {
-		label: "Google Sheets",
-		accentClassName: "text-emerald-500 bg-emerald-50 border-emerald-100",
-		icon: faTableCellsLarge,
-		hint: "Spreadsheet Preview",
-	},
-	slide: {
-		label: "Google Slides",
-		accentClassName: "text-orange-500 bg-orange-50 border-orange-100",
-		icon: faFilePowerpoint,
-		hint: "Presentation Preview",
-	},
-	image: {
-		label: "Image File",
-		accentClassName: "text-violet-500 bg-violet-50 border-violet-100",
-		icon: faImage,
-		hint: "Image Preview",
-	},
+// ─── helpers ──────────────────────────────────────────────────────────────────
+
+const MIME_CONFIG = {
+  "application/vnd.google-apps.document": {
+    icon: faFileLines,
+    iconClass: "text-blue-400",
+    bgClass: "bg-blue-500/15",
+    borderClass: "border-blue-500/30",
+    label: "Google Doc",
+    // Google Docs preview embed URL
+    embedUrl: (fileId) =>
+      `https://docs.google.com/document/d/${fileId}/preview`,
+    canEmbed: true,
+  },
+  "application/vnd.google-apps.spreadsheet": {
+    icon: faFileExcel,
+    iconClass: "text-emerald-400",
+    bgClass: "bg-emerald-500/15",
+    borderClass: "border-emerald-500/30",
+    label: "Google Sheet",
+    embedUrl: (fileId) =>
+      `https://docs.google.com/spreadsheets/d/${fileId}/preview`,
+    canEmbed: true,
+  },
+  "application/pdf": {
+    icon: faFilePdf,
+    iconClass: "text-rose-400",
+    bgClass: "bg-rose-500/15",
+    borderClass: "border-rose-500/30",
+    label: "PDF",
+    // Google Drive viewer for PDFs
+    embedUrl: (fileId) => `https://drive.google.com/file/d/${fileId}/preview`,
+    canEmbed: true,
+  },
 };
 
-const FileViewerModal = ({ file, open = false, onClose, onView, onDownload, onCopyLink }) => {
-	const meta = useMemo(() => {
-		if (!file) {
-			return typeMetaMap.pdf;
-		}
+const getMimeConfig = (mimeType) =>
+  MIME_CONFIG[mimeType] || {
+    icon: faFile,
+    iconClass: "text-slate-400",
+    bgClass: "bg-slate-500/15",
+    borderClass: "border-slate-500/30",
+    label: "File",
+    embedUrl: null,
+    canEmbed: false,
+  };
 
-		return typeMetaMap[file.type] || typeMetaMap.pdf;
-	}, [file]);
+const formatDate = (str) => {
+  if (!str) return "";
+  return new Date(str).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
 
-	const previewUrl = file?.viewerUrl || file?.url || "";
-	const downloadUrl = file?.downloadUrl || file?.url || previewUrl;
-	const canEmbed = ["doc", "sheet", "slide", "pdf"].includes(file?.type);
-	const canRenderImage = file?.type === "image";
+const formatSize = (bytes) => {
+  if (!bytes) return null;
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
 
-	useEffect(() => {
-		if (!open) {
-			return undefined;
-		}
+// ─── no-preview fallback ──────────────────────────────────────────────────────
 
-		const handleEscape = (event) => {
-			if (event.key === "Escape") {
-				onClose?.();
-			}
-		};
+const NoPreview = ({ file, config }) => (
+  <div className="flex h-full flex-col items-center justify-center gap-4 text-center p-8">
+    <div
+      className={`flex h-20 w-20 items-center justify-center rounded-2xl border ${config.bgClass} ${config.borderClass}`}
+    >
+      <FontAwesomeIcon
+        icon={config.icon}
+        className={`text-4xl ${config.iconClass}`}
+      />
+    </div>
+    <div>
+      <p className="text-slate-300 font-medium">Preview không khả dụng</p>
+      <p className="mt-1 text-sm text-slate-500">
+        Loại file này không hỗ trợ xem trước trong trình duyệt
+      </p>
+    </div>
+    <a
+      href={file.webViewLink}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex items-center gap-2 rounded-xl bg-[#db3f7a] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#c8366e]"
+    >
+      <FontAwesomeIcon icon={faExternalLinkAlt} className="text-xs" />
+      Mở trong Google Drive
+    </a>
+  </div>
+);
 
-		window.addEventListener("keydown", handleEscape);
-		return () => window.removeEventListener("keydown", handleEscape);
-	}, [open, onClose]);
+// ─── main ─────────────────────────────────────────────────────────────────────
 
-	if (!open || !file) {
-		return null;
-	}
+/**
+ * FileViewerModal
+ *
+ * Props:
+ *   isOpen   — boolean
+ *   onClose  — () => void
+ *   file     — {
+ *                id, name, mimeType,
+ *                webViewLink,       // URL mở trên Google Drive
+ *                modifiedTime?,     // ISO date string
+ *                size?,             // bytes
+ *                owners?,           // array of { displayName }
+ *              }
+ */
+const FileViewerModal = ({ isOpen, onClose, file }) => {
+  const [iframeLoading, setIframeLoading] = useState(true);
+  const [iframeError, setIframeError] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
-	return (
-		<div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 lg:p-6">
-			<button
-				type="button"
-				aria-label="Close viewer"
-				className="absolute inset-0 cursor-default bg-slate-950/70 backdrop-blur-sm"
-				onClick={onClose}
-			/>
+  // reset khi file thay đổi
+  useEffect(() => {
+    setIframeLoading(true);
+    setIframeError(false);
+  }, [file?.id]);
 
-			<div className="relative flex h-[84vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
-				<header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-slate-100 bg-white/95 px-4 py-3 backdrop-blur-xl sm:px-5">
-					<div className="flex min-w-0 items-center gap-3">
-						<div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border ${meta.accentClassName}`}>
-							<FontAwesomeIcon icon={meta.icon} className="text-xl" />
-						</div>
-						<div className="min-w-0">
-							<h3 className="truncate text-lg font-extrabold tracking-tight text-slate-900">{file.name}</h3>
-							<p className="mt-1 truncate text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-								{meta.hint} • {meta.label}
-							</p>
-						</div>
-					</div>
+  if (!isOpen || !file) return null;
 
-					<div className="flex items-center gap-2">
-						<button
-							type="button"
-							onClick={() => onView?.(file)}
-							title="Open in new tab"
-							aria-label="Open in new tab"
-							className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100"
-						>
-							<FontAwesomeIcon icon={faUpRightFromSquare} className="text-sm" />
-						</button>
-						<button
-							type="button"
-							onClick={() => onDownload?.(file, downloadUrl)}
-							title="Download"
-							aria-label="Download"
-							className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white transition hover:bg-slate-800"
-						>
-							<FontAwesomeIcon icon={faDownload} className="text-sm" />
-						</button>
-						<button
-							type="button"
-							onClick={() => onCopyLink?.(file)}
-							title="Copy link"
-							aria-label="Copy link"
-							className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-50"
-						>
-							<FontAwesomeIcon icon={faLink} className="text-sm" />
-						</button>
-						<button
-							type="button"
-							onClick={onClose}
-							className="ml-1 flex h-11 w-11 items-center justify-center rounded-full bg-slate-50 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
-							aria-label="Close viewer"
-						>
-							<FontAwesomeIcon icon={faXmark} className="text-base" />
-						</button>
-					</div>
-				</header>
+  const config = getMimeConfig(file.mimeType);
+  const embedUrl = config.canEmbed && file.id ? config.embedUrl(file.id) : null;
 
-				<div className="grid min-h-0 flex-1 grid-cols-1 overflow-hidden lg:grid-cols-[1fr_260px]">
-					<div className="flex min-h-0 items-center justify-center overflow-y-auto bg-slate-100 p-3 sm:p-4 lg:p-5">
-						<div className="flex w-full justify-center">
-							<div className="w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-slate-200">
-								{canRenderImage ? (
-									<div className="flex h-[58vh] items-center justify-center bg-slate-950">
-										<img
-											src={previewUrl}
-											alt={file.name}
-											className="max-h-full max-w-full object-contain"
-										/>
-									</div>
-								) : canEmbed ? (
-									<iframe
-										title={file.name}
-										src={previewUrl}
-										className="h-[66vh] w-full border-0 bg-white"
-										allow="autoplay; fullscreen"
-									/>
-								) : (
-									<div className="flex h-[58vh] items-center justify-center bg-slate-50 p-8 text-center">
-										<div>
-											<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-900 text-white">
-												<FontAwesomeIcon icon={faFileCircleQuestion} className="text-3xl" />
-											</div>
-											<h4 className="text-lg font-extrabold text-slate-900">Preview unavailable</h4>
-											<p className="mt-2 text-sm text-slate-500">This file type cannot be rendered inline. Use download or open in a new tab.</p>
-										</div>
-									</div>
-								)}
-							</div>
-						</div>
-					</div>
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") onClose();
+  };
 
-					<aside className="hidden min-h-0 flex-col border-t border-slate-200 bg-slate-50 lg:flex lg:border-l lg:border-t-0">
-						<div className="border-b border-slate-200 px-5 py-4">
-							<p className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">File Details</p>
-						</div>
+  return (
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 transition-all`}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      onKeyDown={handleKeyDown}
+      tabIndex={-1}
+    >
+      <div
+        className={`flex flex-col rounded-2xl border border-slate-700/60 bg-slate-900 shadow-2xl transition-all
+          ${expanded ? "w-full h-full max-w-none" : "w-full max-w-4xl h-[85vh]"}`}
+      >
+        {/* ── Header ───────────────────────────────── */}
+        <div className="flex items-center gap-3 border-b border-slate-800 px-5 py-3.5 shrink-0">
+          {/* file icon */}
+          <div
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border ${config.bgClass} ${config.borderClass}`}
+          >
+            <FontAwesomeIcon
+              icon={config.icon}
+              className={`text-sm ${config.iconClass}`}
+            />
+          </div>
 
-						<div className="space-y-4 overflow-y-auto p-5 text-sm text-slate-600">
-							<div className="rounded-2xl border border-slate-200 bg-white p-4">
-								<div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Name</div>
-								<div className="mt-1 font-semibold text-slate-900">{file.name}</div>
-							</div>
+          {/* file name + type */}
+          <div className="flex-1 min-w-0">
+            <p className="truncate text-sm font-semibold text-slate-100">
+              {file.name}
+            </p>
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className={`text-[11px] font-medium ${config.iconClass}`}>
+                {config.label}
+              </span>
+              {file.modifiedTime && (
+                <span className="text-[11px] text-slate-500">
+                  · Sửa lần cuối {formatDate(file.modifiedTime)}
+                </span>
+              )}
+              {formatSize(file.size) && (
+                <span className="text-[11px] text-slate-500">
+                  · {formatSize(file.size)}
+                </span>
+              )}
+            </div>
+          </div>
 
-							<div className="rounded-2xl border border-slate-200 bg-white p-4">
-								<div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Type</div>
-								<div className="mt-1 font-semibold text-slate-900">{meta.label}</div>
-							</div>
+          {/* actions */}
+          <div className="flex items-center gap-1 shrink-0">
+            {/* expand/compress */}
+            <button
+              onClick={() => setExpanded((v) => !v)}
+              className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-800 hover:text-slate-200"
+              title={expanded ? "Thu nhỏ" : "Toàn màn hình"}
+            >
+              <FontAwesomeIcon
+                icon={expanded ? faCompress : faExpand}
+                className="text-sm"
+              />
+            </button>
 
-							<div className="rounded-2xl border border-slate-200 bg-white p-4">
-								<div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Modified</div>
-								<div className="mt-1 font-semibold text-slate-900">{file.modifiedAt || "Unknown"}</div>
-							</div>
+            {/* open in drive */}
+            {file.webViewLink && (
+              <a
+                href={file.webViewLink}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-800 hover:text-slate-200"
+                title="Mở trong Google Drive"
+              >
+                <FontAwesomeIcon icon={faExternalLinkAlt} className="text-sm" />
+              </a>
+            )}
 
-							<div className="rounded-2xl border border-slate-200 bg-white p-4">
-								<div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Size</div>
-								<div className="mt-1 font-semibold text-slate-900">{file.size || "-"}</div>
-							</div>
+            {/* download link (nếu backend cung cấp downloadUrl) */}
+            {file.downloadUrl && (
+              <a
+                href={file.downloadUrl}
+                download={file.name}
+                className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-800 hover:text-slate-200"
+                title="Tải xuống"
+              >
+                <FontAwesomeIcon icon={faDownload} className="text-sm" />
+              </a>
+            )}
 
-							<div className="rounded-2xl border border-slate-200 bg-white p-4">
-								<div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Link</div>
-								<div className="mt-2 break-all text-xs text-slate-500">{previewUrl || "No link available"}</div>
-							</div>
-						</div>
-					</aside>
-				</div>
+            {/* close */}
+            <button
+              onClick={onClose}
+              className="ml-1 rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-800 hover:text-slate-200"
+              title="Đóng"
+            >
+              <FontAwesomeIcon icon={faXmark} />
+            </button>
+          </div>
+        </div>
 
-				<footer className="flex items-center justify-between gap-4 border-t border-slate-200 bg-white px-4 py-3 sm:px-5">
-					<div className="flex items-center gap-4">
-						<button type="button" title="Previous document" aria-label="Previous document" className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-900">
-							<FontAwesomeIcon icon={faChevronLeft} className="text-sm" />
-						</button>
-						<div className="h-4 w-px bg-slate-200" />
-						<button type="button" title="Next document" aria-label="Next document" className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-900">
-							<FontAwesomeIcon icon={faChevronRight} className="text-sm" />
-						</button>
-					</div>
+        {/* ── Viewer body ───────────────────────────── */}
+        <div className="relative flex-1 min-h-0 bg-slate-950 rounded-b-2xl overflow-hidden">
+          {embedUrl ? (
+            <>
+              {/* loading overlay */}
+              {iframeLoading && !iframeError && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-950 z-10">
+                  <FontAwesomeIcon
+                    icon={faSpinner}
+                    spin
+                    className="text-2xl text-slate-500"
+                  />
+                  <p className="text-sm text-slate-500">Đang tải preview...</p>
+                </div>
+              )}
 
-					<div className="flex items-center gap-2 rounded-xl bg-slate-100 p-1.5 shadow-inner">
-						<button type="button" className="rounded-lg p-1.5 text-slate-500 transition hover:bg-white hover:shadow-sm">
-							<FontAwesomeIcon icon={faMagnifyingGlassMinus} className="text-xs" />
-						</button>
-						<div className="h-4 w-px bg-slate-200 mx-1" />
-						<span className="min-w-[60px] px-3 text-center text-xs font-bold text-slate-600">100%</span>
-						<div className="h-4 w-px bg-slate-200 mx-1" />
-						<button type="button" className="rounded-lg p-1.5 text-slate-500 transition hover:bg-white hover:shadow-sm">
-							<FontAwesomeIcon icon={faMagnifyingGlassPlus} className="text-xs" />
-						</button>
-					</div>
-				</footer>
-			</div>
-		</div>
-	);
+              {/* error overlay */}
+              {iframeError && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-slate-950 z-10 p-8 text-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-500/30 bg-amber-500/15">
+                    <FontAwesomeIcon
+                      icon={faTriangleExclamation}
+                      className="text-2xl text-amber-300"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-slate-300 font-medium">
+                      Không tải được preview
+                    </p>
+                    <p className="mt-1 text-sm text-slate-500">
+                      File có thể bị hạn chế quyền truy cập hoặc chưa được chia
+                      sẻ
+                    </p>
+                  </div>
+                  {file.webViewLink && (
+                    <a
+                      href={file.webViewLink}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-xl bg-[#db3f7a] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#c8366e]"
+                    >
+                      <FontAwesomeIcon
+                        icon={faExternalLinkAlt}
+                        className="text-xs"
+                      />
+                      Mở trong Google Drive
+                    </a>
+                  )}
+                </div>
+              )}
+
+              <iframe
+                src={embedUrl}
+                title={file.name}
+                className="w-full h-full border-0"
+                onLoad={() => setIframeLoading(false)}
+                onError={() => {
+                  setIframeLoading(false);
+                  setIframeError(true);
+                }}
+                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+              />
+            </>
+          ) : (
+            <NoPreview file={file} config={config} />
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default FileViewerModal;
