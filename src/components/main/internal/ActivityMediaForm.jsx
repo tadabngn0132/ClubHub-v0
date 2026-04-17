@@ -5,43 +5,100 @@ const ActivityMediaForm = ({ onImagesSubmit, onVideosSubmit }) => {
     register,
     handleSubmit,
     formState: { errors },
-} = useForm({
+    } = useForm({
     defaultValues: {
-        images: [],
-        videos: [],
+            images: [],
+            videos: [],
     },
     mode: "onChange",
-});
+    });
+
+    const handleImagesFormSubmit = async (formData) => {
+        const imageFiles = Array.from(formData?.images || []);
+        await onImagesSubmit(imageFiles);
+    };
+
+    const handleVideosFormSubmit = async (formData) => {
+        const videoFiles = Array.from(formData?.videos || []);
+        await onVideosSubmit(videoFiles);
+    };
 
     return (
-        <>
-            <form onSubmit={handleSubmit(onImagesSubmit)}>
-                <label htmlFor="images">Images</label>
+        <div className="grid gap-4 lg:grid-cols-2">
+            <form
+                onSubmit={handleSubmit(handleImagesFormSubmit)}
+                className="rounded-xl border border-zinc-700 bg-zinc-950/60 p-4"
+            >
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-300">
+                    Upload Images
+                </h3>
+                <p className="mt-1 text-xs text-zinc-400">
+                    Accepted format: image/*. Max size per file: 5MB.
+                </p>
+
+                <label
+                    htmlFor="images"
+                    className="mt-4 block text-xs font-medium uppercase tracking-wide text-zinc-400"
+                >
+                    Choose image files
+                </label>
                 <input
                     type="file"
                     id="images"
                     accept="image/*"
                     multiple
+                    className="mt-2 block w-full cursor-pointer rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-200 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-cyan-500/20 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-cyan-200 hover:border-zinc-500"
                     {...register("images")}
                 />
-                {errors.images && <p>{errors.images.message}</p>}
+                {errors.images && (
+                    <p className="mt-2 text-xs text-rose-300">{errors.images.message}</p>
+                )}
 
-                <input type="submit" value="Submit" />
+                <button
+                    type="submit"
+                    className="mt-4 rounded-lg bg-cyan-500/20 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-500/35"
+                >
+                    Upload Images
+                </button>
             </form>
 
-            <form onSubmit={handleSubmit(onVideosSubmit)}>
-                <label htmlFor="videos">Videos</label>
+            <form
+                onSubmit={handleSubmit(handleVideosFormSubmit)}
+                className="rounded-xl border border-zinc-700 bg-zinc-950/60 p-4"
+            >
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-300">
+                    Upload Videos
+                </h3>
+                <p className="mt-1 text-xs text-zinc-400">
+                    Accepted format: video/*. Max size per file: 100MB.
+                </p>
+
+                <label
+                    htmlFor="videos"
+                    className="mt-4 block text-xs font-medium uppercase tracking-wide text-zinc-400"
+                >
+                    Choose video files
+                </label>
                 <input
                     type="file"
                     id="videos"
                     accept="video/*"
                     multiple
+                    className="mt-2 block w-full cursor-pointer rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-200 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-amber-500/20 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-amber-200 hover:border-zinc-500"
                     {...register("videos")}
                 />
-                {errors.videos && <p>{errors.videos.message}</p>}
-                <input type="submit" value="Submit" />
+                {errors.videos && (
+                    <p className="mt-2 text-xs text-rose-300">{errors.videos.message}</p>
+                )}
+
+                <button
+                    type="submit"
+                    className="mt-4 rounded-lg bg-amber-500/20 px-4 py-2 text-sm font-semibold text-amber-200 transition hover:bg-amber-500/35"
+                >
+                    Upload Videos
+                </button>
             </form>
-        </>
+        </div>
     );
 };
 

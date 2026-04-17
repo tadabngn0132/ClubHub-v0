@@ -46,7 +46,6 @@ const ActivitiesTableView = ({
                     className="h-4 w-4 cursor-pointer rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
                   />
                 </th>
-                <th className="px-4 py-3">Activity ID</th>
                 <th className="px-4 py-3">Thumbnail</th>
                 <th className="px-4 py-3">Title</th>
                 <th className="px-4 py-3">Type</th>
@@ -89,16 +88,15 @@ const ActivitiesTableView = ({
                         className="h-4 w-4 cursor-pointer rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
                       />
                     </td>
-                    <td className="px-4 py-3 text-gray-400">{activity.id}</td>
                     <td className="px-4 py-3">
                       <img
-                        src={activity.thumbnailUrl}
-                        alt={activity.name}
+                        src={activity.thumbnailUrl || null}
+                        alt={activity.title}
                         className="h-14 w-20 rounded-md object-cover"
                       />
                     </td>
                     <td className="px-4 py-3 font-medium text-gray-100">
-                      {activity.name || "N/A"}
+                      {activity.title || "N/A"}
                     </td>
                     <td className="px-4 py-3">
                       <span className="rounded-full border border-violet-500/40 bg-violet-500/20 px-2.5 py-1 text-xs font-semibold uppercase text-violet-200">
@@ -106,10 +104,10 @@ const ActivitiesTableView = ({
                       </span>
                     </td>
                     <td className="px-4 py-3 text-gray-300">
-                      {activity.date || "N/A"}
+                      {activity.startDate ? new Date(activity.startDate).toLocaleDateString() : "N/A"}
                     </td>
                     <td className="px-4 py-3 text-gray-300">
-                      {activity.location || "N/A"}
+                      {activity.venueName || activity.venueAddress || "N/A"}{activity.roomNumber ? ` - ${activity.roomNumber}` : ""}
                     </td>
                     <td className="px-4 py-3">
                       <span className="rounded-full border border-emerald-500/40 bg-emerald-500/20 px-2.5 py-1 text-xs font-semibold uppercase text-emerald-200">

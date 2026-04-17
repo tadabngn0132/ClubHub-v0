@@ -225,9 +225,9 @@ const Header = ({ role, onHandleSideBarToggle }) => {
           )}
         </div>
         {/* Messages icon */}
-        <FontAwesomeIcon icon={faInbox} className="cursor-pointer" />
+        {/* <FontAwesomeIcon icon={faInbox} className="cursor-pointer" /> */}
         {/* Help icon */}
-        <FontAwesomeIcon icon={faInfoCircle} className="cursor-pointer" />
+        {/* <FontAwesomeIcon icon={faInfoCircle} className="cursor-pointer" /> */}
 
         {/* User menu dropdown - Hiện tại chưa triển khai */}
         <div
