@@ -77,6 +77,13 @@ const UsersPage = ({ role, basePath }) => {
     setSortConfig({ field: "id", direction: "asc" });
   };
 
+  const hasActiveFilters =
+    searchTerm.trim().length > 0 ||
+    statusFilter !== "all" ||
+    roleFilter !== "all" ||
+    sortConfig.field !== "id" ||
+    sortConfig.direction !== "asc";
+
   const filteredUsers = useMemo(() => {
     const keyword = searchTerm.trim().toLowerCase();
     let result = [...(users || [])];
@@ -248,18 +255,56 @@ const UsersPage = ({ role, basePath }) => {
               {filteredUsers.length === 0 ? (
                 <tr className="border-t border-slate-800 odd:bg-slate-900/30 even:bg-slate-800/20">
                   <td colSpan="11" className="px-4 py-10 text-center">
-                    <div className="flex flex-col items-center gap-2">
-                      No members found.
-                      {role === "ADMIN" && (
-                        <span>
+                    <div className="mx-auto flex max-w-xl flex-col items-center gap-3">
+                      <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-200">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="h-8 w-8"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M16 19V17.8C16 16.1198 16 15.2798 15.673 14.638C15.3854 14.0735 14.9265 13.6146 14.362 13.327C13.7202 13 12.8802 13 11.2 13H8.8C7.11984 13 6.27976 13 5.63803 13.327C5.07354 13.6146 4.6146 14.0735 4.32698 14.638C4 15.2798 4 16.1198 4 17.8V19M20 19V17.8C20 16.3747 20 15.662 19.7784 15.0993C19.4814 14.3455 18.8894 13.7536 18.1357 13.4566C17.5729 13.235 16.8603 13.235 15.435 13.235M14.5 5.5C14.5 7.433 12.933 9 11 9C9.067 9 7.5 7.433 7.5 5.5C7.5 3.567 9.067 2 11 2C12.933 2 14.5 3.567 14.5 5.5ZM20 6.5C20 8.15685 18.6569 9.5 17 9.5C15.3431 9.5 14 8.15685 14 6.5C14 4.84315 15.3431 3.5 17 3.5C18.6569 3.5 20 4.84315 20 6.5Z"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+
+                      <p className="text-base font-semibold text-slate-100">
+                        {hasActiveFilters
+                          ? "No members match your filters"
+                          : "No members found"}
+                      </p>
+                      <p className="text-sm text-slate-400">
+                        {hasActiveFilters
+                          ? "Try another keyword or clear filters to see all members."
+                          : "Add your first member to start managing the team."}
+                      </p>
+
+                      <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+                        {hasActiveFilters && (
+                          <button
+                            type="button"
+                            onClick={clearFilters}
+                            className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm font-medium text-slate-100 hover:border-[var(--pink-color)]"
+                          >
+                            Clear Filters
+                          </button>
+                        )}
+
+                        {role === "ADMIN" && (
                           <Link
-                            to={`/${basePath}/add`}
-                            className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+                            to={`${basePath}/add`}
+                            className="inline-block rounded-lg border border-[var(--pink-color)] p-2 py-1 text-sm/tight text-[var(--pink-color)] hover:bg-[var(--pink-color)] hover:text-white"
                           >
                             Add Member
                           </Link>
-                        </span>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </td>
                 </tr>

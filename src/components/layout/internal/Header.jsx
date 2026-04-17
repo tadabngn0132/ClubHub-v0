@@ -129,7 +129,7 @@ const Header = ({ role, onHandleSideBarToggle }) => {
         </button>
         {/* Logo */}
         <div className="flex items-start-safe">
-          <Link className="hover:opacity-75" to="/">
+          <Link className="hover:opacity-75" to={`/${role}/dashboard`}>
             <img
               className="w-15.5 sm:w-17.5 md:w-22 lg:w-24.5"
               src={logo}

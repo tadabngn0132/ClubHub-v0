@@ -87,6 +87,9 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     setSortBy("newest");
   };
 
+  const hasActiveFilters =
+    searchTerm.trim().length > 0 || statusFilter !== "all" || sortBy !== "newest";
+
   const handleOpenConfirmationModal = () => {
     setIsConfirmationModalOpen(true);
   };
@@ -231,14 +234,67 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
         </div>
 
         <div className="w-full">
-          {tabs.map((tab, index) => (
-            <div
-              key={index}
-              style={{ display: activeTab === index ? "block" : "none" }}
-            >
-              {tab.component}
+          {filteredActivities.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-gray-700 bg-gray-950/70 px-6 py-12 text-center">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-200">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  className="h-8 w-8"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M8 3V6M16 3V6M4 9H20M6 6H18C19.1046 6 20 6.89543 20 8V19C20 20.1046 19.1046 21 18 21H6C4.89543 21 4 20.1046 4 19V8C4 6.89543 4.89543 6 6 6Z"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-100">
+                {hasActiveFilters
+                  ? "No activities match your filters"
+                  : "No activities available yet"}
+              </h3>
+              <p className="mx-auto mt-2 max-w-xl text-sm text-gray-400">
+                {hasActiveFilters
+                  ? "Try adjusting keywords or status, or clear filters to see the full list."
+                  : "Create your first activity to get started and manage upcoming events."}
+              </p>
+
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+                {hasActiveFilters && (
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm font-medium text-gray-100 shadow-sm hover:border-[var(--pink-color)]"
+                  >
+                    Clear Filters
+                  </button>
+                )}
+
+                {canCreate && (
+                  <Link
+                    to={`${basePath}/add`}
+                    className="inline-block rounded-lg border border-[var(--pink-color)] p-2 py-1 text-sm/tight text-[var(--pink-color)] hover:bg-[var(--pink-color)] hover:text-white"
+                  >
+                    Create New Activity
+                  </Link>
+                )}
+              </div>
             </div>
-          ))}
+          ) : (
+            tabs.map((tab, index) => (
+              <div
+                key={index}
+                style={{ display: activeTab === index ? "block" : "none" }}
+              >
+                {tab.component}
+              </div>
+            ))
+          )}
         </div>
 
         <ConfirmationModal

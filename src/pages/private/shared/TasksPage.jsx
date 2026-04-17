@@ -109,6 +109,11 @@ const TasksPage = ({ role, basePath }) => {
     setSortBy("dueDate_desc");
   };
 
+  const hasActiveFilters =
+    searchTerm.trim().length > 0 ||
+    statusFilter !== "all" ||
+    sortBy !== "dueDate_desc";
+
   if (isLoading) {
     return <Loading />;
   }
@@ -213,18 +218,56 @@ const TasksPage = ({ role, basePath }) => {
                       colSpan="9"
                       className="px-4 py-10 text-center text-slate-300"
                     >
-                      <div className="flex flex-col items-center gap-2">
-                        No tasks found.
-                        {role !== "MEMBER" && (
-                          <div className="mt-4">
+                      <div className="mx-auto flex max-w-xl flex-col items-center gap-3">
+                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-violet-500/30 bg-violet-500/10 text-violet-200">
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            className="h-8 w-8"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M8 7H16M8 11H13M6 3H18C19.1046 3 20 3.89543 20 5V19C20 20.1046 19.1046 21 18 21H6C4.89543 21 4 20.1046 4 19V5C4 3.89543 4.89543 3 6 3Z"
+                              stroke="currentColor"
+                              strokeWidth="1.6"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </div>
+
+                        <p className="text-base font-semibold text-slate-100">
+                          {hasActiveFilters
+                            ? "No tasks match your filters"
+                            : "No tasks found"}
+                        </p>
+                        <p className="text-sm text-slate-400">
+                          {hasActiveFilters
+                            ? "Adjust your filters or clear them to view all tasks."
+                            : "Create a new task to organize work for your team."}
+                        </p>
+
+                        <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
+                          {hasActiveFilters && (
+                            <button
+                              type="button"
+                              onClick={clearFilters}
+                              className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm font-medium text-slate-100 hover:border-[var(--pink-color)]"
+                            >
+                              Clear Filters
+                            </button>
+                          )}
+
+                          {role !== "MEMBER" && (
                             <Link
                               to={`${basePath}/add`}
-                              className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+                              className="inline-block rounded-lg border border-[var(--pink-color)] p-2 py-1 text-sm/tight text-[var(--pink-color)] hover:bg-[var(--pink-color)] hover:text-white"
                             >
                               Create New Task
                             </Link>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
                     </td>
                   </tr>

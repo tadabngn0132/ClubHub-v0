@@ -11,3 +11,6 @@
 
 4. DashboardCharts.jsx
 - Incomplete: Import recharts nhưng không render gì — chỉ có heading. Cần thêm LineChart/BarChart thật với data từ Redux.
+
+5. axios.js
+- UX: Toast success cho mọi non-GET request kể cả fetch polling — sẽ spam toast. Nên thêm blacklist hoặc chỉ toast khi có message từ server.

@@ -7,6 +7,7 @@ const MAX_RECONNECT = 5;
 
 let sharedSocket = null;
 let activeConnections = 0;
+let sharedSocketToken = null;
 
 const createSocket = (accessToken) => {
   if (!accessToken) {
@@ -35,12 +36,21 @@ export const useSocket = (token) => {
       return undefined;
     }
 
+    if (sharedSocket && sharedSocketToken !== accessToken) {
+      sharedSocket.disconnect();
+      sharedSocket = null;
+      sharedSocketToken = null;
+    }
+
     if (!sharedSocket) {
       sharedSocket = createSocket(accessToken);
+      sharedSocketToken = accessToken;
 
       if (sharedSocket) {
+        const socketInstance = sharedSocket;
+
         sharedSocket.on("connect", () => {
-          console.log("Socket connected:", sharedSocket.id);
+          console.log("Socket connected:", socketInstance.id);
         });
 
         sharedSocket.on("connect_error", (error) => {
@@ -56,6 +66,7 @@ export const useSocket = (token) => {
       !sharedSocket.connected
     ) {
       sharedSocket.auth = { token: `Bearer ${accessToken}` };
+      sharedSocketToken = accessToken;
       sharedSocket.connect();
     }
 
@@ -68,6 +79,7 @@ export const useSocket = (token) => {
       if (activeConnections <= 0 && sharedSocket) {
         sharedSocket.disconnect();
         sharedSocket = null;
+        sharedSocketToken = null;
         activeConnections = 0;
       }
     };

@@ -99,7 +99,8 @@ const Pagination = ({
         >
           Previous
         </button>
-        Page Numbers
+        
+        {/* Page Numbers */}
         <div className="flex items-center gap-1">
           {pageNumbers.map((page, index) => (
             <button
