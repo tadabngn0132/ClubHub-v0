@@ -99,7 +99,7 @@ const TaskDetailPage = ({ role, basePath }) => {
       formData.append("evidence", data.evidence[0]);
     }
 
-    dispatch(confirmTaskCompletionById({ id: taskId, formData }));
+    dispatch(confirmTaskCompletionById({ id: taskId, taskConfirmData: formData }));
   };
 
   const handleVerifyTask = (data) => {

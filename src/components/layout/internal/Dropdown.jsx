@@ -6,8 +6,8 @@ const Dropdown = ({ visible, role }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const logout = () => {
-    const resData = dispatch(logoutUser()).unwrap();
+  const logout = async () => {
+    const resData = await dispatch(logoutUser()).unwrap();
 
     if (resData.success) {
       console.log(resData.message);

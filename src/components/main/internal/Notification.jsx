@@ -2,18 +2,18 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getUserNotifications,
   markAllNotificationsAsReadByUserId,
-  resetNotificationStatus,
   resetNotificationError,
 } from "../../../store/slices/notificationSlice";
 import { useEffect } from "react";
 import Loading from "../../../components/layout/internal/Loading";
 import toast from "react-hot-toast";
 import { formatDate, formatUppercaseToCapitalized } from "../../../utils/formatters";
+import { Link } from "react-router-dom";
 
 const Notification = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
-  const { notifications, isLoading, error, notificationStatus } = useSelector(
+  const { notifications, isLoading, error } = useSelector(
     (state) => state.notification,
   );
 
@@ -33,6 +33,12 @@ const Notification = () => {
 
   const userRole = formatUppercaseToCapitalized(currentUser?.userPosition[0]?.position?.systemRole);
 
+  const handleMarkAllAsRead = () => {
+    if (currentUser) {
+      dispatch(markAllNotificationsAsReadByUserId(currentUser.id));
+    }
+  };
+
   if (isLoading) {
     return <Loading />;
   }
@@ -41,7 +47,7 @@ const Notification = () => {
     <div className="p-4">
       <h1>Notifications</h1>
       <button
-        onClick={() => currentUser && dispatch(markAllNotificationsAsReadByUserId(currentUser.id))}
+        onClick={handleMarkAllAsRead}
         className="px-4 py-2 bg-blue-500 text-white rounded"
       >
         Mark all as read

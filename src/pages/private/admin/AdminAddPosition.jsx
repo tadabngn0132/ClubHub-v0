@@ -1,13 +1,13 @@
 import PositionForm from "../../../components/main/internal/PositionForm";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   createNewPosition,
   resetPositionError,
 } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 

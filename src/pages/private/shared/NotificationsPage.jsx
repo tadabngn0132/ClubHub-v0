@@ -5,7 +5,7 @@ import {
   updateNotificationById,
   softDeleteNotificationById,
   hardDeleteNotificationById,
-  resetNotificationStatus,
+  markAllNotificationsAsReadByUserId,
   resetNotificationError,
 } from "../../../store/slices/notificationSlice";
 import Loading from "../../../components/layout/internal/Loading";
@@ -16,7 +16,7 @@ import ConfirmationModal from "../../../components/main/internal/ConfirmationMod
 const NotificationsPage = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
-  const { notifications, isLoading, error, notificationStatus } = useSelector(
+  const { notifications, isLoading, error } = useSelector(
     (state) => state.notification,
   );
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);

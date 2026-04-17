@@ -15,7 +15,7 @@ const ParticipantsPage = () => {
   // TODO: Implement participants page to  handle check-in and attendance tracking for activities using QR codes and manual check-in options by activity participation slice. This page will allow activity organizers to manage participant lists, track attendance, and generate reports for events.
     const dispatch = useDispatch();
   const { activityId } = useParams();
-  const { participations, isLoading, error } = useSelector((state) => state.activityParticipation);
+  const { registrations, isLoading, error } = useSelector((state) => state.activityParticipation);
 
   useEffect(() => {
     dispatch(getActivityParticipationsByActivityId(activityId));
@@ -29,9 +29,9 @@ const ParticipantsPage = () => {
   }, [error]);
 
   const statsCards = [
-    { title: "Total Participants", value: participations.length },
-    { title: "Checked-In", value: participations.filter(p => p.status === 'checked-in').length },
-    { title: "No-Shows", value: participations.filter(p => p.status === 'no-show').length },
+    { title: "Total Participants", value: registrations.length },
+    { title: "Checked-In", value: registrations.filter(p => p.status === 'ATTENDED').length },
+    { title: "No-Shows", value: registrations.filter(p => p.status === 'ABSENT').length },
   ];
 
   if (isLoading) {
@@ -85,7 +85,7 @@ const ParticipantsPage = () => {
           </tr>
         </thead>
         <tbody>
-          {participations.map((participation) => (
+          {registrations.map((participation) => (
             <tr key={participation.id}>
               <td>{participation.participantName}</td>
               <td>{participation.participantEmail}</td>
