@@ -20,6 +20,7 @@ import emailIcon from "../../assets/icons/email_icon.svg";
 import lockIcon from "../../assets/icons/lock_icon.svg";
 import bgFormImage from "../../assets/backgrounds/sign_in_background/GDC_background.webp";
 import { AUTH_REMEMBER_DAY_OPTIONS } from "../../utils/constants";
+import { getUserRole } from "../../utils/helper";
 
 const SignIn = () => {
   const {
@@ -48,18 +49,15 @@ const SignIn = () => {
     const resData = await dispatch(loginUser(formData)).unwrap();
 
     if (
-      resData.data.necessaryUserData.userPosition[0].position.systemRole.toLowerCase() ===
-      "admin"
+      getUserRole(resData.data.necessaryUserData)?.toLowerCase() === "admin"
     ) {
       navigate("/admin/dashboard");
     } else if (
-      resData.data.necessaryUserData.userPosition[0].position.systemRole.toLowerCase() ===
-      "moderator"
+      getUserRole(resData.data.necessaryUserData)?.toLowerCase() === "moderator"
     ) {
       navigate("/moderator/dashboard");
     } else if (
-      resData.data.necessaryUserData.userPosition[0].position.systemRole.toLowerCase() ===
-      "member"
+      getUserRole(resData.data.necessaryUserData)?.toLowerCase() === "member"
     ) {
       navigate("/member/dashboard");
     } else {

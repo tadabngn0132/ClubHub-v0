@@ -24,7 +24,7 @@ const UserForm = ({ user, onSubmit }) => {
       avatar: null,
       bio: user ? user.bio : "",
       rootDepartmentId: user ? user.rootDepartmentId : null,
-      positionId: user ? user.userPosition[0]?.positionId : null,
+      positionId: user ? user.userPosition?.find((up) => up.isPrimary)?.positionId : null,
     },
     mode: "onChange",
   });

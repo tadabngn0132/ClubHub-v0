@@ -6,6 +6,7 @@ import {
   setGoogleAuthData,
 } from "../../store/slices/authSlice";
 import toast from "react-hot-toast";
+import { getUserRole } from "../../utils/helper";
 
 const AuthCallback = () => {
   const [searchParams] = useSearchParams();
@@ -35,7 +36,7 @@ const AuthCallback = () => {
           );
         }
 
-        const role = user.userPosition[0].position.systemRole.toLowerCase();
+        const role = getUserRole(user)?.toLowerCase();
 
         // Redirect dựa trên role
         switch (role) {

@@ -16,14 +16,13 @@ import {
   formatUppercaseToCapitalized,
 } from "../../../utils/formatters.js";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
+import { getUserRole } from "../../../utils/helper.js";
 
 const UserDetailPage = ({ role, basePath }) => {
   const { userId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isLoading, error } = useSelector(
-    (state) => state.user,
-  );
+  const { user, isLoading, error } = useSelector((state) => state.user);
   const {
     activities,
     isLoading: activitiesLoading,
@@ -113,9 +112,7 @@ const UserDetailPage = ({ role, basePath }) => {
                 <p className="text-sm text-slate-300">{user.email}</p>
                 <p className="text-sm text-slate-300">{user.phoneNumber}</p>
                 <span className="mt-1 inline-flex rounded-full border border-teal-400/50 bg-teal-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-teal-200">
-                  {formatUppercaseToCapitalized(
-                    user.userPosition[0].position.systemRole,
-                  )}
+                  {formatUppercaseToCapitalized(getUserRole(user))}
                 </span>
               </div>
             </div>
@@ -205,13 +202,14 @@ const UserDetailPage = ({ role, basePath }) => {
               </p>
               <p>
                 <strong className="text-slate-100">Department:</strong>{" "}
-                {user.userPosition[0].position.department.name}
+                {
+                  user?.userPosition?.find((up) => up.isPrimary)?.position
+                    ?.department?.name
+                }
               </p>
               <p>
                 <strong className="text-slate-100">Role:</strong>{" "}
-                {formatUppercaseToCapitalized(
-                  user.userPosition[0].position.systemRole,
-                )}
+                {formatUppercaseToCapitalized(getUserRole(user))}
               </p>
               <p>
                 <strong className="text-slate-100">Joined Date:</strong>{" "}

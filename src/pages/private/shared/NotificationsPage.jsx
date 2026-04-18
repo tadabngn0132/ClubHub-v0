@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react"
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getUserNotifications,
@@ -12,6 +12,7 @@ import Loading from "../../../components/layout/internal/Loading";
 import toast from "react-hot-toast";
 import { formatDate } from "../../../utils/formatters";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal";
+import { getUserRole } from "../../../utils/helper";
 
 const NotificationsPage = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const NotificationsPage = () => {
     }
   }, [error]);
 
-  const userRole = currentUser?.userPosition[0]?.position?.systemRole;
+  const userRole = getUserRole(currentUser);
 
   const handleOpenConfirmationModal = () => {
     setIsConfirmationModalOpen(true);
@@ -69,7 +70,9 @@ const NotificationsPage = () => {
     <div>
       <h1>Notifications</h1>
       <button
-        onClick={() => dispatch(markAllNotificationsAsReadByUserId(currentUser.id))}
+        onClick={() =>
+          dispatch(markAllNotificationsAsReadByUserId(currentUser.id))
+        }
         className="px-4 py-2 bg-blue-500 text-white rounded"
       >
         Mark all as read
@@ -79,7 +82,14 @@ const NotificationsPage = () => {
           <p>{notification.message}</p>
           <p>{formatDate(notification.createdAt)}</p>
           <button
-            onClick={() => dispatch(updateNotificationById({ id: notification.id, notificationData: { isRead: true } }))}
+            onClick={() =>
+              dispatch(
+                updateNotificationById({
+                  id: notification.id,
+                  notificationData: { isRead: true },
+                }),
+              )
+            }
             className="px-2 py-1 bg-green-500 text-white rounded mt-2"
           >
             Mark as Read
@@ -112,7 +122,7 @@ const NotificationsPage = () => {
         onConfirm={() => handleDelete(selectedNotificationId)}
       />
     </div>
-  )
-}
+  );
+};
 
-export default NotificationsPage
+export default NotificationsPage;

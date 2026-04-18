@@ -7,8 +7,12 @@ import {
 import { useEffect } from "react";
 import Loading from "../../../components/layout/internal/Loading";
 import toast from "react-hot-toast";
-import { formatDate, formatUppercaseToCapitalized } from "../../../utils/formatters";
+import {
+  formatDate,
+  formatUppercaseToCapitalized,
+} from "../../../utils/formatters";
 import { Link } from "react-router-dom";
+import { getUserRole } from "../../../utils/helper";
 
 const Notification = () => {
   const dispatch = useDispatch();
@@ -31,7 +35,7 @@ const Notification = () => {
     }
   }, [error]);
 
-  const userRole = formatUppercaseToCapitalized(currentUser?.userPosition[0]?.position?.systemRole);
+  const userRole = formatUppercaseToCapitalized(getUserRole(currentUser));
 
   const handleMarkAllAsRead = () => {
     if (currentUser) {

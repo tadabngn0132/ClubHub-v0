@@ -10,6 +10,7 @@ import {
 import { useParams, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import Loading from "../../../components/layout/internal/Loading";
+import { getUserRole } from "../../../utils/helper";
 
 const ParticipantsPage = () => {
   const dispatch = useDispatch();
@@ -40,7 +41,8 @@ const ParticipantsPage = () => {
     return safeRegistrations.filter((participant) => {
       const statusMatched =
         statusFilter === "all" ||
-        (statusFilter === "registered" && participant.status === "REGISTERED") ||
+        (statusFilter === "registered" &&
+          participant.status === "REGISTERED") ||
         (statusFilter === "checked-in" && participant.status === "ATTENDED") ||
         (statusFilter === "no-show" && participant.status === "ABSENT") ||
         (statusFilter === "cancelled" && participant.status === "CANCELLED");
@@ -104,7 +106,9 @@ const ParticipantsPage = () => {
     ]);
 
     const csvContent = [header, ...rows]
-      .map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(","))
+      .map((row) =>
+        row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(","),
+      )
       .join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -119,7 +123,7 @@ const ParticipantsPage = () => {
     URL.revokeObjectURL(url);
   };
 
-  const userRole = currentUser?.userPosition[0]?.position?.systemRole;
+  const userRole = getUserRole(currentUser);
 
   if (isLoading) {
     return <Loading />;
@@ -140,23 +144,22 @@ const ParticipantsPage = () => {
             Participants Management
           </h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-300">
-            Manage attendance for this activity, track check-in status, and export
-            filtered participant data.
+            Manage attendance for this activity, track check-in status, and
+            export filtered participant data.
           </p>
         </header>
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {statsCards.map((card, index) => (
-          <div
-            key={index}
-            className={`rounded-xl border p-4 ${card.styles}`}
-          >
-            <h2 className="text-xs font-semibold uppercase tracking-wide opacity-90">
-              {card.title}
-            </h2>
-            <p className="mt-2 text-3xl font-black leading-none">{card.value}</p>
-          </div>
-        ))}
+          {statsCards.map((card, index) => (
+            <div key={index} className={`rounded-xl border p-4 ${card.styles}`}>
+              <h2 className="text-xs font-semibold uppercase tracking-wide opacity-90">
+                {card.title}
+              </h2>
+              <p className="mt-2 text-3xl font-black leading-none">
+                {card.value}
+              </p>
+            </div>
+          ))}
         </div>
 
         <section className="rounded-2xl border border-zinc-700 bg-zinc-900/70 p-4 sm:p-5">
@@ -239,7 +242,9 @@ const ParticipantsPage = () => {
                         <div className="flex flex-wrap gap-2">
                           <button
                             onClick={() =>
-                              dispatch(checkInActivityParticipant(participation.id))
+                              dispatch(
+                                checkInActivityParticipant(participation.id),
+                              )
                             }
                             className="rounded-md bg-emerald-500/20 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-emerald-200 transition hover:bg-emerald-500/35"
                           >
@@ -258,7 +263,9 @@ const ParticipantsPage = () => {
                           <button
                             onClick={() =>
                               dispatch(
-                                resetActivityParticipantStatus(participation.id),
+                                resetActivityParticipantStatus(
+                                  participation.id,
+                                ),
                               )
                             }
                             className="rounded-md bg-amber-500/20 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-amber-200 transition hover:bg-amber-500/35"

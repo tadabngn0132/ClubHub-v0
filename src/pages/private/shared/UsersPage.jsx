@@ -16,6 +16,7 @@ import {
 } from "../../../utils/formatters.js";
 import { USER_STATUS_OPTIONS } from "../../../utils/constants";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
+import { getUserRole } from "../../../utils/helper.js";
 
 const UsersPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
@@ -35,7 +36,6 @@ const UsersPage = ({ role, basePath }) => {
   useEffect(() => {
     dispatch(getUsersList());
   }, [dispatch]);
-
 
   const handleOpenConfirmationModal = () => {
     setIsConfirmationModalOpen(true);
@@ -91,8 +91,9 @@ const UsersPage = ({ role, basePath }) => {
     if (keyword) {
       result = result.filter((user) => {
         const departmentName =
-          user?.userPosition?.[0]?.position?.department?.name || "";
-        const role = user?.userPosition?.[0]?.position?.systemRole || "";
+          user?.userPosition?.find((up) => up.isPrimary)?.position?.department
+            ?.name || "";
+        const role = getUserRole(user) || "";
 
         return [
           String(user.id),
@@ -118,10 +119,7 @@ const UsersPage = ({ role, basePath }) => {
 
     if (roleFilter !== "all") {
       result = result.filter(
-        (user) =>
-          String(
-            user?.userPosition?.[0]?.position?.systemRole || "",
-          ).toUpperCase() === roleFilter,
+        (user) => String(getUserRole(user) || "").toUpperCase() === roleFilter,
       );
     }
 
@@ -362,17 +360,18 @@ const UsersPage = ({ role, basePath }) => {
                       className="px-2 py-2 text-sm text-left truncate max-w-[100px]"
                       title={user.department}
                     >
-                      {user.userPosition[0].position.department.name}
+                      {
+                        user?.userPosition?.find((up) => up.isPrimary)?.position
+                          ?.department?.name
+                      }
                     </td>
                     <td className="px-2 py-2 text-sm text-center">
                       <div className="flex justify-center items-center gap-1">
-                        {user.userPosition[0].position.systemRole && (
+                        {getUserRole(user) && (
                           <p
-                            className={`badge ${formatRoleBadgeColor(formatUppercaseToCapitalized(user.userPosition[0].position.systemRole))} w-22 text-center h-fit p-1 pl-2 pr-2 rounded-2xl text-sm/tight`}
+                            className={`badge ${formatRoleBadgeColor(formatUppercaseToCapitalized(getUserRole(user)))} w-22 text-center h-fit p-1 pl-2 pr-2 rounded-2xl text-sm/tight`}
                           >
-                            {formatUppercaseToCapitalized(
-                              user.userPosition[0].position.systemRole,
-                            )}
+                            {formatUppercaseToCapitalized(getUserRole(user))}
                           </p>
                         )}
                       </div>

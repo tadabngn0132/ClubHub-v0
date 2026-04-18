@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { getCurrentUser, getToken } from "../../utils/helper";
+import { getCurrentUser, getToken, getUserRole } from "../../utils/helper";
 import Loading from "../layout/internal/Loading";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -9,8 +9,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   const { token, currentUser } = useSelector((state) => state.auth);
   const accessToken = token || getToken();
   const currentUserInfo = currentUser || getCurrentUser();
-  const role =
-    currentUserInfo?.userPosition?.[0]?.position?.systemRole?.toLowerCase();
+  const role = getUserRole(currentUserInfo)?.toLowerCase();
   const [isCheckingAccess, setIsCheckingAccess] = useState(true);
 
   useEffect(() => {

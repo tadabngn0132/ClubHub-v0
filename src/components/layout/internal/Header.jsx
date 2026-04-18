@@ -19,6 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../../hooks/useSocket";
 import { getUserNotifications } from "../../../store/slices/notificationSlice";
+import { getUserRole } from "../../../utils/helper";
 
 const Header = ({ role, onHandleSideBarToggle }) => {
   const dispatch = useDispatch();
@@ -240,7 +241,10 @@ const Header = ({ role, onHandleSideBarToggle }) => {
             alt="Avatar"
           />
         </div>
-        <Dropdown visible={isDropdownVisible} role={formatUppercaseToLowercase(currentUser?.userPosition?.[0]?.position?.systemRole)} />
+        <Dropdown
+          visible={isDropdownVisible}
+          role={formatUppercaseToLowercase(getUserRole(currentUser))}
+        />
       </div>
     </div>
   );

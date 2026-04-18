@@ -5,17 +5,21 @@ import { getUserNotifications } from "../../../store/slices/notificationSlice";
 import Loading from "../../layout/internal/Loading";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { getUserRole } from "../../../utils/helper";
 
 const DashboardWidget = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
-  const { dashboardStats, isLoading, error } = useSelector((state) => state.user);
+  const { dashboardStats, isLoading, error } = useSelector(
+    (state) => state.user,
+  );
   const {
     notifications,
     isLoading: isNotificationsLoading,
     error: notificationError,
   } = useSelector((state) => state.notification);
-  const { incompleteTasks, upcomingEvents, recentActivities } = dashboardStats || {};
+  const { incompleteTasks, upcomingEvents, recentActivities } =
+    dashboardStats || {};
 
   useEffect(() => {
     if (currentUser) {
@@ -30,7 +34,7 @@ const DashboardWidget = () => {
     }
   }, [error, notificationError]);
 
-  const userRole = currentUser?.userPosition?.[0]?.position?.systemRole?.toLowerCase();
+  const userRole = getUserRole(currentUser)?.toLowerCase();
 
   if (isLoading || isNotificationsLoading) {
     return <Loading />;
@@ -84,7 +88,10 @@ const DashboardWidget = () => {
           </div>
         </div>
         <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-300">
-          Role: <span className="font-semibold text-white">{userRole || "member"}</span>
+          Role:{" "}
+          <span className="font-semibold text-white">
+            {userRole || "member"}
+          </span>
         </div>
       </div>
 
@@ -95,7 +102,9 @@ const DashboardWidget = () => {
               key={stat.label}
               className={`relative overflow-hidden rounded-2xl border ${stat.border} bg-slate-900/90 p-5 shadow-lg shadow-black/20`}
             >
-              <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${stat.accent}`} />
+              <div
+                className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${stat.accent}`}
+              />
               <p className="text-sm font-medium uppercase tracking-[0.16em] text-slate-400">
                 {stat.label}
               </p>
@@ -116,8 +125,12 @@ const DashboardWidget = () => {
         <div className={sectionCardClassName}>
           <div className="mb-4 flex items-center justify-between gap-4">
             <div>
-              <h2 className="text-lg font-semibold text-white">Incompleted Tasks</h2>
-              <p className="mt-1 text-sm text-slate-400">Tasks that still need your attention.</p>
+              <h2 className="text-lg font-semibold text-white">
+                Incompleted Tasks
+              </h2>
+              <p className="mt-1 text-sm text-slate-400">
+                Tasks that still need your attention.
+              </p>
             </div>
             <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-200">
               {incompleteTasks?.length || 0}
@@ -146,8 +159,12 @@ const DashboardWidget = () => {
         <div className={sectionCardClassName}>
           <div className="mb-4 flex items-center justify-between gap-4">
             <div>
-              <h2 className="text-lg font-semibold text-white">Notifications</h2>
-              <p className="mt-1 text-sm text-slate-400">Recent updates and alerts for you.</p>
+              <h2 className="text-lg font-semibold text-white">
+                Notifications
+              </h2>
+              <p className="mt-1 text-sm text-slate-400">
+                Recent updates and alerts for you.
+              </p>
             </div>
             <span className="rounded-full border border-sky-500/20 bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-200">
               {notifications?.length || 0}
@@ -171,8 +188,12 @@ const DashboardWidget = () => {
         <div className={sectionCardClassName}>
           <div className="mb-4 flex items-center justify-between gap-4">
             <div>
-              <h2 className="text-lg font-semibold text-white">Upcoming Events</h2>
-              <p className="mt-1 text-sm text-slate-400">Events you may want to open next.</p>
+              <h2 className="text-lg font-semibold text-white">
+                Upcoming Events
+              </h2>
+              <p className="mt-1 text-sm text-slate-400">
+                Events you may want to open next.
+              </p>
             </div>
             <span className="rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-200">
               {upcomingEvents?.length || 0}
@@ -201,8 +222,12 @@ const DashboardWidget = () => {
         <div className={sectionCardClassName}>
           <div className="mb-4 flex items-center justify-between gap-4">
             <div>
-              <h2 className="text-lg font-semibold text-white">Recent Activities</h2>
-              <p className="mt-1 text-sm text-slate-400">A feed of the latest club movements.</p>
+              <h2 className="text-lg font-semibold text-white">
+                Recent Activities
+              </h2>
+              <p className="mt-1 text-sm text-slate-400">
+                A feed of the latest club movements.
+              </p>
             </div>
             <span className="rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-200">
               {recentActivities?.length || 0}

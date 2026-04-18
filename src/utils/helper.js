@@ -17,7 +17,9 @@ const getAuthStorageMode = () => {
 };
 
 const getInactivityTimeoutHours = () => {
-  const configuredHours = Number(localStorage.getItem(AUTH_INACTIVITY_TIMEOUT_HOURS_KEY));
+  const configuredHours = Number(
+    localStorage.getItem(AUTH_INACTIVITY_TIMEOUT_HOURS_KEY),
+  );
   if (Number.isFinite(configuredHours) && configuredHours > 0) {
     return configuredHours;
   }
@@ -36,7 +38,10 @@ const setInactivityTimeoutHours = (hours) => {
 };
 
 const setAuthStorageMode = (mode) => {
-  const safeMode = mode === AUTH_STORAGE_MODE.SESSION ? AUTH_STORAGE_MODE.SESSION : AUTH_STORAGE_MODE.LOCAL;
+  const safeMode =
+    mode === AUTH_STORAGE_MODE.SESSION
+      ? AUTH_STORAGE_MODE.SESSION
+      : AUTH_STORAGE_MODE.LOCAL;
   localStorage.setItem(AUTH_STORAGE_MODE_KEY, safeMode);
 
   if (safeMode === AUTH_STORAGE_MODE.SESSION) {
@@ -64,7 +69,9 @@ const configureAuthPersistence = ({ rememberMe, rememberForDays }) => {
 };
 
 const getAuthStorage = () => {
-  return getAuthStorageMode() === AUTH_STORAGE_MODE.SESSION ? sessionStorage : localStorage;
+  return getAuthStorageMode() === AUTH_STORAGE_MODE.SESSION
+    ? sessionStorage
+    : localStorage;
 };
 
 const clearAuthFromStorage = (storage) => {
@@ -89,7 +96,9 @@ const clearAuthSession = () => {
 const hasInactivityExpired = () => {
   if (getAuthStorageMode() !== AUTH_STORAGE_MODE.LOCAL) return false;
 
-  const lastActiveAt = Number(localStorage.getItem(AUTH_LAST_ACTIVE_AT_KEY) || 0);
+  const lastActiveAt = Number(
+    localStorage.getItem(AUTH_LAST_ACTIVE_AT_KEY) || 0,
+  );
   if (!lastActiveAt) return false;
 
   const timeoutMs = getInactivityTimeoutHours() * 60 * 60 * 1000;
@@ -110,7 +119,8 @@ const getToken = () => {
 
 const setToken = (token) => {
   const activeStorage = getAuthStorage();
-  const standbyStorage = activeStorage === localStorage ? sessionStorage : localStorage;
+  const standbyStorage =
+    activeStorage === localStorage ? sessionStorage : localStorage;
 
   standbyStorage.removeItem(ACCESS_TOKEN_KEY);
   activeStorage.setItem(ACCESS_TOKEN_KEY, token);
@@ -131,7 +141,8 @@ const getCurrentUser = () => {
 
 const setCurrentUser = (user) => {
   const activeStorage = getAuthStorage();
-  const standbyStorage = activeStorage === localStorage ? sessionStorage : localStorage;
+  const standbyStorage =
+    activeStorage === localStorage ? sessionStorage : localStorage;
 
   standbyStorage.removeItem(CURRENT_USER_KEY);
   activeStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
@@ -164,6 +175,10 @@ const isTokenNeedToRefresh = (decodedToken) => {
   return remainingTime <= 180000; // 3 minutes
 };
 
+const getUserRole = (user) => {
+  return user?.userPosition?.find((up) => up.isPrimary)?.position?.systemRole;
+};
+
 export {
   getToken,
   setToken,
@@ -180,4 +195,5 @@ export {
   clearAuthSession,
   decodeAccessToken,
   isTokenNeedToRefresh,
+  getUserRole,
 };
