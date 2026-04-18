@@ -28,7 +28,10 @@ const ClubInfoTab = () => {
   return (
     <div className="flex flex-col">
       {/* Generation field */}
-      <label htmlFor="generation" className="text-sm font-semibold text-gray-100">
+      <label
+        htmlFor="generation"
+        className="text-sm font-semibold text-gray-100"
+      >
         Generation <span className="text-red-400">*</span>
       </label>
       <input
@@ -36,7 +39,7 @@ const ClubInfoTab = () => {
         id="generation"
         placeholder="2025"
         className={inputClassName}
-        {...register("generation", VALIDATION_RULES.genevalidration)}
+        {...register("generation", VALIDATION_RULES.generation)}
       />
       {errors.generation && (
         <p className={errorClassName}>{errors.generation.message}</p>
@@ -75,27 +78,36 @@ const ClubInfoTab = () => {
         </option>
       </select>
 
-      {/* Position Id */}
-      <label htmlFor="positionId" className={labelClassName}>
-        Position <span className="text-red-400">*</span>
+      {/* Position Ids Checkboxes */}
+      <label htmlFor="positionIds" className={labelClassName}>
+        Positions <span className="text-red-400">*</span>
       </label>
-      <select
-        name="positionId"
-        id="positionId"
-        className={inputClassName}
-        {...register("positionId", {
-          required: "Position is required",
-        })}
-      >
-        <option value="">Select a position</option>
-        {positions.map((pos) => (
-          <option key={pos.id} value={pos.id} className="bg-gray-800 text-gray-100">
-            {pos.title}
-          </option>
+      <div className="mt-2 flex flex-wrap gap-4">
+        {positions.map((position) => (
+          <div key={position.id} className="flex items-center">
+            <input
+              type="checkbox"
+              id={`position-${position.id}`}
+              value={String(position.id)}
+              className="h-4 w-4 rounded border-gray-700 bg-gray-800 text-blue-500 focus:ring-blue-500"
+              {...register("positionIds", {
+                validate: (value) =>
+                  value && value.length > 0
+                    ? true
+                    : "At least one position must be selected",
+              })}
+            />
+            <label
+              htmlFor={`position-${position.id}`}
+              className="ml-2 text-sm text-gray-100"
+            >
+              {position.title}
+            </label>
+          </div>
         ))}
-      </select>
-      {errors.positionId && (
-        <p className={errorClassName}>{errors.positionId.message}</p>
+      </div>
+      {errors.positionIds && (
+        <p className={errorClassName}>{errors.positionIds.message}</p>
       )}
 
       {/* Root Department Id */}
@@ -112,7 +124,11 @@ const ClubInfoTab = () => {
       >
         <option value="">Select a department</option>
         {departments.map((dept) => (
-          <option key={dept.id} value={dept.id} className="bg-gray-800 text-gray-100">
+          <option
+            key={dept.id}
+            value={dept.id}
+            className="bg-gray-800 text-gray-100"
+          >
             {dept.name}
           </option>
         ))}

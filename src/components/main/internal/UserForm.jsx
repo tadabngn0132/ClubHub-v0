@@ -3,7 +3,10 @@ import { useForm, FormProvider } from "react-hook-form";
 import BasicInfoTab from "./BasicInfoTab.jsx";
 import ClubInfoTab from "./ClubInfoTab.jsx";
 import ProfileInfoTab from "./ProfileInfoTab.jsx";
-import { formatDateToLocal, formatNumberToString } from "../../../utils/formatters.js";
+import {
+  formatDateToLocal,
+  formatNumberToString,
+} from "../../../utils/formatters.js";
 
 const UserForm = ({ user, onSubmit }) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -24,7 +27,9 @@ const UserForm = ({ user, onSubmit }) => {
       avatar: null,
       bio: user ? user.bio : "",
       rootDepartmentId: user ? user.rootDepartmentId : null,
-      positionId: user ? user.userPosition?.find((up) => up.isPrimary)?.positionId : null,
+      positionIds: user
+        ? user.userPosition.map((up) => String(up.position.id))
+        : [],
     },
     mode: "onChange",
   });
@@ -49,12 +54,12 @@ const UserForm = ({ user, onSubmit }) => {
     formData.append("studentId", data.studentId);
     formData.append("bio", data.bio);
     formData.append("rootDepartmentId", data.rootDepartmentId || "");
-    formData.append("positionId", data.positionId || "");
+    formData.append("positionIds", JSON.stringify(data.positionIds || []));
 
     if (data.avatar && data.avatar[0]) {
       formData.append("avatar", data.avatar[0]);
     }
-    
+
     onSubmit(formData);
   };
 
