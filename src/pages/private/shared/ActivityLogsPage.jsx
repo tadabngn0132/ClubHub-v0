@@ -4,7 +4,7 @@ import {
   getAllSystemLogs,
   resetSystemLogsError,
 } from "../../../store/slices/systemLogSlice";
-import Loading from "../../layout/internal/Loading";
+import Loading from "../../../components/layout/internal/Loading";
 import toast from "react-hot-toast";
 import { formatDate } from "../../../utils/formatters";
 
