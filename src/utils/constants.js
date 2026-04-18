@@ -134,6 +134,7 @@ export const LAYOUT_CONFIG = {
       { name: "Member Applications", link: "/admin/member-applications", icon: "faFilePen" },
       { name: "Profile", link: "/admin/profile", icon: "faUserGear" },
       { name: "Settings", link: "/admin/setting", icon: "faGear" },
+      { name: "Activity Logs", link: "/admin/activity-logs", icon: "faClipboardList" },
     ],
   },
   moderator: {

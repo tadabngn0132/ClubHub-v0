@@ -12,6 +12,7 @@ import {
   faFilePen,
   faUserGear,
   faGear,
+  faClipboardList,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SolidIconMap = {
@@ -26,6 +27,7 @@ const SolidIconMap = {
   faFilePen: faFilePen,
   faUserGear: faUserGear,
   faGear: faGear,
+  faClipboardList: faClipboardList,
 };
 
 const SideBar = ({ sideBarItemList, isSideBarOpen }) => {

@@ -31,6 +31,7 @@ import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
 import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx";
 import AdminActivityParticipants from "../../pages/private/admin/AdminActivityParticipants.jsx";
 import AdminSetting from "../../pages/private/admin/AdminSetting.jsx";
+import ActivityLogsPage from "../../pages/private/shared/ActivityLogsPage.jsx";
 
 export const adminRoutes = [
   {
@@ -286,6 +287,14 @@ export const adminRoutes = [
     element: (
       <SharedLayout role="admin">
         <AdminSetting />
+      </SharedLayout>
+    ),
+  },
+  {
+    path: "/admin/activity-logs",
+    element: (
+      <SharedLayout role="admin">
+        <ActivityLogsPage />
       </SharedLayout>
     ),
   },
