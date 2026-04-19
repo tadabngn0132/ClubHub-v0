@@ -16,6 +16,9 @@ import googleDocsReducer from "./slices/googleDocsSlice";
 import googleSheetsReducer from "./slices/googleSheetsSlice";
 import googleDriveReducer from "./slices/googleDriveSlice";
 import messageReducer from "./slices/messageSlice";
+import notificationPreferenceReducer from "./slices/notificationPreferenceSlice";
+import systemLogReducer from "./slices/systemLogSlice";
+import aiChatReducer from "./slices/aiChatSlice";
 
 export const store = configureStore({
   reducer: {
@@ -36,6 +39,9 @@ export const store = configureStore({
     googleSheets: googleSheetsReducer,
     googleDrive: googleDriveReducer,
     message: messageReducer,
+    notificationPreference: notificationPreferenceReducer,
+    systemLog: systemLogReducer,
+    aiChat: aiChatReducer,
   },
 });
 
