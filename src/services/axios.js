@@ -12,9 +12,13 @@ export const setUnauthorizedHandler = (handler) => {
   unauthorizedHandler = handler;
 };
 
+const API_BASE_URL = import.meta.env.VITE_NODE_ENV === "production"
+  ? import.meta.env.VITE_API_BASE_URL
+  : import.meta.env.VITE_API_BASE_URL || "http://localhost:5995/api";
+
 // Create an axios instance
 const axiosClient = axios.create({
-  baseURL: "http://localhost:5995/api",
+  baseURL: API_BASE_URL,
   timeout: 5000,
   withCredentials: true,
 });
@@ -37,7 +41,7 @@ const processQueue = (error, newToken = null) => {
 
 const requestNewAccessToken = async () => {
   const response = await axios.post(
-    "http://localhost:5995/api/auth/refresh-access-token",
+    `${API_BASE_URL}/auth/refresh-access-token`,
     {},
     {
       timeout: 5000,

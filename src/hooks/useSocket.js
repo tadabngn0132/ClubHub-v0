@@ -2,7 +2,9 @@ import { useEffect, useRef, useCallback } from "react";
 import io from "socket.io-client";
 import { getToken } from "../utils/helper";
 
-const SOCKET_URL = import.meta.env.VITE_API_URL || "http://localhost:5995";
+const SOCKET_URL = import.meta.env.VITE_NODE_ENV === "production"
+  ? import.meta.env.VITE_SOCKET_URL
+  : import.meta.env.VITE_SOCKET_URL || "http://localhost:5995";
 const MAX_RECONNECT = 5;
 
 let sharedSocket = null;
