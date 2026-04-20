@@ -1,23 +1,43 @@
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { formatUppercaseToCapitalized } from "../../../utils/formatters.js";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules.js";
 
 const MemberApplicationCvReviewForm = ({
   statusOptions,
-  cvForm,
-  setCvForm,
+  initialValues,
   isSubmitting,
   onSubmit,
 }) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      status: initialValues?.status || "PASSED",
+      comment: initialValues?.comment || "",
+    },
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
+
+  useEffect(() => {
+    reset({
+      status: initialValues?.status || "PASSED",
+      comment: initialValues?.comment || "",
+    });
+  }, [initialValues, reset]);
+
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="space-y-4 rounded-2xl border border-slate-700 bg-slate-900/70 p-4"
     >
       <div className="grid gap-3 md:grid-cols-3">
         <select
-          value={cvForm.status}
-          onChange={(e) =>
-            setCvForm((prev) => ({ ...prev, status: e.target.value }))
-          }
+          {...register("status")}
           className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm"
         >
           {statusOptions.map((option) => (
@@ -29,14 +49,18 @@ const MemberApplicationCvReviewForm = ({
       </div>
 
       <textarea
-        value={cvForm.comment}
-        onChange={(e) =>
-          setCvForm((prev) => ({ ...prev, comment: e.target.value }))
-        }
+        {...register("comment", {
+          required: VALIDATION_MESSAGES.cvReviewCommentRequired,
+        })}
         placeholder="Write CV review comment"
         rows={5}
         className="w-full rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm"
       />
+      {errors.comment && (
+        <p className="text-sm font-medium text-red-400">
+          {errors.comment.message}
+        </p>
+      )}
 
       <button
         type="submit"

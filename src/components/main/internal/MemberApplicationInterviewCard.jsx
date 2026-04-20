@@ -1,15 +1,47 @@
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { formatUppercaseToCapitalized } from "../../../utils/formatters.js";
+import { VALIDATION_MESSAGES } from "../../../utils/validationRules.js";
 
 const MemberApplicationInterviewCard = ({
   deptApp,
-  formValue,
   canInterview,
   isSubmitting,
   statusOptions,
   normalizeStatus,
-  setInterviewFormMap,
   onSubmitInterview,
 }) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      status:
+        normalizeStatus(deptApp?.interviewStatus) === "FAILED"
+          ? "FAILED"
+          : "PASSED",
+      comment: deptApp?.interviewComment || "",
+    },
+    mode: "onChange",
+    reValidateMode: "onChange",
+  });
+
+  useEffect(() => {
+    reset({
+      status:
+        normalizeStatus(deptApp?.interviewStatus) === "FAILED"
+          ? "FAILED"
+          : "PASSED",
+      comment: deptApp?.interviewComment || "",
+    });
+  }, [deptApp, normalizeStatus, reset]);
+
+  const onSubmit = (formData) => {
+    onSubmitInterview(deptApp, formData);
+  };
+
   return (
     <div className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
@@ -23,16 +55,7 @@ const MemberApplicationInterviewCard = ({
 
       <div className="grid gap-3 md:grid-cols-3">
         <select
-          value={formValue.status}
-          onChange={(e) =>
-            setInterviewFormMap((prev) => ({
-              ...prev,
-              [deptApp.id]: {
-                ...(prev[deptApp.id] || {}),
-                status: e.target.value,
-              },
-            }))
-          }
+          {...register("status")}
           disabled={!canInterview || isSubmitting}
           className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm disabled:opacity-60"
         >
@@ -45,25 +68,23 @@ const MemberApplicationInterviewCard = ({
       </div>
 
       <textarea
-        value={formValue.comment}
-        onChange={(e) =>
-          setInterviewFormMap((prev) => ({
-            ...prev,
-            [deptApp.id]: {
-              ...(prev[deptApp.id] || {}),
-              comment: e.target.value,
-            },
-          }))
-        }
+        {...register("comment", {
+          required: VALIDATION_MESSAGES.interviewCommentRequired,
+        })}
         disabled={!canInterview || isSubmitting}
         placeholder="Write interview review comment"
         rows={4}
         className="mt-3 w-full rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm disabled:opacity-60"
       />
+      {errors.comment && (
+        <p className="mt-2 text-sm font-medium text-red-400">
+          {errors.comment.message}
+        </p>
+      )}
 
       <button
         type="button"
-        onClick={() => onSubmitInterview(deptApp)}
+        onClick={handleSubmit(onSubmit)}
         disabled={!canInterview || isSubmitting}
         className="mt-3 rounded-lg border border-[var(--pink-color)] px-4 py-2 text-sm font-semibold text-[var(--pink-color)] hover:bg-[var(--pink-color)] hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
       >

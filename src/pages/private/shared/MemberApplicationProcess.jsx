@@ -62,14 +62,6 @@ const MemberApplicationProcess = ({ role, stage }) => {
   const { positions } = useSelector((state) => state.position);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [cvForm, setCvForm] = useState({ status: "PASSED", comment: "" });
-  const [finalForm, setFinalForm] = useState({
-    status: "PASSED",
-    comment: "",
-    rootDepartmentId: "",
-    positionId: "",
-  });
-  const [interviewFormMap, setInterviewFormMap] = useState({});
 
   useEffect(() => {
     if (!applicationId) return;
@@ -77,39 +69,6 @@ const MemberApplicationProcess = ({ role, stage }) => {
     dispatch(getDepartmentApplicationsByMemberApplication(applicationId));
     dispatch(getPositionsList());
   }, [dispatch, applicationId]);
-
-  useEffect(() => {
-    if (!memberApplication) return;
-    setCvForm({
-      status:
-        normalizeStatus(memberApplication.cvStatus) === "FAILED"
-          ? "FAILED"
-          : "PASSED",
-      comment: memberApplication.cvReviewComment || "",
-    });
-    setFinalForm((prev) => ({
-      ...prev,
-      status:
-        normalizeStatus(memberApplication.finalStatus) === "FAILED"
-          ? "FAILED"
-          : "PASSED",
-      comment: memberApplication.finalReviewComment || "",
-    }));
-  }, [memberApplication]);
-
-  useEffect(() => {
-    const next = {};
-    (deptApplications || []).forEach((item) => {
-      next[item.id] = {
-        status:
-          normalizeStatus(item.interviewStatus) === "FAILED"
-            ? "FAILED"
-            : "PASSED",
-        comment: item.interviewComment || "",
-      };
-    });
-    setInterviewFormMap(next);
-  }, [deptApplications]);
 
   useEffect(() => {
     if (error) {
@@ -153,6 +112,30 @@ const MemberApplicationProcess = ({ role, stage }) => {
         ? "Interview Review"
         : "Final Review";
 
+  const initialCvForm = useMemo(
+    () => ({
+      status:
+        normalizeStatus(memberApplication?.cvStatus) === "FAILED"
+          ? "FAILED"
+          : "PASSED",
+      comment: memberApplication?.cvReviewComment || "",
+    }),
+    [memberApplication],
+  );
+
+  const initialFinalForm = useMemo(
+    () => ({
+      status:
+        normalizeStatus(memberApplication?.finalStatus) === "FAILED"
+          ? "FAILED"
+          : "PASSED",
+      comment: memberApplication?.finalReviewComment || "",
+      rootDepartmentId: "",
+      positionId: "",
+    }),
+    [memberApplication],
+  );
+
   const basePath = `/${role}/member-applications`;
 
   const refreshData = async () => {
@@ -162,10 +145,10 @@ const MemberApplicationProcess = ({ role, stage }) => {
     ]);
   };
 
-  const handleSubmitCvReview = async (event) => {
-    event.preventDefault();
+  const handleSubmitCvReview = async (formData) => {
+    const cvComment = String(formData.comment || "").trim();
 
-    if (!cvForm.comment.trim()) {
+    if (!cvComment) {
       toast.error("CV review comment is required.");
       return;
     }
@@ -176,9 +159,9 @@ const MemberApplicationProcess = ({ role, stage }) => {
         updateMemberApplicationCVReview({
           id: applicationId,
           cvReviewData: {
-            status: cvForm.status,
-            cvReviewStatus: cvForm.status,
-            cvReviewComment: cvForm.comment.trim(),
+            status: formData.status,
+            cvReviewStatus: formData.status,
+            cvReviewComment: cvComment,
             cvReviewerId: currentUser?.id,
           },
         }),
@@ -192,14 +175,13 @@ const MemberApplicationProcess = ({ role, stage }) => {
     }
   };
 
-  const handleSubmitInterview = async (deptApplication) => {
+  const handleSubmitInterview = async (deptApplication, formData) => {
     if (!canInterview) {
       toast.error("Cannot interview before CV review is PASSED.");
       return;
     }
 
-    const payload = interviewFormMap[deptApplication.id] || {};
-    const interviewComment = String(payload.comment || "").trim();
+    const interviewComment = String(formData.comment || "").trim();
 
     if (!interviewComment) {
       toast.error("Interview comment is required.");
@@ -214,7 +196,7 @@ const MemberApplicationProcess = ({ role, stage }) => {
           deptApplicationData: {
             memberApplicationId: deptApplication.memberApplicationId,
             departmentId: deptApplication.departmentId,
-            interviewStatus: payload.status || "PASSED",
+            interviewStatus: formData.status || "PASSED",
             priority: deptApplication.priority || 1,
             interviewComment,
             interviewerId: currentUser?.id,
@@ -231,7 +213,7 @@ const MemberApplicationProcess = ({ role, stage }) => {
     }
   };
 
-  const handleMarkFinalFailed = async () => {
+  const handleMarkFinalFailed = async (finalComment) => {
     if (!allInterviewFailed) {
       toast.error(
         "Final fail is only auto-applied when all interviews FAILED.",
@@ -239,7 +221,9 @@ const MemberApplicationProcess = ({ role, stage }) => {
       return;
     }
 
-    if (!finalForm.comment.trim()) {
+    const normalizedComment = String(finalComment || "").trim();
+
+    if (!normalizedComment) {
       toast.error("Final review comment is required.");
       return;
     }
@@ -250,7 +234,7 @@ const MemberApplicationProcess = ({ role, stage }) => {
         ids: [Number(applicationId)],
         data: {
           finalStatus: "FAILED",
-          finalReviewComment: finalForm.comment.trim(),
+          finalReviewComment: normalizedComment,
           finalReviewedAt: new Date().toISOString(),
           finalReviewerId: currentUser?.id,
         },
@@ -269,8 +253,8 @@ const MemberApplicationProcess = ({ role, stage }) => {
     }
   };
 
-  const handleSubmitFinalReview = async (event) => {
-    event.preventDefault();
+  const handleSubmitFinalReview = async (formData) => {
+    const finalComment = String(formData.comment || "").trim();
 
     if (!canFinalReview) {
       toast.error(
@@ -279,12 +263,12 @@ const MemberApplicationProcess = ({ role, stage }) => {
       return;
     }
 
-    if (!finalForm.comment.trim()) {
+    if (!finalComment) {
       toast.error("Final review comment is required.");
       return;
     }
 
-    if (!finalForm.rootDepartmentId || !finalForm.positionId) {
+    if (!formData.rootDepartmentId || !formData.positionId) {
       toast.error(
         "Please choose accepted department and position for user creation.",
       );
@@ -297,9 +281,9 @@ const MemberApplicationProcess = ({ role, stage }) => {
         updateMemberApplicationFinalReview({
           id: applicationId,
           finalReviewData: {
-            status: finalForm.status,
-            finalReviewStatus: finalForm.status,
-            finalReviewComment: finalForm.comment.trim(),
+            status: formData.status,
+            finalReviewStatus: formData.status,
+            finalReviewComment: finalComment,
             finalReviewerId: currentUser?.id,
             fullname: memberApplication?.fullname,
             email: memberApplication?.email,
@@ -310,8 +294,8 @@ const MemberApplicationProcess = ({ role, stage }) => {
             studentId: memberApplication?.studentId,
             avatarUrl: memberApplication?.avatarUrl,
             bio: memberApplication?.bio,
-            rootDepartmentId: Number(finalForm.rootDepartmentId),
-            positionId: Number(finalForm.positionId),
+            rootDepartmentId: Number(formData.rootDepartmentId),
+            positionId: Number(formData.positionId),
           },
         }),
       ).unwrap();
@@ -348,8 +332,7 @@ const MemberApplicationProcess = ({ role, stage }) => {
         {stage === "cv-review" && (
           <MemberApplicationCvReviewForm
             statusOptions={STATUS_OPTIONS}
-            cvForm={cvForm}
-            setCvForm={setCvForm}
+            initialValues={initialCvForm}
             isSubmitting={isSubmitting}
             onSubmit={handleSubmitCvReview}
           />
@@ -360,8 +343,6 @@ const MemberApplicationProcess = ({ role, stage }) => {
             canInterview={canInterview}
             isSubmitting={isSubmitting}
             deptApplications={deptApplications || []}
-            interviewFormMap={interviewFormMap}
-            setInterviewFormMap={setInterviewFormMap}
             statusOptions={STATUS_OPTIONS}
             onSubmitInterview={handleSubmitInterview}
             normalizeStatus={normalizeStatus}
@@ -373,8 +354,7 @@ const MemberApplicationProcess = ({ role, stage }) => {
             canFinalReview={canFinalReview}
             allInterviewFailed={allInterviewFailed}
             isSubmitting={isSubmitting}
-            finalForm={finalForm}
-            setFinalForm={setFinalForm}
+            initialValues={initialFinalForm}
             passedDepartments={passedDepartments}
             positions={positions || []}
             onSubmit={handleSubmitFinalReview}

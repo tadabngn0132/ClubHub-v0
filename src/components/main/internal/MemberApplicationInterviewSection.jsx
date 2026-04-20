@@ -4,8 +4,6 @@ const MemberApplicationInterviewSection = ({
   canInterview,
   isSubmitting,
   deptApplications,
-  interviewFormMap,
-  setInterviewFormMap,
   statusOptions,
   onSubmitInterview,
   normalizeStatus,
@@ -24,21 +22,14 @@ const MemberApplicationInterviewSection = ({
         </p>
       ) : (
         deptApplications.map((deptApp) => {
-          const formValue = interviewFormMap[deptApp.id] || {
-            status: "PASSED",
-            comment: "",
-          };
-
           return (
             <MemberApplicationInterviewCard
               key={deptApp.id}
               deptApp={deptApp}
-              formValue={formValue}
               canInterview={canInterview}
               isSubmitting={isSubmitting}
               statusOptions={statusOptions}
               normalizeStatus={normalizeStatus}
-              setInterviewFormMap={setInterviewFormMap}
               onSubmitInterview={onSubmitInterview}
             />
           );
