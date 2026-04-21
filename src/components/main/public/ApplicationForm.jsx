@@ -22,7 +22,7 @@ const ApplicationForm = () => {
       gender: "",
       major: "",
       studentId: "",
-      department: [],
+      departmentIds: [],
     },
     mode: "onChange",
   });
@@ -119,20 +119,27 @@ const ApplicationForm = () => {
         <label htmlFor="department" className={labelClassName}>
           Department <span className="text-red-500">*</span>
         </label>
-        <select
-          id="department"
-          className={inputClassName}
-          {...register("department", { required: "Department cannot be empty" })}
-        >
-          <option value="">Select a department</option>
+        {/* Department checkbox */}
+        <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
           {departments.map((dept) => (
-            <option key={dept.id} value={dept.id}>
+            <label
+              key={dept.id}
+              htmlFor={`dept-${dept.id}`}
+              className="flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-slate-700 transition hover:border-pink-400 hover:bg-pink-50"
+            >
+              <input
+                type="checkbox"
+                id={`dept-${dept.id}`}
+                value={dept.id}
+                className="h-4 w-4 accent-pink-600"
+                {...register("departmentIds", { required: VALIDATION_MESSAGES.departmentRequired })}
+              />
               {dept.name}
-            </option>
+            </label>
           ))}
-        </select>
-        {errors.department && (
-          <p className={errorClassName}>{errors.department.message}</p>
+        </div>
+        {errors.departmentIds && (
+          <p className={errorClassName}>{errors.departmentIds.message}</p>
         )}
 
         {/* Date of Birth field */}
