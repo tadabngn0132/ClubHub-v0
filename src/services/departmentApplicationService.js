@@ -1,10 +1,5 @@
 import axiosClient from "./axios.js";
 
-export const createDepartmentApplication = async (payload) => {
-  const res = await axiosClient.post("/department-applications", payload);
-  return res.data;
-};
-
 export const getDepartmentApplicationsByMemberApplicationId = async (
   memberApplicationId,
 ) => {

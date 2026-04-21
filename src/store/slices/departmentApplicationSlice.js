@@ -9,23 +9,6 @@ import {
   hardDeleteDepartmentApplication,
 } from "../../services/departmentApplicationService.js";
 
-export const createNewDepartmentApplication = createAsyncThunk(
-  "departmentApplications/create",
-  async (deptApplicationData, thunkAPI) => {
-    try {
-      const data = await createDepartmentApplication(deptApplicationData);
-
-      if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message);
-      }
-
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
-    }
-  },
-);
-
 export const getDepartmentApplicationsByMemberApplication = createAsyncThunk(
   "departmentApplications/getByMemberApplication",
   async (memberApplicationId, thunkAPI) => {
@@ -150,23 +133,6 @@ const departmentApplicationSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Handle createNewDepartmentApplication
-      .addCase(createNewDepartmentApplication.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.departmentApplicationStatus = "pending";
-      })
-      .addCase(createNewDepartmentApplication.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.deptApplications.push(action.payload.data);
-        state.departmentApplicationStatus = "fulfilled";
-      })
-      .addCase(createNewDepartmentApplication.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload || action.error.message;
-        state.departmentApplicationStatus = "rejected";
-      })
-
       // Handle getDepartmentApplicationsByMemberApplication
       .addCase(
         getDepartmentApplicationsByMemberApplication.pending,
