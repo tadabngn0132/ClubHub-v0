@@ -60,10 +60,15 @@ export const VALIDATION_MESSAGES = {
 
   positionTitleMinLength: "Position title is required",
 
-  commentMinLength: "Task description must contain at least 10 characters",
-  cvReviewCommentRequired: "CV review comment is required",
-  finalReviewCommentRequired: "Final review comment is required",
-  interviewCommentRequired: "Interview comment is required",
+  cvStatusRequired: "Status is required",
+  cvStatusValueRequired: "Status must be either 'passed' or 'failed'",
+
+  interviewStatusRequired: "Interview status is required",
+  interviewStatusValueRequired:
+    "Interview status must be either 'passed' or 'failed'",
+
+  finalStatusRequired: "Final status is required",
+  finalStatusValueRequired: "Final status must be either 'passed' or 'failed'",
 };
 
 export const VALIDATION_RULES = {
