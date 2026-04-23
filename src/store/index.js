@@ -7,7 +7,6 @@ import departmentReducer from "./slices/departmentSlice";
 import positionReducer from "./slices/positionSlice";
 import memberApplicationReducer from "./slices/memberApplicationSlice";
 import notificationReducer from "./slices/notificationSlice";
-import departmentApplicationReducer from "./slices/departmentApplicationSlice";
 import activityParticipationReducer from "./slices/activityParticipationSlice";
 import chatRoomReducer from "./slices/chatRoomSlice";
 import aiReducer from "./slices/aiSlice";
@@ -30,7 +29,6 @@ export const store = configureStore({
     position: positionReducer,
     memberApplication: memberApplicationReducer,
     notification: notificationReducer,
-    departmentApplication: departmentApplicationReducer,
     activityParticipation: activityParticipationReducer,
     chatRoom: chatRoomReducer,
     ai: aiReducer,
