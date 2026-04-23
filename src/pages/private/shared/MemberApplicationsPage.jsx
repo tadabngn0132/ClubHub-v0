@@ -6,58 +6,6 @@ import {
   formatDate,
   formatUppercaseToCapitalized,
 } from "../../../utils/formatters.js";
-import { MEMBER_APPLICATION_FINAL_STATUS_OPTIONS } from "../../../utils/constants";
-
-const normalizeStatus = (value) =>
-  String(value || "")
-    .trim()
-    .toUpperCase();
-
-const getInterviewSummary = (application) => {
-  const departmentApplications = application?.departmentApplications || [];
-  const summary = {
-    total: departmentApplications.length,
-    pending: 0,
-    passed: 0,
-    failed: 0,
-  };
-
-  departmentApplications.forEach((deptApp) => {
-    const status = normalizeStatus(deptApp.interviewStatus);
-    if (status === "PASSED") summary.passed += 1;
-    else if (status === "FAILED") summary.failed += 1;
-    else summary.pending += 1;
-  });
-
-  return summary;
-};
-
-const getStatusBadgeClass = (status) => {
-  const normalizedStatus = String(status || "").toUpperCase();
-
-  if (normalizedStatus === "PENDING") {
-    return "border-amber-500/40 bg-amber-500/20 text-amber-300";
-  }
-
-  if (normalizedStatus === "PASSED") {
-    return "border-emerald-500/40 bg-emerald-500/20 text-emerald-300";
-  }
-
-  if (normalizedStatus === "FAILED") {
-    return "border-rose-500/40 bg-rose-500/20 text-rose-300";
-  }
-
-  return "border-gray-600 bg-gray-700/40 text-gray-300";
-};
-
-const handleDisplayGeneralizedInterviewStatus = (application) => {
-  const summary = getInterviewSummary(application);
-
-  if (summary.total === 0) return "N/A";
-  if (summary.pending > 0) return "PENDING";
-  if (summary.failed === summary.total) return "FAILED";
-  return "PASSED";
-};
 
 const MemberApplicationsPage = ({
   role,

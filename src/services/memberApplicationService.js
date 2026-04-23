@@ -33,6 +33,17 @@ export const updateMemberApplicationCVReviewDetail = async (id, data) => {
   return res.data;
 };
 
+export const updateMemberApplicationDepartmentInterviewDetail = async (
+  id,
+  data
+) => {
+  const res = await axiosClient.put(
+    `/member-applications/${id}/department-interview`,
+    data
+  );
+  return res.data;
+};
+
 export const updateMemberApplicationFinalReviewDetail = async (id, data) => {
   const res = await axiosClient.put(
     `/member-applications/${id}/final-review`,
@@ -41,7 +52,7 @@ export const updateMemberApplicationFinalReviewDetail = async (id, data) => {
   return res.data;
 };
 
-export const updateManyMemberApplications = async (payload) => {
-  const res = await axiosClient.put("/member-applications/many/update", payload);
+export const withdrawMemberApplication = async (id) => {
+  const res = await axiosClient.put(`/member-applications/${id}/withdraw`);
   return res.data;
 };

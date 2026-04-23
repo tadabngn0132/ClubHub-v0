@@ -3,16 +3,15 @@ import { useForm } from "react-hook-form";
 import { formatUppercaseToCapitalized } from "../../../utils/formatters.js";
 import { VALIDATION_MESSAGES } from "../../../utils/validationRules.js";
 
-const MemberApplicationCvReviewForm = () => {
-
+const MemberApplicationDepartmentInterviewForm = () => {
   return (
     <div>
       <p className="text-sm text-slate-300">
-        CV review details will be displayed here. Click "Pass" or "Fail" to
-        update the CV review status of the application.
+        Department interview details will be displayed here. Click "Pass" or "Fail" to
+        update the department interview status of the application.
       </p>
     </div>
   );
 };
 
-export default MemberApplicationCvReviewForm;
+export default MemberApplicationDepartmentInterviewForm;

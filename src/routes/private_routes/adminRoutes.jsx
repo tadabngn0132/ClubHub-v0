@@ -24,7 +24,7 @@ import AdminViewPosition from "../../pages/private/admin/AdminViewPosition.jsx";
 import AdminMemberApplications from "../../pages/private/admin/AdminMemberApplications.jsx";
 import AdminViewMemberApplication from "../../pages/private/admin/AdminViewMemberApplication.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
-import MemberApplicationProcess from "../../pages/private/shared/MemberApplicationProcess.jsx";
+import MemberApplicationPage from "../../pages/private/shared/MemberApplicationsPage.jsx";
 import AdminDocuments from "../../pages/private/admin/AdminDocuments.jsx";
 import AdminChat from "../../pages/private/admin/AdminChat.jsx";
 import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
@@ -238,7 +238,7 @@ export const adminRoutes = [
     path: "/admin/member-applications/cv-review/:applicationId",
     element: (
       <SharedLayout role="admin">
-        <MemberApplicationProcess role="admin" stage="cv-review" />
+        <MemberApplicationPage role="admin" stage="cv-review" />
       </SharedLayout>
     ),
   },
@@ -246,7 +246,7 @@ export const adminRoutes = [
     path: "/admin/member-applications/interview/:applicationId",
     element: (
       <SharedLayout role="admin">
-        <MemberApplicationProcess role="admin" stage="interview" />
+        <MemberApplicationPage role="admin" stage="interview" />
       </SharedLayout>
     ),
   },
@@ -254,7 +254,7 @@ export const adminRoutes = [
     path: "/admin/member-applications/final-review/:applicationId",
     element: (
       <SharedLayout role="admin">
-        <MemberApplicationProcess role="admin" stage="final-review" />
+        <MemberApplicationPage role="admin" stage="final-review" />
       </SharedLayout>
     ),
   },

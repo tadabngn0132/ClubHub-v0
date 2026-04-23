@@ -20,7 +20,6 @@ import ModeratorViewMemberApplication from "../../pages/private/moderator/Modera
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
 import ModeratorAddUser from "../../pages/private/moderator/ModeratorAddUser.jsx";
 import ModeratorEditUser from "../../pages/private/moderator/ModeratorEditUser.jsx";
-import MemberApplicationProcess from "../../pages/private/shared/MemberApplicationProcess.jsx";
 import ModeratorChat from "../../pages/private/moderator/ModeratorChat.jsx";
 import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
 import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx";
@@ -193,30 +192,6 @@ export const moderatorRoutes = [
     element: (
       <SharedLayout role="moderator">
         <ModeratorViewMemberApplication />
-      </SharedLayout>
-    ),
-  },
-  {
-    path: "/moderator/member-applications/cv-review/:applicationId",
-    element: (
-      <SharedLayout role="moderator">
-        <MemberApplicationProcess role="moderator" stage="cv-review" />
-      </SharedLayout>
-    ),
-  },
-  {
-    path: "/moderator/member-applications/interview/:applicationId",
-    element: (
-      <SharedLayout role="moderator">
-        <MemberApplicationProcess role="moderator" stage="interview" />
-      </SharedLayout>
-    ),
-  },
-  {
-    path: "/moderator/member-applications/final-review/:applicationId",
-    element: (
-      <SharedLayout role="moderator">
-        <MemberApplicationProcess role="moderator" stage="final-review" />
       </SharedLayout>
     ),
   },
