@@ -1,13 +1,7 @@
-import { useEffect, useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
-import Loading from "../../../components/layout/internal/Loading.jsx";
-import {
-  formatDate,
-  formatUppercaseToCapitalized,
-} from "../../../utils/formatters";
-import { getMemberApplicationDetails } from "../../../store/slices/memberApplicationSlice";
+// TODO(member-application): rebuild this as the shared detail page for admin,
+// moderator, and member flows. Fetch the application by id, render the
+// aggregate profile, CV review, interview history, final review, and withdraw
+// status, then expose only the actions allowed by role and transition state.
 
 const MemberApplicationDetailsPage = ({ role }) => {
   return (

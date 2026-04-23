@@ -26,6 +26,10 @@ import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx"
 import ModeratorActivityParticipants from "../../pages/private/moderator/ModeratorActivityParticipants.jsx";
 import ModeratorSetting from "../../pages/private/moderator/ModeratorSetting.jsx";
 
+// TODO(member-application): keep moderator member-application routes in sync
+// with the shared list/detail screens and only expose the review paths that
+// remain valid for moderator permissions.
+
 export const moderatorRoutes = [
   {
     path: "/moderator/dashboard",

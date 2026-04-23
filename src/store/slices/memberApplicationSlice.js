@@ -11,6 +11,11 @@ import {
   withdrawMemberApplication,
 } from "../../services/memberApplicationService";
 
+// TODO(member-application): make this slice the source of truth for list and
+// detail state. Rework the async thunks and reducers to handle the aggregate
+// payload, refresh detail after mutations, and keep loading/error flags
+// separate for submit, review, and withdraw actions.
+
 export const submitMemberApplication = createAsyncThunk(
   "memberApplication/submitMemberApplication",
   async (applicationData, thunkAPI) => {
@@ -287,8 +292,7 @@ const memberApplicationSlice = createSlice({
           state.memberApplication &&
           state.memberApplication.id === action.payload.dataId
         ) {
-          state.memberApplication.cvReviewDetail =
-            action.payload.cvReviewDetail;
+          state.memberApplication.cvReview = action.payload.cvReview;
         }
         state.memberApplicationStatus = "fulfilled";
       })
@@ -314,8 +318,8 @@ const memberApplicationSlice = createSlice({
             state.memberApplication &&
             state.memberApplication.id === action.payload.dataId
           ) {
-            state.memberApplication.departmentInterviewDetail =
-              action.payload.departmentInterviewDetail;
+            state.memberApplication.departmentInterviews =
+              action.payload.departmentInterviews;
           }
           state.memberApplicationStatus = "fulfilled";
         }
@@ -339,8 +343,7 @@ const memberApplicationSlice = createSlice({
             state.memberApplication &&
             state.memberApplication.id === action.payload.dataId
           ) {
-            state.memberApplication.finalReviewDetail =
-              action.payload.finalReviewDetail;
+            state.memberApplication.finalReview = action.payload.finalReview;
           }
           state.memberApplicationStatus = "fulfilled";
         },
@@ -353,7 +356,7 @@ const memberApplicationSlice = createSlice({
 
       // Handle withdrawMemberApplicationByUser
       .addCase(withdrawMemberApplicationByUser.pending, (state) => {
-        state.isLoading = true; 
+        state.isLoading = true;
         state.memberApplicationStatus = "pending";
       })
       .addCase(withdrawMemberApplicationByUser.fulfilled, (state, action) => {
@@ -362,7 +365,7 @@ const memberApplicationSlice = createSlice({
           state.memberApplication &&
           state.memberApplication.id === action.payload.dataId
         ) {
-          state.memberApplication.status = "withdrawn";
+          state.memberApplication.state = "WITHDRAWN";
         }
         state.memberApplicationStatus = "fulfilled";
       })

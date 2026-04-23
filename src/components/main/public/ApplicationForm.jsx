@@ -5,6 +5,12 @@ import { useEffect } from "react";
 import { getDepartmentsList, resetDepartmentStatus } from "../../../store/slices/departmentSlice";
 import { VALIDATION_MESSAGES, VALIDATION_RULES } from "../../../utils/validationRules";
 
+// TODO(member-application): finish the public application flow here.
+// Rebuild the full form, include all fields needed by the backend, validate
+// the selected departments, support avatar upload if required, submit through
+// the memberApplication slice, and show success/error feedback without losing
+// the draft state too early.
+
 const ApplicationForm = () => {
   const dispatch = useDispatch();
   const { departments } = useSelector((state) => state.department);

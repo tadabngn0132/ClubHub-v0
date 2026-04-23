@@ -1,7 +1,6 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { formatUppercaseToCapitalized } from "../../../utils/formatters.js";
-import { VALIDATION_MESSAGES } from "../../../utils/validationRules.js";
+// TODO(member-application): rebuild this form to manage one or many
+// department interview records, including interviewer, department, notes,
+// decision, and validation of the current workflow stage.
 
 const MemberApplicationDepartmentInterviewForm = () => {
   return (

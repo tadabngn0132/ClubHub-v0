@@ -1,5 +1,10 @@
 import axiosClient from "./axios";
 
+// TODO(member-application): keep this file as the single API gateway for the
+// whole workflow. Rebuild the calls for create/list/detail/review/withdraw and
+// make the response mapping match the aggregate backend shape:
+// state, cvReview, departmentInterviews, and finalReview.
+
 export const createMemberApplication = async (data) => {
   const res = await axiosClient.post("/member-applications", data);
   return res.data;

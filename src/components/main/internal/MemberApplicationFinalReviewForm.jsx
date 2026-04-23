@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { VALIDATION_MESSAGES } from "../../../utils/validationRules.js";
+// TODO(member-application): rebuild this form to show the final review
+// summary, gather final decision and notes, validate role-based access, and
+// submit the final transition back to the aggregate detail state.
 
 const MemberApplicationFinalReviewForm = () => {
   return (

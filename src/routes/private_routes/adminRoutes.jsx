@@ -33,6 +33,11 @@ import AdminActivityParticipants from "../../pages/private/admin/AdminActivityPa
 import AdminSetting from "../../pages/private/admin/AdminSetting.jsx";
 import ActivityLogsPage from "../../pages/private/shared/ActivityLogsPage.jsx";
 
+// TODO(member-application): keep these routes aligned with the rebuilt member
+// application workflow. The list route should drive filtering and navigation,
+// the detail route should show the aggregate review timeline, and the stage
+// routes should host the dedicated CV / interview / final review forms.
+
 export const adminRoutes = [
   {
     path: "/admin/dashboard",

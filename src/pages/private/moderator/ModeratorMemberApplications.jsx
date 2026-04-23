@@ -7,6 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import MemberApplicationsPage from "../shared/MemberApplicationsPage.jsx";
 
+// TODO(member-application): keep moderator list behavior aligned with admin
+// but limit actions to moderator permissions. Use the shared list page once it
+// supports aggregate state, detail navigation, and the correct delete policy.
+
 const ModeratorMemberApplications = () => {
   const dispatch = useDispatch();
   const { memberApplications, isLoading, error } = useSelector(

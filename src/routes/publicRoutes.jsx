@@ -8,6 +8,10 @@ import Contact from "../pages/public/Contact.jsx";
 import AddMemberApplication from "../pages/public/AddMemberApplication.jsx";
 import ErrorBoundary from "../components/layout/public/ErrorBoundary.jsx";
 
+// TODO(member-application): keep the public application route pointed at the
+// rebuilt entry page and make sure the flow returns to a success/track screen
+// after submission when the UX is ready.
+
 export const publicRoutes = [
   {
     path: "/",

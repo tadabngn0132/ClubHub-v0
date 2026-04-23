@@ -1,11 +1,7 @@
-import { Link } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
-import Loading from "../../../components/layout/internal/Loading.jsx";
-import toast from "react-hot-toast";
-import {
-  formatDate,
-  formatUppercaseToCapitalized,
-} from "../../../utils/formatters.js";
+// TODO(member-application): rebuild this as the main application list screen.
+// It should support search, state filters, sort options, bulk actions, state
+// badges, and links to the detail page. Keep the list driven by the aggregate
+// state field instead of legacy cv/final flat fields.
 
 const MemberApplicationsPage = () => {
   return (
