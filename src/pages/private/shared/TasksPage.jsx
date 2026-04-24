@@ -6,7 +6,7 @@ import {
   resetTaskStatus,
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
 import {
@@ -15,6 +15,7 @@ import {
 } from "../../../utils/formatters.js";
 import { TASK_STATUS_OPTIONS } from "../../../utils/constants";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
+import Pagination from "../../../components/internal/Pagination.jsx";
 
 const TasksPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
@@ -26,17 +27,35 @@ const TasksPage = ({ role, basePath }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [deleteMode, setDeleteMode] = useState("");
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const tasksPerPage = 10;
+  
   useEffect(() => {
     dispatch(getAllTasksList());
   }, [dispatch]);
-
+  
   useEffect(() => {
     if (error) {
       toast.error(error);
       dispatch(resetTaskStatus());
     }
   }, [error]);
+  
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter, sortBy]);
+
+  const totalPages = Math.max(1, Math.ceil(tasks.length / tasksPerPage));
+  const clampedCurrentPage = Math.min(currentPage, totalPages);
+
+  useEffect(() => {
+    if (currentPage !== clampedCurrentPage) {
+      setCurrentPage(clampedCurrentPage);
+    }
+  }, [currentPage, clampedCurrentPage]);
+
+  const startIndex = (clampedCurrentPage - 1) * tasksPerPage;
+  const paginatedTasks = filteredTasks.slice(startIndex, startIndex + tasksPerPage);
 
   const handleOpenConfirmationModal = () => {
     setIsConfirmationModalOpen(true);
@@ -272,7 +291,7 @@ const TasksPage = ({ role, basePath }) => {
                     </td>
                   </tr>
                 ) : (
-                  filteredTasks.map((task) => (
+                  paginatedTasks.map((task) => (
                     <tr
                       key={task.id}
                       className="border-t border-slate-800 odd:bg-slate-900/30 even:bg-slate-800/20 hover:bg-slate-800/50"
@@ -352,6 +371,10 @@ const TasksPage = ({ role, basePath }) => {
                 )}
               </tbody>
             </table>
+
+            {filteredTasks.length > 0 && (
+              <Pagination currentPage={clampedCurrentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+            )}
           </div>
         </div>
 

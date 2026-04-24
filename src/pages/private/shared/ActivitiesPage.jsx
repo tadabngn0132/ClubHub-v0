@@ -4,7 +4,7 @@ import {
   hardDeleteActivityById,
   resetActivityError,
 } from "../../../store/slices/activitySlice";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ActivitiesCardView from "../../../components/main/internal/ActivitiesCardView";
@@ -15,6 +15,7 @@ import ActivitiesCalendarView from "../../../components/main/internal/Activities
 import { ACTIVITY_STATUS_OPTIONS } from "../../../utils/constants";
 import { formatUppercaseToCapitalized } from "../../../utils/formatters";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
+import Pagination from "../../../components/internal/Pagination.jsx";
 
 const ActivitiesPage = ({ role, canCreate, basePath }) => {
   const dispatch = useDispatch();
@@ -28,11 +29,13 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(null);
   const [deleteMode, setDeleteMode] = useState("");
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const activitiesPerPage = 10;
+  
   useEffect(() => {
     dispatch(getActivitiesList());
   }, [dispatch]);
-
+  
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -81,6 +84,24 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     return result;
   }, [activities, searchTerm, statusFilter, sortBy]);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter, sortBy]);
+
+  const totalPages = Math.max(1, Math.ceil(activities.length / activitiesPerPage));
+  const clampedCurrentPage = Math.min(currentPage, totalPages);
+
+  useEffect(() => {
+    if (currentPage !== clampedCurrentPage) {
+      setCurrentPage(clampedCurrentPage);
+    }
+  }, [clampedCurrentPage, currentPage]);
+
+  const startIndex = (clampedCurrentPage - 1) * activitiesPerPage;
+  const paginatedActivities = filteredActivities.slice(startIndex, startIndex + activitiesPerPage);
+
+  const activitiesForListView = activeTab === 2 ? filteredActivities : paginatedActivities;
+
   const clearFilters = () => {
     setSearchTerm("");
     setStatusFilter("all");
@@ -120,7 +141,7 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
       component: (
         <ActivitiesTableView
           role={role}
-          activities={filteredActivities}
+          activities={activitiesForListView}
           onDeleteConfigured={handleDeleteConfigured}
         />
       ),
@@ -130,7 +151,7 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
       component: (
         <ActivitiesCardView
           role={role}
-          activities={filteredActivities}
+          activities={activitiesForListView}
           onDeleteConfigured={handleDeleteConfigured}
         />
       ),
@@ -294,6 +315,10 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
                 {tab.component}
               </div>
             ))
+          )}
+          
+          {filteredActivities.length > 0 && activeTab !== 2 && (
+            <Pagination currentPage={clampedPage} totalPages={totalPages} onPageChange={setCurrentPage} />
           )}
         </div>
 
