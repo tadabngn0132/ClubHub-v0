@@ -89,13 +89,6 @@ const MemberApplicationsPage = ({ role }) => {
               {memberApplications.length} application(s)
             </p>
           </div>
-
-          <Link
-            to={`/${role}/member-applications/add`}
-            className="inline-flex w-max items-center justify-center rounded-full border border-pink-400/40 bg-pink-500/10 px-4 py-2 text-sm font-semibold text-pink-100 transition hover:bg-pink-500/20"
-          >
-            Add New Application
-          </Link>
         </div>
 
         <div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-950/75">
