@@ -354,7 +354,7 @@ const activitySlice = createSlice({
       .addCase(softDeleteActivityById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.activities = state.activities.filter(
-          (activity) => activity.id !== action.payload.data.id,
+          (activity) => activity.id !== action.meta.arg,
         );
         state.activityStatus = "fulfilled";
       })

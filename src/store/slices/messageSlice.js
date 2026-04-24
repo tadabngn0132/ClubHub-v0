@@ -198,7 +198,7 @@ const messageSlice = createSlice({
       .addCase(softDeleteMessageById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.messages = state.messages.filter(
-          (message) => message.id !== action.payload.data.messageId,
+          (message) => message.id !== action.meta.arg,
         );
       })
       .addCase(softDeleteMessageById.rejected, (state, action) => {
@@ -213,7 +213,7 @@ const messageSlice = createSlice({
       .addCase(hardDeleteMessageById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.messages = state.messages.filter(
-          (message) => message.id !== action.payload.data.messageId,
+          (message) => message.id !== action.meta.arg,
         );
       })
       .addCase(hardDeleteMessageById.rejected, (state, action) => {

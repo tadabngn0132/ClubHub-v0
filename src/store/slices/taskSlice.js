@@ -283,7 +283,7 @@ const taskSlice = createSlice({
       .addCase(softDeleteTaskById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tasks = state.tasks.filter(
-          (task) => task.id !== action.payload.data.id,
+          (task) => task.id !== action.meta.arg,
         );
         state.taskStatus = "fulfilled";
       })
@@ -302,7 +302,7 @@ const taskSlice = createSlice({
       .addCase(hardDeleteTaskById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tasks = state.tasks.filter(
-          (task) => task.id !== action.payload.data.id,
+          (task) => task.id !== action.meta.arg,
         );
         state.taskStatus = "fulfilled";
       })

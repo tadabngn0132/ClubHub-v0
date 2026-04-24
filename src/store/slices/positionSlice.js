@@ -211,7 +211,7 @@ const positionSlice = createSlice({
       .addCase(softDeletePositionById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.positions = state.positions.filter(
-          (position) => position.id !== action.payload.data.id,
+          (position) => position.id !== action.meta.arg,
         );
         state.positionStatus = "fulfilled";
       })
@@ -230,7 +230,7 @@ const positionSlice = createSlice({
       .addCase(hardDeletePositionById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.positions = state.positions.filter(
-          (position) => position.id !== action.payload.data.id,
+          (position) => position.id !== action.meta.arg,
         );
         state.positionStatus = "fulfilled";
       })

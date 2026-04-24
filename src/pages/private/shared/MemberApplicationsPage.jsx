@@ -37,12 +37,14 @@ const MemberApplicationsPage = ({ role }) => {
     handleOpenConfirmationModal();
   };
 
-  const handleDelete = (selectedMemAppId) => {
-    if (deleteMode === "soft") {
-      dispatch(softDeleteMemberApplicationById(selectedMemAppId));
-      handleCloseConfirmationModal();
-    } else if (deleteMode === "hard") {
-      dispatch(hardDeleteMemberApplicationById(selectedMemAppId));
+  const handleDelete = async (selectedMemAppId) => {
+    try {
+      if (deleteMode === "soft") {
+        await dispatch(softDeleteMemberApplicationById(selectedMemAppId)).unwrap();
+      } else if (deleteMode === "hard") {
+        await dispatch(hardDeleteMemberApplicationById(selectedMemAppId)).unwrap();
+      }
+    } finally {
       handleCloseConfirmationModal();
     }
   };

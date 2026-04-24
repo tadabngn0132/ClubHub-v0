@@ -253,7 +253,7 @@ const memberApplicationSlice = createSlice({
       .addCase(softDeleteMemberApplicationById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.memberApplications = state.memberApplications.filter(
-          (app) => app.id !== action.payload.dataId,
+          (app) => app.id !== action.meta.arg,
         );
         state.memberApplicationStatus = "fulfilled";
       })
@@ -271,7 +271,7 @@ const memberApplicationSlice = createSlice({
       .addCase(hardDeleteMemberApplicationById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.memberApplications = state.memberApplications.filter(
-          (app) => app.id !== action.payload.dataId,
+          (app) => app.id !== action.meta.arg,
         );
         state.memberApplicationStatus = "fulfilled";
       })

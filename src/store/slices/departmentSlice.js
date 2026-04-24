@@ -211,7 +211,7 @@ const departmentSlice = createSlice({
       .addCase(softDeleteDepartmentById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.departments = state.departments.filter(
-          (dept) => dept.id !== action.payload.data.id,
+          (dept) => dept.id !== action.meta.arg,
         );
         state.departmentStatus = "fulfilled";
       })

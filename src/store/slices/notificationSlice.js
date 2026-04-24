@@ -316,12 +316,8 @@ const notificationSlice = createSlice({
       })
       .addCase(softDeleteNotificationById.fulfilled, (state, action) => {
         state.isLoading = false;
-        const deletedId =
-          action.payload?.dataId ||
-          action.payload?.data?.id ||
-          action.payload?.id;
         state.notifications = state.notifications.filter(
-          (notif) => notif.id !== deletedId,
+          (notif) => notif.id !== action.meta.arg,
         );
         state.notificationStatus = "fulfilled";
       })
@@ -338,12 +334,8 @@ const notificationSlice = createSlice({
       })
       .addCase(hardDeleteNotificationById.fulfilled, (state, action) => {
         state.isLoading = false;
-        const deletedId =
-          action.payload?.dataId ||
-          action.payload?.data?.id ||
-          action.payload?.id;
         state.notifications = state.notifications.filter(
-          (notif) => notif.id !== deletedId,
+          (notif) => notif.id !== action.meta.arg,
         );
         state.notificationStatus = "fulfilled";
       })
@@ -360,10 +352,8 @@ const notificationSlice = createSlice({
       })
       .addCase(softDeleteUserNotifications.fulfilled, (state, action) => {
         state.isLoading = false;
-        const deletedIds =
-          action.payload?.dataIds || action.payload?.data?.ids || [];
         state.notifications = state.notifications.filter(
-          (notif) => !deletedIds.includes(notif.id),
+          (notif) => notif.userId !== action.meta.arg,
         );
         state.notificationStatus = "fulfilled";
       })
@@ -380,10 +370,8 @@ const notificationSlice = createSlice({
       })
       .addCase(hardDeleteUserNotifications.fulfilled, (state, action) => {
         state.isLoading = false;
-        const deletedIds =
-          action.payload?.dataIds || action.payload?.data?.ids || [];
         state.notifications = state.notifications.filter(
-          (notif) => !deletedIds.includes(notif.id),
+          (notif) => notif.userId !== action.meta.arg,
         );
         state.notificationStatus = "fulfilled";
       })
