@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { sampleActivityData } from "../../data/sampleActivityData";
+import { getPublicActivities } from "../../services/publicActivityService";
 
 const TIME_FILTERS = ["All", "Upcoming", "Ongoing", "Completed"];
 const SORT_OPTIONS = [
@@ -24,15 +24,33 @@ const formatDateLabel = (isoDate) => {
   }).format(date);
 };
 
-const mapActivityStatus = (status) => {
-  const normalized = String(status || "").toUpperCase();
+const mapActivityStatus = (activity) => {
+  const normalized = String(activity?.status || "").toUpperCase();
+  const now = new Date();
+  const startDate = activity?.startDate ? new Date(activity.startDate) : null;
+  const endDate = activity?.endDate ? new Date(activity.endDate) : null;
+
+  if (normalized === "COMPLETED") {
+    return "Completed";
+  }
 
   if (normalized === "ONGOING") {
     return "Ongoing";
   }
 
-  if (normalized === "COMPLETED") {
+  if (endDate && !Number.isNaN(endDate.getTime()) && endDate < now) {
     return "Completed";
+  }
+
+  if (
+    startDate &&
+    endDate &&
+    !Number.isNaN(startDate.getTime()) &&
+    !Number.isNaN(endDate.getTime()) &&
+    startDate <= now &&
+    now <= endDate
+  ) {
+    return "Ongoing";
   }
 
   return "Upcoming";
@@ -60,6 +78,9 @@ const highlightText = (text, keyword) => {
 };
 
 const Activities = () => {
+  const [rawActivities, setRawActivities] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("Upcoming");
   const [selectedTimes, setSelectedTimes] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -69,6 +90,45 @@ const Activities = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [jumpToPage, setJumpToPage] = useState("");
   const [jumpError, setJumpError] = useState("");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadActivities = async () => {
+      try {
+        setIsLoading(true);
+        setError("");
+
+        const response = await getPublicActivities();
+
+        if (!response.success) {
+          throw new Error(response.message || "Failed to load activities");
+        }
+
+        if (isMounted) {
+          setRawActivities(response.data || []);
+        }
+      } catch (loadError) {
+        if (isMounted) {
+          setError(
+            loadError?.response?.data?.message ||
+              loadError.message ||
+              "Failed to load activities.",
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadActivities();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -83,25 +143,31 @@ const Activities = () => {
   }, [activeTab, selectedTimes, selectedCategories, debouncedSearch, sortBy]);
 
   const activities = useMemo(() => {
-    return sampleActivityData.map((item) => {
-      const category = item.category || item.type || "General";
+    return rawActivities.map((item) => {
+      const category = item.type || "General";
       const dateISO = item.startDate || item.date;
-      const location = item.location || [item.venueName, item.venueAddress].filter(Boolean).join(" - ") || "TBD";
+      const location =
+        [item.venueName, item.venueAddress, item.roomNumber]
+          .filter(Boolean)
+          .join(" - ") || "TBD";
 
       return {
         id: item.id,
         slug: item.slug,
-        title: item.title || item.name || "Untitled Activity",
+        title: item.title || "Untitled Activity",
         category,
-        status: mapActivityStatus(item.status),
+        status: mapActivityStatus(item),
         dateISO,
-        dateLabel: item.dateLabel || formatDateLabel(dateISO),
+        dateLabel: formatDateLabel(dateISO),
         location,
-        description: item.shortDescription || item.description || "No description available.",
-        thumbnail: item.thumbnail || item.thumbnailUrl,
+        description:
+          item.shortDescription || item.description || "No description available.",
+        thumbnail:
+          item.thumbnailUrl ||
+          `https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=1200&h=800&fit=crop`,
       };
     });
-  }, []);
+  }, [rawActivities]);
 
   const categoryFilters = useMemo(() => {
     return Array.from(new Set(activities.map((item) => item.category))).sort((a, b) =>
@@ -255,6 +321,16 @@ const Activities = () => {
         </div>
       </section>
 
+      {isLoading ? (
+        <section className="mt-8 rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-8 text-center text-white/70">
+          Loading activities from the database...
+        </section>
+      ) : error ? (
+        <section className="mt-8 rounded-[2rem] border border-rose-400/30 bg-rose-500/10 p-8 text-center text-rose-100">
+          {error}
+        </section>
+      ) : null}
+
       <section className="mt-8 rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-5 sm:p-6 md:p-8">
         <div className="grid gap-4 lg:grid-cols-3">
           <div className="lg:col-span-2">
@@ -374,7 +450,7 @@ const Activities = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {paginatedActivities.map((item) => (
+              {paginatedActivities.map((item) => (
               <article
                 key={item.id}
                 className="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#121214] text-white shadow-[0_24px_48px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#DB3F7A]/70"
