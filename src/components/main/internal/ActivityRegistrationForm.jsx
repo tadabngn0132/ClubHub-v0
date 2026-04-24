@@ -4,9 +4,11 @@ import { createNewActivityParticipation } from "../../../store/slices/activityPa
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { registerPublicActivity } from "../../../services/publicActivityService";
 
-const ActivityRegistrationForm = () => {
+const ActivityRegistrationForm = ({ activityId: activityIdProp, onSuccess }) => {
   const { activityId } = useParams();
+  const resolvedActivityId = activityIdProp || activityId;
   const dispatch = useDispatch();
   const { isLoading, error } = useSelector(
     (state) => state.activityParticipation,
@@ -14,6 +16,7 @@ const ActivityRegistrationForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -30,22 +33,52 @@ const ActivityRegistrationForm = () => {
     }
   }, [error]);
 
-  const handleActivityRegistration = (data) => {
-    dispatch(createNewActivityParticipation(activityId, data));
+  const handleActivityRegistration = async (data) => {
+    if (!resolvedActivityId) {
+      toast.error("Activity ID is missing.");
+      return;
+    }
+
+    try {
+      if (activityIdProp) {
+        const response = await registerPublicActivity(resolvedActivityId, data);
+
+        if (!response?.success) {
+          toast.error(response?.message || "Registration failed.");
+          return;
+        }
+
+        toast.success(response.message || "Registration submitted successfully.");
+        reset();
+        if (onSuccess) {
+          onSuccess(response.data);
+        }
+        return;
+      }
+
+      await dispatch(
+        createNewActivityParticipation({
+          activityId: Number(resolvedActivityId),
+          status: "registered",
+          guestName: data.name,
+          guestEmail: data.email,
+          guestPhoneNumber: data.phoneNumber,
+        }),
+      ).unwrap();
+      reset();
+    } catch (submitError) {
+      toast.error(
+        submitError?.response?.data?.message ||
+          submitError?.message ||
+          "Registration failed.",
+      );
+    }
   };
 
   return (
     <form
       onSubmit={handleSubmit(handleActivityRegistration)}
-      className="rounded-2xl border border-zinc-700 bg-zinc-950/60 p-4 text-zinc-100 shadow-xl sm:p-5"
     >
-      <h2 className="text-xl font-black tracking-tight text-white sm:text-2xl">
-        Register for Activity
-      </h2>
-      <p className="mt-2 text-sm text-zinc-400">
-        Fill in your contact details to complete registration.
-      </p>
-
       <div className="mt-4 grid gap-4">
         <div>
           <label

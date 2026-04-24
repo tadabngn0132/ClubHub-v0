@@ -11,9 +11,11 @@ import {
   faXmark,
   faChevronLeft,
   faChevronRight,
-  faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
-import { sampleActivityData } from "../../data/sampleActivityData";
+import {
+  getPublicActivities,
+  getPublicActivityBySlug,
+} from "../../services/publicActivityService";
 import ActivityRegistrationForm from "../../components/main/internal/ActivityRegistrationForm";
 
 const mapStatus = (status) => {
@@ -139,16 +141,6 @@ const getVideoUrlByType = (type) => {
   return "https://www.youtube.com/embed/tgbNymZ7vqY";
 };
 
-const getRecaptchaToken = async () => {
-  if (window.grecaptcha && import.meta.env.VITE_RECAPTCHA_SITE_KEY) {
-    return window.grecaptcha.execute(import.meta.env.VITE_RECAPTCHA_SITE_KEY, {
-      action: "activity_registration",
-    });
-  }
-
-  return Promise.resolve("mock-recaptcha-token");
-};
-
 const ensureMetaTag = (selector, attributeName, attributeValue, content) => {
   let tag = document.querySelector(selector);
   if (!tag) {
@@ -162,20 +154,57 @@ const ensureMetaTag = (selector, attributeName, attributeValue, content) => {
 
 const ActivityDetails = () => {
   const { slug } = useParams();
+  const [activity, setActivity] = useState(null);
+  const [activities, setActivities] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
   const [lightboxIndex, setLightboxIndex] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [submittedForm, setSubmittedForm] = useState(null);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    reason: "",
-  });
-  const [formErrors, setFormErrors] = useState({});
 
-  const activity = useMemo(() => {
-    return sampleActivityData.find((item) => item.slug === slug);
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadActivityData = async () => {
+      try {
+        setIsLoading(true);
+        setError("");
+
+        const [detailResponse, listResponse] = await Promise.all([
+          getPublicActivityBySlug(slug),
+          getPublicActivities(),
+        ]);
+
+        if (!detailResponse.success) {
+          throw new Error(detailResponse.message || "Failed to load activity details");
+        }
+
+        if (!listResponse.success) {
+          throw new Error(listResponse.message || "Failed to load related activities");
+        }
+
+        if (isMounted) {
+          setActivity(detailResponse.data);
+          setActivities(listResponse.data || []);
+        }
+      } catch (loadError) {
+        if (isMounted) {
+          setError(
+            loadError?.response?.data?.message ||
+              loadError.message ||
+              "Failed to load activity details.",
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadActivityData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [slug]);
 
   const uiActivity = useMemo(() => {
@@ -184,6 +213,8 @@ const ActivityDetails = () => {
     const status = mapStatus(activity.status);
     const startDate = activity.startDate;
     const endDate = activity.endDate;
+    const registrationsCount = activity._count?.activityParticipations || 0;
+    const maxParticipants = activity.maxParticipants || 0;
 
     return {
       id: activity.id,
@@ -202,12 +233,12 @@ const ActivityDetails = () => {
       venueAddress: activity.venueAddress,
       thumbnailUrl: activity.thumbnailUrl,
       type: activity.type,
-      registrationsCount: activity.registrationsCount || 0,
-      maxParticipants: activity.maxParticipants || 0,
+      registrationsCount,
+      maxParticipants,
       availableSlots:
         activity.availableSlots ??
         Math.max(
-          (activity.maxParticipants || 0) - (activity.registrationsCount || 0),
+          maxParticipants - registrationsCount,
           0,
         ),
       requireRegistration: activity.requireRegistration,
@@ -219,7 +250,7 @@ const ActivityDetails = () => {
 
     const statusOrder = { Upcoming: 0, Ongoing: 1, Completed: 2 };
 
-    return sampleActivityData
+    return activities
       .map((item) => ({
         ...item,
         uiStatus: mapStatus(item.status),
@@ -233,7 +264,7 @@ const ActivityDetails = () => {
         return statusOrder[a.uiStatus] - statusOrder[b.uiStatus];
       })
       .slice(0, 4);
-  }, [uiActivity]);
+  }, [uiActivity, activities]);
 
   const agenda = useMemo(
     () => getAgendaByType(uiActivity?.type),
@@ -335,58 +366,21 @@ const ActivityDetails = () => {
     );
   };
 
-  const validateForm = () => {
-    const errors = {};
+  if (isLoading) {
+    return (
+      <main className="mx-auto mt-8 mb-12 w-full max-w-4xl rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-8 text-center text-white/70 md:p-12">
+        Loading activity details from the database...
+      </main>
+    );
+  }
 
-    if (!formData.fullName.trim()) {
-      errors.fullName = "Full name is required.";
-    }
-
-    if (!/^\S+@\S+\.\S+$/.test(formData.email.trim())) {
-      errors.email = "Please enter a valid email address.";
-    }
-
-    if (!/^\+?[0-9\s-]{8,20}$/.test(formData.phone.trim())) {
-      errors.phone = "Please enter a valid phone number.";
-    }
-
-    if (formData.reason.trim().length < 12) {
-      errors.reason = "Please provide at least 12 characters for your reason.";
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
-  const handleSubmitRegistration = async (event) => {
-    event.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const recaptchaToken = await getRecaptchaToken();
-      if (!recaptchaToken) {
-        setFormErrors({
-          submit: "reCAPTCHA verification failed. Please try again.",
-        });
-        setIsSubmitting(false);
-        return;
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 700));
-
-      setSubmittedForm({ ...formData, recaptchaToken });
-      setShowSuccessModal(true);
-      setFormData({ fullName: "", email: "", phone: "", reason: "" });
-      setFormErrors({});
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  if (error) {
+    return (
+      <main className="mx-auto mt-8 mb-12 w-full max-w-4xl rounded-[2rem] border border-rose-400/30 bg-rose-500/10 p-8 text-center text-rose-100 md:p-12">
+        {error}
+      </main>
+    );
+  }
 
   if (!uiActivity) {
     return (
@@ -638,117 +632,12 @@ const ActivityDetails = () => {
                 Registration Form
               </h2>
               <p className="mt-2 text-sm text-white/70">
-                Fill in your details to register. reCAPTCHA v3 validation is
-                required before submit.
+                Fill in your details to register for this activity.
               </p>
 
-              <form
-                className="mt-5 space-y-4"
-                onSubmit={handleSubmitRegistration}
-              >
-                <div>
-                  <label className="mb-1 block text-xs uppercase tracking-[0.14em] text-white/70">
-                    Full Name
-                  </label>
-                  <input
-                    value={formData.fullName}
-                    onChange={(event) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        fullName: event.target.value,
-                      }))
-                    }
-                    className="w-full rounded-xl border border-white/20 bg-[#141416] px-3 py-2 text-sm text-white outline-none focus:border-[#DB3F7A]"
-                  />
-                  {formErrors.fullName ? (
-                    <p className="mt-1 text-xs text-[#DB3F7A]">
-                      {formErrors.fullName}
-                    </p>
-                  ) : null}
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-xs uppercase tracking-[0.14em] text-white/70">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(event) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        email: event.target.value,
-                      }))
-                    }
-                    className="w-full rounded-xl border border-white/20 bg-[#141416] px-3 py-2 text-sm text-white outline-none focus:border-[#DB3F7A]"
-                  />
-                  {formErrors.email ? (
-                    <p className="mt-1 text-xs text-[#DB3F7A]">
-                      {formErrors.email}
-                    </p>
-                  ) : null}
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-xs uppercase tracking-[0.14em] text-white/70">
-                    Phone Number
-                  </label>
-                  <input
-                    value={formData.phone}
-                    onChange={(event) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        phone: event.target.value,
-                      }))
-                    }
-                    className="w-full rounded-xl border border-white/20 bg-[#141416] px-3 py-2 text-sm text-white outline-none focus:border-[#DB3F7A]"
-                  />
-                  {formErrors.phone ? (
-                    <p className="mt-1 text-xs text-[#DB3F7A]">
-                      {formErrors.phone}
-                    </p>
-                  ) : null}
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-xs uppercase tracking-[0.14em] text-white/70">
-                    Reason for Joining
-                  </label>
-                  <textarea
-                    rows={4}
-                    value={formData.reason}
-                    onChange={(event) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        reason: event.target.value,
-                      }))
-                    }
-                    className="w-full rounded-xl border border-white/20 bg-[#141416] px-3 py-2 text-sm text-white outline-none focus:border-[#DB3F7A]"
-                  />
-                  {formErrors.reason ? (
-                    <p className="mt-1 text-xs text-[#DB3F7A]">
-                      {formErrors.reason}
-                    </p>
-                  ) : null}
-                </div>
-
-                <p className="text-xs text-white/55">
-                  Protected by reCAPTCHA v3. In local development, a mock token
-                  is used if site key is not configured.
-                </p>
-
-                {formErrors.submit ? (
-                  <p className="text-xs text-[#DB3F7A]">{formErrors.submit}</p>
-                ) : null}
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full rounded-full border border-[#DB3F7A] bg-[#DB3F7A] px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
-                >
-                  {isSubmitting ? "Submitting..." : "Submit Registration"}
-                </button>
-              </form>
+              <div className="mt-5">
+                <ActivityRegistrationForm activityId={uiActivity.id} />
+              </div>
             </article>
           ) : null}
         </aside>
@@ -766,7 +655,7 @@ const ActivityDetails = () => {
               className="overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-all duration-300 hover:-translate-y-1 hover:border-[#DB3F7A]/60"
             >
               <img
-                src={item.thumbnailUrl}
+                src={item.thumbnailUrl || uiActivity.thumbnailUrl}
                 alt={item.title}
                 loading="lazy"
                 className="h-32 w-full object-cover"
@@ -826,33 +715,6 @@ const ActivityDetails = () => {
           >
             <FontAwesomeIcon icon={faChevronRight} />
           </button>
-        </div>
-      ) : null}
-
-      {showSuccessModal ? (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4">
-          <div className="w-full max-w-md rounded-2xl border border-white/15 bg-[#121214] p-6 text-white">
-            <p className="inline-flex items-center gap-2 text-sm font-semibold text-[#DB3F7A]">
-              <FontAwesomeIcon icon={faCircleCheck} />
-              Registration Submitted
-            </p>
-            <h3 className="mt-3 text-xl font-semibold">Confirmation Sent</h3>
-            <p className="mt-3 text-sm text-white/75">
-              Thank you, {submittedForm?.fullName}. A confirmation email has
-              been queued for {submittedForm?.email}.
-            </p>
-            <p className="mt-2 text-xs text-white/55">
-              Reference token: {submittedForm?.recaptchaToken}
-            </p>
-
-            <button
-              type="button"
-              onClick={() => setShowSuccessModal(false)}
-              className="mt-5 w-full rounded-full border border-[#DB3F7A] bg-[#DB3F7A] px-4 py-2 text-sm font-semibold text-white"
-            >
-              Close
-            </button>
-          </div>
         </div>
       ) : null}
     </main>
