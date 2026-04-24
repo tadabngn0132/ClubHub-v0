@@ -3,12 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 const Members = () => {
-  const founders = [
-    { name: "Dao Ha Trang", role: "Founder" },
-    { name: "Tran Hoai Anh", role: "Co-Founder" },
-    { name: "Mai Tien Anh", role: "Co-Founder" },
-  ];
-
   const executiveBoard = [
     {
       name: "Nguyen Thai Manh",
@@ -221,12 +215,6 @@ const Members = () => {
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div className="rounded-2xl border border-white/15 bg-white/5 p-4">
-              <p className="text-2xl monument-extra-bold">03</p>
-              <p className="mt-1 text-xs uppercase tracking-[0.2em]">
-                Founders
-              </p>
-            </div>
-            <div className="rounded-2xl border border-white/15 bg-white/5 p-4">
               <p className="text-2xl monument-extra-bold">02</p>
               <p className="mt-1 text-xs uppercase tracking-[0.2em]">
                 Executive Board
@@ -238,47 +226,6 @@ const Members = () => {
                 Department Heads
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="mt-10">
-        <div className="mb-5 flex items-end gap-4">
-          <div className="h-11 w-2 rounded-full bg-[#DB3F7A]" />
-          <h2 className="monument-extra-bold text-3xl uppercase leading-none sm:text-4xl">
-            Founders
-          </h2>
-        </div>
-
-        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-6 sm:p-8">
-          <div className="pointer-events-none absolute right-10 top-8 h-28 w-28 rounded-full bg-[#DB3F7A]/12 blur-2xl" />
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {founders.map((member, index) => (
-              <article
-                key={member.name}
-                className={`rounded-2xl border border-white/10 p-5 text-white shadow-[0_20px_40px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-1 ${
-                  index % 2 === 0 ? "bg-[#121214]" : "bg-[#141416]"
-                }`}
-              >
-                <p className="text-[11px] uppercase tracking-[0.25em] text-[#DB3F7A]">
-                  {member.role}
-                </p>
-                <p className="monument-extra-bold mt-2 text-2xl uppercase">
-                  {member.name}
-                </p>
-              </article>
-            ))}
-          </div>
-
-          <div className="mt-6 grid grid-cols-1 gap-3 text-sm font-light leading-7 text-white/75 md:grid-cols-2">
-            <p>
-              Founders set the creative direction and culture standards across
-              all club seasons.
-            </p>
-            <p className="md:text-right">
-              They mentor new teams while preserving quality and identity
-              through each generation.
-            </p>
           </div>
         </div>
       </section>
