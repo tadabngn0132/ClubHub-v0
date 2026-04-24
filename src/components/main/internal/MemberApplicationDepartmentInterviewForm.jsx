@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateMemberApplicationDepartmentInterview } from "../../../store/slices/memberApplicationSlice";
 import { useForm } from "react-hook-form";
 import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
+import { useParams } from "react-router-dom";
 
 const MemberApplicationDepartmentInterviewForm = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
+  const { applicationId } = useParams();
   const {
     register,
     handleSubmit,
@@ -23,7 +25,7 @@ const MemberApplicationDepartmentInterviewForm = () => {
   });
 
   const handleUpdateDepartmentInterview = async (data) => {
-    await dispatch(updateMemberApplicationDepartmentInterview(data)).unwrap();
+    await dispatch(updateMemberApplicationDepartmentInterview({ id: applicationId, departmentInterviewData: data })).unwrap();
   };
 
   return (

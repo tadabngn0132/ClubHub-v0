@@ -9,6 +9,9 @@ import { getMemberApplicationDetails, softDeleteMemberApplicationById, hardDelet
 import Loading from "../../../components/layout/internal/Loading";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal";
 import { formatDate, formatUppercaseToCapitalized } from "../../../utils/formatters";
+import CVReviewCard from "../../../components/main/internal/CVReviewCard";
+import DepartmentInterviewCard from "../../../components/main/internal/DepartmentInterviewCard";
+import FinalReviewCard from "../../../components/main/internal/FinalReviewCard";
 
 const MemberApplicationDetailsPage = ({ role }) => {
   const { applicationId } = useParams();
@@ -217,6 +220,12 @@ const MemberApplicationDetailsPage = ({ role }) => {
               </div>
             </div>
           </div>
+        </section>
+
+        <section>
+          {memberApplication?.cvReview && memberApplication?.cvReview.map(cv => (<CVReviewCard key={cv.id} cvReview={cv} />))}
+          {memberApplication?.departmentInterview && memberApplication?.departmentInterview.map(interview => (<DepartmentInterviewCard key={interview.id} interview={interview} />))}
+          {memberApplication?.finalReview && memberApplication?.finalReview.map(final => (<FinalReviewCard key={final.id} finalReview={final} />))}
         </section>
       </div>
 

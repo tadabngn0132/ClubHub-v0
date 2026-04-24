@@ -1,8 +1,13 @@
-const DepartmentInterviewCard = () => {
+import { formatDate } from "../../../utils/formatters";
+
+const DepartmentInterviewCard = ({ interview }) => {
     return (
         <div>
-            <h2>Department Interview Card</h2>
-            <p>This card will display the department interview details for a member application. That includes interview status, interviewer information and feedback.</p>
+            <h3 className="text-lg font-semibold text-zinc-100 mb-2">Department Interview</h3>
+            <p>Status: {interview?.status}</p>
+            <p>Interviewer: {interview?.interviewer?.fullname || "Not specified"}</p>
+            <p>Comment: {interview?.comment || "No comment provided."}</p>
+            <p>Interviewed At: {formatDate(interview?.interviewedAt)}</p>
         </div>
     )
 }

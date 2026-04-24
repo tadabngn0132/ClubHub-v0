@@ -1,12 +1,13 @@
-// TODO(member-application): replace this stub with the final review summary
-// card. It should present the final state, reviewer info, timestamps, notes,
-// and any action history relevant to the decision.
+import { formatDate } from "../../../utils/formatters";
 
-const FinalReviewCard = () => {
+const FinalReviewCard = ({ finalReview }) => {
     return (
         <div>
-            <h2>Final Review Card</h2>
-            <p>This card will display the final review details for a member application. That includes final decision, reviewer information and feedback.</p>
+            <h3 className="text-lg font-semibold text-zinc-100 mb-2">Final Review</h3>
+            <p>Status: {finalReview?.status}</p>
+            <p>Reviewer: {finalReview?.reviewer?.fullname || "Not specified"}</p>
+            <p>Comment: {finalReview?.comment || "No comment provided."}</p>
+            <p>Reviewed At: {formatDate(finalReview?.reviewedAt)}</p>
         </div>
     )
 }

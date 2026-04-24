@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateMemberApplicationCVReview } from "../../../store/slices/memberApplicationSlice";
 import { useForm } from "react-hook-form";
 import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
+import { useParams } from "react-router-dom";
 
 const MemberApplicationCvReviewForm = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
+  const { applicationId } = useParams();
   const {
     register,
     handleSubmit,
@@ -23,7 +25,7 @@ const MemberApplicationCvReviewForm = () => {
   });
 
   const handleUpdateCVReview = async (data) => {
-    await dispatch(updateMemberApplicationCVReview(data)).unwrap();
+    await dispatch(updateMemberApplicationCVReview({ id: applicationId, cvReviewData: data })).unwrap();
   };
 
   return (
