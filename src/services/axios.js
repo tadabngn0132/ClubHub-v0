@@ -12,9 +12,10 @@ export const setUnauthorizedHandler = (handler) => {
   unauthorizedHandler = handler;
 };
 
-const API_BASE_URL = import.meta.env.VITE_NODE_ENV === "production"
-  ? import.meta.env.VITE_API_BASE_URL
-  : import.meta.env.VITE_API_BASE_URL || "http://localhost:5995/api";
+const API_BASE_URL =
+  import.meta.env.VITE_NODE_ENV === "production"
+    ? import.meta.env.VITE_API_BASE_URL
+    : import.meta.env.VITE_API_BASE_URL || "http://localhost:5995/api";
 
 // Create an axios instance
 const axiosClient = axios.create({
@@ -211,23 +212,36 @@ axiosClient.interceptors.response.use(
         break;
       case 403:
         // Handle forbidden access
-        toast.error("You do not have permission to perform this action.");
+        toast.error(
+          error.response.data.message ||
+            "You do not have permission to perform this action.",
+        );
         break;
       case 404:
         // Handle resource not found
-        toast.error("Requested resource not found.");
+        toast.error(
+          error.response.data.message || "Requested resource not found.",
+        );
         break;
       case 500:
         // Handle server error
-        toast.error("Internal server error. Please try again later.");
+        toast.error(
+          error.response.data.message ||
+            "Internal server error. Please try again later.",
+        );
         break;
       case 502:
         // Handle bad gateway
-        toast.error("Bad gateway. Please try again later.");
+        toast.error(
+          error.response.data.message || "Bad gateway. Please try again later.",
+        );
         break;
       case 504:
         // Handle gateway timeout
-        toast.error("Gateway timeout. Please try again later.");
+        toast.error(
+          error.response.data.message ||
+            "Gateway timeout. Please try again later.",
+        );
         break;
       default:
         break;

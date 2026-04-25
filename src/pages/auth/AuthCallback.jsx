@@ -18,6 +18,7 @@ const AuthCallback = () => {
       const success = searchParams.get("success");
       const userData = searchParams.get("user");
       const accessToken = searchParams.get("accessToken");
+      const message = searchParams.get("message");
 
       if (success && userData && accessToken) {
         const user = JSON.parse(decodeURIComponent(userData));
@@ -59,7 +60,7 @@ const AuthCallback = () => {
         }
       } else {
         navigate("/sign-in");
-        toast.error("Authentication failed. Please try again.");
+        toast.error(message || "Login failed. Please try again.");
       }
     };
 
