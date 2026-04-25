@@ -38,7 +38,7 @@ const UserDetailPage = ({ role, basePath }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to load user details");
       dispatch(resetUserError());
     }
   }, [error]);

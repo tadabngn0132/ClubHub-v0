@@ -21,7 +21,7 @@ const AdminAddActivity = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to add activity");
       dispatch(resetActivityError());
     }
   }, [error]);

@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import {
-    getPositionDetails,
-    softDeletePositionById,
-    hardDeletePositionById,
-    resetPositionError,
+  getPositionDetails,
+  softDeletePositionById,
+  hardDeletePositionById,
+  resetPositionError,
 } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -29,7 +29,7 @@ const PositionDetailPage = ({ role, basePath }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to load position details");
       dispatch(resetPositionError());
     }
   }, [error]);
@@ -89,10 +89,10 @@ const PositionDetailPage = ({ role, basePath }) => {
 
           {role === "ADMIN" && (
             <div>
-                <Link to={`${basePath}/edit/${positionId}`}>
-                    Edit Position
-                </Link>
-                <button onClick={() => handleDeleteConfigured("soft")}>Delete Position</button>
+              <Link to={`${basePath}/edit/${positionId}`}>Edit Position</Link>
+              <button onClick={() => handleDeleteConfigured("soft")}>
+                Delete Position
+              </button>
             </div>
           )}
         </section>

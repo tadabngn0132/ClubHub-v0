@@ -24,7 +24,9 @@ const ChatRooms = ({ userId, selectedRoomId, onSelectRoom }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message || "An error occurred while fetching chat rooms.",
+      );
       dispatch(resetChatRoomsError());
     }
   }, [error]);

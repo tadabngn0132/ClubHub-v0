@@ -14,14 +14,12 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const AdminAddDepartment = () => {
   const dispatch = useDispatch();
-  const { isLoading, error } = useSelector(
-    (state) => state.department,
-  );
+  const { isLoading, error } = useSelector((state) => state.department);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to add department");
       dispatch(resetDepartmentError());
     }
   }, [error]);
@@ -37,7 +35,10 @@ const AdminAddDepartment = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Link to="/admin/departments" className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white">
+      <Link
+        to="/admin/departments"
+        className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+      >
         <FontAwesomeIcon icon={faArrowLeft} /> Back to Departments
       </Link>
       <DepartmentForm onSubmit={handleAddDepartment} />

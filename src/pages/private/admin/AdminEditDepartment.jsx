@@ -29,15 +29,13 @@ const AdminEditDepartment = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to load department details");
       dispatch(resetDepartmentError());
     }
   }, [error]);
 
   const handleEditDepartment = async (data) => {
-    await dispatch(
-      updateDepartmentById({ departmentId, data }),
-    ).unwrap();
+    await dispatch(updateDepartmentById({ departmentId, data })).unwrap();
     navigate("/admin/departments");
   };
 
@@ -47,7 +45,10 @@ const AdminEditDepartment = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Link to="/admin/departments" className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white">
+      <Link
+        to="/admin/departments"
+        className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+      >
         <FontAwesomeIcon icon={faArrowLeft} /> Back to Departments
       </Link>
       <DepartmentForm department={department} onSubmit={handleEditDepartment} />

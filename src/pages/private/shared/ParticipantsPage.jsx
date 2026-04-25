@@ -30,7 +30,9 @@ const ParticipantsPage = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message || "An error occurred while fetching participant data.",
+      );
       dispatch(resetActivityParticipationError());
     }
   }, [dispatch, error]);

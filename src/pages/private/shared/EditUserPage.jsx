@@ -16,9 +16,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 const EditUserPage = ({ basePath }) => {
   const { userId } = useParams();
   const dispatch = useDispatch();
-  const { user, isLoading, error } = useSelector(
-    (state) => state.user,
-  );
+  const { user, isLoading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +25,7 @@ const EditUserPage = ({ basePath }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to load user details");
       dispatch(resetUserError());
     }
   }, [error]);
@@ -43,7 +41,10 @@ const EditUserPage = ({ basePath }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Link to={basePath} className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white">
+      <Link
+        to={basePath}
+        className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+      >
         <FontAwesomeIcon icon={faArrowLeft} /> Back to Users
       </Link>
       <UserForm user={user} onSubmit={handleEditUser} />

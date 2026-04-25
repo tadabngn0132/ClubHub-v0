@@ -36,7 +36,9 @@ const DepartmentsPage = ({ role, basePath }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message || "An error occurred while fetching departments.",
+      );
       dispatch(resetDepartmentError());
     }
   }, [error]);
@@ -257,13 +259,17 @@ const DepartmentsPage = ({ role, basePath }) => {
                               Edit
                             </Link>
                             <button
-                              onClick={() => handleDeleteConfigured(department.id, "soft")}
+                              onClick={() =>
+                                handleDeleteConfigured(department.id, "soft")
+                              }
                               className="rounded-md bg-rose-500/20 px-3 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
                             >
                               Soft Delete
                             </button>
                             <button
-                              onClick={() => handleDeleteConfigured(department.id, "hard")}
+                              onClick={() =>
+                                handleDeleteConfigured(department.id, "hard")
+                              }
                               className="rounded-md bg-rose-600/30 px-3 py-1 font-semibold text-rose-400 transition hover:bg-rose-600/50"
                             >
                               Hard Delete

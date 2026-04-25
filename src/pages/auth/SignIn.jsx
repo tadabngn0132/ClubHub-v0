@@ -22,9 +22,10 @@ import bgFormImage from "../../assets/backgrounds/sign_in_background/GDC_backgro
 import { AUTH_REMEMBER_DAY_OPTIONS } from "../../utils/constants";
 import { getUserRole } from "../../utils/helper";
 
-const API_BASE_URL = import.meta.env.VITE_NODE_ENV === "production"
-  ? import.meta.env.VITE_API_BASE_URL
-  : import.meta.env.VITE_API_BASE_URL || "http://localhost:5995/api";
+const API_BASE_URL =
+  import.meta.env.VITE_NODE_ENV === "production"
+    ? import.meta.env.VITE_API_BASE_URL
+    : import.meta.env.VITE_API_BASE_URL || "http://localhost:5995/api";
 
 const SignIn = () => {
   const {
@@ -71,7 +72,10 @@ const SignIn = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message ||
+          "Login failed. Please check your credentials and try again.",
+      );
       dispatch(resetAuthError());
     }
   }, [error]);

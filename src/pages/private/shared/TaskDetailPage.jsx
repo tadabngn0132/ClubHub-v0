@@ -23,9 +23,7 @@ const TaskDetailPage = ({ role, basePath }) => {
   const { taskId } = useParams();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
-  const { task, isLoading, error } = useSelector(
-    (state) => state.task,
-  );
+  const { task, isLoading, error } = useSelector((state) => state.task);
   const navigate = useNavigate();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [deleteMode, setDeleteMode] = useState("");
@@ -36,7 +34,7 @@ const TaskDetailPage = ({ role, basePath }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to load task details");
       dispatch(resetTaskError());
     }
   }, [error]);
@@ -99,7 +97,9 @@ const TaskDetailPage = ({ role, basePath }) => {
       formData.append("evidence", data.evidence[0]);
     }
 
-    dispatch(confirmTaskCompletionById({ id: taskId, taskConfirmData: formData }));
+    dispatch(
+      confirmTaskCompletionById({ id: taskId, taskConfirmData: formData }),
+    );
   };
 
   const handleVerifyTask = (data) => {

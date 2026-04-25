@@ -53,7 +53,9 @@ const Chat = ({ selectedRoomId }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message || "An error occurred while sending the message.",
+      );
       dispatch(resetMessageError());
     }
   }, [dispatch, error]);

@@ -19,7 +19,9 @@ const ActivityLogsPage = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message || "An error occurred while fetching activity logs.",
+      );
       dispatch(resetSystemLogsError());
     }
   }, [error, dispatch]);
@@ -54,8 +56,13 @@ const ActivityLogsPage = () => {
             </thead>
             <tbody className="divide-y divide-zinc-800 bg-zinc-900">
               {logs.map((log, index) => (
-                <tr key={log.id} className="transition-colors hover:bg-zinc-800/70">
-                  <td className="px-4 py-3 text-sm text-zinc-400">{index + 1}</td>
+                <tr
+                  key={log.id}
+                  className="transition-colors hover:bg-zinc-800/70"
+                >
+                  <td className="px-4 py-3 text-sm text-zinc-400">
+                    {index + 1}
+                  </td>
                   <td className="px-4 py-3 text-sm font-medium text-zinc-100">
                     {log.action || "N/A"}
                   </td>

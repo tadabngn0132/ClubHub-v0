@@ -38,7 +38,9 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message || "An error occurred while fetching activities.",
+      );
       dispatch(resetActivityError());
     }
   }, [error]);

@@ -27,7 +27,7 @@ const DepartmentDetailPage = ({ role, basePath }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to load department details");
       dispatch(resetDepartmentError());
     }
   }, [error]);
@@ -67,9 +67,7 @@ const DepartmentDetailPage = ({ role, basePath }) => {
 
         {role === "ADMIN" && (
           <div>
-            <Link to={`/admin/departments/edit/${departmentId}`}>
-              Edit
-            </Link>
+            <Link to={`/admin/departments/edit/${departmentId}`}>Edit</Link>
             <button onClick={() => handleDeleteConfigured("soft")}>
               Soft Delete
             </button>

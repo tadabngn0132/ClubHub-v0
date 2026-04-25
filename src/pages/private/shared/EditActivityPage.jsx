@@ -16,9 +16,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 const EditActivityPage = ({ basePath }) => {
   const { activityId } = useParams();
   const dispatch = useDispatch();
-  const { activity, isLoading, error } = useSelector(
-    (state) => state.activity,
-  );
+  const { activity, isLoading, error } = useSelector((state) => state.activity);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +27,7 @@ const EditActivityPage = ({ basePath }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to load activity details");
       dispatch(resetActivityError());
     }
   }, [error]);
@@ -47,7 +45,10 @@ const EditActivityPage = ({ basePath }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Link to={basePath} className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white">
+      <Link
+        to={basePath}
+        className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+      >
         <FontAwesomeIcon icon={faArrowLeft} /> Back to Activities
       </Link>
       <ActivityForm activity={activity} onSubmit={handleEditActivity} />

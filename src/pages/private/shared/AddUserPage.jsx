@@ -19,7 +19,7 @@ const AddUserPage = ({ basePath }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to add user");
       dispatch(resetUserError());
     }
   }, [error]);

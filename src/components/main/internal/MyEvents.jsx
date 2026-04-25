@@ -25,7 +25,9 @@ const MyEvents = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message || "An error occurred while fetching your events.",
+      );
     }
   }, [error]);
 
@@ -62,7 +64,8 @@ const MyEvents = () => {
                 {registration?.activity?.title || "Untitled activity"}
               </h2>
               <p className="mt-2 text-sm leading-6 text-slate-300">
-                {registration?.activity?.description || "No description available."}
+                {registration?.activity?.description ||
+                  "No description available."}
               </p>
 
               <button

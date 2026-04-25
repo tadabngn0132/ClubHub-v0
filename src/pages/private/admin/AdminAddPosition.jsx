@@ -13,14 +13,12 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const AdminAddPosition = () => {
   const dispatch = useDispatch();
-  const { isLoading, error } = useSelector(
-    (state) => state.position,
-  );
+  const { isLoading, error } = useSelector((state) => state.position);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to add position");
       dispatch(resetPositionError());
     }
   }, [error]);
@@ -36,7 +34,10 @@ const AdminAddPosition = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Link to="/admin/positions" className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white">
+      <Link
+        to="/admin/positions"
+        className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+      >
         <FontAwesomeIcon icon={faArrowLeft} /> Back to Positions
       </Link>
       <PositionForm onSubmit={handleAddPosition} />

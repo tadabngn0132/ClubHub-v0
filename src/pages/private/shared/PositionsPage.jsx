@@ -36,7 +36,9 @@ const PositionsPage = ({ role, basePath }) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message || "An error occurred while fetching positions.",
+      );
       dispatch(resetPositionError());
     }
   }, [error]);
@@ -237,13 +239,17 @@ const PositionsPage = ({ role, basePath }) => {
                             </Link>
 
                             <button
-                              onClick={() => handleDeleteConfigured(position.id, "soft")}
+                              onClick={() =>
+                                handleDeleteConfigured(position.id, "soft")
+                              }
                               className="rounded-md bg-rose-500/20 px-3 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
                             >
                               Soft Delete
                             </button>
                             <button
-                              onClick={() => handleDeleteConfigured(position.id, "hard")}
+                              onClick={() =>
+                                handleDeleteConfigured(position.id, "hard")
+                              }
                               className="rounded-md bg-rose-600/30 px-3 py-1 font-semibold text-rose-400 transition hover:bg-rose-600/50"
                             >
                               Hard Delete

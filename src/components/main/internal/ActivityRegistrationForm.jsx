@@ -6,7 +6,10 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { registerPublicActivity } from "../../../services/publicActivityService";
 
-const ActivityRegistrationForm = ({ activityId: activityIdProp, onSuccess }) => {
+const ActivityRegistrationForm = ({
+  activityId: activityIdProp,
+  onSuccess,
+}) => {
   const { activityId } = useParams();
   const resolvedActivityId = activityIdProp || activityId;
   const dispatch = useDispatch();
@@ -29,7 +32,7 @@ const ActivityRegistrationForm = ({ activityId: activityIdProp, onSuccess }) => 
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "An error occurred during registration.");
     }
   }, [error]);
 
@@ -48,7 +51,9 @@ const ActivityRegistrationForm = ({ activityId: activityIdProp, onSuccess }) => 
           return;
         }
 
-        toast.success(response.message || "Registration submitted successfully.");
+        toast.success(
+          response.message || "Registration submitted successfully.",
+        );
         reset();
         if (onSuccess) {
           onSuccess(response.data);
@@ -76,9 +81,7 @@ const ActivityRegistrationForm = ({ activityId: activityIdProp, onSuccess }) => 
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(handleActivityRegistration)}
-    >
+    <form onSubmit={handleSubmit(handleActivityRegistration)}>
       <div className="mt-4 grid gap-4">
         <div>
           <label
@@ -161,12 +164,6 @@ const ActivityRegistrationForm = ({ activityId: activityIdProp, onSuccess }) => 
           )}
         </div>
       </div>
-
-      {error && (
-        <p className="mt-3 rounded-lg border border-rose-500/40 bg-rose-500/10 px-3 py-2 text-sm text-rose-200">
-          {error}
-        </p>
-      )}
 
       <button
         type="submit"

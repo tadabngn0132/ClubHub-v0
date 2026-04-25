@@ -31,7 +31,9 @@ const AIChatBox = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message || "An error occurred while processing your query.",
+      );
     }
   }, [error]);
 

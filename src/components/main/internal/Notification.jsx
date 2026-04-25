@@ -29,7 +29,7 @@ const Notification = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "An error occurred while fetching notifications.");
 
       dispatch(resetNotificationError());
     }

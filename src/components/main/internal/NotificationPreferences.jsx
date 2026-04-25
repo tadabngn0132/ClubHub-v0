@@ -37,7 +37,10 @@ const NotificationPreferences = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(
+        error.message ||
+          "An error occurred while updating notification preferences.",
+      );
       dispatch(resetNotificationPreferencesError());
     }
   }, [error, dispatch]);

@@ -16,9 +16,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 const AdminEditPosition = () => {
   const { positionId } = useParams();
   const dispatch = useDispatch();
-  const { position, isLoading, error } = useSelector(
-    (state) => state.position,
-  );
+  const { position, isLoading, error } = useSelector((state) => state.position);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,7 +25,7 @@ const AdminEditPosition = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error(error.message || "Failed to load position details");
       dispatch(resetPositionError());
     }
   }, [error]);
@@ -45,7 +43,10 @@ const AdminEditPosition = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Link to="/admin/positions" className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white">
+      <Link
+        to="/admin/positions"
+        className="inline-block w-max border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+      >
         <FontAwesomeIcon icon={faArrowLeft} /> Back to Positions
       </Link>
       <PositionForm position={position} onSubmit={handleEditPosition} />

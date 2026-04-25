@@ -37,7 +37,7 @@ const ClubInfoTab = () => {
       <input
         type="text"
         id="generation"
-        placeholder="2025"
+        placeholder="4"
         className={inputClassName}
         {...register("generation", VALIDATION_RULES.generation)}
       />
