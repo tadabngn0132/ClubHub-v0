@@ -31,11 +31,11 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
   const [deleteMode, setDeleteMode] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const activitiesPerPage = 10;
-  
+
   useEffect(() => {
     dispatch(getActivitiesList());
   }, [dispatch]);
-  
+
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -88,7 +88,10 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     setCurrentPage(1);
   }, [searchTerm, statusFilter, sortBy]);
 
-  const totalPages = Math.max(1, Math.ceil(activities.length / activitiesPerPage));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(activities.length / activitiesPerPage),
+  );
   const clampedCurrentPage = Math.min(currentPage, totalPages);
 
   useEffect(() => {
@@ -98,9 +101,13 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
   }, [clampedCurrentPage, currentPage]);
 
   const startIndex = (clampedCurrentPage - 1) * activitiesPerPage;
-  const paginatedActivities = filteredActivities.slice(startIndex, startIndex + activitiesPerPage);
+  const paginatedActivities = filteredActivities.slice(
+    startIndex,
+    startIndex + activitiesPerPage,
+  );
 
-  const activitiesForListView = activeTab === 2 ? filteredActivities : paginatedActivities;
+  const activitiesForListView =
+    activeTab === 2 ? filteredActivities : paginatedActivities;
 
   const clearFilters = () => {
     setSearchTerm("");
@@ -109,7 +116,9 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
   };
 
   const hasActiveFilters =
-    searchTerm.trim().length > 0 || statusFilter !== "all" || sortBy !== "newest";
+    searchTerm.trim().length > 0 ||
+    statusFilter !== "all" ||
+    sortBy !== "newest";
 
   const handleOpenConfirmationModal = () => {
     setIsConfirmationModalOpen(true);
@@ -316,9 +325,13 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
               </div>
             ))
           )}
-          
+
           {filteredActivities.length > 0 && activeTab !== 2 && (
-            <Pagination currentPage={clampedPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+            <Pagination
+              currentPage={clampedCurrentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           )}
         </div>
 

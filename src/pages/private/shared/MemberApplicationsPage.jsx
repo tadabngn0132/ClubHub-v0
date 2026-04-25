@@ -109,6 +109,14 @@ const MemberApplicationsPage = ({ role }) => {
               </thead>
 
               <tbody>
+                {memberApplications.length === 0 ? (
+                  <tr>
+                    <td colSpan="10" className="px-4 py-6 text-center text-sm text-white/70">
+                      No member applications found.
+                    </td>
+                  </tr>
+                ) : null}
+                
                 {memberApplications.map((application) => {
                   const normalizedState = String(application.state || "unknown").toLowerCase();
 

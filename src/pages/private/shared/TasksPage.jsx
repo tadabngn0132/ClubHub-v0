@@ -29,57 +29,17 @@ const TasksPage = ({ role, basePath }) => {
   const [deleteMode, setDeleteMode] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const tasksPerPage = 10;
-  
+
   useEffect(() => {
     dispatch(getAllTasksList());
   }, [dispatch]);
-  
+
   useEffect(() => {
     if (error) {
       toast.error(error);
       dispatch(resetTaskStatus());
     }
   }, [error]);
-  
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchTerm, statusFilter, sortBy]);
-
-  const totalPages = Math.max(1, Math.ceil(tasks.length / tasksPerPage));
-  const clampedCurrentPage = Math.min(currentPage, totalPages);
-
-  useEffect(() => {
-    if (currentPage !== clampedCurrentPage) {
-      setCurrentPage(clampedCurrentPage);
-    }
-  }, [currentPage, clampedCurrentPage]);
-
-  const startIndex = (clampedCurrentPage - 1) * tasksPerPage;
-  const paginatedTasks = filteredTasks.slice(startIndex, startIndex + tasksPerPage);
-
-  const handleOpenConfirmationModal = () => {
-    setIsConfirmationModalOpen(true);
-  };
-
-  const handleCloseConfirmationModal = () => {
-    setIsConfirmationModalOpen(false);
-  };
-
-  const handleDeleteConfigured = (taskId, mode) => {
-    setSelectedTaskId(taskId);
-    setDeleteMode(mode);
-    handleOpenConfirmationModal();
-  };
-
-  const handleDelete = (selectedTaskId) => {
-    if (deleteMode === "soft") {
-      dispatch(softDeleteTaskById(selectedTaskId));
-      handleCloseConfirmationModal();
-    } else if (deleteMode === "hard") {
-      dispatch(hardDeleteTaskById(selectedTaskId));
-      handleCloseConfirmationModal();
-    }
-  };
 
   const filteredTasks = useMemo(() => {
     const keyword = searchTerm.trim().toLowerCase();
@@ -121,6 +81,49 @@ const TasksPage = ({ role, basePath }) => {
 
     return result;
   }, [tasks, searchTerm, statusFilter, sortBy]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter, sortBy]);
+
+  const totalPages = Math.max(1, Math.ceil(tasks.length / tasksPerPage));
+  const clampedCurrentPage = Math.min(currentPage, totalPages);
+
+  useEffect(() => {
+    if (currentPage !== clampedCurrentPage) {
+      setCurrentPage(clampedCurrentPage);
+    }
+  }, [currentPage, clampedCurrentPage]);
+
+  const startIndex = (clampedCurrentPage - 1) * tasksPerPage;
+  const paginatedTasks = filteredTasks.slice(
+    startIndex,
+    startIndex + tasksPerPage,
+  );
+
+  const handleOpenConfirmationModal = () => {
+    setIsConfirmationModalOpen(true);
+  };
+
+  const handleCloseConfirmationModal = () => {
+    setIsConfirmationModalOpen(false);
+  };
+
+  const handleDeleteConfigured = (taskId, mode) => {
+    setSelectedTaskId(taskId);
+    setDeleteMode(mode);
+    handleOpenConfirmationModal();
+  };
+
+  const handleDelete = (selectedTaskId) => {
+    if (deleteMode === "soft") {
+      dispatch(softDeleteTaskById(selectedTaskId));
+      handleCloseConfirmationModal();
+    } else if (deleteMode === "hard") {
+      dispatch(hardDeleteTaskById(selectedTaskId));
+      handleCloseConfirmationModal();
+    }
+  };
 
   const clearFilters = () => {
     setSearchTerm("");
@@ -348,7 +351,9 @@ const TasksPage = ({ role, basePath }) => {
                                 Edit
                               </Link>
                               <button
-                                onClick={() => handleDeleteConfigured(task.id, "soft")}
+                                onClick={() =>
+                                  handleDeleteConfigured(task.id, "soft")
+                                }
                                 className="rounded-md bg-rose-500/20 px-2 py-1 font-semibold text-rose-300 transition hover:bg-rose-500/35"
                               >
                                 Soft Delete
@@ -358,7 +363,9 @@ const TasksPage = ({ role, basePath }) => {
 
                           {role === "ADMIN" && (
                             <button
-                              onClick={() => handleDeleteConfigured(task.id, "hard")}
+                              onClick={() =>
+                                handleDeleteConfigured(task.id, "hard")
+                              }
                               className="rounded-md bg-red-500/20 px-2 py-1 font-semibold text-red-300 transition hover:bg-red-500/35"
                             >
                               Hard Delete
@@ -373,7 +380,11 @@ const TasksPage = ({ role, basePath }) => {
             </table>
 
             {filteredTasks.length > 0 && (
-              <Pagination currentPage={clampedCurrentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+              <Pagination
+                currentPage={clampedCurrentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
             )}
           </div>
         </div>

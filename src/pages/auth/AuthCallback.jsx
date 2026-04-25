@@ -42,19 +42,19 @@ const AuthCallback = () => {
         switch (role) {
           case "admin":
             navigate("/admin/dashboard");
-            toast.success("Authentication successful. Welcome, Admin!");
+            toast.success("Login successfully");
             break;
           case "moderator":
             navigate("/moderator/dashboard");
-            toast.success("Authentication successful. Welcome, Moderator!");
+            toast.success("Login successfully");
             break;
           case "member":
             navigate("/member/dashboard");
-            toast.success("Authentication successful. Welcome, Member!");
+            toast.success("Login successfully");
             break;
           default:
             navigate("/sign-in");
-            toast.error("Authentication failed. Please try again.");
+            toast.error("Login failed. Please try again.");
             break;
         }
       } else {

@@ -131,7 +131,6 @@ const MyProfile = () => {
                 </p>
                 <div className="pt-1">
                   <span className="rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-200">
-                    Status:{" "}
                     {user?.status
                       ? formatUppercaseToCapitalized(user.status)
                       : "Not provided"}
