@@ -223,6 +223,13 @@ axiosClient.interceptors.response.use(
           error.response.data.message || "Requested resource not found.",
         );
         break;
+      case 429:
+        // Handle too many requests
+        toast.error(
+          error.response.data.message ||
+            "Too many requests. Please slow down and try again later.",
+        );
+        break;
       case 500:
         // Handle server error
         toast.error(
