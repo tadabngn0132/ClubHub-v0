@@ -69,3 +69,7 @@ export const formatStatusBadgeColor = (status) => {
 export const formatDeptStatusBadgeColor = (isActive) => {
   return isActive ? "text-green-600 font-medium" : "text-gray-600 font-medium";
 }
+
+export const formatDeletedBadgeColor = (isDeleted) => {
+  return isDeleted ? "text-red-600 font-medium" : "text-green-600 font-medium";
+}

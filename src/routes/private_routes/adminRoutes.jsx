@@ -16,11 +16,9 @@ import AdminAddTask from "../../pages/private/admin/AdminAddTask.jsx";
 import AdminDepartments from "../../pages/private/admin/AdminDepartments.jsx";
 import AdminAddDepartment from "../../pages/private/admin/AdminAddDepartment.jsx";
 import AdminEditDepartment from "../../pages/private/admin/AdminEditDepartment.jsx";
-import AdminViewDepartment from "../../pages/private/admin/AdminViewDepartment.jsx";
 import AdminPositions from "../../pages/private/admin/AdminPositions.jsx";
 import AdminAddPosition from "../../pages/private/admin/AdminAddPosition.jsx";
 import AdminEditPosition from "../../pages/private/admin/AdminEditPosition.jsx";
-import AdminViewPosition from "../../pages/private/admin/AdminViewPosition.jsx";
 import AdminMemberApplications from "../../pages/private/admin/AdminMemberApplications.jsx";
 import AdminViewMemberApplication from "../../pages/private/admin/AdminViewMemberApplication.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
@@ -184,14 +182,6 @@ export const adminRoutes = [
     ),
   },
   {
-    path: "/admin/departments/view/:departmentId",
-    element: (
-      <SharedLayout role="admin">
-        <AdminViewDepartment />
-      </SharedLayout>
-    ),
-  },
-  {
     path: "/admin/positions",
     element: (
       <SharedLayout role="admin">
@@ -212,14 +202,6 @@ export const adminRoutes = [
     element: (
       <SharedLayout role="admin">
         <AdminEditPosition />
-      </SharedLayout>
-    ),
-  },
-  {
-    path: "/admin/positions/view/:positionId",
-    element: (
-      <SharedLayout role="admin">
-        <AdminViewPosition />
       </SharedLayout>
     ),
   },

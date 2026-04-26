@@ -16,6 +16,7 @@ import {
   formatPositionLevel,
 } from "../../../utils/formatters";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal";
+import PositionDetailsModal from "../../../components/main/internal/PositionDetailsModal";
 
 const PositionsPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
@@ -29,6 +30,9 @@ const PositionsPage = ({ role, basePath }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedPositionId, setSelectedPositionId] = useState(null);
   const [deleteMode, setDeleteMode] = useState("");
+  const [isPositionDetailsModalOpen, setIsPositionDetailsModalOpen] =
+    useState(false);
+  const [selectedPosition, setSelectedPosition] = useState(null);
 
   useEffect(() => {
     dispatch(getPositionsList());
@@ -72,6 +76,16 @@ const PositionsPage = ({ role, basePath }) => {
       dispatch(hardDeletePositionById(selectedPositionId));
       handleCloseConfirmationModal();
     }
+  };
+
+  const handleOpenPositionDetailsModal = (position) => {
+    setSelectedPosition(position);
+    setIsPositionDetailsModalOpen(true);
+  };
+
+  const handleClosePositionDetailsModal = () => {
+    setIsPositionDetailsModalOpen(false);
+    setSelectedPosition(null);
   };
 
   const filteredPositions = useMemo(() => {
@@ -226,12 +240,12 @@ const PositionsPage = ({ role, basePath }) => {
                     </td>
                     <td className="w-24 px-3 py-3 text-center">
                       <div className="flex items-center justify-center gap-1 text-xs">
-                        <Link
-                          to={`${basePath}/view/${position.id}`}
+                        <button
+                          onClick={() => handleOpenPositionDetailsModal(position)}
                           className="rounded-md bg-emerald-500/20 px-3 py-1 font-semibold text-sky-300 transition hover:bg-sky-500/35"
                         >
                           View
-                        </Link>
+                        </button>
 
                         {role === "ADMIN" && (
                           <>
@@ -279,6 +293,13 @@ const PositionsPage = ({ role, basePath }) => {
         cancelButtonText="Cancel"
         onCancel={handleCloseConfirmationModal}
         onConfirm={() => handleDelete(selectedPositionId)}
+      />
+
+      <PositionDetailsModal
+        open={isPositionDetailsModalOpen}
+        role={role}
+        position={selectedPosition}
+        onClose={handleClosePositionDetailsModal}
       />
     </div>
   );

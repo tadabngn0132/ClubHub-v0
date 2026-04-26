@@ -8,9 +8,7 @@ import MemberViewTask from "../../pages/private/member/MemberViewTask.jsx";
 import MemberUsers from "../../pages/private/member/MemberUsers.jsx";
 import MemberViewUser from "../../pages/private/member/MemberViewUser.jsx";
 import MemberDepartments from "../../pages/private/member/MemberDepartments.jsx";
-import MemberViewDepartment from "../../pages/private/member/MemberViewDepartment.jsx";
 import MemberPositions from "../../pages/private/member/MemberPositions.jsx";
-import MemberViewPosition from "../../pages/private/member/MemberViewPosition.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
 import MemberChat from "../../pages/private/member/MemberChat.jsx";
 import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
@@ -91,26 +89,10 @@ export const memberRoutes = [
     ),
   },
   {
-    path: "/member/departments/view/:departmentId",
-    element: (
-      <SharedLayout role="member">
-        <MemberViewDepartment />
-      </SharedLayout>
-    ),
-  },
-  {
     path: "/member/positions",
     element: (
       <SharedLayout role="member">
         <MemberPositions />
-      </SharedLayout>
-    ),
-  },
-  {
-    path: "/member/positions/view/:positionId",
-    element: (
-      <SharedLayout role="member">
-        <MemberViewPosition />
       </SharedLayout>
     ),
   },
@@ -136,7 +118,7 @@ export const memberRoutes = [
       <SharedLayout role="member">
         <MemberSetting />
       </SharedLayout>
-    )
+    ),
   },
   {
     path: "/member/forbidden",

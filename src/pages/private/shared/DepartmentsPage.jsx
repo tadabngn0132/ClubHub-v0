@@ -13,9 +13,11 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   formatDeptStatusBadgeColor,
   formatUppercaseToCapitalized,
+  formatDeletedBadgeColor,
 } from "../../../utils/formatters";
 import { USER_STATUS_OPTIONS } from "../../../utils/constants";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
+import DepartmentDetailsModal from "../../../components/main/internal/DepartmentDetailsModal.jsx";
 
 const DepartmentsPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
@@ -29,6 +31,9 @@ const DepartmentsPage = ({ role, basePath }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState(null);
   const [deleteMode, setDeleteMode] = useState("");
+  const [isDepartmentDetailsModalOpen, setIsDepartmentDetailsModalOpen] =
+    useState(false);
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   useEffect(() => {
     dispatch(getDepartmentsList());
@@ -74,12 +79,33 @@ const DepartmentsPage = ({ role, basePath }) => {
     }
   };
 
+  const handleOpenDepartmentDetailsModal = (department) => {
+    setSelectedDepartment(department);
+    setIsDepartmentDetailsModalOpen(true);
+  };
+
+  const handleCloseDepartmentDetailsModal = () => {
+    setIsDepartmentDetailsModalOpen(false);
+    setSelectedDepartment(null);
+  };
+
   const handleStatusLabel = (isActive) => {
     switch (isActive) {
       case true:
         return "Active";
       case false:
         return "Inactive";
+      default:
+        return "Unknown";
+    }
+  };
+
+  const handleDeletedLabel = (isDeleted) => {
+    switch (isDeleted) {
+      case true:
+        return "Deleted";
+      case false:
+        return "Not Deleted";
       default:
         return "Unknown";
     }
@@ -192,6 +218,7 @@ const DepartmentsPage = ({ role, basePath }) => {
                 <th className="px-3 py-3">Name</th>
                 <th className="px-3 py-3">Description</th>
                 <th className="px-3 py-3 text-center">Status</th>
+                <th className="px-3 py-3 text-center">Is Deleted</th>
                 <th className="px-3 py-3 text-center">Actions</th>
               </tr>
             </thead>
@@ -200,7 +227,7 @@ const DepartmentsPage = ({ role, basePath }) => {
               {filteredDepartments.length === 0 ? (
                 <tr>
                   <td
-                    colSpan="4"
+                    colSpan="5"
                     className="px-4 py-10 text-center text-slate-300"
                   >
                     No departments found.
@@ -242,14 +269,29 @@ const DepartmentsPage = ({ role, basePath }) => {
                         )}
                       </p>
                     </td>
+                    {role === "ADMIN" && (
+                      <td className="px-3 py-3 text-center">
+                        <p
+                          className={formatDeletedBadgeColor(
+                            department.isDeleted,
+                          )}
+                        >
+                          {formatUppercaseToCapitalized(
+                            handleDeletedLabel(department.isDeleted),
+                          )}
+                        </p>
+                      </td>
+                    )}
                     <td className="px-3 py-3 text-center">
                       <div className="flex items-center justify-center gap-1 text-xs">
-                        <Link
-                          to={`/admin/departments/view/${department.id}`}
-                          className="rounded-md bg-emerald-500/20 px-3 py-1 font-semibold text-emerald-300 transition hover:bg-emerald-500/35"
+                        <button
+                          onClick={() =>
+                            handleOpenDepartmentDetailsModal(department)
+                          }
+                          className="rounded-md bg-emerald-500/20 px-3 py-1 font-semibold text-sky-300 transition hover:bg-sky-500/35"
                         >
                           View
-                        </Link>
+                        </button>
                         {role === "ADMIN" && (
                           <>
                             <Link
@@ -295,6 +337,13 @@ const DepartmentsPage = ({ role, basePath }) => {
         cancelButtonText="Cancel"
         onCancel={handleCloseConfirmationModal}
         onConfirm={() => handleDelete(selectedDepartmentId)}
+      />
+
+      <DepartmentDetailsModal
+        open={isDepartmentDetailsModalOpen}
+        role={role}
+        department={selectedDepartment}
+        onClose={handleCloseDepartmentDetailsModal}
       />
     </div>
   );

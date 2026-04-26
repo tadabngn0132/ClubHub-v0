@@ -12,9 +12,7 @@ import ModeratorAddTask from "../../pages/private/moderator/ModeratorAddTask.jsx
 import ModeratorUsers from "../../pages/private/moderator/ModeratorUsers.jsx";
 import ModeratorViewUser from "../../pages/private/moderator/ModeratorViewUser.jsx";
 import ModeratorDepartments from "../../pages/private/moderator/ModeratorDepartments.jsx";
-import ModeratorViewDepartment from "../../pages/private/moderator/ModeratorViewDepartment.jsx";
 import ModeratorPositions from "../../pages/private/moderator/ModeratorPositions.jsx";
-import ModeratorViewPosition from "../../pages/private/moderator/ModeratorViewPosition.jsx";
 import ModeratorMemberApplications from "../../pages/private/moderator/ModeratorMemberApplications.jsx";
 import ModeratorViewMemberApplication from "../../pages/private/moderator/ModeratorViewMemberApplication.jsx";
 import ChangePassword from "../../components/main/internal/ChangePasswordForm.jsx";
@@ -160,26 +158,10 @@ export const moderatorRoutes = [
     ),
   },
   {
-    path: "/moderator/departments/view/:departmentId",
-    element: (
-      <SharedLayout role="moderator">
-        <ModeratorViewDepartment />
-      </SharedLayout>
-    ),
-  },
-  {
     path: "/moderator/positions",
     element: (
       <SharedLayout role="moderator">
         <ModeratorPositions />
-      </SharedLayout>
-    ),
-  },
-  {
-    path: "/moderator/positions/view/:positionId",
-    element: (
-      <SharedLayout role="moderator">
-        <ModeratorViewPosition />
       </SharedLayout>
     ),
   },
@@ -221,7 +203,7 @@ export const moderatorRoutes = [
       <SharedLayout role="moderator">
         <ModeratorSetting />
       </SharedLayout>
-    )
+    ),
   },
   {
     path: "/moderator/forbidden",
