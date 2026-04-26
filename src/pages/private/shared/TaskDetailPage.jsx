@@ -66,11 +66,11 @@ const TaskDetailPage = ({ role, basePath }) => {
     }
   };
 
-  const filterCurrentUserAssignee = task?.assignees?.filter(
+  const currentUserAssignee = task?.assignees?.find(
     (assignee) => assignee.assigneeId === currentUser.id,
   );
   const filterConfirmedAssignee = task?.assignees?.filter(
-    (assignee) => assignee.evidenceUrl,
+    (assignee) => assignee.status === "CONFIRMED",
   );
   const statusLabel = task?.status
     ? formatUppercaseToCapitalized(task.status)
@@ -89,32 +89,42 @@ const TaskDetailPage = ({ role, basePath }) => {
     "bg-gray-700/40 text-gray-300 border-gray-600";
 
   const handleConfirmCompletion = async (data) => {
-    await dispatch(confirmTaskCompletionById({ id: taskId, taskConfirmData: data })).unwrap();
+    await dispatch(
+      confirmTaskCompletionById({ id: taskId, taskConfirmData: data }),
+    ).unwrap();
     navigate(basePath);
   };
 
   const handleVerifyTask = async (data) => {
-    await dispatch(verifyTaskCompletionById({ id: taskId, taskVerifyData: data })).unwrap();
+    await dispatch(
+      verifyTaskCompletionById({ id: taskId, taskVerifyData: data }),
+    ).unwrap();
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="mx-auto w-full max-w-5xl">
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -left-16 top-0 h-64 w-64 rounded-full bg-cyan-500/15 blur-3xl" />
+        <div className="absolute right-0 top-28 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-amber-500/10 blur-3xl" />
+      </div>
+
+      <div className="mx-auto w-full max-w-5xl px-2 py-0.75 sm:px-3">
         <Link
           to={basePath}
-          className="mb-6 inline-flex items-center rounded-md border border-gray-700 bg-gray-800 px-3 py-1.5 text-sm font-medium text-gray-200 transition hover:border-blue-400 hover:text-blue-300"
+          className="mb-6 inline-flex items-center rounded-xl border border-white/10 bg-zinc-900/70 px-4 py-2 text-sm font-semibold text-zinc-200 shadow-lg shadow-black/20 backdrop-blur transition hover:-translate-y-0.5 hover:border-cyan-400/50 hover:text-cyan-200"
         >
           Back to Tasks
         </Link>
 
-        <div className="rounded-xl border border-gray-800 bg-gray-900/90 p-5 shadow-xl backdrop-blur md:p-6">
-          <p className="mb-4 text-sm text-gray-400">
+        <div className="my-5 md:my-6">
+          <p className="mb-4 text-sm text-zinc-400">
             {task?.assignedBy?.fullname || "N/A"} |{" "}
             {task?.createdAt ? formatDate(task?.createdAt) : "N/A"}
           </p>
 
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-            <h1 className="text-2xl font-bold tracking-tight text-gray-100 md:text-3xl">
+            <h1 className="text-2xl font-black tracking-tight text-zinc-100 md:text-3xl">
               {task?.title}
             </h1>
 
@@ -123,13 +133,13 @@ const TaskDetailPage = ({ role, basePath }) => {
                 <>
                   <Link
                     to={`${basePath}/edit/${taskId}`}
-                    className="rounded-md bg-blue-500/15 px-3 py-1.5 font-medium text-blue-300 transition hover:bg-blue-500/30"
+                    className="rounded-xl border border-cyan-400/25 bg-cyan-400/10 px-3.5 py-2 font-semibold text-cyan-200 transition hover:-translate-y-0.5 hover:border-cyan-300/50 hover:bg-cyan-400/20"
                   >
                     Edit
                   </Link>
                   <button
                     onClick={() => handleDeleteConfigured(taskId, "soft")}
-                    className="rounded-md bg-rose-500/15 px-3 py-1.5 font-medium text-rose-300 transition hover:bg-rose-500/30"
+                    className="rounded-xl border border-amber-400/25 bg-amber-500/10 px-3.5 py-2 font-semibold text-amber-200 transition hover:-translate-y-0.5 hover:border-amber-300/50 hover:bg-amber-500/20"
                   >
                     Soft Delete
                   </button>
@@ -139,7 +149,7 @@ const TaskDetailPage = ({ role, basePath }) => {
               {role === "ADMIN" && (
                 <button
                   onClick={() => handleDeleteConfigured(taskId, "hard")}
-                  className="rounded-md bg-rose-500/15 px-3 py-1.5 font-medium text-rose-300 transition hover:bg-rose-500/30"
+                  className="rounded-xl border border-rose-400/25 bg-rose-500/10 px-3.5 py-2 font-semibold text-rose-200 transition hover:-translate-y-0.5 hover:border-rose-300/50 hover:bg-rose-500/20"
                 >
                   Hard Delete
                 </button>
@@ -148,84 +158,86 @@ const TaskDetailPage = ({ role, basePath }) => {
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <p className="rounded-full border border-violet-500/40 bg-violet-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-violet-200">
+            <p className="rounded-full border border-cyan-400/35 bg-cyan-400/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-cyan-200">
               @{formatUppercaseToCapitalized(task?.assigneeScope || "N/A")}
             </p>
             {task?.isCheckCf && (
-              <p className="rounded-full border border-cyan-500/40 bg-cyan-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cyan-200">
+              <p className="rounded-full border border-emerald-400/35 bg-emerald-400/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-emerald-200">
                 #checkcf
               </p>
             )}
             <p
-              className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${statusClass}`}
+              className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wide ${statusClass}`}
             >
               {statusLabel}
             </p>
           </div>
 
-          <div className="mt-5 grid gap-4 text-sm text-gray-200 md:grid-cols-2">
-            <p className="rounded-lg border border-gray-800 bg-gray-950/60 p-3">
-              <span className="font-semibold text-gray-400">Deadline:</span>{" "}
+          <div className="mt-5 grid gap-4 text-sm text-zinc-200 md:grid-cols-2">
+            <p className="rounded-xl border border-white/10 bg-zinc-950/55 p-3.5 shadow-inner shadow-black/20">
+              <span className="font-semibold text-zinc-400">Deadline:</span>{" "}
               23h59 {task?.dueDate ? formatDate(task?.dueDate) : "N/A"}
             </p>
-            <p className="rounded-lg border border-gray-800 bg-gray-950/60 p-3">
-              <span className="font-semibold text-gray-400">Updated At:</span>{" "}
+            <p className="rounded-xl border border-white/10 bg-zinc-950/55 p-3.5 shadow-inner shadow-black/20">
+              <span className="font-semibold text-zinc-400">Updated At:</span>{" "}
               {task?.updatedAt ? formatDate(task?.updatedAt) : "N/A"}
             </p>
           </div>
 
-          <div className="mt-4 rounded-lg border border-gray-800 bg-gray-950/60 p-4">
-            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-400">
+          <div className="mt-4 rounded-xl border border-white/10 bg-zinc-950/55 p-4 shadow-inner shadow-black/20">
+            <h2 className="mb-2 text-sm font-bold uppercase tracking-wide text-zinc-400">
               Description
             </h2>
-            <p className="whitespace-pre-line text-sm leading-6 text-gray-200">
+            <p className="whitespace-pre-line text-sm leading-6 text-zinc-200">
               {task?.description || "No description provided."}
             </p>
           </div>
         </div>
 
-        <div className="mt-6 rounded-xl border border-gray-800 bg-gray-900/90 p-5 shadow-xl md:p-6">
-          <h1 className="mb-4 text-xl font-bold text-gray-100 md:text-2xl">
+        <div className="my-6 border-t border-white/10 py-6">
+          <h1 className="mb-4 text-xl font-black text-zinc-100 md:text-2xl">
             Assignee Confirmation
           </h1>
           <TaskConfirmationForm
-            taskCfData={filterCurrentUserAssignee}
+            taskCfData={currentUserAssignee}
             onSubmit={handleConfirmCompletion}
           />
           {filterConfirmedAssignee && filterConfirmedAssignee.length > 0 && (
-            <div className="mt-6 rounded-lg border border-green-700 bg-green-900/60 p-4">
-              <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide text-green-400">
+            <div className="my-6 ">
+              <h2 className="mb-3 text-md font-bold uppercase tracking-wide text-emerald-300">
                 Confirmed Completion
               </h2>
               {filterConfirmedAssignee.map((assignee) => (
-                <div key={assignee.assigneeId} className="mb-4">
-                  <p>{assignee.status}</p>
-                  <p className="text-sm text-green-300">
-                    <span className="font-semibold text-green-400">
+                <div
+                  key={assignee.id}
+                  className="mb-6 rounded-xl border border-white/10 bg-gradient-to-br from-zinc-900/90 via-zinc-900/75 to-zinc-950/95 p-6 shadow-2xl shadow-black/25"
+                >
+                  <p className="text-sm text-emerald-100">
+                    <span className="font-semibold text-emerald-300">
                       Assignee:
                     </span>{" "}
-                    {assignee.assigneeName || "N/A"}
+                    {assignee.user.fullname || "N/A"}
                   </p>
-                  <p className="text-sm text-green-300">
-                    <span className="font-semibold text-green-400">
+                  <p className="mt-1 text-sm text-emerald-100">
+                    <span className="font-semibold text-emerald-300">
                       Comments:
                     </span>{" "}
                     {assignee.additionalComments || "N/A"}
                   </p>
                   {assignee.evidenceUrl && (
-                    <div className="mt-2">
-                      <p className="text-sm font-semibold text-green-400">
+                    <div className="mt-3">
+                      <p className="text-sm font-semibold text-emerald-300">
                         Evidence:
                       </p>
                       <img
                         src={assignee.evidenceUrl}
                         alt="Evidence"
-                        className="mt-1 max-h-60 rounded-md object-cover"
+                        className="mt-2 max-h-60 rounded-lg border border-emerald-200/20 object-cover"
                       />
                     </div>
                   )}
 
-                  {role !== "MEMBER" && (
+                  {(role === "ADMIN" || task.assignorId === currentUser.id) && (
                     <TaskVerificationForm
                       taskVerifyData={assignee}
                       onSubmit={handleVerifyTask}
