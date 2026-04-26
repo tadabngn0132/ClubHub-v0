@@ -88,22 +88,13 @@ const TaskDetailPage = ({ role, basePath }) => {
     statusClassMap[statusLabel] ||
     "bg-gray-700/40 text-gray-300 border-gray-600";
 
-  const handleConfirmCompletion = (data) => {
-    const formData = new FormData();
-    formData.append("assigneeId", currentUser.id);
-    formData.append("additionalComments", data.additionalComments || "");
-
-    if (data.evidence && data.evidence[0]) {
-      formData.append("evidence", data.evidence[0]);
-    }
-
-    dispatch(
-      confirmTaskCompletionById({ id: taskId, taskConfirmData: formData }),
-    );
+  const handleConfirmCompletion = async (data) => {
+    await dispatch(confirmTaskCompletionById({ id: taskId, taskConfirmData: data })).unwrap();
+    navigate(basePath);
   };
 
-  const handleVerifyTask = (data) => {
-    dispatch(verifyTaskCompletionById({ id: taskId, taskVerifyData: data }));
+  const handleVerifyTask = async (data) => {
+    await dispatch(verifyTaskCompletionById({ id: taskId, taskVerifyData: data })).unwrap();
   };
 
   return (
@@ -127,31 +118,33 @@ const TaskDetailPage = ({ role, basePath }) => {
               {task?.title}
             </h1>
 
-            {role !== "MEMBER" && (
-              <div className="flex items-center gap-2 rounded-lg border border-gray-700 bg-gray-800 p-2 text-sm shadow-md">
-                <Link
-                  to={`${basePath}/edit/${taskId}`}
-                  className="rounded-md bg-blue-500/15 px-3 py-1.5 font-medium text-blue-300 transition hover:bg-blue-500/30"
-                >
-                  Edit
-                </Link>
+            <div className="flex items-center gap-2">
+              {role !== "MEMBER" && (
+                <>
+                  <Link
+                    to={`${basePath}/edit/${taskId}`}
+                    className="rounded-md bg-blue-500/15 px-3 py-1.5 font-medium text-blue-300 transition hover:bg-blue-500/30"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => handleDeleteConfigured(taskId, "soft")}
+                    className="rounded-md bg-rose-500/15 px-3 py-1.5 font-medium text-rose-300 transition hover:bg-rose-500/30"
+                  >
+                    Soft Delete
+                  </button>
+                </>
+              )}
+
+              {role === "ADMIN" && (
                 <button
-                  onClick={() => handleDeleteConfigured(taskId, "soft")}
+                  onClick={() => handleDeleteConfigured(taskId, "hard")}
                   className="rounded-md bg-rose-500/15 px-3 py-1.5 font-medium text-rose-300 transition hover:bg-rose-500/30"
                 >
-                  Soft Delete
+                  Hard Delete
                 </button>
-              </div>
-            )}
-
-            {role === "ADMIN" && (
-              <button
-                onClick={() => handleDeleteConfigured(taskId, "hard")}
-                className="rounded-md bg-rose-500/15 px-3 py-1.5 font-medium text-rose-300 transition hover:bg-rose-500/30"
-              >
-                Hard Delete
-              </button>
-            )}
+              )}
+            </div>
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
