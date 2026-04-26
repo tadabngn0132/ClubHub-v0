@@ -2,7 +2,10 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { useSelector } from "react-redux";
 import Loading from "../../../components/layout/internal/Loading.jsx";
-import { VALIDATION_MESSAGES, VALIDATION_RULES } from "../../../utils/validationRules";
+import {
+  VALIDATION_MESSAGES,
+  VALIDATION_RULES,
+} from "../../../utils/validationRules";
 
 const BasicInfoTab = () => {
   const {
@@ -57,9 +60,7 @@ const BasicInfoTab = () => {
           ...VALIDATION_RULES.userEmail,
         })}
       />
-      {errors.email && (
-        <p className={errorClassName}>{errors.email.message}</p>
-      )}
+      {errors.email && <p className={errorClassName}>{errors.email.message}</p>}
 
       {/* Phone number field */}
       <label htmlFor="phoneNumber" className={labelClassName}>
@@ -90,7 +91,10 @@ const BasicInfoTab = () => {
           required: VALIDATION_MESSAGES.dateOfBirthRequired,
           validate: (value) => {
             if (!value) return VALIDATION_MESSAGES.dateOfBirthRequired;
-            return new Date(value).getTime() <= Date.now() || VALIDATION_MESSAGES.dateOfBirthFuture;
+            return (
+              new Date(value).getTime() <= Date.now() ||
+              VALIDATION_MESSAGES.dateOfBirthFuture
+            );
           },
         })}
       />
@@ -103,35 +107,50 @@ const BasicInfoTab = () => {
         Gender <span className="text-red-400">*</span>
       </label>
       <div className="mt-2 flex flex-wrap gap-3">
-        <label htmlFor="male" className="inline-flex cursor-pointer items-center gap-2 text-sm text-gray-200">
+        <label
+          htmlFor="male"
+          className="inline-flex cursor-pointer items-center gap-2 text-sm text-gray-200"
+        >
           <input
             type="radio"
             id="male"
             value="male"
             className="h-4 w-4 border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
-            {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
+            {...register("gender", {
+              required: VALIDATION_MESSAGES.genderRequired,
+            })}
           />
           Male
         </label>
 
-        <label htmlFor="female" className="inline-flex cursor-pointer items-center gap-2 text-sm text-gray-200">
+        <label
+          htmlFor="female"
+          className="inline-flex cursor-pointer items-center gap-2 text-sm text-gray-200"
+        >
           <input
             type="radio"
             id="female"
             value="female"
             className="h-4 w-4 border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
-            {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
+            {...register("gender", {
+              required: VALIDATION_MESSAGES.genderRequired,
+            })}
           />
           Female
         </label>
 
-        <label htmlFor="other" className="inline-flex cursor-pointer items-center gap-2 text-sm text-gray-200">
+        <label
+          htmlFor="other"
+          className="inline-flex cursor-pointer items-center gap-2 text-sm text-gray-200"
+        >
           <input
             type="radio"
             id="other"
             value="other"
             className="h-4 w-4 border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
-            {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
+            {...register("gender", {
+              required: VALIDATION_MESSAGES.genderRequired,
+            })}
           />
           Other
         </label>
@@ -144,22 +163,23 @@ const BasicInfoTab = () => {
       <label htmlFor="major" className={labelClassName}>
         Major <span className="text-red-400">*</span>
       </label>
-      <input
-        type="text"
+      <select
+        name="major"
         id="major"
-        placeholder="Computing"
         className={inputClassName}
-        {...register("major", {
-          required: VALIDATION_MESSAGES.majorRequired,
-          minLength: {
-            value: 2,
-            message: VALIDATION_MESSAGES.majorRequired,
-          },
-        })}
-      />
-      {errors.major && (
-        <p className={errorClassName}>{errors.major.message}</p>
-      )}
+        {...register("major", { required: VALIDATION_MESSAGES.majorRequired })}
+      >
+        <option value="">Select your major</option>
+        <option value="Computing">Computing</option>
+        <option value="Graphic and Digital Design">
+          Graphic and Digital Design
+        </option>
+        <option value="Media and Communications">
+          Media and Communications
+        </option>
+        <option value="Business Management">Business Management</option>
+      </select>
+      {errors.major && <p className={errorClassName}>{errors.major.message}</p>}
 
       {/* Student ID field */}
       <label htmlFor="studentId" className={labelClassName}>

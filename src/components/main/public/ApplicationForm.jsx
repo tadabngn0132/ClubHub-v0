@@ -2,8 +2,14 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { submitMemberApplication } from "../../../store/slices/memberApplicationSlice";
 import { useEffect } from "react";
-import { getDepartmentsList, resetDepartmentStatus } from "../../../store/slices/departmentSlice";
-import { VALIDATION_MESSAGES, VALIDATION_RULES } from "../../../utils/validationRules";
+import {
+  getDepartmentsList,
+  resetDepartmentStatus,
+} from "../../../store/slices/departmentSlice";
+import {
+  VALIDATION_MESSAGES,
+  VALIDATION_RULES,
+} from "../../../utils/validationRules";
 
 // TODO(member-application): finish the public application flow here.
 // Rebuild the full form, include all fields needed by the backend, validate
@@ -138,7 +144,9 @@ const ApplicationForm = () => {
                 id={`dept-${dept.id}`}
                 value={dept.id}
                 className="h-4 w-4 accent-pink-600"
-                {...register("departmentIds", { required: VALIDATION_MESSAGES.departmentRequired })}
+                {...register("departmentIds", {
+                  required: VALIDATION_MESSAGES.departmentRequired,
+                })}
               />
               {dept.name}
             </label>
@@ -160,7 +168,10 @@ const ApplicationForm = () => {
             required: VALIDATION_MESSAGES.dateOfBirthRequired,
             validate: (value) => {
               if (!value) return VALIDATION_MESSAGES.dateOfBirthRequired;
-              return new Date(value).getTime() <= Date.now() || VALIDATION_MESSAGES.dateOfBirthFuture;
+              return (
+                new Date(value).getTime() <= Date.now() ||
+                VALIDATION_MESSAGES.dateOfBirthFuture
+              );
             },
           })}
         />
@@ -182,7 +193,9 @@ const ApplicationForm = () => {
               id="male"
               value="male"
               className="h-4 w-4 accent-pink-600"
-              {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
+              {...register("gender", {
+                required: VALIDATION_MESSAGES.genderRequired,
+              })}
             />
             Male
           </label>
@@ -196,7 +209,9 @@ const ApplicationForm = () => {
               id="female"
               value="female"
               className="h-4 w-4 accent-pink-600"
-              {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
+              {...register("gender", {
+                required: VALIDATION_MESSAGES.genderRequired,
+              })}
             />
             Female
           </label>
@@ -210,7 +225,9 @@ const ApplicationForm = () => {
               id="other"
               value="other"
               className="h-4 w-4 accent-pink-600"
-              {...register("gender", { required: VALIDATION_MESSAGES.genderRequired })}
+              {...register("gender", {
+                required: VALIDATION_MESSAGES.genderRequired,
+              })}
             />
             Other
           </label>
@@ -221,21 +238,26 @@ const ApplicationForm = () => {
 
         {/* Major field */}
         <label htmlFor="major" className={labelClassName}>
-          Major <span className="text-red-500">*</span>
+          Major <span className="text-red-400">*</span>
         </label>
-        <input
-          type="text"
+        <select
+          name="major"
           id="major"
-          placeholder="Computing"
           className={inputClassName}
           {...register("major", {
             required: VALIDATION_MESSAGES.majorRequired,
-            minLength: {
-              value: 2,
-              message: VALIDATION_MESSAGES.majorRequired,
-            },
           })}
-        />
+        >
+          <option value="">Select your major</option>
+          <option value="Computing">Computing</option>
+          <option value="Graphic and Digital Design">
+            Graphic and Digital Design
+          </option>
+          <option value="Media and Communications">
+            Media and Communications
+          </option>
+          <option value="Business Management">Business Management</option>
+        </select>
         {errors.major && (
           <p className={errorClassName}>{errors.major.message}</p>
         )}
