@@ -187,6 +187,7 @@ const PositionsPage = ({ role, basePath }) => {
                 <th className="px-3 py-3">Title</th>
                 <th className="px-3 py-3">Level</th>
                 <th className="px-3 py-3 text-center">System Role</th>
+                <th className="px-3 py-3">Department</th>
                 <th className="px-3 py-3 text-center">Actions</th>
               </tr>
             </thead>
@@ -195,7 +196,7 @@ const PositionsPage = ({ role, basePath }) => {
               {filteredPositions.length === 0 ? (
                 <tr>
                   <td
-                    colSpan="4"
+                    colSpan="5"
                     className="px-4 py-10 text-center text-slate-300"
                   >
                     No positions found.
@@ -219,6 +220,9 @@ const PositionsPage = ({ role, basePath }) => {
                       >
                         {formatUppercaseToCapitalized(position.systemRole)}
                       </div>
+                    </td>
+                    <td className="px-3 py-3 text-slate-300">
+                      {position.department?.name || "N/A"}
                     </td>
                     <td className="w-24 px-3 py-3 text-center">
                       <div className="flex items-center justify-center gap-1 text-xs">
