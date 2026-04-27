@@ -20,8 +20,14 @@ const TaskForm = ({ task, onSubmit }) => {
     dispatch(getUsersList());
   }, [dispatch]);
 
-  const memberIds = task && task.assigneeScope.toLowerCase() === "members" ? task.assignees.map((assignee) => String(assignee.assigneeId)) : [];
-  const departmentIds = task && task.assigneeScope.toLowerCase() === "depts" ? task.assignees.map((assignee) => String(assignee.user.rootDepartmentId)) : [];
+  const memberIds =
+    task && task.assigneeScope.toLowerCase() === "members"
+      ? task.assignees.map((assignee) => String(assignee.assigneeId))
+      : [];
+  const departmentIds =
+    task && task.assigneeScope.toLowerCase() === "depts"
+      ? task.assignees.map((assignee) => String(assignee.user.rootDepartmentId))
+      : [];
 
   const {
     register,
@@ -49,205 +55,311 @@ const TaskForm = ({ task, onSubmit }) => {
     return !isValid;
   };
 
+  const shellClassName =
+    "w-full rounded-3xl border border-slate-800 bg-slate-950 p-4 shadow-2xl shadow-black/30 sm:p-6 lg:p-8";
+
+  const headerPillClassName =
+    "inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300";
+
+  const sectionCardClassName =
+    "rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5";
+
+  const fieldLabelClassName = "text-sm font-semibold text-slate-200";
+
+  const inputClassName =
+    "mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition duration-200 placeholder:text-slate-500 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20";
+
+  const selectClassName =
+    "mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20";
+
+  const textareaClassName =
+    "mt-2 min-h-32 w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition duration-200 placeholder:text-slate-500 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20";
+
+  const checkboxCardClassName =
+    "flex items-start gap-3 rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 transition hover:border-cyan-500/40 hover:bg-slate-900";
+
+  const checkboxClassName =
+    "mt-1 h-4 w-4 rounded border-slate-600 text-cyan-500 focus:ring-cyan-500";
+
+  const errorClassName = "mt-1 text-sm font-medium text-rose-400";
+
+  const buttonClassName =
+    "inline-flex items-center justify-center rounded-2xl bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition duration-200 hover:bg-cyan-400 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400";
+
   return (
-    <div className="px-4">
+    <div className="relative w-full px-4 py-6 sm:px-6 lg:px-0">
       <form
         action=""
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4"
+        className={shellClassName}
       >
-        <h1 className="text-3xl font-bold mb-4">
-          {!task ? "Add New Task" : "Edit Task"}
-        </h1>
-
-        {/* Task Name field */}
-        <label htmlFor="title">
-          Task Name <span className="text-red-500">*</span>
-        </label>
-        <input
-          type="text"
-          id="title"
-          name="title"
-          {...register("title", {
-            required: VALIDATION_MESSAGES.taskTitleMinLength,
-            minLength: {
-              value: 3,
-              message: VALIDATION_MESSAGES.taskTitleMinLength,
-            },
-          })}
-          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        {errors.title && <p className="text-red-500">{errors.title.message}</p>}
-
-        {/* Task Description field */}
-        <label htmlFor="description">
-          Task Description <span className="text-red-500">*</span>
-        </label>
-        <textarea
-          id="description"
-          name="description"
-          {...register("description", {
-            required: VALIDATION_MESSAGES.taskDescriptionMinLength,
-            minLength: {
-              value: 10,
-              message: VALIDATION_MESSAGES.taskDescriptionMinLength,
-            },
-          })}
-          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        ></textarea>
-        {errors.description && (
-          <p className="text-red-500">{errors.description.message}</p>
-        )}
-
-        {/* Is Check Cf field */}
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="isCheckCf"
-            name="isCheckCf"
-            {...register("isCheckCf", { required: "Please indicate if task needs check confirmation" })}
-            className="mt-2 bg-slate-800 text-white border border-slate-600"
-          />
-          <label htmlFor="isCheckCf" className="ml-2">
-            Check Cf
-            <span className="text-red-500">*</span>
-          </label>
-          {errors.isCheckCf && (
-            <p className="text-red-500">{errors.isCheckCf.message}</p>
-          )}
+        <div className="mb-6 flex flex-col gap-3 border-b border-slate-800 pb-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <span className={headerPillClassName}>
+              {task ? "Edit mode" : "New task"}
+            </span>
+            <h1 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+              {!task ? "Create Task" : "Update Task"}
+            </h1>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400 sm:text-base">
+              Simple, readable task form for assigning work to departments or
+              members.
+            </p>
+          </div>
         </div>
 
-        {/* Status field */}
-        <label htmlFor="status">
-          Task Status <span className="text-red-500">*</span>
-        </label>
-        <select
-          id="status"
-          name="status"
-          {...register("status", { required: "Task status is required" })}
-          className="mt-2 bg-slate-800 text-white border border-slate-600"
-        >
-          <option value="new" className="bg-slate-800 text-white">
-            New
-          </option>
-          <option value="in-progress" className="bg-slate-800 text-white">
-            In Progress
-          </option>
-          <option value="done" className="bg-slate-800 text-white">
-            Done
-          </option>
-          <option value="cancelled" className="bg-slate-800 text-white">
-            Cancelled
-          </option>
-          <option value="on-hold" className="bg-slate-800 text-white">
-            On Hold
-          </option>
-        </select>
-        {errors.status && (
-          <p className="text-red-500">{errors.status.message}</p>
-        )}
+        <div className="space-y-4">
+          <div className={sectionCardClassName}>
+            <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+              Task Details
+            </h2>
+            <div className="mt-4 space-y-4">
+              <div>
+                <label htmlFor="title" className={fieldLabelClassName}>
+                  Task Name <span className="text-rose-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  {...register("title", {
+                    required: VALIDATION_MESSAGES.taskTitleMinLength,
+                    minLength: {
+                      value: 3,
+                      message: VALIDATION_MESSAGES.taskTitleMinLength,
+                    },
+                  })}
+                  className={inputClassName}
+                  placeholder="Example: Prepare club workshop agenda"
+                />
+                {errors.title && (
+                  <p className={errorClassName}>{errors.title.message}</p>
+                )}
+              </div>
 
-        {/* Due Date field */}
-        <label htmlFor="dueDate">Task Due Date</label>
-        <input
-          type="date"
-          id="dueDate"
-          name="dueDate"
-          {...register("dueDate", {
-            validate: (value) => {
-              if (value) {
-                const selectedDate = new Date(value);
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                if (selectedDate < today) {
-                  return "Due date cannot be in the past";
-                }
-              }
-              return true;
-            }
-          })}
-          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        {errors.dueDate && (
-          <p className="text-red-500">{errors.dueDate.message}</p>
-        )}
+              <div>
+                <label htmlFor="description" className={fieldLabelClassName}>
+                  Task Description <span className="text-rose-500">*</span>
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  {...register("description", {
+                    required: VALIDATION_MESSAGES.taskDescriptionMinLength,
+                    minLength: {
+                      value: 10,
+                      message: VALIDATION_MESSAGES.taskDescriptionMinLength,
+                    },
+                  })}
+                  className={textareaClassName}
+                  placeholder="Describe the outcome, constraints, and any extra context the assignees need."
+                />
+                {errors.description && (
+                  <p className={errorClassName}>{errors.description.message}</p>
+                )}
+              </div>
+            </div>
+          </div>
 
-        {/* Assignee Scope field */}
-        {ASSIGNEE_SCOPE.length > 0 && (
-          <>
-            <label htmlFor="assigneeScope">
-              Assignee Scope <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="assigneeScope"
-              name="assigneeScope"
-              {...register("assigneeScope", {
-                required: "Assignee scope is required",
-              })}
-              className="mt-2 bg-slate-800 text-white border border-slate-600"
-              onChange={(e) => setSelectedAssigneeScope(e.target.value)}
-            >
-              {ASSIGNEE_SCOPE.map((scope) => (
-                <option
-                  key={scope.id}
-                  value={scope.value}
-                  className="bg-slate-800 text-white"
+          <div className={sectionCardClassName}>
+            <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+              Scheduling
+            </h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              <div>
+                <label htmlFor="status" className={fieldLabelClassName}>
+                  Task Status <span className="text-rose-500">*</span>
+                </label>
+                <select
+                  id="status"
+                  name="status"
+                  {...register("status", {
+                    required: "Task status is required",
+                  })}
+                  className={selectClassName}
                 >
-                  {scope.name}
-                </option>
-              ))}
-            </select>
-            {errors.assigneeScope && (
-              <p className="text-red-500">{errors.assigneeScope.message}</p>
+                  <option value="new">New</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="done">Done</option>
+                  <option value="cancelled">Cancelled</option>
+                  <option value="on-hold">On Hold</option>
+                </select>
+                {errors.status && (
+                  <p className={errorClassName}>{errors.status.message}</p>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="dueDate" className={fieldLabelClassName}>
+                  Task Due Date
+                </label>
+                <input
+                  type="date"
+                  id="dueDate"
+                  name="dueDate"
+                  {...register("dueDate", {
+                    validate: (value) => {
+                      if (value) {
+                        const selectedDate = new Date(value);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        if (selectedDate < today) {
+                          return "Due date cannot be in the past";
+                        }
+                      }
+                      return true;
+                    },
+                  })}
+                  className={inputClassName}
+                />
+                {errors.dueDate && (
+                  <p className={errorClassName}>{errors.dueDate.message}</p>
+                )}
+              </div>
+
+              <div className="sm:col-span-2">
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                  <label htmlFor="isCheckCf" className={fieldLabelClassName}>
+                    Check Confirmation <span className="text-rose-500">*</span>
+                  </label>
+                  <div className="mt-3 flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      id="isCheckCf"
+                      name="isCheckCf"
+                      {...register("isCheckCf", {
+                        required:
+                          "Please indicate if task needs check confirmation",
+                      })}
+                      className={checkboxClassName}
+                    />
+                    <label
+                      htmlFor="isCheckCf"
+                      className="text-sm text-slate-300"
+                    >
+                      Require check confirmation before completion
+                    </label>
+                  </div>
+                  {errors.isCheckCf && (
+                    <p className={errorClassName}>{errors.isCheckCf.message}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {ASSIGNEE_SCOPE.length > 0 && (
+          <div className={sectionCardClassName}>
+            <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+              Assignment
+            </h2>
+
+            <div className="mt-4 grid gap-4 lg:grid-cols-2">
+              <div>
+                <label htmlFor="assigneeScope" className={fieldLabelClassName}>
+                  Assignee Scope <span className="text-rose-500">*</span>
+                </label>
+                <select
+                  id="assigneeScope"
+                  name="assigneeScope"
+                  {...register("assigneeScope", {
+                    required: "Assignee scope is required",
+                  })}
+                  className={selectClassName}
+                  onChange={(e) => setSelectedAssigneeScope(e.target.value)}
+                >
+                  {ASSIGNEE_SCOPE.map((scope) => (
+                    <option key={scope.id} value={scope.value}>
+                      {scope.name}
+                    </option>
+                  ))}
+                </select>
+                {errors.assigneeScope && (
+                  <p className={errorClassName}>
+                    {errors.assigneeScope.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-400">
+                Choose who should receive this task. The list below changes
+                based on the selected scope.
+              </div>
+            </div>
+
+            {selectedAssigneeScope === "depts" && (
+              <div className="mt-5">
+                <label className={fieldLabelClassName}>
+                  Assign to Departments
+                </label>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  {departments.map((department) => (
+                    <label
+                      key={department.id}
+                      htmlFor={`dept-${department.id}`}
+                      className={checkboxCardClassName}
+                    >
+                      <input
+                        type="checkbox"
+                        id={`dept-${department.id}`}
+                        name="departmentIds"
+                        value={department.id}
+                        {...register("departmentIds")}
+                        className={checkboxClassName}
+                      />
+                      <span className="text-sm font-medium text-slate-200">
+                        {department.name}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
             )}
-          </>
-        )}
 
-        {selectedAssigneeScope === "depts" && (
-          <>
-            <label htmlFor="departmentIds">Assign to Departments</label>
-            {departments.map((department) => (
-              <div key={department.id} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id={`dept-${department.id}`}
-                  name="departmentIds"
-                  value={department.id}
-                  {...register("departmentIds")}
-                  className="bg-slate-800 text-white border border-slate-600"
-                />
-                <label htmlFor={`dept-${department.id}`}>{department.name}</label>
+            {selectedAssigneeScope === "members" && (
+              <div className="mt-5">
+                <label className={fieldLabelClassName}>Assign to Members</label>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                  {users.map((user) => (
+                    <label
+                      key={user.id}
+                      htmlFor={`user-${user.id}`}
+                      className={checkboxCardClassName}
+                    >
+                      <input
+                        type="checkbox"
+                        id={`user-${user.id}`}
+                        name="userIds"
+                        value={user.id}
+                        {...register("userIds")}
+                        className={checkboxClassName}
+                      />
+                      <span className="text-sm font-medium text-slate-200">
+                        {user.fullname}
+                      </span>
+                    </label>
+                  ))}
+                </div>
               </div>
-            ))}
-          </>
+            )}
+          </div>
         )}
 
-        {selectedAssigneeScope === "members" && (
-          <>
-            <label htmlFor="userIds">Assign to Members</label>
-            {users.map((user) => (
-              <div key={user.id} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id={`user-${user.id}`}
-                  name="userIds"
-                  value={user.id}
-                  {...register("userIds")}
-                  className="bg-slate-800 text-white border border-slate-600"
-                />
-                <label htmlFor={`user-${user.id}`}>{user.fullname}</label>
-              </div>
-            ))}
-          </>
-        )}
-
-        <button
-          type="submit"
-          className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white disabled:cursor-not-allowed disabled:border-gray-500 disabled:text-gray-500 disabled:hover:bg-transparent disabled:hover:text-gray-500"
-          disabled={handleDisableSave()}
-        >
-          {!task ? "Add" : "Update"} Task
-        </button>
+        <div className="mt-6 flex flex-col-reverse gap-3 border-t border-slate-800 pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-slate-400">
+            {!task
+              ? "Create a new task assignment"
+              : "Update the current task assignment"}
+          </p>
+          <button
+            type="submit"
+            className={buttonClassName}
+            disabled={handleDisableSave()}
+          >
+            {!task ? "Add" : "Update"} Task
+          </button>
+        </div>
       </form>
     </div>
   );
