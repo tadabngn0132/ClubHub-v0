@@ -246,13 +246,19 @@ const UsersPage = ({ role, basePath }) => {
                 <th className="px-2 py-2">Dept</th>
                 <th className="px-2 py-2 text-center">Role</th>
                 <th className="px-2 py-2 text-center">Status</th>
+                {role === "ADMIN" && (
+                  <th className="px-2 py-2 text-center">Is Deleted</th>
+                )}
                 <th className="px-2 py-2 text-center">Actions</th>
               </tr>
             </thead>
             <tbody className="text-slate-300">
               {filteredUsers.length === 0 ? (
                 <tr className="border-t border-slate-800 odd:bg-slate-900/30 even:bg-slate-800/20">
-                  <td colSpan="11" className="px-4 py-10 text-center">
+                  <td
+                    colSpan={role === "ADMIN" ? 12 : 11}
+                    className="px-4 py-10 text-center"
+                  >
                     <div className="mx-auto flex max-w-xl flex-col items-center gap-3">
                       <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-200">
                         <svg
@@ -387,6 +393,19 @@ const UsersPage = ({ role, basePath }) => {
                         </p>
                       )}
                     </td>
+                    {role === "ADMIN" && (
+                      <td className="px-2 py-2 text-sm text-center">
+                        {user.isDeleted ? (
+                          <p className="badge text-red-500/80 w-22 h-fit p-1 pl-2 pr-2 rounded-2xl text-sm/tight">
+                            Deleted
+                          </p>
+                        ) : (
+                          <p className="badge text-green-500/80 w-22 h-fit p-1 pl-2 pr-2 rounded-2xl text-sm/tight">
+                            Not Deleted
+                          </p>
+                        )}
+                      </td>
+                    )}
                     <td className="px-2 py-2 text-sm text-center">
                       <div className="flex items-center justify-center gap-2 text-xs">
                         <Link

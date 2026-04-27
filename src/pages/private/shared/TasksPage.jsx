@@ -232,6 +232,9 @@ const TasksPage = ({ role, basePath }) => {
                   )}
                   <th className="px-3 py-3">{role !== "MEMBER" ? "Assignee Status" : "Status"}</th>
                   <th className="px-3 py-3">Assignee Scope</th>
+                  {role === "ADMIN" && (
+                    <th className="px-3 py-3">Is Deleted</th>
+                  )}
                   <th className="px-3 py-3">Assignor</th>
                   <th className="px-3 py-3 text-center">Actions</th>
                 </tr>
@@ -241,7 +244,7 @@ const TasksPage = ({ role, basePath }) => {
                 {filteredTasks.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={role !== "MEMBER" ? 11 : 10}
+                      colSpan={role !== "MEMBER" ? 12 : 11}
                       className="px-4 py-10 text-center text-slate-300"
                     >
                       <div className="mx-auto flex max-w-xl flex-col items-center gap-3">
@@ -338,6 +341,19 @@ const TasksPage = ({ role, basePath }) => {
                       <td className="px-3 py-3 text-slate-300">
                         {formatUppercaseToCapitalized(task.assigneeScope)}
                       </td>
+                      {role === "ADMIN" && (
+                      <td className="px-3 py-3 text-sm text-center">
+                        {task.isDeleted ? (
+                          <p className="badge text-red-500/80 text-sm/tight">
+                            Deleted
+                          </p>
+                        ) : (
+                          <p className="badge text-green-500/80 text-sm/tight">
+                            Not Deleted
+                          </p>
+                        )}
+                      </td>
+                    )}
                       <td className="px-3 py-3 text-slate-300">
                         {task.assignedBy?.fullname || "Unassigned"}
                       </td>

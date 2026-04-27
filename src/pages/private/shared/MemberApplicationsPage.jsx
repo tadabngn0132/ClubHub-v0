@@ -4,7 +4,11 @@
 // state field instead of legacy cv/final flat fields.
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllMemberApplicationsList, softDeleteMemberApplicationById, hardDeleteMemberApplicationById } from "../../../store/slices/memberApplicationSlice";
+import {
+  getAllMemberApplicationsList,
+  softDeleteMemberApplicationById,
+  hardDeleteMemberApplicationById,
+} from "../../../store/slices/memberApplicationSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link } from "react-router-dom";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal";
@@ -40,9 +44,13 @@ const MemberApplicationsPage = ({ role }) => {
   const handleDelete = async (selectedMemAppId) => {
     try {
       if (deleteMode === "soft") {
-        await dispatch(softDeleteMemberApplicationById(selectedMemAppId)).unwrap();
+        await dispatch(
+          softDeleteMemberApplicationById(selectedMemAppId),
+        ).unwrap();
       } else if (deleteMode === "hard") {
-        await dispatch(hardDeleteMemberApplicationById(selectedMemAppId)).unwrap();
+        await dispatch(
+          hardDeleteMemberApplicationById(selectedMemAppId),
+        ).unwrap();
       }
     } finally {
       handleCloseConfirmationModal();
@@ -96,29 +104,57 @@ const MemberApplicationsPage = ({ role }) => {
             <table className="min-w-full text-left">
               <thead className="bg-white/[0.03]">
                 <tr className="border-b border-white/10">
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">Avatar</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">Full Name</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">Email</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">Phone Number</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">Major</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">Student ID</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">Applied Date</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">Status</th>
-                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">Actions</th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+                    Avatar
+                  </th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+                    Full Name
+                  </th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+                    Email
+                  </th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+                    Phone Number
+                  </th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+                    Major
+                  </th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+                    Student ID
+                  </th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+                    Applied Date
+                  </th>
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+                    Status
+                  </th>
+                  {role === "ADMIN" && (
+                    <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+                      Is Deleted
+                    </th>
+                  )}
+                  <th className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/55">
+                    Actions
+                  </th>
                 </tr>
               </thead>
 
               <tbody>
                 {memberApplications.length === 0 ? (
                   <tr>
-                    <td colSpan="10" className="px-4 py-6 text-center text-sm text-white/70">
+                    <td
+                      colSpan="10"
+                      className="px-4 py-6 text-center text-sm text-white/70"
+                    >
                       No member applications found.
                     </td>
                   </tr>
                 ) : null}
-                
+
                 {memberApplications.map((application) => {
-                  const normalizedState = String(application.state || "unknown").toLowerCase();
+                  const normalizedState = String(
+                    application.state || "unknown",
+                  ).toLowerCase();
 
                   return (
                     <tr
@@ -134,21 +170,50 @@ const MemberApplicationsPage = ({ role }) => {
                           />
                         ) : (
                           <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-sm font-semibold text-white/65">
-                            {(application.fullname || "N").slice(0, 1).toUpperCase()}
+                            {(application.fullname || "N")
+                              .slice(0, 1)
+                              .toUpperCase()}
                           </div>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-sm font-medium text-white/90">{application.fullname || "N/A"}</td>
-                      <td className="px-4 py-3 text-sm text-white/75">{application.email || "N/A"}</td>
-                      <td className="px-4 py-3 text-sm text-white/75">{application.phoneNumber || "N/A"}</td>
-                      <td className="px-4 py-3 text-sm text-white/75">{application.major || "N/A"}</td>
-                      <td className="px-4 py-3 text-sm text-white/75">{application.studentId || "N/A"}</td>
-                      <td className="px-4 py-3 text-sm text-white/75">{formatDate(application.appliedAt)}</td>
+                      <td className="px-4 py-3 text-sm font-medium text-white/90">
+                        {application.fullname || "N/A"}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-white/75">
+                        {application.email || "N/A"}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-white/75">
+                        {application.phoneNumber || "N/A"}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-white/75">
+                        {application.major || "N/A"}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-white/75">
+                        {application.studentId || "N/A"}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-white/75">
+                        {formatDate(application.appliedAt)}
+                      </td>
                       <td className="px-4 py-3">
-                        <span className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.1em] ${statusTone[normalizedState] || "border-white/15 bg-white/10 text-white/70"}`}>
+                        <span
+                          className={`inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.1em] ${statusTone[normalizedState] || "border-white/15 bg-white/10 text-white/70"}`}
+                        >
                           {formatState(application.state)}
                         </span>
                       </td>
+                      {role === "ADMIN" && (
+                        <td className="px-4 py-3 text-center">
+                          {user.isDeleted ? (
+                            <p className="badge text-red-500/80 text-sm/tight">
+                              Deleted
+                            </p>
+                          ) : (
+                            <p className="badge text-green-500/80 text-sm/tight">
+                              Not Deleted
+                            </p>
+                          )}
+                        </td>
+                      )}
                       <td className="px-4 py-3">
                         <div className="flex flex-wrap gap-2">
                           <Link
@@ -165,7 +230,8 @@ const MemberApplicationsPage = ({ role }) => {
                               CV Review
                             </Link>
                           )}
-                          {normalizedState === "department_interview_pending" && (
+                          {normalizedState ===
+                            "department_interview_pending" && (
                             <Link
                               to={`/${role}/member-applications/interview/${application.id}`}
                               className="inline-flex items-center justify-center rounded-full border border-violet-400/35 bg-violet-400/10 px-3 py-1.5 text-xs font-semibold text-violet-100 transition hover:bg-violet-400/20"
@@ -182,13 +248,17 @@ const MemberApplicationsPage = ({ role }) => {
                             </Link>
                           )}
                           <button
-                            onClick={() => handleDeleteConfigured(application.id, "soft")}
+                            onClick={() =>
+                              handleDeleteConfigured(application.id, "soft")
+                            }
                             className="inline-flex items-center justify-center rounded-full border border-amber-400/35 bg-amber-400/10 px-3 py-1.5 text-xs font-semibold text-amber-100 transition hover:bg-amber-400/20"
                           >
                             Soft Delete
                           </button>
                           <button
-                            onClick={() => handleDeleteConfigured(application.id, "hard")}
+                            onClick={() =>
+                              handleDeleteConfigured(application.id, "hard")
+                            }
                             className="inline-flex items-center justify-center rounded-full border border-rose-400/35 bg-rose-400/10 px-3 py-1.5 text-xs font-semibold text-rose-100 transition hover:bg-rose-400/20"
                           >
                             Hard Delete

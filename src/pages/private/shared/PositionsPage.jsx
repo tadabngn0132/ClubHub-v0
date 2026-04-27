@@ -202,6 +202,9 @@ const PositionsPage = ({ role, basePath }) => {
                 <th className="px-3 py-3">Level</th>
                 <th className="px-3 py-3 text-center">System Role</th>
                 <th className="px-3 py-3">Department</th>
+                {role === "ADMIN" && (
+                  <th className="px-3 py-3 text-center">Is Deleted</th>
+                )}
                 <th className="px-3 py-3 text-center">Actions</th>
               </tr>
             </thead>
@@ -210,7 +213,7 @@ const PositionsPage = ({ role, basePath }) => {
               {filteredPositions.length === 0 ? (
                 <tr>
                   <td
-                    colSpan="5"
+                    colSpan={role === "ADMIN" ? 5 : 4}
                     className="px-4 py-10 text-center text-slate-300"
                   >
                     No positions found.
@@ -238,6 +241,19 @@ const PositionsPage = ({ role, basePath }) => {
                     <td className="px-3 py-3 text-slate-300">
                       {position.department?.name || "N/A"}
                     </td>
+                    {role === "ADMIN" && (
+                      <td className="px-3 py-3 text-sm text-center">
+                        {position.isDeleted ? (
+                          <p className="badge text-red-500/80 text-sm/tight">
+                            Deleted
+                          </p>
+                        ) : (
+                          <p className="badge text-green-500/80 text-sm/tight">
+                            Not Deleted
+                          </p>
+                        )}
+                      </td>
+                    )}
                     <td className="w-24 px-3 py-3 text-center">
                       <div className="flex items-center justify-center gap-1 text-xs">
                         <button

@@ -218,7 +218,9 @@ const DepartmentsPage = ({ role, basePath }) => {
                 <th className="px-3 py-3">Name</th>
                 <th className="px-3 py-3">Description</th>
                 <th className="px-3 py-3 text-center">Status</th>
-                <th className="px-3 py-3 text-center">Is Deleted</th>
+                {role === "ADMIN" && (
+                  <th className="px-3 py-3 text-center">Is Deleted</th>
+                )}
                 <th className="px-3 py-3 text-center">Actions</th>
               </tr>
             </thead>
@@ -227,7 +229,7 @@ const DepartmentsPage = ({ role, basePath }) => {
               {filteredDepartments.length === 0 ? (
                 <tr>
                   <td
-                    colSpan="5"
+                    colSpan={role === "ADMIN" ? 5 : 4}
                     className="px-4 py-10 text-center text-slate-300"
                   >
                     No departments found.

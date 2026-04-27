@@ -53,6 +53,9 @@ const ActivitiesTableView = ({
                 <th className="px-4 py-3">Location</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Registrations</th>
+                {role === "ADMIN" && (
+                  <th className="px-4 py-3">Is Deleted</th>
+                )}
                 <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
@@ -117,6 +120,19 @@ const ActivitiesTableView = ({
                     <td className="px-4 py-3 text-gray-300">
                       {activity.registrationsCount || 0}
                     </td>
+                    {role === "ADMIN" && (
+                      <td className="px-4 py-3 text-sm text-center">
+                        {activity.isDeleted ? (
+                          <p className="badge text-red-500/80 text-sm/tight">
+                            Deleted
+                          </p>
+                        ) : (
+                          <p className="badge text-green-500/80 text-sm/tight">
+                            Not Deleted
+                          </p>
+                        )}
+                      </td>
+                    )}
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap items-center gap-2">
                         <Link
