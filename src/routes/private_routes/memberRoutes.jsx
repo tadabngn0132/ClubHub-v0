@@ -121,6 +121,14 @@ export const memberRoutes = [
     ),
   },
   {
+    path: "/member/notifications",
+    element: (
+      <SharedLayout role="member">
+        <NotificationsPage />
+      </SharedLayout>
+    ),
+  },
+  {
     path: "/member/forbidden",
     element: (
       <SharedLayout role="member">

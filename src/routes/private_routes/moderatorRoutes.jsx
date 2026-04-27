@@ -23,6 +23,7 @@ import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
 import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx";
 import ModeratorActivityParticipants from "../../pages/private/moderator/ModeratorActivityParticipants.jsx";
 import ModeratorSetting from "../../pages/private/moderator/ModeratorSetting.jsx";
+import NotificationsPage from "../../pages/private/shared/NotificationsPage.jsx";
 
 // TODO(member-application): keep moderator member-application routes in sync
 // with the shared list/detail screens and only expose the review paths that
@@ -202,6 +203,14 @@ export const moderatorRoutes = [
     element: (
       <SharedLayout role="moderator">
         <ModeratorSetting />
+      </SharedLayout>
+    ),
+  },
+  {
+    path: "/moderator/notifications",
+    element: (
+      <SharedLayout role="moderator">
+        <NotificationsPage />
       </SharedLayout>
     ),
   },

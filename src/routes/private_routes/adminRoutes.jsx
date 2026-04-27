@@ -30,6 +30,7 @@ import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx"
 import AdminActivityParticipants from "../../pages/private/admin/AdminActivityParticipants.jsx";
 import AdminSetting from "../../pages/private/admin/AdminSetting.jsx";
 import ActivityLogsPage from "../../pages/private/shared/ActivityLogsPage.jsx";
+import NotificationsPage from "../../pages/private/shared/NotificationsPage.jsx";
 
 // TODO(member-application): keep these routes aligned with the rebuilt member
 // application workflow. The list route should drive filtering and navigation,
@@ -282,6 +283,14 @@ export const adminRoutes = [
     element: (
       <SharedLayout role="admin">
         <ActivityLogsPage />
+      </SharedLayout>
+    ),
+  },
+  {
+    path: "/admin/notifications",
+    element: (
+      <SharedLayout role="admin">
+        <NotificationsPage />
       </SharedLayout>
     ),
   },
