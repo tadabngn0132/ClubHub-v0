@@ -56,65 +56,63 @@ const TaskForm = ({ task, onSubmit }) => {
   };
 
   const shellClassName =
-    "w-full rounded-3xl border border-slate-800 bg-slate-950 p-4 shadow-2xl shadow-black/30 sm:p-6 lg:p-8";
+    "relative flex w-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#111111] p-5 text-white shadow-[0_18px_50px_rgba(0,0,0,0.35)] sm:p-10";
 
   const headerPillClassName =
-    "inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300";
+    "inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/70";
 
   const sectionCardClassName =
-    "rounded-2xl border border-slate-800 bg-slate-900/70 p-4 sm:p-5";
+    "mt-5 rounded-xl border border-white/10 bg-white/5 p-5 sm:p-6";
 
-  const fieldLabelClassName = "text-sm font-semibold text-slate-200";
+  const fieldLabelClassName =
+    "text-xs font-semibold uppercase tracking-[0.16em] text-white/75";
+
+  const fieldGroupClassName = "flex flex-col gap-2.5";
 
   const inputClassName =
-    "mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition duration-200 placeholder:text-slate-500 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20";
+    "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none transition duration-200 placeholder:text-white/35 hover:border-white/20 focus:border-[#db3f7a] focus:bg-white/8 focus:ring-4 focus:ring-[#db3f7a]/10";
 
-  const selectClassName =
-    "mt-2 w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition duration-200 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20";
+  const selectClassName = `${inputClassName} bg-[#171717] [color-scheme:dark] [&>option]:bg-[#171717] [&>option]:text-white`;
 
-  const textareaClassName =
-    "mt-2 min-h-32 w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 outline-none transition duration-200 placeholder:text-slate-500 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20";
+  const textareaClassName = `${inputClassName} min-h-28 resize-y`;
 
   const checkboxCardClassName =
-    "flex items-start gap-3 rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 transition hover:border-cyan-500/40 hover:bg-slate-900";
+    "flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-3 transition hover:border-white/20 hover:bg-white/8";
 
   const checkboxClassName =
-    "mt-1 h-4 w-4 rounded border-slate-600 text-cyan-500 focus:ring-cyan-500";
+    "h-4 w-4 rounded border-white/20 text-[#db3f7a] focus:ring-[#db3f7a]/20";
 
-  const errorClassName = "mt-1 text-sm font-medium text-rose-400";
+  const errorClassName = "text-sm text-[#ff8fb7]";
 
   const buttonClassName =
-    "inline-flex items-center justify-center rounded-2xl bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition duration-200 hover:bg-cyan-400 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400";
+    "relative mt-8 inline-flex w-full items-center justify-center rounded-xl bg-[#db3f7a] px-4 py-3 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(219,63,122,0.25)] transition duration-200 hover:bg-[#c7376f] hover:shadow-[0_14px_32px_rgba(219,63,122,0.3)] active:bg-[#b93068] focus:outline-none focus:ring-4 focus:ring-[#db3f7a]/20 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/45 disabled:shadow-none disabled:hover:bg-white/10 disabled:hover:shadow-none disabled:focus:ring-0";
 
   return (
-    <div className="relative w-full px-4 py-6 sm:px-6 lg:px-0">
+    <div className="w-full px-4 py-6 sm:px-6 lg:px-0">
       <form
         action=""
         onSubmit={handleSubmit(onSubmit)}
         className={shellClassName}
       >
-        <div className="mb-6 flex flex-col gap-3 border-b border-slate-800 pb-5 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <span className={headerPillClassName}>
-              {task ? "Edit mode" : "New task"}
-            </span>
-            <h1 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              {!task ? "Create Task" : "Update Task"}
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400 sm:text-base">
-              Simple, readable task form for assigning work to departments or
-              members.
-            </p>
-          </div>
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(219,63,122,0.08),transparent_30%)]" />
+
+        <div className="relative mb-6 flex flex-col gap-2 border-b border-white/10 pb-5 sm:mb-7 sm:pb-5">
+          <h1 className="font-['Monument',sans-serif] text-2xl font-black uppercase tracking-[0.06em] text-white sm:text-[2rem]">
+            {!task ? "Create Task" : "Edit Task"}
+          </h1>
+          <p className="max-w-2xl text-sm leading-6 text-white/60 sm:text-[0.95rem]">
+            Enter task information in a clean, readable, and consistent way with
+            the other admin forms.
+          </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="relative grid gap-6 sm:gap-7">
           <div className={sectionCardClassName}>
-            <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/75">
               Task Details
             </h2>
-            <div className="mt-4 space-y-4">
-              <div>
+            <div className="mt-5 space-y-5">
+              <div className={fieldGroupClassName}>
                 <label htmlFor="title" className={fieldLabelClassName}>
                   Task Name <span className="text-rose-500">*</span>
                 </label>
@@ -133,11 +131,13 @@ const TaskForm = ({ task, onSubmit }) => {
                   placeholder="Example: Prepare club workshop agenda"
                 />
                 {errors.title && (
-                  <p className={errorClassName}>{errors.title.message}</p>
+                  <p className={`${errorClassName} mt-1`}>
+                    {errors.title.message}
+                  </p>
                 )}
               </div>
 
-              <div>
+              <div className={fieldGroupClassName}>
                 <label htmlFor="description" className={fieldLabelClassName}>
                   Task Description <span className="text-rose-500">*</span>
                 </label>
@@ -155,18 +155,20 @@ const TaskForm = ({ task, onSubmit }) => {
                   placeholder="Describe the outcome, constraints, and any extra context the assignees need."
                 />
                 {errors.description && (
-                  <p className={errorClassName}>{errors.description.message}</p>
+                  <p className={`${errorClassName} mt-1`}>
+                    {errors.description.message}
+                  </p>
                 )}
               </div>
             </div>
           </div>
 
           <div className={sectionCardClassName}>
-            <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/75">
               Scheduling
             </h2>
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <div>
+            <div className="mt-5 grid gap-6 sm:grid-cols-2 sm:gap-6">
+              <div className={fieldGroupClassName}>
                 <label htmlFor="status" className={fieldLabelClassName}>
                   Task Status <span className="text-rose-500">*</span>
                 </label>
@@ -185,11 +187,13 @@ const TaskForm = ({ task, onSubmit }) => {
                   <option value="on-hold">On Hold</option>
                 </select>
                 {errors.status && (
-                  <p className={errorClassName}>{errors.status.message}</p>
+                  <p className={`${errorClassName} mt-1`}>
+                    {errors.status.message}
+                  </p>
                 )}
               </div>
 
-              <div>
+              <div className={fieldGroupClassName}>
                 <label htmlFor="dueDate" className={fieldLabelClassName}>
                   Task Due Date
                 </label>
@@ -218,11 +222,11 @@ const TaskForm = ({ task, onSubmit }) => {
               </div>
 
               <div className="sm:col-span-2">
-                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-5">
                   <label htmlFor="isCheckCf" className={fieldLabelClassName}>
                     Check Confirmation <span className="text-rose-500">*</span>
                   </label>
-                  <div className="mt-3 flex items-center gap-3">
+                  <div className="mt-4 flex items-center gap-3">
                     <input
                       type="checkbox"
                       id="isCheckCf"
@@ -235,13 +239,15 @@ const TaskForm = ({ task, onSubmit }) => {
                     />
                     <label
                       htmlFor="isCheckCf"
-                      className="text-sm text-slate-300"
+                      className="text-sm text-white/75"
                     >
                       Require check confirmation before completion
                     </label>
                   </div>
                   {errors.isCheckCf && (
-                    <p className={errorClassName}>{errors.isCheckCf.message}</p>
+                    <p className={`${errorClassName} mt-1`}>
+                      {errors.isCheckCf.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -251,12 +257,12 @@ const TaskForm = ({ task, onSubmit }) => {
 
         {ASSIGNEE_SCOPE.length > 0 && (
           <div className={sectionCardClassName}>
-            <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-400">
+            <h2 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/75">
               Assignment
             </h2>
 
-            <div className="mt-4 grid gap-4 lg:grid-cols-2">
-              <div>
+            <div className="mt-5 grid gap-6 lg:grid-cols-2 lg:gap-6">
+              <div className={fieldGroupClassName}>
                 <label htmlFor="assigneeScope" className={fieldLabelClassName}>
                   Assignee Scope <span className="text-rose-500">*</span>
                 </label>
@@ -276,24 +282,24 @@ const TaskForm = ({ task, onSubmit }) => {
                   ))}
                 </select>
                 {errors.assigneeScope && (
-                  <p className={errorClassName}>
+                  <p className={`${errorClassName} mt-1`}>
                     {errors.assigneeScope.message}
                   </p>
                 )}
               </div>
 
-              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 text-sm leading-6 text-slate-400">
-                Choose who should receive this task. The list below changes
-                based on the selected scope.
+              <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm leading-6 text-white/60">
+                Choose the assignees for this task. The list below changes based
+                on the selected scope.
               </div>
             </div>
 
             {selectedAssigneeScope === "depts" && (
-              <div className="mt-5">
-                <label className={fieldLabelClassName}>
+              <div className="mt-6">
+                <label className={`${fieldLabelClassName} block`}>
                   Assign to Departments
                 </label>
-                <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                   {departments.map((department) => (
                     <label
                       key={department.id}
@@ -308,7 +314,7 @@ const TaskForm = ({ task, onSubmit }) => {
                         {...register("departmentIds")}
                         className={checkboxClassName}
                       />
-                      <span className="text-sm font-medium text-slate-200">
+                      <span className="text-sm font-medium text-white/80">
                         {department.name}
                       </span>
                     </label>
@@ -318,9 +324,11 @@ const TaskForm = ({ task, onSubmit }) => {
             )}
 
             {selectedAssigneeScope === "members" && (
-              <div className="mt-5">
-                <label className={fieldLabelClassName}>Assign to Members</label>
-                <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="mt-6">
+                <label className={`${fieldLabelClassName} block`}>
+                  Assign to Members
+                </label>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                   {users.map((user) => (
                     <label
                       key={user.id}
@@ -335,7 +343,7 @@ const TaskForm = ({ task, onSubmit }) => {
                         {...register("userIds")}
                         className={checkboxClassName}
                       />
-                      <span className="text-sm font-medium text-slate-200">
+                      <span className="text-sm font-medium text-white/80">
                         {user.fullname}
                       </span>
                     </label>
@@ -346,8 +354,8 @@ const TaskForm = ({ task, onSubmit }) => {
           </div>
         )}
 
-        <div className="mt-6 flex flex-col-reverse gap-3 border-t border-slate-800 pt-5 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-slate-400">
+        <div className="mt-8 border-t border-white/10 pt-5">
+          <p className="mb-4 text-sm text-white/55">
             {!task
               ? "Create a new task assignment"
               : "Update the current task assignment"}
