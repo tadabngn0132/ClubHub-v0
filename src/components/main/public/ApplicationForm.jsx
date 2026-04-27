@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { submitMemberApplication } from "../../../store/slices/memberApplicationSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   getDepartmentsList,
   resetDepartmentStatus,
@@ -20,6 +20,8 @@ import {
 const ApplicationForm = () => {
   const dispatch = useDispatch();
   const { departments } = useSelector((state) => state.department);
+  const [selectedMainDeptId, setSelectedMainDeptId] = useState("");
+  const [otherDeptIds, setOtherDeptIds] = useState([]);
   const {
     register,
     handleSubmit,
@@ -34,7 +36,9 @@ const ApplicationForm = () => {
       gender: "",
       major: "",
       studentId: "",
+      rootDepartmentId: "",
       departmentIds: [],
+      avatar: null,
     },
     mode: "onChange",
   });
@@ -44,8 +48,40 @@ const ApplicationForm = () => {
     dispatch(resetDepartmentStatus());
   }, [dispatch]);
 
+  // Filter other departments when main department is selected
+  useEffect(() => {
+    if (!selectedMainDeptId) {
+      setOtherDeptIds(departments);
+    } else {
+      const filtered = departments.filter(
+        (dept) => dept.id !== parseInt(selectedMainDeptId),
+      );
+      setOtherDeptIds(filtered);
+    }
+  }, [selectedMainDeptId, departments]);
+
   const handleSaveApplication = (data) => {
-    dispatch(submitMemberApplication(data));
+    const formData = new FormData();
+    formData.append("fullname", data.fullname);
+    formData.append("email", data.email);
+    formData.append("phoneNumber", data.phoneNumber);
+    formData.append("dateOfBirth", data.dateOfBirth);
+    formData.append("gender", data.gender);
+    formData.append("major", data.major);
+    formData.append("studentId", data.studentId);
+    formData.append("rootDepartmentId", data.rootDepartmentId);
+
+    if (data.departmentIds) {
+      data.departmentIds.forEach((deptId) =>
+        formData.append("departmentIds", deptId),
+      );
+    }
+
+    if (data.avatar && data.avatar.length > 0) {
+      formData.append("avatar", data.avatar[0]);
+    }
+
+    dispatch(submitMemberApplication(formData));
     reset();
   };
 
@@ -100,7 +136,7 @@ const ApplicationForm = () => {
         <input
           type="email"
           id="email"
-          placeholder="HaiNV240875@fpt.edu.vn"
+          placeholder="hainvgdh240875@fpt.edu.vn"
           className={inputClassName}
           {...register("email", {
             ...VALIDATION_RULES.applicationEmail,
@@ -127,13 +163,36 @@ const ApplicationForm = () => {
           <p className={errorClassName}>{errors.phoneNumber.message}</p>
         )}
 
-        {/* Department field */}
+        {/* Main department field */}
+        <label htmlFor="mainDepartment" className={labelClassName}>
+          Main Department <span className="text-red-500">*</span>
+        </label>
+        <select
+          id="mainDepartment"
+          className={inputClassName}
+          {...register("rootDepartmentId", {
+            required: "Please select your main department",
+          })}
+          onChange={(e) => setSelectedMainDeptId(e.target.value)}
+        >
+          <option value="">Select your main department</option>
+          {departments.map((dept) => (
+            <option key={dept.id} value={dept.id}>
+              {dept.name}
+            </option>
+          ))}
+        </select>
+        {errors.rootDepartmentId && (
+          <p className={errorClassName}>{errors.rootDepartmentId.message}</p>
+        )}
+
+        {/* Other department field */}
         <label htmlFor="department" className={labelClassName}>
-          Department <span className="text-red-500">*</span>
+          Other Departments
         </label>
         {/* Department checkbox */}
         <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {departments.map((dept) => (
+          {otherDeptIds.map((dept) => (
             <label
               key={dept.id}
               htmlFor={`dept-${dept.id}`}
@@ -144,17 +203,12 @@ const ApplicationForm = () => {
                 id={`dept-${dept.id}`}
                 value={dept.id}
                 className="h-4 w-4 accent-pink-600"
-                {...register("departmentIds", {
-                  required: VALIDATION_MESSAGES.departmentRequired,
-                })}
+                {...register("departmentIds")}
               />
               {dept.name}
             </label>
           ))}
         </div>
-        {errors.departmentIds && (
-          <p className={errorClassName}>{errors.departmentIds.message}</p>
-        )}
 
         {/* Date of Birth field */}
         <label htmlFor="dateOfBirth" className={labelClassName}>
@@ -276,6 +330,18 @@ const ApplicationForm = () => {
         {errors.studentId && (
           <p className={errorClassName}>{errors.studentId.message}</p>
         )}
+
+        {/* Avatar field */}
+        <label htmlFor="avatar" className={labelClassName}>
+          Avatar
+        </label>
+        <input
+          type="file"
+          id="avatar"
+          accept="image/*"
+          className="mt-2 w-full text-sm text-slate-500 file:mr-4 file:rounded-xl file:border-0 file:bg-black file:px-4 file:py-2.5 file:text-white hover:file:bg-pink-800"
+          {...register("avatar")}
+        />
 
         <button
           type="submit"
