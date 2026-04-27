@@ -1,15 +1,9 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBell,
-  faInbox,
-  faInfoCircle,
-  faBars,
-  faCheck,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBell, faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../../assets/logos/GDC_logo.svg";
 import Dropdown from "./Dropdown";
+import Notification from "../../main/internal/Notification";
 import { useState, useEffect, useMemo, useRef } from "react";
 import {
   formatRoleBadgeColor,
@@ -25,7 +19,7 @@ const Header = ({ role, onHandleSideBarToggle }) => {
   const dispatch = useDispatch();
   const { currentUser, token } = useSelector((state) => state.auth);
   const { notifications } = useSelector((state) => state.notification);
-  const { onEvent, emitEventWithAck } = useSocket(token);
+  const { onEvent } = useSocket(token);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const notificationRef = useRef(null);
@@ -91,32 +85,6 @@ const Header = ({ role, onHandleSideBarToggle }) => {
     setIsDropdownVisible(!isDropdownVisible);
   };
 
-  const handleMarkAsRead = async (notificationId) => {
-    const ack = await emitEventWithAck("notification:read", notificationId);
-
-    if (!ack?.success) {
-      console.error("Mark notification as read failed", ack?.message);
-    }
-
-    if (currentUser?.id) {
-      dispatch(getUserNotifications(currentUser.id));
-    }
-  };
-
-  const handleDeleteNotification = async (notificationId) => {
-    const ack = await emitEventWithAck("notification:softDelete", {
-      notificationId,
-    });
-
-    if (!ack?.success) {
-      console.error("Soft delete notification failed", ack?.message);
-    }
-
-    if (currentUser?.id) {
-      dispatch(getUserNotifications(currentUser.id));
-    }
-  };
-
   return (
     <div className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-black/95 p-4 pb-3 pt-3 shadow-md backdrop-blur-sm">
       <div className="flex items-center space-x-4">
@@ -165,63 +133,8 @@ const Header = ({ role, onHandleSideBarToggle }) => {
           </button>
 
           {isNotificationOpen && (
-            <div className="absolute right-0 top-7 z-[1200] w-80 overflow-hidden rounded-xl border border-white/15 bg-[#0f0f11] shadow-[0_12px_36px_rgba(0,0,0,0.45)]">
-              <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
-                <p className="text-sm font-semibold text-white">
-                  Notifications
-                </p>
-                <span className="text-xs text-white/55">
-                  {unreadCount} unread
-                </span>
-              </div>
-
-              <div className="max-h-80 overflow-y-auto">
-                {Array.isArray(notifications) && notifications.length > 0 ? (
-                  notifications.map((item) => (
-                    <div
-                      key={item.id}
-                      className={`border-b border-white/8 px-4 py-3 ${
-                        item?.isRead ? "bg-transparent" : "bg-[#DB3F7A]/8"
-                      }`}
-                    >
-                      <p className="text-sm leading-5 text-white/85">
-                        {item?.message || "You have a new notification."}
-                      </p>
-                      <div className="mt-2 flex items-center justify-between">
-                        <span className="text-[11px] text-white/45">
-                          {item?.createdAt
-                            ? new Date(item.createdAt).toLocaleString()
-                            : "Now"}
-                        </span>
-                        <div className="flex items-center gap-2">
-                          {!item?.isRead && (
-                            <button
-                              type="button"
-                              onClick={() => handleMarkAsRead(item.id)}
-                              className="inline-flex items-center gap-1 rounded-md border border-green-500/40 px-2 py-1 text-[11px] text-green-400 hover:bg-green-500/10"
-                            >
-                              <FontAwesomeIcon icon={faCheck} size="xs" />
-                              Read
-                            </button>
-                          )}
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteNotification(item.id)}
-                            className="inline-flex items-center gap-1 rounded-md border border-red-500/40 px-2 py-1 text-[11px] text-red-400 hover:bg-red-500/10"
-                          >
-                            <FontAwesomeIcon icon={faTrash} size="xs" />
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="px-4 py-6 text-center text-sm text-white/55">
-                    No notifications yet.
-                  </p>
-                )}
-              </div>
+            <div className="absolute right-0 top-7 z-[1200] w-80">
+              <Notification />
             </div>
           )}
         </div>
