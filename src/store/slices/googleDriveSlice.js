@@ -136,7 +136,9 @@ const googleDriveSlice = createSlice({
   name: "googleDrive",
   initialState: {
     folders: [],
-    files: [],
+    files: {},
+    googleDocTemplates: [],
+    googleSheetTemplates: [],
     isLoading: false,
     error: null,
   },
@@ -198,7 +200,7 @@ const googleDriveSlice = createSlice({
       .addCase(getFileMetadata.fulfilled, (state, action) => {
         state.isLoading = false;
         const { fileId, metadata } = action.payload.data;
-        state.files.push({ id: fileId, ...metadata });
+        state.files[fileId] = { id: fileId, ...metadata };
       })
       .addCase(getFileMetadata.rejected, (state, action) => {
         state.isLoading = false;
@@ -213,7 +215,7 @@ const googleDriveSlice = createSlice({
       .addCase(uploadFileToFolder.fulfilled, (state, action) => {
         state.isLoading = false;
         const { folderId, file } = action.payload.data;
-        state.files.push(file);
+        state.files[file.id] = file;
       })
       .addCase(uploadFileToFolder.rejected, (state, action) => {
         state.isLoading = false;
