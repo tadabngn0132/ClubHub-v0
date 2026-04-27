@@ -33,7 +33,7 @@ const EditTaskPage = ({ basePath }) => {
   }, [error]);
 
   const handleEditTask = async (data) => {
-    await dispatch(updateTaskById({ taskId, taskData: data })).unwrap();
+    await dispatch(updateTaskById({ id: taskId, taskData: data })).unwrap();
     navigate(basePath);
   };
 

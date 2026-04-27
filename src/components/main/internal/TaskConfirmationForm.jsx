@@ -67,7 +67,7 @@ const TaskConfirmationForm = ({ taskCfData, onSubmit }) => {
       </div>
 
       {taskCfData?.evidenceUrl && (
-        <div className="rounded-xl border border-cyan-300/20 bg-cyan-500/10 p-3">
+        <div className="rounded-xl border border-cyan-300/20 bg-cyan-500/10 p-3 mt-4">
           <p className="text-xs font-bold uppercase tracking-wide text-cyan-200">
             Current Evidence
           </p>

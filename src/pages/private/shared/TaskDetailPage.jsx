@@ -69,23 +69,35 @@ const TaskDetailPage = ({ role, basePath }) => {
   const currentUserAssignee = task?.assignees?.find(
     (assignee) => assignee.assigneeId === currentUser.id,
   );
+
   const filterConfirmedAssignee = task?.assignees?.filter(
-    (assignee) => assignee.status === "CONFIRMED",
+    (assignee) =>
+      assignee.status === "CONFIRMED" || assignee.status === "VERIFIED",
   );
   const statusLabel = task?.status
     ? formatUppercaseToCapitalized(task.status)
     : "N/A";
+  const assigneeStatusLabel = currentUserAssignee?.status
+    ? formatUppercaseToCapitalized(currentUserAssignee.status)
+    : "UNASSIGNED";
   const statusClassMap = {
     New: "bg-amber-500/20 text-amber-300 border-amber-500/40",
+    Pending: "bg-yellow-500/20 text-yellow-300 border-yellow-500/40",
     In_progress: "bg-sky-500/20 text-sky-300 border-sky-500/40",
     InProgress: "bg-sky-500/20 text-sky-300 border-sky-500/40",
+    Confirmed: "bg-sky-500/20 text-sky-300 border-sky-500/40",
     Completed: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
+    Verified: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
     Cancelled: "bg-rose-500/20 text-rose-300 border-rose-500/40",
+    Rejected: "bg-rose-500/20 text-rose-300 border-rose-500/40",
     On_hold: "bg-yellow-500/20 text-yellow-300 border-yellow-500/40",
     "N/A": "bg-gray-700/40 text-gray-300 border-gray-600",
   };
   const statusClass =
     statusClassMap[statusLabel] ||
+    "bg-gray-700/40 text-gray-300 border-gray-600";
+  const assigneeStatusClass =
+    statusClassMap[assigneeStatusLabel] ||
     "bg-gray-700/40 text-gray-300 border-gray-600";
 
   const handleConfirmCompletion = async (data) => {
@@ -166,10 +178,17 @@ const TaskDetailPage = ({ role, basePath }) => {
                 #checkcf
               </p>
             )}
+            {role !== "MEMBER" && (
+              <p
+                className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wide ${statusClass}`}
+              >
+                {statusLabel}
+              </p>
+            )}
             <p
-              className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wide ${statusClass}`}
+              className={`rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-wide ${assigneeStatusClass}`}
             >
-              {statusLabel}
+              {assigneeStatusLabel}
             </p>
           </div>
 
@@ -198,19 +217,21 @@ const TaskDetailPage = ({ role, basePath }) => {
           <h1 className="mb-4 text-xl font-black text-zinc-100 md:text-2xl">
             Assignee Confirmation
           </h1>
-          <TaskConfirmationForm
-            taskCfData={currentUserAssignee}
-            onSubmit={handleConfirmCompletion}
-          />
+          {currentUserAssignee && (
+            <TaskConfirmationForm
+              taskCfData={currentUserAssignee}
+              onSubmit={handleConfirmCompletion}
+            />
+          )}
           {filterConfirmedAssignee && filterConfirmedAssignee.length > 0 && (
-            <div className="my-6 ">
+            <div className="my-6">
               <h2 className="mb-3 text-md font-bold uppercase tracking-wide text-emerald-300">
                 Confirmed Completion
               </h2>
               {filterConfirmedAssignee.map((assignee) => (
                 <div
                   key={assignee.id}
-                  className="mb-6 rounded-xl border border-white/10 bg-gradient-to-br from-zinc-900/90 via-zinc-900/75 to-zinc-950/95 p-6 shadow-2xl shadow-black/25"
+                  className="mb-6 rounded-xl border border-white/10 bg-gradient-to-br from-zinc-900/90 via-zinc-900/75 to-zinc-950/95 p-6 shadow-2xl shadow-black/25 relative"
                 >
                   <p className="text-sm text-emerald-100">
                     <span className="font-semibold text-emerald-300">
@@ -237,11 +258,26 @@ const TaskDetailPage = ({ role, basePath }) => {
                     </div>
                   )}
 
-                  {(role === "ADMIN" || task.assignorId === currentUser.id) && (
+                  {(role === "ADMIN" ||
+                    task.assignorId === currentUser.id ||
+                    assignee.status !== "VERIFIED") && (
                     <TaskVerificationForm
                       taskVerifyData={assignee}
                       onSubmit={handleVerifyTask}
                     />
+                  )}
+
+                  {(assignee.status === "VERIFIED" ||
+                    assignee.status === "REJECTED") && (
+                    <div className="absolute top-0 right-0 p-6">
+                      <p className="text-sm text-emerald-100">
+                        {assignee.status === "VERIFIED" ? (
+                          <span className="text-emerald-400">Verified</span>
+                        ) : (
+                          <span className="text-red-400">Rejected</span>
+                        )}
+                      </p>
+                    </div>
                   )}
                 </div>
               ))}

@@ -9,6 +9,7 @@ const TaskVerificationForm = ({ taskVerifyData, onSubmit }) => {
     defaultValues: {
       isVerified: taskVerifyData?.isVerified || false,
       reviewerComments: taskVerifyData?.reviewerComments || "",
+      assigneeId: taskVerifyData?.assigneeId || null,
     },
     mode: "onChange",
   });

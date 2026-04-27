@@ -20,6 +20,7 @@ import Pagination from "../../../components/internal/Pagination.jsx";
 const TasksPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
   const { tasks, isLoading, error } = useSelector((state) => state.task);
+  const { currentUser } = useSelector((state) => state.auth);
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -226,7 +227,10 @@ const TasksPage = ({ role, basePath }) => {
                   <th className="px-3 py-3">Description</th>
                   <th className="px-3 py-3">Due Date</th>
                   <th className="px-3 py-3 text-center">Check Cf</th>
-                  <th className="px-3 py-3">Status</th>
+                  {role !== "MEMBER" && (
+                    <th className="px-3 py-3">Task Status</th>
+                  )}
+                  <th className="px-3 py-3">{role !== "MEMBER" ? "Assignee Status" : "Status"}</th>
                   <th className="px-3 py-3">Assignee Scope</th>
                   <th className="px-3 py-3">Assignor</th>
                   <th className="px-3 py-3 text-center">Actions</th>
@@ -237,7 +241,7 @@ const TasksPage = ({ role, basePath }) => {
                 {filteredTasks.length === 0 ? (
                   <tr>
                     <td
-                      colSpan="9"
+                      colSpan={role !== "MEMBER" ? 11 : 10}
                       className="px-4 py-10 text-center text-slate-300"
                     >
                       <div className="mx-auto flex max-w-xl flex-col items-center gap-3">
@@ -327,6 +331,9 @@ const TasksPage = ({ role, basePath }) => {
                       </td>
                       <td className={`px-3 py-3 text-slate-300`}>
                         {formatUppercaseToCapitalized(task.status)}
+                      </td>
+                      <td className={`px-3 py-3 text-slate-300`}>
+                        {formatUppercaseToCapitalized(task.assignees.find((a) => a.assigneeId === currentUser.id)?.status || "UNASSIGNED")}
                       </td>
                       <td className="px-3 py-3 text-slate-300">
                         {formatUppercaseToCapitalized(task.assigneeScope)}
