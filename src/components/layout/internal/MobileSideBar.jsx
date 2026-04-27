@@ -7,11 +7,13 @@ import {
   faIdBadge,
   faCalendarDays,
   faListCheck,
+  faBell,
   faFileLines,
   faComments,
   faFilePen,
   faUserGear,
   faGear,
+  faClipboardList,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -22,11 +24,13 @@ const SolidIconMap = {
   faIdBadge: faIdBadge,
   faCalendarDays: faCalendarDays,
   faListCheck: faListCheck,
+  faBell: faBell,
   faFileLines: faFileLines,
   faComments: faComments,
   faFilePen: faFilePen,
   faUserGear: faUserGear,
   faGear: faGear,
+  faClipboardList: faClipboardList,
 };
 
 const MobileSideBar = ({ sideBarItemList, isOpen, onClose }) => {
@@ -34,7 +38,9 @@ const MobileSideBar = ({ sideBarItemList, isOpen, onClose }) => {
     <>
       <div
         className={`fixed inset-0 z-[70] bg-black/55 transition-opacity duration-300 lg:hidden ${
-          isOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+          isOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
         }`}
         onClick={onClose}
         aria-hidden={!isOpen}

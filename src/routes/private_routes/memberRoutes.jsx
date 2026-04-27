@@ -14,6 +14,7 @@ import MemberChat from "../../pages/private/member/MemberChat.jsx";
 import NotFoundError from "../../components/layout/internal/NotFoundError.jsx";
 import ForbiddenError from "../../components/layout/internal/ForbiddenError.jsx";
 import MemberSetting from "../../pages/private/member/MemberSetting.jsx";
+import NotificationsPage from "../../pages/private/shared/NotificationsPage.jsx";
 
 export const memberRoutes = [
   {

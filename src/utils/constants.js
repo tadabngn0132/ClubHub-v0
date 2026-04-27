@@ -1,5 +1,3 @@
-
-
 export const API_BASE_URL = "http://localhost:5000/api/v1";
 
 export const AUTH_STORAGE_MODE = {
@@ -86,7 +84,7 @@ export const TASK_STATUS = {
 
 export const ASSIGNEE_SCOPE = [
   { id: 1, name: "All Club Members", value: "all" },
-  { id: 2, name: "Departments", value: "depts"},
+  { id: 2, name: "Departments", value: "depts" },
   { id: 3, name: "Some Members", value: "members" },
 ];
 
@@ -126,10 +124,18 @@ export const LAYOUT_CONFIG = {
       { name: "Tasks", link: "/admin/tasks", icon: "faListCheck" },
       { name: "Documents", link: "/admin/documents", icon: "faFileLines" },
       { name: "Chat", link: "/admin/chat", icon: "faComments" },
-      { name: "Member Applications", link: "/admin/member-applications", icon: "faFilePen" },
+      {
+        name: "Member Applications",
+        link: "/admin/member-applications",
+        icon: "faFilePen",
+      },
       { name: "Profile", link: "/admin/profile", icon: "faUserGear" },
       { name: "Settings", link: "/admin/setting", icon: "faGear" },
-      { name: "Activity Logs", link: "/admin/activity-logs", icon: "faClipboardList" },
+      {
+        name: "Activity Logs",
+        link: "/admin/activity-logs",
+        icon: "faClipboardList",
+      },
     ],
   },
   moderator: {
@@ -137,11 +143,29 @@ export const LAYOUT_CONFIG = {
     sideBarItems: [
       { name: "Dashboard", link: "/moderator/dashboard", icon: "faGauge" },
       { name: "Members", link: "/moderator/users", icon: "faUsers" },
-      { name: "Departments", link: "/moderator/departments", icon: "faBuilding" },
+      {
+        name: "Departments",
+        link: "/moderator/departments",
+        icon: "faBuilding",
+      },
       { name: "Positions", link: "/moderator/positions", icon: "faIdBadge" },
-      { name: "Member Applications", link: "/moderator/member-applications", icon: "faFilePen" },
-      { name: "Activities", link: "/moderator/activities", icon: "faCalendarDays" },
+      {
+        name: "Member Applications",
+        link: "/moderator/member-applications",
+        icon: "faFilePen",
+      },
+      {
+        name: "Activities",
+        link: "/moderator/activities",
+        icon: "faCalendarDays",
+      },
       { name: "Tasks", link: "/moderator/tasks", icon: "faListCheck" },
+      { name: "Chat", link: "/moderator/chat", icon: "faComments" },
+      {
+        name: "Notifications",
+        link: "/moderator/notifications",
+        icon: "faBell",
+      },
       { name: "Profile", link: "/moderator/profile", icon: "faUserGear" },
       { name: "Settings", link: "/moderator/setting", icon: "faGear" },
     ],
@@ -153,8 +177,14 @@ export const LAYOUT_CONFIG = {
       { name: "Members", link: "/member/users", icon: "faUsers" },
       { name: "Departments", link: "/member/departments", icon: "faBuilding" },
       { name: "Positions", link: "/member/positions", icon: "faIdBadge" },
-      { name: "Activities", link: "/member/activities", icon: "faCalendarDays" },
+      {
+        name: "Activities",
+        link: "/member/activities",
+        icon: "faCalendarDays",
+      },
       { name: "Tasks", link: "/member/tasks", icon: "faListCheck" },
+      { name: "Chat", link: "/member/chat", icon: "faComments" },
+      { name: "Notifications", link: "/member/notifications", icon: "faBell" },
       { name: "Profile", link: "/member/profile", icon: "faUserGear" },
       { name: "Settings", link: "/member/setting", icon: "faGear" },
     ],
