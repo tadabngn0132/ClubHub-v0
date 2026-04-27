@@ -85,14 +85,9 @@ export const TASK_STATUS = {
 };
 
 export const ASSIGNEE_SCOPE = [
-  { id: 1, name: "All Users", value: "all" },
-  { id: 2, name: "Committee Department", value: "committee-dept" },
-  { id: 3, name: "Communication Department", value: "communication-dept" },
-  { id: 4, name: "Design Department", value: "design-dept" },
-  { id: 5, name: "Human Resources Department", value: "hr-dept" },
-  { id: 6, name: "Logistics Department", value: "logistics-dept" },
-  { id: 7, name: "Content Department", value: "content-dept" },
-  { id: 8, name: "Media Department", value: "media-dept" },
+  { id: 1, name: "All Club Members", value: "all" },
+  { id: 2, name: "Departments", value: "depts"},
+  { id: 3, name: "Some Members", value: "members" },
 ];
 
 export const PERMISSIONS = {

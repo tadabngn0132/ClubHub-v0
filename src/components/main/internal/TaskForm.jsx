@@ -8,10 +8,12 @@ import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
 
 const TaskForm = ({ task, onSubmit }) => {
   const dispatch = useDispatch();
-  const [allClub, setAllClub] = useState(false);
   const { currentUser } = useSelector((state) => state.auth);
   const { departments } = useSelector((state) => state.department);
   const { users } = useSelector((state) => state.user);
+  const [selectedAssigneeScope, setSelectedAssigneeScope] = useState(
+    task ? task.assigneeScope : "all",
+  );
 
   useEffect(() => {
     dispatch(getDepartmentsList());
@@ -29,12 +31,10 @@ const TaskForm = ({ task, onSubmit }) => {
       dueDate: task ? new Date(task.dueDate).toISOString().split("T")[0] : "",
       status: task ? task.status : "new",
       isCheckCf: task ? task.isCheckCf : false,
-      assigneeScope: task ? task.assigneeScope : "all",
       assignorId: task ? task.assignorId : currentUser.id,
-      allClub: task ? task.allClub : false,
+      assigneeScope: task ? task.assigneeScope : "all",
       departmentIds: task ? task.departmentIds : [],
       userIds: task ? task.userIds : [],
-      excludedUserIds: task ? task.excludedUserIds : [],
     },
     mode: "onChange",
   });
@@ -102,13 +102,16 @@ const TaskForm = ({ task, onSubmit }) => {
             type="checkbox"
             id="isCheckCf"
             name="isCheckCf"
-            {...register("isCheckCf")}
+            {...register("isCheckCf", { required: "Please indicate if task needs check confirmation" })}
             className="mt-2 bg-slate-800 text-white border border-slate-600"
           />
           <label htmlFor="isCheckCf" className="ml-2">
             Check Cf
             <span className="text-red-500">*</span>
           </label>
+          {errors.isCheckCf && (
+            <p className="text-red-500">{errors.isCheckCf.message}</p>
+          )}
         </div>
 
         {/* Status field */}
@@ -141,6 +144,31 @@ const TaskForm = ({ task, onSubmit }) => {
           <p className="text-red-500">{errors.status.message}</p>
         )}
 
+        {/* Due Date field */}
+        <label htmlFor="dueDate">Task Due Date</label>
+        <input
+          type="date"
+          id="dueDate"
+          name="dueDate"
+          {...register("dueDate", {
+            validate: (value) => {
+              if (value) {
+                const selectedDate = new Date(value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                if (selectedDate < today) {
+                  return "Due date cannot be in the past";
+                }
+              }
+              return true;
+            }
+          })}
+          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        {errors.dueDate && (
+          <p className="text-red-500">{errors.dueDate.message}</p>
+        )}
+
         {/* Assignee Scope field */}
         {ASSIGNEE_SCOPE.length > 0 && (
           <>
@@ -154,6 +182,7 @@ const TaskForm = ({ task, onSubmit }) => {
                 required: "Assignee scope is required",
               })}
               className="mt-2 bg-slate-800 text-white border border-slate-600"
+              onChange={(e) => setSelectedAssigneeScope(e.target.value)}
             >
               {ASSIGNEE_SCOPE.map((scope) => (
                 <option
@@ -171,74 +200,47 @@ const TaskForm = ({ task, onSubmit }) => {
           </>
         )}
 
-        {/* Due Date field */}
-        <label htmlFor="dueDate">Task Due Date</label>
-        <input
-          type="date"
-          id="dueDate"
-          name="dueDate"
-          {...register("dueDate")}
-          className="border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        {errors.dueDate && (
-          <p className="text-red-500">{errors.dueDate.message}</p>
-        )}
-
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="allClub"
-            name="allClub"
-            {...register("allClub")}
-            className="bg-slate-800 text-white border border-slate-600"
-            onChange={(e) => setAllClub(e.target.checked)}
-          />
-          <label htmlFor="allClub">Assign to All Club</label>
-        </div>
-
-        {!allClub && (
+        {selectedAssigneeScope === "depts" && (
           <>
             <label htmlFor="departmentIds">Assign to Departments</label>
-            <select
-              id="departmentIds"
-              name="departmentIds"
-              {...register("departmentIds")}
-              className="mt-2 bg-slate-800 text-white border border-slate-600"
-            >
-              {departments.map((department) => (
-                <option
-                  key={department.id}
+            {departments.map((department) => (
+              <div key={department.id} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id={`dept-${department.id}`}
+                  name="departmentIds"
                   value={department.id}
-                  className="bg-slate-800 text-white"
-                >
-                  {department.name}
-                </option>
-              ))}
-            </select>
+                  {...register("departmentIds")}
+                  className="bg-slate-800 text-white border border-slate-600"
+                />
+                <label htmlFor={`dept-${department.id}`}>{department.name}</label>
+              </div>
+            ))}
           </>
         )}
 
-        <label htmlFor="excludedUserIds">Exclude Specific Users</label>
-        <select
-          id="excludedUserIds"
-          name="excludedUserIds"
-          {...register("excludedUserIds")}
-          className="mt-2 bg-slate-800 text-white border border-slate-600"
-        >
-          {users.map((user) => (
-            <option
-              key={user.id}
-              value={user.id}
-              className="bg-slate-800 text-white"
-            >
-              {user.fullname}
-            </option>
-          ))}
-        </select>
+        {selectedAssigneeScope === "members" && (
+          <>
+            <label htmlFor="userIds">Assign to Members</label>
+            {users.map((user) => (
+              <div key={user.id} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id={`user-${user.id}`}
+                  name="userIds"
+                  value={user.id}
+                  {...register("userIds")}
+                  className="bg-slate-800 text-white border border-slate-600"
+                />
+                <label htmlFor={`user-${user.id}`}>{user.fullname}</label>
+              </div>
+            ))}
+          </>
+        )}
 
         <button
           type="submit"
-          className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+          className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white disabled:cursor-not-allowed disabled:border-gray-500 disabled:text-gray-500 disabled:hover:bg-transparent disabled:hover:text-gray-500"
           disabled={handleDisableSave()}
         >
           {!task ? "Add" : "Update"} Task
