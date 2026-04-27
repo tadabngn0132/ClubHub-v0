@@ -1,7 +1,7 @@
 import EditTaskPage from "../shared/EditTaskPage";
 
-const AdminEditTask = ({ basePath }) => {
-  return <EditTaskPage basePath={basePath} />;
+const AdminEditTask = () => {
+  return <EditTaskPage basePath="/admin/tasks" />;
 };
 
 export default AdminEditTask;

@@ -12,13 +12,16 @@ const TaskForm = ({ task, onSubmit }) => {
   const { departments } = useSelector((state) => state.department);
   const { users } = useSelector((state) => state.user);
   const [selectedAssigneeScope, setSelectedAssigneeScope] = useState(
-    task ? task.assigneeScope : "all",
+    task ? task.assigneeScope.toLowerCase() : "all",
   );
 
   useEffect(() => {
     dispatch(getDepartmentsList());
     dispatch(getUsersList());
   }, [dispatch]);
+
+  const memberIds = task && task.assigneeScope.toLowerCase() === "members" ? task.assignees.map((assignee) => String(assignee.assigneeId)) : [];
+  const departmentIds = task && task.assigneeScope.toLowerCase() === "depts" ? task.assignees.map((assignee) => String(assignee.user.rootDepartmentId)) : [];
 
   const {
     register,
@@ -29,12 +32,12 @@ const TaskForm = ({ task, onSubmit }) => {
       title: task ? task.title : "",
       description: task ? task.description : "",
       dueDate: task ? new Date(task.dueDate).toISOString().split("T")[0] : "",
-      status: task ? task.status : "new",
+      status: task ? task.status.toLowerCase() : "new",
       isCheckCf: task ? task.isCheckCf : false,
       assignorId: task ? task.assignorId : currentUser.id,
-      assigneeScope: task ? task.assigneeScope : "all",
-      departmentIds: task ? task.departmentIds : [],
-      userIds: task ? task.userIds : [],
+      assigneeScope: task ? task.assigneeScope.toLowerCase() : "all",
+      departmentIds: departmentIds,
+      userIds: memberIds,
     },
     mode: "onChange",
   });
