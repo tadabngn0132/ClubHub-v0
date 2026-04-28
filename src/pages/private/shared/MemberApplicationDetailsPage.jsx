@@ -117,13 +117,7 @@ const MemberApplicationDetailsPage = ({ role }) => {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Link
-                to={`/${role}/member-applications/view/${memberApplication?.id}`}
-                className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-sm font-medium text-white/85 transition hover:bg-white/10"
-              >
-                View
-              </Link>
-              {canReviewCv && (
+              {(role === "admin" && canReviewCv) && (
                 <Link
                   to={`/${role}/member-applications/cv-review/${memberApplication?.id}`}
                   className="inline-flex items-center justify-center rounded-full border border-amber-400/35 bg-amber-400/10 px-3.5 py-1.5 text-sm font-medium text-amber-100 transition hover:bg-amber-400/20"
@@ -131,7 +125,7 @@ const MemberApplicationDetailsPage = ({ role }) => {
                   CV Review
                 </Link>
               )}
-              {canInterview && (
+              {(role === "admin" && canInterview) && (
                 <Link
                   to={`/${role}/member-applications/interview/${memberApplication?.id}`}
                   className="inline-flex items-center justify-center rounded-full border border-violet-400/35 bg-violet-400/10 px-3.5 py-1.5 text-sm font-medium text-violet-100 transition hover:bg-violet-400/20"
@@ -139,7 +133,7 @@ const MemberApplicationDetailsPage = ({ role }) => {
                   Interview
                 </Link>
               )}
-              {canFinalReview && (
+              {(role === "admin" && canFinalReview) && (
                 <Link
                   to={`/${role}/member-applications/final-review/${memberApplication?.id}`}
                   className="inline-flex items-center justify-center rounded-full border border-cyan-400/35 bg-cyan-400/10 px-3.5 py-1.5 text-sm font-medium text-cyan-100 transition hover:bg-cyan-400/20"
@@ -151,9 +145,17 @@ const MemberApplicationDetailsPage = ({ role }) => {
           </div>
 
           <div className="mt-5 flex items-start gap-4">
-            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-xl font-bold text-pink-100">
-              {(displayName || "").slice(0, 1).toUpperCase()}
-            </div>
+            {memberApplication?.avatarUrl ? (
+              <img
+                src={memberApplication.avatarUrl}
+                alt="Avatar"
+                className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full border border-pink-400/30 bg-pink-500/10 text-xl font-bold text-pink-100"
+              />
+            ) : (
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full border border-pink-400/30 bg-pink-500/10 text-xl font-bold text-pink-100">
+                {(displayName || "").slice(0, 1).toUpperCase()}
+              </div>
+            )}
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-white/45">
                 Member Application
@@ -189,11 +191,11 @@ const MemberApplicationDetailsPage = ({ role }) => {
             <div className="rounded-2xl border border-white/10 bg-zinc-950/75 p-5 sm:p-6">
               <h2 className="text-base font-semibold text-white">Workflow</h2>
               <p className="mt-3 text-sm leading-6 text-white/70">
-                {canReviewCv
+                {(role === "admin" && canReviewCv)
                   ? "Ready for CV review."
-                  : canInterview
+                  : (role === "admin" && canInterview)
                     ? "Ready for interview review."
-                    : canFinalReview
+                    : (role === "admin" && canFinalReview)
                       ? "Ready for final review."
                       : "No action required at the moment."}
               </p>
@@ -223,9 +225,9 @@ const MemberApplicationDetailsPage = ({ role }) => {
         </section>
 
         <section>
-          {memberApplication?.cvReview && memberApplication?.cvReview.map(cv => (<CVReviewCard key={cv.id} cvReview={cv} />))}
-          {memberApplication?.departmentInterview && memberApplication?.departmentInterview.map(interview => (<DepartmentInterviewCard key={interview.id} interview={interview} />))}
-          {memberApplication?.finalReview && memberApplication?.finalReview.map(final => (<FinalReviewCard key={final.id} finalReview={final} />))}
+          {memberApplication?.cvReview && <CVReviewCard cvReview={memberApplication.cvReview} />}
+          {memberApplication?.departmentInterviews && memberApplication?.departmentInterviews.map((interview) => (<DepartmentInterviewCard key={interview.id} interview={interview} />))}
+          {memberApplication?.finalReview && <FinalReviewCard finalReview={memberApplication.finalReview} />}
         </section>
       </div>
 

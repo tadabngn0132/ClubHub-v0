@@ -31,6 +31,9 @@ import AdminActivityParticipants from "../../pages/private/admin/AdminActivityPa
 import AdminSetting from "../../pages/private/admin/AdminSetting.jsx";
 import ActivityLogsPage from "../../pages/private/shared/ActivityLogsPage.jsx";
 import NotificationsPage from "../../pages/private/shared/NotificationsPage.jsx";
+import MemberApplicationCvReviewForm from "../../components/main/internal/MemberApplicationCvReviewForm.jsx";
+import MemberApplicationDepartmentInterviewForm from "../../components/main/internal/MemberApplicationDepartmentInterviewForm.jsx";
+import MemberApplicationFinalReviewForm from "../../components/main/internal/MemberApplicationFinalReviewForm.jsx";
 
 // TODO(member-application): keep these routes aligned with the rebuilt member
 // application workflow. The list route should drive filtering and navigation,
@@ -226,7 +229,7 @@ export const adminRoutes = [
     path: "/admin/member-applications/cv-review/:applicationId",
     element: (
       <SharedLayout role="admin">
-        <MemberApplicationPage role="admin" stage="cv-review" />
+        <MemberApplicationCvReviewForm />
       </SharedLayout>
     ),
   },
@@ -234,7 +237,7 @@ export const adminRoutes = [
     path: "/admin/member-applications/interview/:applicationId",
     element: (
       <SharedLayout role="admin">
-        <MemberApplicationPage role="admin" stage="interview" />
+        <MemberApplicationDepartmentInterviewForm />
       </SharedLayout>
     ),
   },
@@ -242,7 +245,7 @@ export const adminRoutes = [
     path: "/admin/member-applications/final-review/:applicationId",
     element: (
       <SharedLayout role="admin">
-        <MemberApplicationPage role="admin" stage="final-review" />
+        <MemberApplicationFinalReviewForm />
       </SharedLayout>
     ),
   },

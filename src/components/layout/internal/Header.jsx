@@ -146,13 +146,19 @@ const Header = ({ role, onHandleSideBarToggle }) => {
         {/* User menu dropdown - Hiện tại chưa triển khai */}
         <div
           onClick={toggleDropdown}
-          className="cursor-pointer rounded-full overflow-hidden"
+          className="cursor-pointer overflow-hidden"
         >
-          <img
-            className="w-8 h-8"
-            src={currentUser?.avatarUrl || null}
-            alt="Avatar"
-          />
+          {currentUser?.avatarUrl ? (
+            <img
+              src={currentUser.avatarUrl}
+              alt="Avatar"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-pink-400/30 bg-pink-500/10 text-xl font-bold text-pink-100"
+            />
+          ) : (
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-pink-400/30 bg-pink-500/10 text-xl font-bold text-pink-100">
+              {(currentUser?.fullname || "").slice(0, 1).toUpperCase()}
+            </div>
+          )}
         </div>
         <Dropdown
           visible={isDropdownVisible}

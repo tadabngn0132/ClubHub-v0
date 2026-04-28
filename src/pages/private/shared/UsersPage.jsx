@@ -337,11 +337,17 @@ const UsersPage = ({ role, basePath }) => {
                     <td className="px-2 py-2">{user.id}</td>
                     <td className="px-2 py-2">
                       {/* TODO: Implement lazy loading for avatars */}
-                      <img
-                        src={user.avatarUrl || null}
-                        alt={user.name}
-                        className="h-10 w-10 rounded-full object-cover"
-                      />
+                      {user?.avatarUrl ? (
+                        <img
+                          src={user.avatarUrl}
+                          alt="Avatar"
+                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-pink-400/30 bg-pink-500/10 text-xl font-bold text-pink-100"
+                        />
+                      ) : (
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-pink-400/30 bg-pink-500/10 text-xl font-bold text-pink-100">
+                          {(user?.fullname || "").slice(0, 1).toUpperCase()}
+                        </div>
+                      )}
                     </td>
                     <td
                       className="px-2 py-2 text-sm font-medium text-left truncate max-w-[150px]"
