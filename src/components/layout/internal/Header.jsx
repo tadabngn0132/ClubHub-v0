@@ -22,6 +22,7 @@ const Header = ({ role, onHandleSideBarToggle }) => {
   const { onEvent } = useSocket(token);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const dropdownTriggerRef = useRef(null);
   const notificationRef = useRef(null);
 
   useEffect(() => {
@@ -144,8 +145,12 @@ const Header = ({ role, onHandleSideBarToggle }) => {
         {/* <FontAwesomeIcon icon={faInfoCircle} className="cursor-pointer" /> */}
 
         {/* User menu dropdown - Hiện tại chưa triển khai */}
-        <div
+        <button
+          type="button"
+          ref={dropdownTriggerRef}
           onClick={toggleDropdown}
+          aria-haspopup="menu"
+          aria-expanded={isDropdownVisible}
           className="cursor-pointer overflow-hidden"
         >
           {currentUser?.avatarUrl ? (
@@ -159,10 +164,12 @@ const Header = ({ role, onHandleSideBarToggle }) => {
               {(currentUser?.fullname || "").slice(0, 1).toUpperCase()}
             </div>
           )}
-        </div>
+        </button>
         <Dropdown
           visible={isDropdownVisible}
           role={formatUppercaseToLowercase(getUserRole(currentUser))}
+          onClose={() => setIsDropdownVisible(false)}
+          triggerRef={dropdownTriggerRef}
         />
       </div>
     </div>

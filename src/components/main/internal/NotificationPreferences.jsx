@@ -65,7 +65,7 @@ const NotificationPreferences = () => {
 
   return (
     <div className="p-4">
-      <h1>Notification Preferences</h1>
+      {/* <h1>Notification Preferences</h1>
       <form onSubmit={handleSubmit(handleUpdatePreferences)}>
         <div className="mb-4">
           <label className="block mb-2">Email Notifications</label>
@@ -91,7 +91,10 @@ const NotificationPreferences = () => {
         >
           Save Preferences
         </button>
-      </form>
+      </form> */}
+      <p className="text-sm text-slate-300">
+        This feature is coming soon! Stay tuned for updates on notification preferences.
+      </p>
     </div>
   );
 };
