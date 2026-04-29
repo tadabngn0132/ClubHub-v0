@@ -67,7 +67,7 @@ const ChangePasswordForm = ({ onSubmit }) => {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10 sm:px-6 lg:px-8">
+    <div className="relative flex items-center justify-center overflow-hidden px-1 py-2 sm:px-2 lg:px-0">
       <div className="pointer-events-none absolute inset-0" />
 
       <form

@@ -53,9 +53,7 @@ const ActivitiesTableView = ({
                 <th className="px-4 py-3">Location</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Registrations</th>
-                {role === "ADMIN" && (
-                  <th className="px-4 py-3">Is Deleted</th>
-                )}
+                {role === "ADMIN" && <th className="px-4 py-3">Is Deleted</th>}
                 <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
@@ -92,11 +90,17 @@ const ActivitiesTableView = ({
                       />
                     </td>
                     <td className="px-4 py-3">
-                      <img
-                        src={activity.thumbnailUrl || null}
-                        alt={activity.title}
-                        className="h-14 w-20 rounded-md object-cover"
-                      />
+                      {activity?.avatarUrl ? (
+                        <img
+                          src={activity.avatarUrl}
+                          alt="Avatar"
+                          className="flex h-14 w-20 shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-2xl font-bold text-pink-100"
+                        />
+                      ) : (
+                        <div className="flex h-14 w-20 shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-2xl font-bold text-pink-100">
+                          {(activity.title || "").slice(0, 1).toUpperCase()}
+                        </div>
+                      )}
                     </td>
                     <td className="px-4 py-3 font-medium text-gray-100">
                       {activity.title || "N/A"}
@@ -107,10 +111,13 @@ const ActivitiesTableView = ({
                       </span>
                     </td>
                     <td className="px-4 py-3 text-gray-300">
-                      {activity.startDate ? new Date(activity.startDate).toLocaleDateString() : "N/A"}
+                      {activity.startDate
+                        ? new Date(activity.startDate).toLocaleDateString()
+                        : "N/A"}
                     </td>
                     <td className="px-4 py-3 text-gray-300">
-                      {activity.venueName || activity.venueAddress || "N/A"}{activity.roomNumber ? ` - ${activity.roomNumber}` : ""}
+                      {activity.venueName || activity.venueAddress || "N/A"}
+                      {activity.roomNumber ? ` - ${activity.roomNumber}` : ""}
                     </td>
                     <td className="px-4 py-3">
                       <span className="rounded-full border border-emerald-500/40 bg-emerald-500/20 px-2.5 py-1 text-xs font-semibold uppercase text-emerald-200">
@@ -143,7 +150,10 @@ const ActivitiesTableView = ({
                         </Link>
                         {(role === "admin" || role === "moderator") && (
                           <>
-                            <Link to={`/${role}/activities/${activity.id}/participants`} className="rounded-md bg-green-500/15 px-3 py-1.5 text-xs font-medium text-green-300 transition hover:bg-green-500/30">
+                            <Link
+                              to={`/${role}/activities/${activity.id}/participants`}
+                              className="rounded-md bg-green-500/15 px-3 py-1.5 text-xs font-medium text-green-300 transition hover:bg-green-500/30"
+                            >
                               View Participants
                             </Link>
                             <Link
@@ -153,7 +163,9 @@ const ActivitiesTableView = ({
                               Edit
                             </Link>
                             <button
-                              onClick={() => onDeleteConfigured(activity.id, "soft")}
+                              onClick={() =>
+                                onDeleteConfigured(activity.id, "soft")
+                              }
                               className="rounded-md bg-rose-500/15 px-3 py-1.5 text-xs font-medium text-rose-300 transition hover:bg-rose-500/30"
                             >
                               Soft Delete
@@ -162,7 +174,9 @@ const ActivitiesTableView = ({
                         )}
                         {role === "admin" && (
                           <button
-                            onClick={() => onDeleteConfigured(activity.id, "hard")}
+                            onClick={() =>
+                              onDeleteConfigured(activity.id, "hard")
+                            }
                             className="rounded-md bg-red-500/15 px-3 py-1.5 text-xs font-medium text-red-300 transition hover:bg-red-500/30"
                           >
                             Hard Delete

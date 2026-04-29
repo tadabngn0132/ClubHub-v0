@@ -112,14 +112,17 @@ const MyProfile = () => {
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
               <div className="relative">
-                <img
-                  src={
-                    user.avatarUrl ||
-                    "https://via.placeholder.com/160?text=Profile"
-                  }
-                  alt="Avatar"
-                  className="h-28 w-28 rounded-3xl border-2 border-sky-400/40 object-cover shadow-lg shadow-sky-950/30 md:h-32 md:w-32"
-                />
+                {user?.avatarUrl ? (
+                  <img
+                    src={user.avatarUrl}
+                    alt="Avatar"
+                    className="flex h-30 w-30 shrink-0 items-center justify-center rounded-3xl border-2 border-sky-400/40 text-xl font-bold text-pink-100 shadow-lg shadow-sky-950/30 md:h-32 md:w-32"
+                  />
+                ) : (
+                  <div className="flex h-30 w-30 shrink-0 items-center justify-center rounded-3xl border-2 border-sky-400/40 text-5xl font-bold text-pink-100 shadow-lg shadow-sky-950/30 md:h-32 md:w-32">
+                    {(user?.fullname || "").slice(0, 1).toUpperCase()}
+                  </div>
+                )}
               </div>
 
               <div className="space-y-2">

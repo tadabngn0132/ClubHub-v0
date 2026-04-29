@@ -213,12 +213,14 @@ const MemberApplicationDetailsPage = ({ role }) => {
                 >
                   Soft Delete
                 </button>
-                <button
-                  onClick={() => handleDeleteConfigured("hard")}
-                  className="inline-flex items-center justify-center rounded-full border border-rose-400/35 bg-rose-400/10 px-3.5 py-1.5 text-sm font-medium text-rose-100 transition hover:bg-rose-400/20"
-                >
-                  Hard Delete
-                </button>
+                {role === "admin" && (
+                  <button
+                    onClick={() => handleDeleteConfigured("hard")}
+                    className="inline-flex items-center justify-center rounded-full border border-rose-400/35 bg-rose-400/10 px-3.5 py-1.5 text-sm font-medium text-rose-100 transition hover:bg-rose-400/20"
+                  >
+                    Hard Delete
+                  </button>
+                )}
               </div>
             </div>
           </div>

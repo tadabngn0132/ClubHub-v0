@@ -230,7 +230,8 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
   const isOnlineOrHybrid =
     activity?.locationType === "online" || activity?.locationType === "hybrid";
   const isInPersonOrHybrid =
-    activity?.locationType === "in-person" || activity?.locationType === "hybrid";
+    activity?.locationType === "in-person" ||
+    activity?.locationType === "hybrid";
 
   return (
     <div className="relative overflow-hidden">
@@ -247,11 +248,17 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
 
         <section className="overflow-hidden rounded-2xl border border-zinc-700/60 bg-zinc-950/50 backdrop-blur">
           <div className="h-52 w-full sm:h-64 lg:h-80">
-            <img
-              src={activity?.thumbnailUrl}
-              alt={activity?.title}
-              className="h-full w-full object-cover"
-            />
+            {activity?.avatarUrl ? (
+              <img
+                src={activity?.avatarUrl}
+                alt="Avatar"
+                className="flex h-full w-full shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-8xl font-bold text-pink-100"
+              />
+            ) : (
+              <div className="flex h-full w-full shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-8xl font-bold text-pink-100">
+                {(activity?.title || "").slice(0, 1).toUpperCase()}
+              </div>
+            )}
           </div>
 
           <div className="grid gap-5 p-4 sm:p-6 lg:grid-cols-[1.2fr_0.8fr]">
@@ -283,7 +290,9 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
                   {activity?.organize?.fullname || "N/A"}
                 </p>
                 <p className="rounded-lg border border-zinc-700 bg-zinc-900/60 p-3">
-                  <span className="font-semibold text-zinc-400">Location Type:</span>{" "}
+                  <span className="font-semibold text-zinc-400">
+                    Location Type:
+                  </span>{" "}
                   {normalizeText(activity?.locationType)}
                 </p>
               </div>
@@ -334,7 +343,9 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
                   disabled={isRegistrationDisabled || isParticipationsLoading}
                   className="rounded-lg bg-emerald-500/20 px-3 py-2 text-sm font-medium text-emerald-200 transition hover:bg-emerald-500/35 disabled:cursor-not-allowed disabled:opacity-45"
                 >
-                  {isParticipationsLoading ? "Registering..." : "Register for Activity"}
+                  {isParticipationsLoading
+                    ? "Registering..."
+                    : "Register for Activity"}
                 </button>
               </div>
 
@@ -365,19 +376,27 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
                 {formatDateTime(activity?.endDate)}
               </p>
               <p>
-                <span className="font-semibold text-zinc-400">Registration Deadline:</span>{" "}
+                <span className="font-semibold text-zinc-400">
+                  Registration Deadline:
+                </span>{" "}
                 {formatDateTime(activity?.registrationDeadline)}
               </p>
               <p>
-                <span className="font-semibold text-zinc-400">Max Participants:</span>{" "}
+                <span className="font-semibold text-zinc-400">
+                  Max Participants:
+                </span>{" "}
                 {activity?.maxParticipants || "Unlimited"}
               </p>
               <p>
-                <span className="font-semibold text-zinc-400">Current Participants:</span>{" "}
+                <span className="font-semibold text-zinc-400">
+                  Current Participants:
+                </span>{" "}
                 {participants.length}
               </p>
               <p>
-                <span className="font-semibold text-zinc-400">Registration:</span>{" "}
+                <span className="font-semibold text-zinc-400">
+                  Registration:
+                </span>{" "}
                 {activity?.requireRegistration
                   ? "Required for this activity"
                   : "Not required"}
