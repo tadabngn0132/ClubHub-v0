@@ -70,3 +70,8 @@ export const getICSFile = async (activityId) => {
   const res = await axiosClient.get(`/activities/ics/${activityId}`);
   return res.data;
 };
+
+export const restoreAnActivity = async (id) => {
+  const res = await axiosClient.put(`/activities/${id}/restore`);
+  return res.data;
+};

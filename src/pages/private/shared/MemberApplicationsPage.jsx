@@ -8,6 +8,7 @@ import {
   getAllMemberApplicationsList,
   softDeleteMemberApplicationById,
   hardDeleteMemberApplicationById,
+  restoreMemberApplicationById,
 } from "../../../store/slices/memberApplicationSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link } from "react-router-dom";
@@ -55,6 +56,10 @@ const MemberApplicationsPage = ({ role }) => {
     } finally {
       handleCloseConfirmationModal();
     }
+  };
+
+  const handleRestore = (memAppId) => {
+    dispatch(restoreMemberApplicationById(memAppId));
   };
 
   const statusTone = {
@@ -256,14 +261,24 @@ const MemberApplicationsPage = ({ role }) => {
                             Soft Delete
                           </button>
                           {role === "admin" && (
-                            <button
-                              onClick={() =>
-                                handleDeleteConfigured(application.id, "hard")
-                              }
-                              className="inline-flex items-center justify-center rounded-full border border-rose-400/35 bg-rose-400/10 px-3 py-1.5 text-xs font-semibold text-rose-100 transition hover:bg-rose-400/20"
-                            >
-                              Hard Delete
-                            </button>
+                            <>
+                              <button
+                                onClick={() =>
+                                  handleDeleteConfigured(application.id, "hard")
+                                }
+                                className="inline-flex items-center justify-center rounded-full border border-rose-400/35 bg-rose-400/10 px-3 py-1.5 text-xs font-semibold text-rose-100 transition hover:bg-rose-400/20"
+                              >
+                                Hard Delete
+                              </button>
+                              {application.isDeleted && (
+                                <button
+                                  onClick={() => handleRestore(application.id)}
+                                  className="inline-flex items-center justify-center rounded-full border border-yellow-400/35 bg-yellow-400/10 px-3 py-1.5 text-xs font-semibold text-yellow-100 transition hover:bg-yellow-400/20"
+                                >
+                                  Restore
+                                </button>
+                              )}
+                            </>
                           )}
                         </div>
                       </td>

@@ -6,6 +6,7 @@ import {
   hardDeleteActivityById,
   createNewActivityImage,
   createNewActivityVideo,
+  restoreAnActivityById,
   resetActivityError,
 } from "../../../store/slices/activitySlice";
 import {
@@ -201,6 +202,10 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     );
   };
 
+  const handleRestore = () => {
+    dispatch(restoreAnActivityById(activityId));
+  };
+
   const formatDateTime = (date) => {
     if (!date) return "N/A";
     const parsedDate = new Date(date);
@@ -330,12 +335,22 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
                 )}
 
                 {role === "ADMIN" && (
-                  <button
-                    onClick={() => handleDeleteConfigured("hard")}
-                    className="rounded-lg bg-rose-500/20 px-3 py-2 text-sm font-medium text-rose-200 transition hover:bg-rose-500/35"
-                  >
-                    Hard Delete
-                  </button>
+                  <>
+                    <button
+                      onClick={() => handleDeleteConfigured("hard")}
+                      className="rounded-lg bg-rose-500/20 px-3 py-2 text-sm font-medium text-rose-200 transition hover:bg-rose-500/35"
+                    >
+                      Hard Delete
+                    </button>
+                    {activity?.isDeleted && (
+                      <button
+                        onClick={handleRestore}
+                        className="rounded-lg bg-yellow-500/20 px-3 py-2 text-sm font-medium text-yellow-200 transition hover:bg-yellow-500/35"
+                      >
+                        Restore
+                      </button>
+                    )}
+                  </>
                 )}
 
                 <button

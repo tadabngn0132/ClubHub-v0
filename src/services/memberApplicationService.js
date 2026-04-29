@@ -40,11 +40,11 @@ export const updateMemberApplicationCVReviewDetail = async (id, data) => {
 
 export const updateMemberApplicationDepartmentInterviewDetail = async (
   id,
-  data
+  data,
 ) => {
   const res = await axiosClient.put(
     `/member-applications/${id}/department-interview`,
-    data
+    data,
   );
   return res.data;
 };
@@ -59,5 +59,10 @@ export const updateMemberApplicationFinalReviewDetail = async (id, data) => {
 
 export const withdrawMemberApplication = async (id) => {
   const res = await axiosClient.put(`/member-applications/${id}/withdraw`);
+  return res.data;
+};
+
+export const restoreMemberApplication = async (id) => {
+  const res = await axiosClient.put(`/member-applications/${id}/restore`);
   return res.data;
 };

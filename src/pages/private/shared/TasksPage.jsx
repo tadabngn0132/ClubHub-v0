@@ -3,6 +3,7 @@ import {
   getAllTasksList,
   softDeleteTaskById,
   hardDeleteTaskById,
+  restoreTaskById,
   resetTaskStatus,
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -124,6 +125,10 @@ const TasksPage = ({ role, basePath }) => {
       dispatch(hardDeleteTaskById(selectedTaskId));
       handleCloseConfirmationModal();
     }
+  };
+
+  const handleRestore = (taskId) => {
+    dispatch(restoreTaskById(taskId));
   };
 
   const clearFilters = () => {
@@ -385,14 +390,22 @@ const TasksPage = ({ role, basePath }) => {
                           )}
 
                           {role === "ADMIN" && (
-                            <button
-                              onClick={() =>
-                                handleDeleteConfigured(task.id, "hard")
-                              }
-                              className="rounded-md bg-red-500/20 px-2 py-1 font-semibold text-red-300 transition hover:bg-red-500/35"
-                            >
-                              Hard Delete
-                            </button>
+                            <>
+                              <button
+                                onClick={() =>
+                                  handleDeleteConfigured(task.id, "hard")
+                                }
+                                className="rounded-md bg-red-500/20 px-2 py-1 font-semibold text-red-300 transition hover:bg-red-500/35"
+                              >
+                                Hard Delete
+                              </button>
+                              <button
+                                onClick={() => handleRestore(task.id)}
+                                className="rounded-md bg-green-500/20 px-2 py-1 font-semibold text-green-300 transition hover:bg-green-500/35"
+                              >
+                                Restore
+                              </button>
+                            </>
                           )}
                         </div>
                       </td>

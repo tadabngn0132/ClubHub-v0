@@ -2,6 +2,7 @@ import {
   getActivitiesList,
   softDeleteActivityById,
   hardDeleteActivityById,
+  restoreAnActivityById,
   resetActivityError,
 } from "../../../store/slices/activitySlice";
 import { use, useEffect, useMemo, useState } from "react";
@@ -154,6 +155,7 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
           role={role}
           activities={activitiesForListView}
           onDeleteConfigured={handleDeleteConfigured}
+          onRestore={handleRestore}
         />
       ),
     },
@@ -169,6 +171,10 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     },
     { name: "Calendar View", component: <ActivitiesCalendarView /> },
   ];
+
+  const handleRestore = (activityId) => {
+    dispatch(restoreAnActivityById(activityId));
+  };
 
   if (isLoading) {
     return <Loading />;

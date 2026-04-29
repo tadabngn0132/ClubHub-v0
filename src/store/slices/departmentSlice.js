@@ -6,6 +6,7 @@ import {
   updateDepartment,
   softDeleteDepartment,
   hardDeleteDepartment,
+  restoreDepartment,
 } from "../../services/departmentService.js";
 
 export const createNewDepartment = createAsyncThunk(
@@ -98,6 +99,23 @@ export const hardDeleteDepartmentById = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const data = await hardDeleteDepartment(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const restoreDepartmentById = createAsyncThunk(
+  "department/restoreDepartmentById",
+  async (id, thunkAPI) => {
+    try {
+      const data = await restoreDepartment(id);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -236,6 +254,23 @@ const departmentSlice = createSlice({
         state.departmentStatus = "fulfilled";
       })
       .addCase(hardDeleteDepartmentById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+        state.departmentStatus = "rejected";
+      })
+
+      // Handle restoreDepartmentById
+      .addCase(restoreDepartmentById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.departmentStatus = "pending";
+      })
+      .addCase(restoreDepartmentById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.departments.push(action.payload.data);
+        state.departmentStatus = "fulfilled";
+      })
+      .addCase(restoreDepartmentById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
         state.departmentStatus = "rejected";

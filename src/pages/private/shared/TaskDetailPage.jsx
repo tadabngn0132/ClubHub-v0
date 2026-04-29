@@ -6,6 +6,7 @@ import {
   hardDeleteTaskById,
   confirmTaskCompletionById,
   verifyTaskCompletionById,
+  restoreTaskById,
   resetTaskError,
 } from "../../../store/slices/taskSlice";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -113,6 +114,10 @@ const TaskDetailPage = ({ role, basePath }) => {
     ).unwrap();
   };
 
+  const handleRestore = () => {
+    dispatch(restoreTaskById(taskId));
+  };
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -159,12 +164,20 @@ const TaskDetailPage = ({ role, basePath }) => {
               )}
 
               {role === "ADMIN" && (
-                <button
-                  onClick={() => handleDeleteConfigured(taskId, "hard")}
-                  className="rounded-xl border border-rose-400/25 bg-rose-500/10 px-3.5 py-2 font-semibold text-rose-200 transition hover:-translate-y-0.5 hover:border-rose-300/50 hover:bg-rose-500/20"
-                >
-                  Hard Delete
-                </button>
+                <>
+                  <button
+                    onClick={() => handleDeleteConfigured(taskId, "hard")}
+                    className="rounded-xl border border-rose-400/25 bg-rose-500/10 px-3.5 py-2 font-semibold text-rose-200 transition hover:-translate-y-0.5 hover:border-rose-300/50 hover:bg-rose-500/20"
+                  >
+                    Hard Delete
+                  </button>
+                  <button
+                    onClick={handleRestore}
+                    className="rounded-xl border border-green-400/25 bg-green-500/10 px-3.5 py-2 font-semibold text-green-200 transition hover:-translate-y-0.5 hover:border-green-300/50 hover:bg-green-500/20"
+                  >
+                    Restore
+                  </button>
+                </>
               )}
             </div>
           </div>

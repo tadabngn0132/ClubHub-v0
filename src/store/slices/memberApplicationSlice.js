@@ -9,6 +9,7 @@ import {
   updateMemberApplicationDepartmentInterviewDetail,
   updateMemberApplicationFinalReviewDetail,
   withdrawMemberApplication,
+  restoreMemberApplication,
 } from "../../services/memberApplicationService";
 
 // TODO(member-application): make this slice the source of truth for list and
@@ -178,6 +179,23 @@ export const withdrawMemberApplicationByUser = createAsyncThunk(
   },
 );
 
+export const restoreMemberApplicationById = createAsyncThunk(
+  "memberApplication/restoreMemberApplicationById",
+  async (id, thunkAPI) => {
+    try {
+      const data = await restoreMemberApplication(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
 const memberApplicationSlice = createSlice({
   name: "memberApplication",
   initialState: {
@@ -303,13 +321,10 @@ const memberApplicationSlice = createSlice({
       })
 
       // Handle updateMemberApplicationDepartmentInterview
-      .addCase(
-        updateMemberApplicationDepartmentInterview.pending,
-        (state) => {
-          state.isLoading = true;
-          state.memberApplicationStatus = "pending";
-        },
-      )
+      .addCase(updateMemberApplicationDepartmentInterview.pending, (state) => {
+        state.isLoading = true;
+        state.memberApplicationStatus = "pending";
+      })
       .addCase(
         updateMemberApplicationDepartmentInterview.fulfilled,
         (state, action) => {
@@ -322,13 +337,16 @@ const memberApplicationSlice = createSlice({
               action.payload.departmentInterviews;
           }
           state.memberApplicationStatus = "fulfilled";
-        }
+        },
       )
-      .addCase(updateMemberApplicationDepartmentInterview.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.memberApplicationStatus = "rejected";
-      })
+      .addCase(
+        updateMemberApplicationDepartmentInterview.rejected,
+        (state, action) => {
+          state.isLoading = false;
+          state.error = action.payload;
+          state.memberApplicationStatus = "rejected";
+        },
+      )
 
       // Handle updateMemberApplicationFinalReview
       .addCase(updateMemberApplicationFinalReview.pending, (state) => {
@@ -370,6 +388,22 @@ const memberApplicationSlice = createSlice({
         state.memberApplicationStatus = "fulfilled";
       })
       .addCase(withdrawMemberApplicationByUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.memberApplicationStatus = "rejected";
+      })
+
+      // Handle restoreMemberApplicationById
+      .addCase(restoreMemberApplicationById.pending, (state) => {
+        state.isLoading = true;
+        state.memberApplicationStatus = "pending";
+      })
+      .addCase(restoreMemberApplicationById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.memberApplications.push(action.payload.data);
+        state.memberApplicationStatus = "fulfilled";
+      })
+      .addCase(restoreMemberApplicationById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
         state.memberApplicationStatus = "rejected";

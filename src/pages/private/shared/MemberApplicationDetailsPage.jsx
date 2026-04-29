@@ -5,10 +5,18 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMemberApplicationDetails, softDeleteMemberApplicationById, hardDeleteMemberApplicationById } from "../../../store/slices/memberApplicationSlice";
+import {
+  getMemberApplicationDetails,
+  softDeleteMemberApplicationById,
+  hardDeleteMemberApplicationById,
+  restoreMemberApplicationById,
+} from "../../../store/slices/memberApplicationSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal";
-import { formatDate, formatUppercaseToCapitalized } from "../../../utils/formatters";
+import {
+  formatDate,
+  formatUppercaseToCapitalized,
+} from "../../../utils/formatters";
 import CVReviewCard from "../../../components/main/internal/CVReviewCard";
 import DepartmentInterviewCard from "../../../components/main/internal/DepartmentInterviewCard";
 import FinalReviewCard from "../../../components/main/internal/FinalReviewCard";
@@ -49,6 +57,10 @@ const MemberApplicationDetailsPage = ({ role }) => {
     }
   };
 
+  const handleRestore = () => {
+    dispatch(restoreMemberApplicationById(applicationId));
+  };
+
   const applicationState = memberApplication?.state ?? "unknown";
   const normalizedState = String(applicationState).toLowerCase();
   const displayName = memberApplication?.fullname || "Member Application";
@@ -80,8 +92,14 @@ const MemberApplicationDetailsPage = ({ role }) => {
   const infoItems = [
     { label: "Full name", value: formatValue(memberApplication?.fullname) },
     { label: "Email", value: formatValue(memberApplication?.email) },
-    { label: "Phone number", value: formatValue(memberApplication?.phoneNumber) },
-    { label: "Date of birth", value: formatDate(memberApplication?.dateOfBirth) },
+    {
+      label: "Phone number",
+      value: formatValue(memberApplication?.phoneNumber),
+    },
+    {
+      label: "Date of birth",
+      value: formatDate(memberApplication?.dateOfBirth),
+    },
     {
       label: "Gender",
       value: formatUppercaseToCapitalized(memberApplication?.gender),
@@ -91,7 +109,8 @@ const MemberApplicationDetailsPage = ({ role }) => {
     { label: "Applied at", value: formatDate(memberApplication?.appliedAt) },
   ];
 
-  const canReviewCv = normalizedState === "submitted" || normalizedState === "cv_pending";
+  const canReviewCv =
+    normalizedState === "submitted" || normalizedState === "cv_pending";
   const canInterview = normalizedState === "department_interview_pending";
   const canFinalReview = normalizedState === "final_pending";
 
@@ -111,13 +130,15 @@ const MemberApplicationDetailsPage = ({ role }) => {
               >
                 Back
               </Link>
-              <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] ${statusTone[normalizedState] || "border-white/10 bg-white/10 text-white/70"}`}>
+              <span
+                className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] ${statusTone[normalizedState] || "border-white/10 bg-white/10 text-white/70"}`}
+              >
                 {formatUppercaseToCapitalized(applicationState)}
               </span>
             </div>
 
             <div className="flex flex-wrap gap-2">
-              {(role === "admin" && canReviewCv) && (
+              {role === "admin" && canReviewCv && (
                 <Link
                   to={`/${role}/member-applications/cv-review/${memberApplication?.id}`}
                   className="inline-flex items-center justify-center rounded-full border border-amber-400/35 bg-amber-400/10 px-3.5 py-1.5 text-sm font-medium text-amber-100 transition hover:bg-amber-400/20"
@@ -125,7 +146,7 @@ const MemberApplicationDetailsPage = ({ role }) => {
                   CV Review
                 </Link>
               )}
-              {(role === "admin" && canInterview) && (
+              {role === "admin" && canInterview && (
                 <Link
                   to={`/${role}/member-applications/interview/${memberApplication?.id}`}
                   className="inline-flex items-center justify-center rounded-full border border-violet-400/35 bg-violet-400/10 px-3.5 py-1.5 text-sm font-medium text-violet-100 transition hover:bg-violet-400/20"
@@ -133,7 +154,7 @@ const MemberApplicationDetailsPage = ({ role }) => {
                   Interview
                 </Link>
               )}
-              {(role === "admin" && canFinalReview) && (
+              {role === "admin" && canFinalReview && (
                 <Link
                   to={`/${role}/member-applications/final-review/${memberApplication?.id}`}
                   className="inline-flex items-center justify-center rounded-full border border-cyan-400/35 bg-cyan-400/10 px-3.5 py-1.5 text-sm font-medium text-cyan-100 transition hover:bg-cyan-400/20"
@@ -164,7 +185,8 @@ const MemberApplicationDetailsPage = ({ role }) => {
                 {displayName}
               </h1>
               <p className="mt-2 text-sm text-white/65">
-                ID #{memberApplication?.id ?? "N/A"} • Applied {formatDate(memberApplication?.appliedAt)}
+                ID #{memberApplication?.id ?? "N/A"} • Applied{" "}
+                {formatDate(memberApplication?.appliedAt)}
               </p>
             </div>
           </div>
@@ -175,7 +197,10 @@ const MemberApplicationDetailsPage = ({ role }) => {
             <h2 className="text-base font-semibold text-white">Profile</h2>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {infoItems.map((item) => (
-                <div key={item.label} className="rounded-xl border border-white/10 bg-white/[0.03] p-3.5">
+                <div
+                  key={item.label}
+                  className="rounded-xl border border-white/10 bg-white/[0.03] p-3.5"
+                >
                   <p className="text-[11px] uppercase tracking-[0.16em] text-white/45">
                     {item.label}
                   </p>
@@ -191,16 +216,18 @@ const MemberApplicationDetailsPage = ({ role }) => {
             <div className="rounded-2xl border border-white/10 bg-zinc-950/75 p-5 sm:p-6">
               <h2 className="text-base font-semibold text-white">Workflow</h2>
               <p className="mt-3 text-sm leading-6 text-white/70">
-                {(role === "admin" && canReviewCv)
+                {role === "admin" && canReviewCv
                   ? "Ready for CV review."
-                  : (role === "admin" && canInterview)
+                  : role === "admin" && canInterview
                     ? "Ready for interview review."
-                    : (role === "admin" && canFinalReview)
+                    : role === "admin" && canFinalReview
                       ? "Ready for final review."
                       : "No action required at the moment."}
               </p>
               <p className="mt-2 text-sm text-white/60">
-                {memberApplication?.avatarUrl ? "Avatar available" : "No avatar provided"}
+                {memberApplication?.avatarUrl
+                  ? "Avatar available"
+                  : "No avatar provided"}
               </p>
             </div>
 
@@ -214,12 +241,22 @@ const MemberApplicationDetailsPage = ({ role }) => {
                   Soft Delete
                 </button>
                 {role === "admin" && (
-                  <button
-                    onClick={() => handleDeleteConfigured("hard")}
-                    className="inline-flex items-center justify-center rounded-full border border-rose-400/35 bg-rose-400/10 px-3.5 py-1.5 text-sm font-medium text-rose-100 transition hover:bg-rose-400/20"
-                  >
-                    Hard Delete
-                  </button>
+                  <>
+                    <button
+                      onClick={() => handleDeleteConfigured("hard")}
+                      className="inline-flex items-center justify-center rounded-full border border-rose-400/35 bg-rose-400/10 px-3.5 py-1.5 text-sm font-medium text-rose-100 transition hover:bg-rose-400/20"
+                    >
+                      Hard Delete
+                    </button>
+                    {memberApplication?.isDeleted && (
+                      <button
+                        onClick={handleRestore}
+                        className="inline-flex items-center justify-center rounded-full border border-yellow-400/35 bg-yellow-400/10 px-3.5 py-1.5 text-sm font-medium text-yellow-100 transition hover:bg-yellow-400/20"
+                      >
+                        Restore
+                      </button>
+                    )}
+                  </>
                 )}
               </div>
             </div>
@@ -227,9 +264,19 @@ const MemberApplicationDetailsPage = ({ role }) => {
         </section>
 
         <section>
-          {memberApplication?.cvReview && <CVReviewCard cvReview={memberApplication.cvReview} />}
-          {memberApplication?.departmentInterviews && memberApplication?.departmentInterviews.map((interview) => (<DepartmentInterviewCard key={interview.id} interview={interview} />))}
-          {memberApplication?.finalReview && <FinalReviewCard finalReview={memberApplication.finalReview} />}
+          {memberApplication?.cvReview && (
+            <CVReviewCard cvReview={memberApplication.cvReview} />
+          )}
+          {memberApplication?.departmentInterviews &&
+            memberApplication?.departmentInterviews.map((interview) => (
+              <DepartmentInterviewCard
+                key={interview.id}
+                interview={interview}
+              />
+            ))}
+          {memberApplication?.finalReview && (
+            <FinalReviewCard finalReview={memberApplication.finalReview} />
+          )}
         </section>
       </div>
 

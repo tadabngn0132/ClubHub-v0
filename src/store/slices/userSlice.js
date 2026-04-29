@@ -9,6 +9,7 @@ import {
   hardDeleteAnUser,
   unlockAnUserAccount,
   getUserDashboardStats,
+  restoreAnUser,
 } from "../../services/userService";
 
 export const createUser = createAsyncThunk(
@@ -164,6 +165,23 @@ export const getAllUserDashboardStats = createAsyncThunk(
   },
 );
 
+export const restoreUserById = createAsyncThunk(
+  "user/restoreUserById",
+  async (id, thunkAPI) => {
+    try {
+      const data = await restoreAnUser(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: {
@@ -287,9 +305,7 @@ const userSlice = createSlice({
       })
       .addCase(softDeleteUserById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.users = state.users.filter(
-          (user) => user.id !== action.meta.arg,
-        );
+        state.users = state.users.filter((user) => user.id !== action.meta.arg);
         state.userStatus = "fulfilled";
       })
       .addCase(softDeleteUserById.rejected, (state, action) => {
@@ -306,9 +322,7 @@ const userSlice = createSlice({
       })
       .addCase(hardDeleteUserById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.users = state.users.filter(
-          (user) => user.id !== action.meta.arg,
-        );
+        state.users = state.users.filter((user) => user.id !== action.meta.arg);
         state.userStatus = "fulfilled";
       })
       .addCase(hardDeleteUserById.rejected, (state, action) => {
@@ -345,6 +359,23 @@ const userSlice = createSlice({
       .addCase(getAllUserDashboardStats.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+
+      // Restore User By ID
+      .addCase(restoreUserById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.userStatus = "pending";
+      })
+      .addCase(restoreUserById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.users.push(action.payload.data);
+        state.userStatus = "fulfilled";
+      })
+      .addCase(restoreUserById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.userStatus = "rejected";
       });
   },
 });

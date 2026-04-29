@@ -6,6 +6,7 @@ import {
   softDeleteUserById,
   hardDeleteUserById,
   unlockUserAccount,
+  restoreUserById,
   resetUserError,
 } from "../../../store/slices/userSlice";
 import toast from "react-hot-toast";
@@ -68,6 +69,10 @@ const UserDetailPage = ({ role, basePath }) => {
 
   const handleUnlock = () => {
     dispatch(unlockUserAccount(userId));
+  };
+
+  const handleRestore = () => {
+    dispatch(restoreUserById(userId));
   };
 
   if (isLoading) {
@@ -150,6 +155,14 @@ const UserDetailPage = ({ role, basePath }) => {
                   >
                     Unlock Account
                   </button>
+                  {user.isDeleted && (
+                    <button
+                      onClick={() => handleRestore()}
+                      className="rounded-xl border border-green-500/70 bg-green-500/20 px-4 py-2 text-sm font-semibold text-green-300 transition hover:bg-green-500/35"
+                    >
+                      Restore
+                    </button>
+                  )}
                 </>
               )}
             </div>

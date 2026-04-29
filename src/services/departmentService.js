@@ -29,3 +29,8 @@ export const hardDeleteDepartment = async (id) => {
   const response = await axiosClient.delete(`/departments/${id}/hard`);
   return response.data;
 };
+
+export const restoreDepartment = async (id) => {
+  const response = await axiosClient.put(`/departments/${id}/restore`);
+  return response.data;
+};

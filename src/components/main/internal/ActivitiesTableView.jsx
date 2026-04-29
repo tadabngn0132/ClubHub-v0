@@ -7,6 +7,7 @@ const ActivitiesTableView = ({
   role,
   activities: providedActivities,
   onDeleteConfigured,
+  onRestore,
 }) => {
   const { activities: storeActivities } = useSelector(
     (state) => state.activity,
@@ -173,14 +174,24 @@ const ActivitiesTableView = ({
                           </>
                         )}
                         {role === "admin" && (
-                          <button
-                            onClick={() =>
-                              onDeleteConfigured(activity.id, "hard")
-                            }
-                            className="rounded-md bg-red-500/15 px-3 py-1.5 text-xs font-medium text-red-300 transition hover:bg-red-500/30"
-                          >
-                            Hard Delete
-                          </button>
+                          <>
+                            <button
+                              onClick={() =>
+                                onDeleteConfigured(activity.id, "hard")
+                              }
+                              className="rounded-md bg-red-500/15 px-3 py-1.5 text-xs font-medium text-red-300 transition hover:bg-red-500/30"
+                            >
+                              Hard Delete
+                            </button>
+                            {activity.isDeleted && (
+                              <button
+                                onClick={() => onRestore(activity.id)}
+                                className="rounded-md bg-yellow-500/15 px-3 py-1.5 text-xs font-medium text-yellow-300 transition hover:bg-yellow-500/30"
+                              >
+                                Restore
+                              </button>
+                            )}
+                          </>
                         )}
                       </div>
                     </td>

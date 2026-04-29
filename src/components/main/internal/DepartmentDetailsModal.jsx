@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
   softDeleteDepartmentById,
   hardDeleteDepartmentById,
+  restoreDepartmentById,
 } from "../../../store/slices/departmentSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import toast from "react-hot-toast";
@@ -52,6 +53,10 @@ const DepartmentDetailsModal = ({ role, department, open = true, onClose }) => {
       handleCloseConfirmationModal();
       onClose?.();
     }
+  };
+
+  const handleRestore = () => {
+    dispatch(restoreDepartmentById(department.id));
   };
 
   if (!open || !department) {
@@ -177,6 +182,16 @@ const DepartmentDetailsModal = ({ role, department, open = true, onClose }) => {
                 >
                   Hard Delete
                 </button>
+
+                {department.isDeleted && (
+                  <button
+                    type="button"
+                    onClick={handleRestore}
+                    className="inline-flex items-center justify-center rounded-xl border border-yellow-500/30 bg-yellow-500/15 px-4 py-2.5 text-sm font-semibold text-yellow-200 transition hover:bg-yellow-500/25"
+                  >
+                    Restore
+                  </button>
+                )}
               </div>
             </>
           )}

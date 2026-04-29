@@ -6,6 +6,7 @@ import {
   updatePosition,
   softDeletePosition,
   hardDeletePosition,
+  restorePosition,
 } from "../../services/positionService.js";
 
 export const createNewPosition = createAsyncThunk(
@@ -98,6 +99,23 @@ export const hardDeletePositionById = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const data = await hardDeletePosition(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const restorePositionById = createAsyncThunk(
+  "position/restorePositionById",
+  async (id, thunkAPI) => {
+    try {
+      const data = await restorePosition(id);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -235,6 +253,23 @@ const positionSlice = createSlice({
         state.positionStatus = "fulfilled";
       })
       .addCase(hardDeletePositionById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+        state.positionStatus = "rejected";
+      })
+
+      // Handle restorePositionById
+      .addCase(restorePositionById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.positionStatus = "pending";
+      })
+      .addCase(restorePositionById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.positions.push(action.payload.data);
+        state.positionStatus = "fulfilled";
+      })
+      .addCase(restorePositionById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
         state.positionStatus = "rejected";

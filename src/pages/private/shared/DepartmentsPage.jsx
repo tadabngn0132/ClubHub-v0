@@ -4,6 +4,7 @@ import {
   getDepartmentsList,
   softDeleteDepartmentById,
   hardDeleteDepartmentById,
+  restoreDepartmentById,
   resetDepartmentStatus,
   resetDepartmentError,
 } from "../../../store/slices/departmentSlice";
@@ -145,6 +146,10 @@ const DepartmentsPage = ({ role, basePath }) => {
     setSearchTerm("");
     setStatusFilter("all");
     setSortBy("name_asc");
+  };
+
+  const handleRestore = (departmentId) => {
+    dispatch(restoreDepartmentById(departmentId));
   };
 
   if (isLoading) {
@@ -318,6 +323,14 @@ const DepartmentsPage = ({ role, basePath }) => {
                             >
                               Hard Delete
                             </button>
+                            {department.isDeleted && (
+                              <button
+                                onClick={() => handleRestore(department.id)}
+                                className="rounded-md bg-yellow-500/20 px-3 py-1 font-semibold text-yellow-300 transition hover:bg-yellow-500/35"
+                              >
+                                Restore
+                              </button>
+                            )}
                           </>
                         )}
                       </div>

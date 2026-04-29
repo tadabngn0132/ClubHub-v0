@@ -44,3 +44,8 @@ export const getUserDashboardStats = async (userId) => {
   const res = await axiosClient.get(`/users/${userId}/dashboard-stats`);
   return res.data;
 };
+
+export const restoreAnUser = async (id) => {
+  const res = await axiosClient.put(`/users/${id}/restore`);
+  return res.data;
+};

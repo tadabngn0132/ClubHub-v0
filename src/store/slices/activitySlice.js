@@ -13,6 +13,7 @@ import {
   deleteActivityImage,
   deleteActivityVideo,
   getICSFile,
+  restoreAnActivity,
 } from "../../services/activityService";
 
 export const createActivity = createAsyncThunk(
@@ -224,6 +225,23 @@ export const getICSFileByActivityId = createAsyncThunk(
   async (activityId, thunkAPI) => {
     try {
       const data = await getICSFile(activityId);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const restoreAnActivityById = createAsyncThunk(
+  "activity/restoreAnActivityById",
+  async (id, thunkAPI) => {
+    try {
+      const data = await restoreAnActivity(id);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -475,6 +493,22 @@ const activitySlice = createSlice({
         state.activityStatus = "fulfilled";
       })
       .addCase(getICSFileByActivityId.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || action.error.message;
+        state.activityStatus = "rejected";
+      })
+
+      // Restore An Activity By ID
+      .addCase(restoreAnActivityById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.activityStatus = "pending";
+      })
+      .addCase(restoreAnActivityById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.activityStatus = "fulfilled";
+      })
+      .addCase(restoreAnActivityById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload || action.error.message;
         state.activityStatus = "rejected";

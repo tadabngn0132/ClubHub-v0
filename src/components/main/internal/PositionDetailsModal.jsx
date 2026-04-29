@@ -3,6 +3,7 @@ import { useState } from "react";
 import {
   softDeletePositionById,
   hardDeletePositionById,
+  restorePositionById,
 } from "../../../store/slices/positionSlice";
 import Loading from "../../../components/layout/internal/Loading";
 import { Link } from "react-router-dom";
@@ -54,6 +55,10 @@ const PositionDetailsModal = ({ role, open = true, position, onClose }) => {
       dispatch(hardDeletePositionById(position.id));
       handleCloseConfirmationModal();
     }
+  };
+
+  const handleRestore = () => {
+    dispatch(restorePositionById(position.id));
   };
 
   // Early return after all hooks
@@ -145,6 +150,16 @@ const PositionDetailsModal = ({ role, open = true, position, onClose }) => {
               >
                 Hard Delete
               </button>
+
+              {position.isDeleted && (
+                <button
+                  type="button"
+                  onClick={handleRestore}
+                  className="inline-flex items-center justify-center rounded-xl border border-yellow-500/30 bg-yellow-500/15 px-4 py-2.5 text-sm font-semibold text-yellow-200 transition hover:bg-yellow-500/25"
+                >
+                  Restore
+                </button>
+              )}
             </div>
           )}
         </div>

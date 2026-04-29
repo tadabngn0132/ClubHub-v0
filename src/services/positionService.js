@@ -29,3 +29,8 @@ export const hardDeletePosition = async (id) => {
   const response = await axiosClient.delete(`/positions/${id}/hard`);
   return response.data;
 };
+
+export const restorePosition = async (id) => {
+  const response = await axiosClient.put(`/positions/${id}/restore`);
+  return response.data;
+};

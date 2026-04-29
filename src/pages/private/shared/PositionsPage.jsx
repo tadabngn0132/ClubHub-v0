@@ -4,6 +4,7 @@ import {
   getPositionsList,
   softDeletePositionById,
   hardDeletePositionById,
+  restorePositionById,
   resetPositionStatus,
   resetPositionError,
 } from "../../../store/slices/positionSlice";
@@ -128,6 +129,10 @@ const PositionsPage = ({ role, basePath }) => {
     setSearchTerm("");
     setRoleFilter("all");
     setSortBy("title_asc");
+  };
+
+  const restorePosition = (positionId) => {
+    dispatch(restorePositionById(positionId));
   };
 
   if (isLoading) {
@@ -257,7 +262,9 @@ const PositionsPage = ({ role, basePath }) => {
                     <td className="w-24 px-3 py-3 text-center">
                       <div className="flex items-center justify-center gap-1 text-xs">
                         <button
-                          onClick={() => handleOpenPositionDetailsModal(position)}
+                          onClick={() =>
+                            handleOpenPositionDetailsModal(position)
+                          }
                           className="rounded-md bg-emerald-500/20 px-3 py-1 font-semibold text-sky-300 transition hover:bg-sky-500/35"
                         >
                           View
@@ -288,6 +295,14 @@ const PositionsPage = ({ role, basePath }) => {
                             >
                               Hard Delete
                             </button>
+                            {position.isDeleted && (
+                              <button
+                                onClick={() => restorePosition(position.id)}
+                                className="rounded-md bg-yellow-500/20 px-3 py-1 font-semibold text-yellow-300 transition hover:bg-yellow-500/35"
+                              >
+                                Restore
+                              </button>
+                            )}
                           </>
                         )}
                       </div>

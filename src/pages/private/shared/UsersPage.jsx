@@ -3,6 +3,7 @@ import {
   getUsersList,
   softDeleteUserById,
   hardDeleteUserById,
+  restoreUserById,
 } from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useState } from "react";
@@ -148,6 +149,10 @@ const UsersPage = ({ role, basePath }) => {
 
     return result;
   }, [users, searchTerm, statusFilter, roleFilter, sortConfig]);
+
+  const handleRestore = (userId) => {
+    dispatch(restoreUserById(userId));
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -440,14 +445,24 @@ const UsersPage = ({ role, basePath }) => {
                         )}
 
                         {role === "ADMIN" && (
-                          <button
-                            onClick={() =>
-                              handleDeleteConfigured(user.id, "hard")
-                            }
-                            className="rounded-md bg-red-500/20 px-2 py-1 font-semibold text-red-300 transition hover:bg-red-500/35"
-                          >
-                            Hard Delete
-                          </button>
+                          <>
+                            <button
+                              onClick={() =>
+                                handleDeleteConfigured(user.id, "hard")
+                              }
+                              className="rounded-md bg-red-500/20 px-2 py-1 font-semibold text-red-300 transition hover:bg-red-500/35"
+                            >
+                              Hard Delete
+                            </button>
+                            {user.isDeleted && (
+                              <button
+                                onClick={() => handleRestore(user.id)}
+                                className="rounded-md bg-green-500/20 px-2 py-1 font-semibold text-green-300 transition hover:bg-green-500/35"
+                              >
+                                Restore
+                              </button>
+                            )}
+                          </>
                         )}
                       </div>
                     </td>

@@ -44,3 +44,8 @@ export const verifyTaskCompletion = async (id, data) => {
   const res = await axiosClient.put(`/tasks/${id}/verify-completion`, data);
   return res.data;
 };
+
+export const restoreAnTask = async (id) => {
+  const res = await axiosClient.put(`/tasks/${id}/restore`);
+  return res.data;
+};
