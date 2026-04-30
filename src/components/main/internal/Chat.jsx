@@ -286,10 +286,18 @@ const Chat = ({ selectedRoomId }) => {
               }`}
             >
               {/* Avatar */}
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-[#db3f7a] to-[#a82d5f] flex-shrink-0 text-xs font-semibold text-white">
-                {(message.sender?.fullname || message.senderName || "U")
-                  .charAt(0)
-                  .toUpperCase()}
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-[#db3f7a] to-[#a82d5f] flex-shrink-0 text-sm font-semibold text-white">
+                {message.sender?.avatarUrl ? (
+                  <img
+                    src={message.sender?.avatarUrl}
+                    alt="Avatar"
+                    className="flex shrink-0 items-center justify-center rounded-full border border-pink-400/30 bg-pink-500/10 text-xl font-bold text-pink-100"
+                  />
+                ) : (
+                  <div>
+                    {(message.sender?.fullname || "").slice(0, 1).toUpperCase()}
+                  </div>
+                )}
               </div>
 
               {/* Message Bubble */}
