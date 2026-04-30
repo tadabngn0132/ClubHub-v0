@@ -15,6 +15,7 @@ import {
   getICSFile,
   restoreAnActivity,
 } from "../../services/activityService";
+import { getThunkErrorPayload } from "../../utils/thunkError";
 
 export const createActivity = createAsyncThunk(
   "activity/createActivity",
@@ -28,7 +29,7 @@ export const createActivity = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -45,7 +46,7 @@ export const getActivityById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -62,7 +63,7 @@ export const getActivitiesList = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -79,7 +80,7 @@ export const getActivitiesBySlug = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -96,7 +97,7 @@ export const updateActivityById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -113,7 +114,7 @@ export const softDeleteActivityById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -130,7 +131,7 @@ export const hardDeleteActivityById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -147,7 +148,7 @@ export const createNewActivityImage = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -164,7 +165,7 @@ export const getActivitiesByUserId = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -181,7 +182,7 @@ export const createNewActivityVideo = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -198,7 +199,7 @@ export const deleteActivityImageById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -215,7 +216,7 @@ export const deleteActivityVideoById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -232,7 +233,7 @@ export const getICSFileByActivityId = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -249,7 +250,7 @@ export const restoreAnActivityById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );

@@ -6,6 +6,7 @@ import {
   softDeleteMessage,
   hardDeleteMessage,
 } from "../../services/messageService";
+import { getThunkErrorPayload } from "../../utils/thunkError";
 
 export const createNewMessage = createAsyncThunk(
   "message/createNewMessage",
@@ -19,7 +20,7 @@ export const createNewMessage = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -36,7 +37,7 @@ export const getMessagesByRoom = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -53,7 +54,7 @@ export const updateMessageById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -70,7 +71,7 @@ export const softDeleteMessageById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -87,7 +88,7 @@ export const hardDeleteMessageById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );

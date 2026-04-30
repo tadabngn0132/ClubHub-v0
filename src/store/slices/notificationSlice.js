@@ -9,8 +9,9 @@ import {
   getNotificationsByUserId,
   softDeleteNotificationsByUserId,
   hardDeleteNotificationsByUserId,
-  markAllNotificationsAsRead
+  markAllNotificationsAsRead,
 } from "../../services/notificationService";
+import { getThunkErrorPayload } from "../../utils/thunkError";
 
 export const createNewNotification = createAsyncThunk(
   "notification/createNewNotification",
@@ -24,7 +25,7 @@ export const createNewNotification = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -41,7 +42,7 @@ export const getNotificationDetails = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -58,7 +59,7 @@ export const getAllNotificationsList = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -75,7 +76,7 @@ export const updateNotificationById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -92,7 +93,7 @@ export const markAllNotificationsAsReadByUserId = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -109,7 +110,7 @@ export const softDeleteNotificationById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -126,7 +127,7 @@ export const hardDeleteNotificationById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -143,7 +144,7 @@ export const getUserNotifications = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -160,7 +161,7 @@ export const softDeleteUserNotifications = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -177,7 +178,7 @@ export const hardDeleteUserNotifications = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -295,14 +296,17 @@ const notificationSlice = createSlice({
         state.isLoading = true;
         state.notificationStatus = "pending";
       })
-      .addCase(markAllNotificationsAsReadByUserId.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.notificationStatus = "fulfilled";
-        const userId = action.meta.arg;
-        state.notifications = state.notifications.map((notif) =>
-          notif.userId === userId ? { ...notif, isRead: true } : notif,
-        );
-      })
+      .addCase(
+        markAllNotificationsAsReadByUserId.fulfilled,
+        (state, action) => {
+          state.isLoading = false;
+          state.notificationStatus = "fulfilled";
+          const userId = action.meta.arg;
+          state.notifications = state.notifications.map((notif) =>
+            notif.userId === userId ? { ...notif, isRead: true } : notif,
+          );
+        },
+      )
       .addCase(markAllNotificationsAsReadByUserId.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;

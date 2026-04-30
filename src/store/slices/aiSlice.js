@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { generateAIResponse } from "../../services/aiService";
+import { getThunkErrorPayload } from "../../utils/thunkError";
 
 export const generateAIResponseThunk = createAsyncThunk(
   "ai/generateResponse",
@@ -14,7 +15,7 @@ export const generateAIResponseThunk = createAsyncThunk(
       return data;
     } catch (error) {
       console.error("Error in generateAIResponseThunk:", error);
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );

@@ -11,6 +11,7 @@ import {
   verifyTaskCompletion,
   restoreAnTask,
 } from "../../services/taskService";
+import { getThunkErrorPayload } from "../../utils/thunkError";
 
 export const createNewTask = createAsyncThunk(
   "task/createNewTask",
@@ -24,7 +25,7 @@ export const createNewTask = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -41,7 +42,7 @@ export const getTaskDetails = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -58,7 +59,7 @@ export const getAllTasksList = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -75,7 +76,7 @@ export const getUserTasks = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -93,7 +94,7 @@ export const updateTaskById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -110,7 +111,7 @@ export const softDeleteTaskById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -127,7 +128,7 @@ export const hardDeleteTaskById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -144,7 +145,7 @@ export const confirmTaskCompletionById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -161,7 +162,7 @@ export const verifyTaskCompletionById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -178,7 +179,7 @@ export const restoreTaskById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -300,9 +301,7 @@ const taskSlice = createSlice({
       })
       .addCase(softDeleteTaskById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.tasks = state.tasks.filter(
-          (task) => task.id !== action.meta.arg,
-        );
+        state.tasks = state.tasks.filter((task) => task.id !== action.meta.arg);
         state.taskStatus = "fulfilled";
       })
       .addCase(softDeleteTaskById.rejected, (state, action) => {
@@ -319,9 +318,7 @@ const taskSlice = createSlice({
       })
       .addCase(hardDeleteTaskById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.tasks = state.tasks.filter(
-          (task) => task.id !== action.meta.arg,
-        );
+        state.tasks = state.tasks.filter((task) => task.id !== action.meta.arg);
         state.taskStatus = "fulfilled";
       })
       .addCase(hardDeleteTaskById.rejected, (state, action) => {

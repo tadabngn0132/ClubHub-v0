@@ -8,6 +8,7 @@ import {
   hardDeletePosition,
   restorePosition,
 } from "../../services/positionService.js";
+import { getThunkErrorPayload } from "../../utils/thunkError";
 
 export const createNewPosition = createAsyncThunk(
   "position/createNewPosition",
@@ -21,7 +22,7 @@ export const createNewPosition = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -38,7 +39,7 @@ export const getPositionsList = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -55,7 +56,7 @@ export const getPositionDetails = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -72,7 +73,7 @@ export const updatePositionDetails = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -89,7 +90,7 @@ export const softDeletePositionById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -106,7 +107,7 @@ export const hardDeletePositionById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -123,7 +124,7 @@ export const restorePositionById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );

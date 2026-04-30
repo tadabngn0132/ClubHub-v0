@@ -11,6 +11,8 @@ import {
   withdrawMemberApplication,
   restoreMemberApplication,
 } from "../../services/memberApplicationService";
+import { getThunkErrorPayload } from "../../utils/thunkError";
+import { getThunkErrorPayload } from "../../utils/thunkError";
 
 // TODO(member-application): make this slice the source of truth for list and
 // detail state. Rework the async thunks and reducers to handle the aggregate
@@ -29,7 +31,7 @@ export const submitMemberApplication = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -46,7 +48,7 @@ export const getAllMemberApplicationsList = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -63,7 +65,7 @@ export const getMemberApplicationDetails = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -80,7 +82,7 @@ export const softDeleteMemberApplicationById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -97,7 +99,7 @@ export const hardDeleteMemberApplicationById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -117,7 +119,7 @@ export const updateMemberApplicationCVReview = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -137,7 +139,7 @@ export const updateMemberApplicationDepartmentInterview = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -157,7 +159,7 @@ export const updateMemberApplicationFinalReview = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -174,7 +176,7 @@ export const withdrawMemberApplicationByUser = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -191,7 +193,7 @@ export const restoreMemberApplicationById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );

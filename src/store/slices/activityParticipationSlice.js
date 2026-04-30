@@ -10,6 +10,8 @@ import {
   checkInParticipant,
   markParticipantNoShow,
 } from "../../services/activityParticipationService";
+import { getThunkErrorPayload } from "../../utils/thunkError";
+import { getThunkErrorPayload } from "../../utils/thunkError";
 
 export const createNewActivityParticipation = createAsyncThunk(
   "createNewActivityParticipation",
@@ -23,7 +25,7 @@ export const createNewActivityParticipation = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -40,7 +42,7 @@ export const getAllActivityParticipations = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -57,7 +59,7 @@ export const getActivityParticipationById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -74,7 +76,7 @@ export const getActivityParticipationsByActivityId = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -91,7 +93,7 @@ export const getActivityParticipationsByUserId = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -108,7 +110,7 @@ export const updateActivityParticipationById = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -125,7 +127,7 @@ export const deleteActivityParticipation = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -142,7 +144,7 @@ export const checkInActivityParticipant = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -159,7 +161,7 @@ export const markActivityParticipantNoShow = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );

@@ -18,6 +18,7 @@ import {
   configureAuthPersistence,
 } from "../../utils/helper";
 import { AUTH_STORAGE_MODE } from "../../utils/constants";
+import { getThunkErrorPayload } from "../../utils/thunkError";
 
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
@@ -41,7 +42,7 @@ export const loginUser = createAsyncThunk(
         rememberForDays: Number(userData.rememberForDays),
       };
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -58,7 +59,7 @@ export const logoutUser = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -75,7 +76,7 @@ export const changePasswordUser = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -92,7 +93,7 @@ export const forgotPasswordUser = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -109,7 +110,7 @@ export const resetPasswordUser = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -126,7 +127,7 @@ export const refreshAccessTokenUser = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
@@ -181,7 +182,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload.data;
+        state.error = action.payload;
         state.authStatus = "rejected";
       })
 
@@ -203,7 +204,7 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload.data;
+        state.error = action.payload;
         state.authStatus = "rejected";
       })
 
@@ -219,7 +220,7 @@ const authSlice = createSlice({
       })
       .addCase(changePasswordUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload.data;
+        state.error = action.payload;
         state.authStatus = "rejected";
       })
 
@@ -235,7 +236,7 @@ const authSlice = createSlice({
       })
       .addCase(forgotPasswordUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload.data;
+        state.error = action.payload;
         state.authStatus = "rejected";
       })
 
@@ -251,7 +252,7 @@ const authSlice = createSlice({
       })
       .addCase(resetPasswordUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload.data;
+        state.error = action.payload;
         state.authStatus = "rejected";
       })
 
@@ -269,7 +270,7 @@ const authSlice = createSlice({
       })
       .addCase(refreshAccessTokenUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload.data;
+        state.error = action.payload;
         state.authStatus = "rejected";
       });
   },

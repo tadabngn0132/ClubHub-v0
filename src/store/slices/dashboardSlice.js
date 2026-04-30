@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getDashboardStats } from "../../services/dashboardService";
+import { getThunkErrorPayload } from "../../utils/thunkError";
 
 export const fetchDashboardStats = createAsyncThunk(
   "dashboard/fetchDashboardStats",
@@ -13,7 +14,7 @@ export const fetchDashboardStats = createAsyncThunk(
 
       return data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
     }
   },
 );
