@@ -147,6 +147,11 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     }
   };
 
+  const handleRestore = async (activityId) => {
+    await dispatch(restoreAnActivityById(activityId)).unwrap();
+    await dispatch(getAllActivitiesList()).unwrap();
+  };
+
   const tabs = [
     {
       name: "Table View",
@@ -171,11 +176,6 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     },
     { name: "Calendar View", component: <ActivitiesCalendarView /> },
   ];
-
-  const handleRestore = async (activityId) => {
-    await dispatch(restoreAnActivityById(activityId)).unwrap();
-    await dispatch(getAllActivitiesList()).unwrap();
-  };
 
   if (isLoading) {
     return <Loading />;
@@ -224,12 +224,12 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
             ))}
           </div>
 
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="grid gap-3 md:grid-cols-4">
             <input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search name, type, location..."
-              className="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:w-72"
+              className="md:col-span-2 rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
             />
 
             <select
@@ -237,7 +237,7 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
               id="status"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:w-56"
+              className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
             >
               <option value="all">All Status</option>
               {ACTIVITY_STATUS_OPTIONS.map((status) => (
@@ -252,7 +252,7 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
               id="sort"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 md:w-72"
+              className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
             >
               <option value="newest">Date (Newest)</option>
               <option value="oldest">Date (Oldest)</option>
@@ -265,7 +265,7 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
             <button
               type="button"
               onClick={clearFilters}
-              className="rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm font-medium text-gray-100 shadow-sm hover:border-[var(--pink-color)]"
+              className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm font-medium text-slate-100 hover:border-[var(--pink-color)]"
             >
               Clear Filters
             </button>
