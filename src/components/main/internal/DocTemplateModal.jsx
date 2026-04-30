@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faXmark,
@@ -8,21 +9,10 @@ import {
   faSpinner,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
-
-// ─── mock templates — thay bằng API call nếu có ──────────────────────────────
-const DOC_TEMPLATES = [
-  { id: "meeting-minutes",  label: "Meeting Minutes",    description: "Standard meeting notes template" },
-  { id: "event-proposal",   label: "Event Proposal",     description: "Club event planning document" },
-  { id: "monthly-report",   label: "Monthly Report",     description: "Monthly activity summary" },
-  { id: "blank-doc",        label: "Blank Document",     description: "Start from scratch" },
-];
-
-const SHEET_TEMPLATES = [
-  { id: "attendance",       label: "Attendance Sheet",   description: "Track member attendance" },
-  { id: "budget",           label: "Budget Tracker",     description: "Event budget planning" },
-  { id: "member-list",      label: "Member List",        description: "Club member directory" },
-  { id: "blank-sheet",      label: "Blank Spreadsheet",  description: "Start from scratch" },
-];
+import {
+  fetchGoogleDocTemplates,
+  fetchGoogleSheetTemplates,
+} from "../../../store/slices/googleDriveSlice";
 
 // ─── sub-components ───────────────────────────────────────────────────────────
 
@@ -51,7 +41,7 @@ const TemplateCard = ({ template, selected, onClick }) => (
   >
     <div className="flex items-center justify-between">
       <p className={`text-sm font-medium ${selected ? "text-pink-200" : "text-slate-200"}`}>
-        {template.label}
+        {template.name || template.label}
       </p>
       {selected && (
         <span className="h-4 w-4 rounded-full bg-[#db3f7a] flex items-center justify-center">
@@ -59,7 +49,7 @@ const TemplateCard = ({ template, selected, onClick }) => (
         </span>
       )}
     </div>
-    <p className="mt-0.5 text-xs text-slate-500">{template.description}</p>
+    <p className="mt-0.5 text-xs text-slate-500">{template.description || template.mimeType}</p>
   </button>
 );
 
@@ -76,19 +66,32 @@ const TemplateCard = ({ template, selected, onClick }) => (
  *   isLoading — boolean (optional, tao dùng internal state nếu không truyền)
  */
 const DocTemplateModal = ({ isOpen, onClose, folderId, onSubmit, isLoading: externalLoading }) => {
-  const [type, setType]             = useState("doc");
+  const dispatch = useDispatch();
+  const { googleDocTemplates, googleSheetTemplates, isLoading: reduxLoading } = useSelector(
+    (state) => state.googleDrive,
+  );
+
+  const [type, setType] = useState("doc");
   const [selectedId, setSelectedId] = useState(null);
-  const [title, setTitle]           = useState("");
+  const [title, setTitle] = useState("");
   const [internalLoading, setInternalLoading] = useState(false);
-  const [error, setError]           = useState("");
+  const [error, setError] = useState("");
 
-  const isLoading = externalLoading ?? internalLoading;
-  const templates = type === "doc" ? DOC_TEMPLATES : SHEET_TEMPLATES;
+  // Fetch templates when modal opens
+  useEffect(() => {
+    if (isOpen && !googleDocTemplates.length) {
+      dispatch(fetchGoogleDocTemplates());
+    }
+    if (isOpen && !googleSheetTemplates.length) {
+      dispatch(fetchGoogleSheetTemplates());
+    }
+  }, [isOpen, dispatch, googleDocTemplates.length, googleSheetTemplates.length]);
 
-  if (!isOpen) return null;
+  const isLoading = externalLoading ?? internalLoading ?? reduxLoading;
+  const templates = type === "doc" ? googleDocTemplates : googleSheetTemplates;
 
   const handleClose = () => {
-    if (isLoading) return;
+    if (isLoading || internalLoading) return;
     setType("doc");
     setSelectedId(null);
     setTitle("");
@@ -97,8 +100,14 @@ const DocTemplateModal = ({ isOpen, onClose, folderId, onSubmit, isLoading: exte
   };
 
   const handleSubmit = async () => {
-    if (!selectedId) { setError("Vui lòng chọn template"); return; }
-    if (!title.trim()) { setError("Vui lòng nhập tên file"); return; }
+    if (!selectedId) {
+      setError("Vui lòng chọn template");
+      return;
+    }
+    if (!title.trim()) {
+      setError("Vui lòng nhập tên file");
+      return;
+    }
     setError("");
     setInternalLoading(true);
     try {
@@ -116,6 +125,8 @@ const DocTemplateModal = ({ isOpen, onClose, folderId, onSubmit, isLoading: exte
     setSelectedId(null);
     setError("");
   };
+
+  if (!isOpen) return null;
 
   return (
     /* backdrop */
@@ -173,15 +184,25 @@ const DocTemplateModal = ({ isOpen, onClose, folderId, onSubmit, isLoading: exte
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
               Chọn template
             </p>
-            <div className="flex flex-col gap-2">
-              {templates.map((t) => (
-                <TemplateCard
-                  key={t.id}
-                  template={t}
-                  selected={selectedId === t.id}
-                  onClick={() => { setSelectedId(t.id); setError(""); }}
-                />
-              ))}
+            <div className="flex flex-col gap-2 min-h-32">
+              {reduxLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <FontAwesomeIcon icon={faSpinner} spin className="text-slate-500" />
+                </div>
+              ) : templates.length === 0 ? (
+                <div className="flex items-center justify-center py-8">
+                  <p className="text-xs text-slate-500">Không có template nào</p>
+                </div>
+              ) : (
+                templates.map((t) => (
+                  <TemplateCard
+                    key={t.id}
+                    template={t}
+                    selected={selectedId === t.id}
+                    onClick={() => { setSelectedId(t.id); setError(""); }}
+                  />
+                ))
+              )}
             </div>
           </div>
 
