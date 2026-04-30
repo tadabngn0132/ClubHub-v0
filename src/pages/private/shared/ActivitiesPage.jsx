@@ -168,12 +168,20 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
       name: "Card View",
       component: (
         <ActivitiesCardView
+          activities={activitiesForListView}
+        />
+      ),
+    },
+    {
+      name: "Calendar View",
+      component: (
+        <ActivitiesCalendarView
           role={role}
           activities={activitiesForListView}
           onDeleteConfigured={handleDeleteConfigured}
         />
       ),
-    },
+    }
   ];
 
   if (isLoading) {

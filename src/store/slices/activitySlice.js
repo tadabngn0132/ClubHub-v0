@@ -226,11 +226,7 @@ export const getICSFileByActivityId = createAsyncThunk(
   async (activityId, thunkAPI) => {
     try {
       const data = await getICSFile(activityId);
-
-      if (!data.success) {
-        return thunkAPI.rejectWithValue(data.message);
-      }
-
+      // ICS endpoint returns raw text content, not JSON
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(getThunkErrorPayload(error));
