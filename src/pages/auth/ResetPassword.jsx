@@ -16,8 +16,8 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (authStatus === "fulfilled") {
-        navigate("/sign-in");
-      }
+      navigate("/sign-in");
+    }
     dispatch(resetAuthStatus());
   }, [authStatus]);
 
@@ -49,6 +49,7 @@ const ResetPassword = () => {
       };
 
       await dispatch(resetPasswordUser(resetData)).unwrap();
+      navigate("/sign-in");
     } catch (error) {
       toast.error(error.message);
       console.error(error);
