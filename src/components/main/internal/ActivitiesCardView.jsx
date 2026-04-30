@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../../utils/formatters";
 
 const ActivitiesCardView = ({
   role,
@@ -18,13 +19,19 @@ const ActivitiesCardView = ({
       {activities.map((activity) => (
         <div
           key={activity.id}
-          className="flex flex-col overflow-hidden rounded-xl border border-gray-800 bg-gray-900 shadow-lg transition hover:-translate-y-0.5 hover:border-gray-700"
+          className="flex flex-col overflow-hidden rounded-2xl border border-gray-800 bg-gray-900 shadow-lg transition hover:-translate-y-0.5 hover:border-gray-700"
         >
-          <img
-            src={activity.thumbnailUrl}
-            alt={activity.name}
-            className="h-40 w-full object-cover"
-          />
+          {activity?.thumbnailUrl ? (
+            <img
+              src={activity.thumbnailUrl}
+              alt="Thumbnail"
+              className="flex h-40 w-full shrink-0 items-center justify-center rounded-t-2xl border border-pink-400/30 bg-pink-500/10 text-2xl font-bold text-pink-100"
+            />
+          ) : (
+            <div className="flex h-40 w-full shrink-0 items-center justify-center rounded-t-2xl border border-pink-400/30 bg-pink-500/10 text-2xl font-bold text-pink-100">
+              {(activity.title || "").slice(0, 1).toUpperCase()}
+            </div>
+          )}
           <div className="flex flex-1 flex-col p-4">
             <div className="mb-2 flex items-center justify-between gap-2">
               <p className="rounded-full border border-violet-500/40 bg-violet-500/20 px-2.5 py-1 text-xs font-semibold uppercase text-violet-200">
@@ -36,16 +43,16 @@ const ActivitiesCardView = ({
             </div>
 
             <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-gray-100">
-              {activity.name || "Untitled activity"}
+              {activity.title || "Untitled activity"}
             </h3>
             <p className="mb-1 text-sm text-gray-300">
-              Date: {activity.date || "N/A"}
+              Date: {formatDate(activity.startDate) || "N/A"}
             </p>
             <p className="mb-1 text-sm text-gray-300">
-              Location: {activity.location || "N/A"}
+              Location: {activity.locationType === "online" ? "Online" : activity.locationType === "in_person" ? activity.venueName : "N/A"}
             </p>
             <p className="mb-4 text-sm text-gray-400">
-              {activity.registrationsCount || 0} participants
+              {activity.activityParticipations?.length || 0} participants
             </p>
 
             <div className="mt-auto flex flex-wrap gap-2">

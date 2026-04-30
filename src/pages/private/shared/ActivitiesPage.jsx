@@ -174,7 +174,6 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
         />
       ),
     },
-    { name: "Calendar View", component: <ActivitiesCalendarView /> },
   ];
 
   if (isLoading) {

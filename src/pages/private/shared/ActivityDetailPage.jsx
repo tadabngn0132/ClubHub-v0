@@ -230,7 +230,7 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     CANCELLED: "border-rose-500/60 bg-rose-500/20 text-rose-200",
   };
 
-  const participants = activity?.activityParticipants || [];
+  const participants = activity?.activityParticipations || [];
   const isRegistrationDisabled = handleDisableRegistrationButton();
   const isCompleted = activity?.status === "COMPLETED";
   const isOnlineOrHybrid =
@@ -276,10 +276,10 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
                   {normalizeText(activity?.status)}
                 </span>
                 <span className="rounded-full border border-amber-500/60 bg-amber-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-200">
-                  {normalizeText(activity?.activityType)}
+                  {normalizeText(activity?.type)}
                 </span>
                 <span className="rounded-full border border-violet-500/60 bg-violet-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-violet-200">
-                  Priority: {normalizeText(activity?.priority)}
+                  Priority: {String(activity?.priority)}
                 </span>
               </div>
 
@@ -293,13 +293,13 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
               <div className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
                 <p className="rounded-lg border border-zinc-700 bg-zinc-900/60 p-3">
                   <span className="font-semibold text-zinc-400">By:</span>{" "}
-                  {activity?.organize?.fullname || "N/A"}
+                  {activity?.organizer?.fullname || "N/A"}
                 </p>
                 <p className="rounded-lg border border-zinc-700 bg-zinc-900/60 p-3">
                   <span className="font-semibold text-zinc-400">
-                    Location Type:
+                    Location:
                   </span>{" "}
-                  {normalizeText(activity?.locationType)}
+                  {activity?.locationType === "online" ? "Online" : activity?.locationType === "in_person" ? activity?.venueName : activity?.locationType === "hybrid" ? `${activity?.venueName} and Online` : "N/A"}
                 </p>
               </div>
             </div>

@@ -30,9 +30,9 @@ const ActivitiesTableView = ({
 
   return (
     <>
-      {selectedActivities.length > 2 && (
+      {/* {selectedActivities.length > 2 && (
         <ActivitiesBulkActionBar eventCount={selectedActivities.length} />
-      )}
+      )} */}
 
       <div className="mb-10 w-full overflow-hidden rounded-xl border border-gray-800 bg-gray-900 shadow-xl">
         <div className="w-full overflow-auto">
@@ -91,14 +91,14 @@ const ActivitiesTableView = ({
                       />
                     </td>
                     <td className="px-4 py-3">
-                      {activity?.avatarUrl ? (
+                      {activity?.thumbnailUrl ? (
                         <img
-                          src={activity.avatarUrl}
-                          alt="Avatar"
-                          className="flex h-14 w-20 shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-2xl font-bold text-pink-100"
+                          src={activity.thumbnailUrl}
+                          alt="Thumbnail"
+                          className="flex h-15 w-30 shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-2xl font-bold text-pink-100"
                         />
                       ) : (
-                        <div className="flex h-14 w-20 shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-2xl font-bold text-pink-100">
+                        <div className="flex h-15 w-30 shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-2xl font-bold text-pink-100">
                           {(activity.title || "").slice(0, 1).toUpperCase()}
                         </div>
                       )}
@@ -125,8 +125,8 @@ const ActivitiesTableView = ({
                         {activity.status || "N/A"}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-300">
-                      {activity.registrationsCount || 0}
+                    <td className="px-4 py-3 text-gray-300 text-center">
+                      {activity.activityParticipations?.length || 0}
                     </td>
                     {role === "ADMIN" && (
                       <td className="px-4 py-3 text-sm text-center">
