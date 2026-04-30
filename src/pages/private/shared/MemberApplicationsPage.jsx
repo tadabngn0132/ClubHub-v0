@@ -58,8 +58,9 @@ const MemberApplicationsPage = ({ role }) => {
     }
   };
 
-  const handleRestore = (memAppId) => {
-    dispatch(restoreMemberApplicationById(memAppId));
+  const handleRestore = async (memAppId) => {
+    await dispatch(restoreMemberApplicationById(memAppId)).unwrap();
+    await dispatch(getAllMemberApplicationsList()).unwrap();
   };
 
   const statusTone = {

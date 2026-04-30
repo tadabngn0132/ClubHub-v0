@@ -57,8 +57,9 @@ const MemberApplicationDetailsPage = ({ role }) => {
     }
   };
 
-  const handleRestore = () => {
-    dispatch(restoreMemberApplicationById(applicationId));
+  const handleRestore = async () => {
+    await dispatch(restoreMemberApplicationById(applicationId)).unwrap();
+    await dispatch(getMemberApplicationDetails(applicationId)).unwrap();
   };
 
   const applicationState = memberApplication?.state ?? "unknown";

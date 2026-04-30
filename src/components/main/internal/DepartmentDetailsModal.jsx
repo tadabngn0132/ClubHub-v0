@@ -43,20 +43,22 @@ const DepartmentDetailsModal = ({ role, department, open = true, onClose }) => {
     handleOpenConfirmationModal();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (deleteMode === "soft") {
-      dispatch(softDeleteDepartmentById(department.id));
+      await dispatch(softDeleteDepartmentById(department.id)).unwrap();
       handleCloseConfirmationModal();
       onClose?.();
     } else if (deleteMode === "hard") {
-      dispatch(hardDeleteDepartmentById(department.id));
+      await dispatch(hardDeleteDepartmentById(department.id)).unwrap();
       handleCloseConfirmationModal();
       onClose?.();
     }
   };
 
-  const handleRestore = () => {
-    dispatch(restoreDepartmentById(department.id));
+  const handleRestore = async () => {
+    await dispatch(restoreDepartmentById(department.id)).unwrap();
+    handleCloseConfirmationModal();
+    onClose?.();
   };
 
   if (!open || !department) {

@@ -117,18 +117,19 @@ const TasksPage = ({ role, basePath }) => {
     handleOpenConfirmationModal();
   };
 
-  const handleDelete = (selectedTaskId) => {
+  const handleDelete = async (selectedTaskId) => {
     if (deleteMode === "soft") {
-      dispatch(softDeleteTaskById(selectedTaskId));
+      await dispatch(softDeleteTaskById(selectedTaskId)).unwrap();
       handleCloseConfirmationModal();
     } else if (deleteMode === "hard") {
-      dispatch(hardDeleteTaskById(selectedTaskId));
+      await dispatch(hardDeleteTaskById(selectedTaskId)).unwrap();
       handleCloseConfirmationModal();
     }
   };
 
-  const handleRestore = (taskId) => {
-    dispatch(restoreTaskById(taskId));
+  const handleRestore = async (taskId) => {
+    await dispatch(restoreTaskById(taskId)).unwrap();
+    await dispatch(getAllTasksList()).unwrap();
   };
 
   const clearFilters = () => {

@@ -57,12 +57,12 @@ const TaskDetailPage = ({ role, basePath }) => {
     handleOpenConfirmationModal();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (deleteMode === "soft") {
-      dispatch(softDeleteTaskById(taskId));
+      await dispatch(softDeleteTaskById(taskId)).unwrap();
       navigate(basePath);
     } else if (deleteMode === "hard") {
-      dispatch(hardDeleteTaskById(taskId));
+      await dispatch(hardDeleteTaskById(taskId)).unwrap();
       navigate(basePath);
     }
   };
@@ -114,8 +114,9 @@ const TaskDetailPage = ({ role, basePath }) => {
     ).unwrap();
   };
 
-  const handleRestore = () => {
-    dispatch(restoreTaskById(taskId));
+  const handleRestore = async () => {
+    await dispatch(restoreTaskById(taskId)).unwrap();
+    await dispatch(getTaskDetails(taskId)).unwrap();
   };
 
   return (

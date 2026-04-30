@@ -150,8 +150,9 @@ const UsersPage = ({ role, basePath }) => {
     return result;
   }, [users, searchTerm, statusFilter, roleFilter, sortConfig]);
 
-  const handleRestore = (userId) => {
-    dispatch(restoreUserById(userId));
+  const handleRestore = async (userId) => {
+    await dispatch(restoreUserById(userId)).unwrap();
+    await dispatch(getUsersList()).unwrap();
   };
 
   if (isLoading) {

@@ -70,12 +70,12 @@ const DepartmentsPage = ({ role, basePath }) => {
     handleOpenConfirmationModal();
   };
 
-  const handleDelete = (selectedDepartmentId) => {
+  const handleDelete = async (selectedDepartmentId) => {
     if (deleteMode === "soft") {
-      dispatch(softDeleteDepartmentById(selectedDepartmentId));
+      await dispatch(softDeleteDepartmentById(selectedDepartmentId)).unwrap();
       handleCloseConfirmationModal();
     } else if (deleteMode === "hard") {
-      dispatch(hardDeleteDepartmentById(selectedDepartmentId));
+      await dispatch(hardDeleteDepartmentById(selectedDepartmentId)).unwrap();
       handleCloseConfirmationModal();
     }
   };
@@ -148,8 +148,9 @@ const DepartmentsPage = ({ role, basePath }) => {
     setSortBy("name_asc");
   };
 
-  const handleRestore = (departmentId) => {
-    dispatch(restoreDepartmentById(departmentId));
+  const handleRestore = async (departmentId) => {
+    await dispatch(restoreDepartmentById(departmentId)).unwrap();
+    await dispatch(getDepartmentsList()).unwrap();
   };
 
   if (isLoading) {

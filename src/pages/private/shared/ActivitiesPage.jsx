@@ -137,12 +137,12 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     handleOpenConfirmationModal();
   };
 
-  const handleDelete = (selectedActivityId) => {
+  const handleDelete = async (selectedActivityId) => {
     if (deleteMode === "soft") {
-      dispatch(softDeleteActivityById(selectedActivityId));
+      await dispatch(softDeleteActivityById(selectedActivityId)).unwrap();
       handleCloseConfirmationModal();
     } else if (deleteMode === "hard") {
-      dispatch(hardDeleteActivityById(selectedActivityId));
+      await dispatch(hardDeleteActivityById(selectedActivityId)).unwrap();
       handleCloseConfirmationModal();
     }
   };
@@ -172,8 +172,9 @@ const ActivitiesPage = ({ role, canCreate, basePath }) => {
     { name: "Calendar View", component: <ActivitiesCalendarView /> },
   ];
 
-  const handleRestore = (activityId) => {
-    dispatch(restoreAnActivityById(activityId));
+  const handleRestore = async (activityId) => {
+    await dispatch(restoreAnActivityById(activityId)).unwrap();
+    await dispatch(getAllActivitiesList()).unwrap();
   };
 
   if (isLoading) {

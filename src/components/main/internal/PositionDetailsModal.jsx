@@ -47,18 +47,19 @@ const PositionDetailsModal = ({ role, open = true, position, onClose }) => {
     });
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (deleteMode === "soft") {
-      dispatch(softDeletePositionById(position.id));
+      await dispatch(softDeletePositionById(position.id)).unwrap();
       handleCloseConfirmationModal();
     } else if (deleteMode === "hard") {
-      dispatch(hardDeletePositionById(position.id));
+      await dispatch(hardDeletePositionById(position.id)).unwrap();
       handleCloseConfirmationModal();
     }
   };
 
-  const handleRestore = () => {
-    dispatch(restorePositionById(position.id));
+  const handleRestore = async () => {
+    await dispatch(restorePositionById(position.id)).unwrap();
+    handleCloseConfirmationModal();
   };
 
   // Early return after all hooks

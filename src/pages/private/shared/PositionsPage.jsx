@@ -69,12 +69,12 @@ const PositionsPage = ({ role, basePath }) => {
     handleOpenConfirmationModal();
   };
 
-  const handleDelete = (selectedPositionId) => {
+  const handleDelete = async (selectedPositionId) => {
     if (deleteMode === "soft") {
-      dispatch(softDeletePositionById(selectedPositionId));
+      await dispatch(softDeletePositionById(selectedPositionId)).unwrap();
       handleCloseConfirmationModal();
     } else if (deleteMode === "hard") {
-      dispatch(hardDeletePositionById(selectedPositionId));
+      await dispatch(hardDeletePositionById(selectedPositionId)).unwrap();
       handleCloseConfirmationModal();
     }
   };
@@ -131,8 +131,9 @@ const PositionsPage = ({ role, basePath }) => {
     setSortBy("title_asc");
   };
 
-  const restorePosition = (positionId) => {
-    dispatch(restorePositionById(positionId));
+  const restorePosition = async (positionId) => {
+    await dispatch(restorePositionById(positionId)).unwrap();
+    await dispatch(getPositionsList()).unwrap();
   };
 
   if (isLoading) {

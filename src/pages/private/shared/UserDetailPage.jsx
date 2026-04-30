@@ -71,8 +71,9 @@ const UserDetailPage = ({ role, basePath }) => {
     dispatch(unlockUserAccount(userId));
   };
 
-  const handleRestore = () => {
-    dispatch(restoreUserById(userId));
+  const handleRestore = async () => {
+    await dispatch(restoreUserById(userId)).unwrap();
+    await dispatch(getUserById(userId)).unwrap();
   };
 
   if (isLoading) {

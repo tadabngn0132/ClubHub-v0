@@ -64,23 +64,23 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     handleOpenConfirmationModal();
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (deleteMode === "soft") {
-      dispatch(softDeleteActivityById(activityId));
+      await dispatch(softDeleteActivityById(activityId)).unwrap();
       navigate(basePath);
     } else if (deleteMode === "hard") {
-      dispatch(hardDeleteActivityById(activityId));
+      await dispatch(hardDeleteActivityById(activityId)).unwrap();
       navigate(basePath);
     }
   };
 
-  const handleDeleteParticipation = (participationId) => {
+  const handleDeleteParticipation = async (participationId) => {
     const confirmed = window.confirm(
       "Are you sure you want to cancel your registration for this activity?",
     );
 
     if (confirmed) {
-      dispatch(deleteActivityParticipation(participationId));
+      await dispatch(deleteActivityParticipation(participationId)).unwrap();
     }
   };
 
@@ -196,14 +196,15 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     return false;
   };
 
-  const handleRegister = () => {
-    dispatch(
+  const handleRegister = async () => {
+    await dispatch(
       createNewActivityParticipation({ activityId, userId: currentUser.id }),
-    );
+    ).unwrap();
   };
 
-  const handleRestore = () => {
-    dispatch(restoreAnActivityById(activityId));
+  const handleRestore = async () => {
+    await dispatch(restoreAnActivityById(activityId)).unwrap();
+    await dispatch(getActivityById(activityId)).unwrap();
   };
 
   const formatDateTime = (date) => {
