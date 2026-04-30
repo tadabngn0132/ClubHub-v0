@@ -186,7 +186,7 @@ const chatRoomSlice = createSlice({
       })
       .addCase(createNewChatRoom.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.chatRooms.push(action.payload.chatRoom);
+        state.chatRooms.push(action.payload.data);
       })
       .addCase(createNewChatRoom.rejected, (state, action) => {
         state.isLoading = false;
@@ -243,10 +243,10 @@ const chatRoomSlice = createSlice({
       .addCase(updateChatRoomById.fulfilled, (state, action) => {
         state.isLoading = false;
         const index = state.chatRooms.findIndex(
-          (chatRoom) => chatRoom.id === action.payload.chatRoom.id,
+          (chatRoom) => chatRoom.id === action.payload.data.id,
         );
         if (index !== -1) {
-          state.chatRooms[index] = action.payload.chatRoom;
+          state.chatRooms[index] = action.payload.data;
         }
       })
       .addCase(updateChatRoomById.rejected, (state, action) => {
@@ -262,7 +262,7 @@ const chatRoomSlice = createSlice({
       .addCase(deleteChatRoomById.fulfilled, (state, action) => {
         state.isLoading = false;
         state.chatRooms = state.chatRooms.filter(
-          (chatRoom) => chatRoom.id !== action.payload.chatRoom.id,
+          (chatRoom) => chatRoom.id !== action.payload.data.id,
         );
       })
       .addCase(deleteChatRoomById.rejected, (state, action) => {

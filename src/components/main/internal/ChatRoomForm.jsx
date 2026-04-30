@@ -47,6 +47,7 @@ const ChatRoomForm = ({ open = false, onCancel }) => {
       userIds: [...data.userIds, currentUser.id],
     };
     dispatch(createNewChatRoom(chatRoomData));
+    onCancel();
   };
 
   const filteredUsers = users.filter((user) => user.id !== currentUser.id);
