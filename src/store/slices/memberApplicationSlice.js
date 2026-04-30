@@ -12,7 +12,6 @@ import {
   restoreMemberApplication,
 } from "../../services/memberApplicationService";
 import { getThunkErrorPayload } from "../../utils/thunkError";
-import { getThunkErrorPayload } from "../../utils/thunkError";
 
 // TODO(member-application): make this slice the source of truth for list and
 // detail state. Rework the async thunks and reducers to handle the aggregate

@@ -11,7 +11,6 @@ import {
   markParticipantNoShow,
 } from "../../services/activityParticipationService";
 import { getThunkErrorPayload } from "../../utils/thunkError";
-import { getThunkErrorPayload } from "../../utils/thunkError";
 
 export const createNewActivityParticipation = createAsyncThunk(
   "createNewActivityParticipation",
