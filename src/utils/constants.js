@@ -184,3 +184,11 @@ export const LAYOUT_CONFIG = {
     ],
   },
 };
+
+export const POSITION_NUMERIC_LEVEL = {
+  MEMBER: 1,
+  MIDDLE_VICE_HEAD: 2,
+  MIDDLE_HEAD: 3,
+  TOP_VICE_HEAD: 4,
+  TOP_HEAD: 5,
+};

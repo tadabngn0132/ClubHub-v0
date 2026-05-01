@@ -18,6 +18,7 @@ import {
 } from "../../../utils/formatters";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal";
 import PositionDetailsModal from "../../../components/main/internal/PositionDetailsModal";
+import { POSITION_NUMERIC_LEVEL } from "../../../utils/constants";
 
 const PositionsPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
@@ -114,10 +115,10 @@ const PositionsPage = ({ role, basePath }) => {
         return String(b.title || "").localeCompare(String(a.title || ""));
       }
       if (sortBy === "level_asc") {
-        return Number(a.level || 0) - Number(b.level || 0);
+        return POSITION_NUMERIC_LEVEL[a.level] - POSITION_NUMERIC_LEVEL[b.level];
       }
       if (sortBy === "level_desc") {
-        return Number(b.level || 0) - Number(a.level || 0);
+        return POSITION_NUMERIC_LEVEL[b.level] - POSITION_NUMERIC_LEVEL[a.level];
       }
       return String(a.title || "").localeCompare(String(b.title || ""));
     });
