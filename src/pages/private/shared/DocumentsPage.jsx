@@ -38,6 +38,11 @@ import FileViewerModal from "../../../components/main/internal/FileViewerModal";
 // ─── constants ─────────────────────────────────────────────────────────────────
 
 const FILE_TYPE_MAP = {
+  "application/vnd.google-apps.folder": {
+    icon: faFolder,
+    color: "text-amber-400",
+    label: "Folder",
+  },
   "application/vnd.google-apps.document": {
     icon: faFileLines,
     color: "text-blue-400",
@@ -161,11 +166,16 @@ const FolderItem = ({ folder, depth = 0, selectedId, onSelect, children }) => {
   );
 };
 
-const FileRow = ({ file, viewMode, onOpen }) => {
+const FileRow = ({ file, viewMode, onOpen, onSelectFolder }) => {
   const { icon, color, label } = getFileType(file.mimeType);
+  const isFolder = file.mimeType === "application/vnd.google-apps.folder";
 
   const handleClick = () => {
-    onOpen(file);
+    if (isFolder) {
+      onSelectFolder(file);
+    } else {
+      onOpen(file);
+    }
   };
 
   const handleLinkClick = (e) => {
@@ -215,15 +225,17 @@ const FileRow = ({ file, viewMode, onOpen }) => {
         {formatFileSize(file.size)}
       </td>
       <td className="py-3 px-4">
-        <a
-          href={file.webViewLink}
-          target="_blank"
-          rel="noreferrer"
-          onClick={handleLinkClick}
-          className="text-slate-500 hover:text-pink-300 transition"
-        >
-          <FontAwesomeIcon icon={faExternalLinkAlt} className="text-xs" />
-        </a>
+        {!isFolder && (
+          <a
+            href={file.webViewLink}
+            target="_blank"
+            rel="noreferrer"
+            onClick={handleLinkClick}
+            className="text-slate-500 hover:text-pink-300 transition"
+          >
+            <FontAwesomeIcon icon={faExternalLinkAlt} className="text-xs" />
+          </a>
+        )}
       </td>
     </tr>
   );
@@ -254,7 +266,6 @@ const DocumentsPage = () => {
   const [viewMode, setViewMode] = useState(VIEW_MODES.LIST);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [folderBreadcrumb, setFolderBreadcrumb] = useState([]);
 
   // Get current folder files
   const currentFiles = useMemo(() => {
@@ -314,38 +325,10 @@ const DocumentsPage = () => {
     }
   }, [sheetsError, dispatch]);
 
-  const handleSelectFolder = useCallback(
-    (folder) => {
-      if (selectedFolder?.id !== folder.id) {
-        setFolderBreadcrumb((prev) =>
-          selectedFolder ? [...prev, selectedFolder] : prev,
-        );
-      }
-      setSelectedFolder(folder);
-      setSearchQuery("");
-    },
-    [selectedFolder],
-  );
-
-  const handleNavigateBack = useCallback(() => {
-    const previousFolder = folderBreadcrumb[folderBreadcrumb.length - 1];
-    setFolderBreadcrumb((prev) => prev.slice(0, -1));
-    if (previousFolder) {
-      setSelectedFolder(previousFolder);
-      dispatch(listFilesInFolder(previousFolder.id));
-    } else {
-      setSelectedFolder(null);
-    }
-  }, [folderBreadcrumb, dispatch]);
-
-  const handleBreadcrumbClick = useCallback(
-    (folder, index) => {
-      setFolderBreadcrumb((prev) => prev.slice(0, index + 1));
-      setSelectedFolder(folder);
-      dispatch(listFilesInFolder(folder.id));
-    },
-    [dispatch],
-  );
+  const handleSelectFolder = useCallback((folder) => {
+    setSelectedFolder(folder);
+    setSearchQuery("");
+  }, []);
 
   const handleCreateFromTemplate = useCallback(
     async ({ type, templateId, title }) => {
@@ -415,34 +398,9 @@ const DocumentsPage = () => {
       <div className="flex flex-1 flex-col min-w-0 bg-slate-900/50">
         {/* Toolbar */}
         <div className="flex items-center gap-3 border-b border-slate-700/60 px-4 py-3">
-          {folderBreadcrumb.length > 0 && (
-            <button
-              onClick={handleNavigateBack}
-              className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-800 hover:text-slate-200"
-            >
-              <FontAwesomeIcon icon={faArrowLeft} className="text-sm" />
-            </button>
-          )}
-
-          <div className="flex items-center gap-2 text-sm text-slate-400">
-            {folderBreadcrumb.map((folder, index) => (
-              <span key={folder.id} className="flex items-center gap-1">
-                <button
-                  onClick={() => handleBreadcrumbClick(folder, index)}
-                  className="text-slate-600 hover:text-slate-300 cursor-pointer transition"
-                >
-                  {folder.name}
-                </button>
-                <FontAwesomeIcon
-                  icon={faChevronRight}
-                  className="text-[10px] text-slate-600"
-                />
-              </span>
-            ))}
-            <span className="font-medium text-slate-200">
-              {selectedFolder?.name || "All folders"}
-            </span>
-          </div>
+          <p className="text-sm font-medium text-slate-200">
+            {selectedFolder?.name || "All folders"}
+          </p>
 
           <div className="ml-auto flex items-center gap-2">
             {/* Search input */}
@@ -533,6 +491,7 @@ const DocumentsPage = () => {
                   file={file}
                   viewMode={VIEW_MODES.GRID}
                   onOpen={setSelectedFile}
+                  onSelectFolder={handleSelectFolder}
                 />
               ))}
             </div>
@@ -563,6 +522,7 @@ const DocumentsPage = () => {
                       file={file}
                       viewMode={VIEW_MODES.LIST}
                       onOpen={setSelectedFile}
+                      onSelectFolder={handleSelectFolder}
                     />
                   ))}
                 </tbody>
