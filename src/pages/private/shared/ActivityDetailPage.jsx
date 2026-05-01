@@ -19,6 +19,13 @@ import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
 import ActivityMediaForm from "../../../components/main/internal/ActivityMediaForm.jsx";
 import ConfirmationModal from "../../../components/main/internal/ConfirmationModal.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLink,
+  faVideo,
+  faCopy,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 const ActivityDetailPage = ({ role, basePath, permissions }) => {
   const { activityId } = useParams();
@@ -34,6 +41,7 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
   const navigate = useNavigate();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [deleteMode, setDeleteMode] = useState("");
+  const [copiedLink, setCopiedLink] = useState(false);
 
   useEffect(() => {
     dispatch(getActivityById(activityId));
@@ -222,6 +230,19 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
     return String(text).replace(/_/g, " ");
   };
 
+  const handleCopyToClipboard = (text, label) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setCopiedLink(true);
+        toast.success(`${label} copied to clipboard!`);
+        setTimeout(() => setCopiedLink(false), 2000);
+      })
+      .catch(() => {
+        toast.error("Failed to copy to clipboard");
+      });
+  };
+
   const statusChipStyles = {
     DRAFT: "border-zinc-500/60 bg-zinc-500/20 text-zinc-200",
     UPCOMING: "border-cyan-500/60 bg-cyan-500/20 text-cyan-200",
@@ -296,10 +317,14 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
                   {activity?.organizer?.fullname || "N/A"}
                 </p>
                 <p className="rounded-lg border border-zinc-700 bg-zinc-900/60 p-3">
-                  <span className="font-semibold text-zinc-400">
-                    Location:
-                  </span>{" "}
-                  {activity?.locationType === "online" ? "Online" : activity?.locationType === "in_person" ? activity?.venueName : activity?.locationType === "hybrid" ? `${activity?.venueName} and Online` : "N/A"}
+                  <span className="font-semibold text-zinc-400">Location:</span>{" "}
+                  {activity?.locationType === "online"
+                    ? "Online"
+                    : activity?.locationType === "in_person"
+                      ? activity?.venueName
+                      : activity?.locationType === "hybrid"
+                        ? `${activity?.venueName} and Online`
+                        : "N/A"}
                 </p>
               </div>
             </div>
@@ -436,28 +461,82 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
             </div>
 
             {isOnlineOrHybrid && (
-              <div className="mt-4 rounded-lg border border-cyan-600/40 bg-cyan-600/10 p-3 text-sm text-cyan-100">
-                <h3 className="mb-2 font-semibold uppercase tracking-wide text-cyan-300">
-                  Online Details
-                </h3>
-                <p>Platform: {activity?.meetingPlatform || "N/A"}</p>
-                <p>
-                  Meeting Link:{" "}
-                  {activity?.meetingLink ? (
-                    <a
-                      href={activity.meetingLink}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="underline decoration-cyan-300/40 underline-offset-2 hover:text-cyan-200"
-                    >
-                      Join now
-                    </a>
-                  ) : (
-                    "N/A"
-                  )}
-                </p>
-                <p>Meeting ID: {activity?.meetingId || "N/A"}</p>
-                <p>Meeting Password: {activity?.meetingPassword || "N/A"}</p>
+              <div className="mt-4 space-y-3">
+                {activity?.meetingLink && (
+                  <div className="rounded-lg border border-blue-500/50 bg-gradient-to-r from-blue-600/15 to-blue-500/5 p-4 shadow-lg">
+                    <div className="mb-3 flex items-center gap-2">
+                      <FontAwesomeIcon
+                        icon={faVideo}
+                        className="text-blue-400"
+                      />
+                      <h3 className="font-bold uppercase tracking-widest text-blue-300">
+                        Google Meet
+                      </h3>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex flex-col gap-2">
+                        <a
+                          href={activity.meetingLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-block rounded-lg bg-blue-600 px-4 py-2 text-center font-semibold text-white transition hover:bg-blue-700 active:scale-95"
+                        >
+                          <FontAwesomeIcon icon={faVideo} className="mr-2" />
+                          Join Meeting
+                        </a>
+                        <button
+                          onClick={() =>
+                            handleCopyToClipboard(
+                              activity.meetingLink,
+                              "Meeting Link",
+                            )
+                          }
+                          className="flex items-center gap-2 rounded-lg border border-blue-400/50 bg-blue-600/20 px-4 py-2 text-sm text-blue-200 transition hover:bg-blue-600/30"
+                        >
+                          <FontAwesomeIcon
+                            icon={copiedLink ? faCheck : faCopy}
+                          />
+                          {copiedLink ? "Copied!" : "Copy Link"}
+                        </button>
+                      </div>
+                      <p className="break-all text-xs text-gray-400">
+                        {activity.meetingLink}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="rounded-lg border border-cyan-600/40 bg-cyan-600/10 p-4">
+                  <h3 className="mb-3 font-semibold uppercase tracking-wide text-cyan-300">
+                    <FontAwesomeIcon icon={faLink} className="mr-2" />
+                    Additional Details
+                  </h3>
+                  <div className="space-y-2 text-sm text-cyan-100">
+                    <p>
+                      <span className="font-semibold text-cyan-400">
+                        Platform:
+                      </span>{" "}
+                      {activity?.meetingPlatform ||
+                        (activity?.meetingLink ? "Google Meet" : "N/A")}
+                    </p>
+                    {activity?.meetingId && (
+                      <p>
+                        <span className="font-semibold text-cyan-400">
+                          Meeting ID:
+                        </span>{" "}
+                        {activity.meetingId}
+                      </p>
+                    )}
+                    {activity?.meetingPassword && (
+                      <p>
+                        <span className="font-semibold text-cyan-400">
+                          Password:
+                        </span>{" "}
+                        {activity.meetingPassword}
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 
