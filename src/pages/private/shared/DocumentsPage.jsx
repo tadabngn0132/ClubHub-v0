@@ -71,6 +71,12 @@ const VIEW_MODES = {
   GRID: "grid",
 };
 
+const MY_DRIVE_ROOT = {
+  id: "root",
+  name: "My Drive",
+  mimeType: "application/vnd.google-apps.folder",
+};
+
 // ─── helpers ──────────────────────────────────────────────────────────────────
 
 const getFileType = (mimeType) => FILE_TYPE_MAP[mimeType] || DEFAULT_FILE_TYPE;
@@ -261,7 +267,7 @@ const DocumentsPage = () => {
   );
 
   // Local state
-  const [selectedFolder, setSelectedFolder] = useState(null);
+  const [selectedFolder, setSelectedFolder] = useState(MY_DRIVE_ROOT);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState(VIEW_MODES.LIST);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
@@ -331,14 +337,15 @@ const DocumentsPage = () => {
   }, []);
 
   const handleCreateFromTemplate = useCallback(
-    async ({ type, templateId, title }) => {
+    async ({ type, templateId, title, folderId }) => {
       try {
+        const targetFolder = folderId || selectedFolder?.id;
         if (type === "doc") {
           await dispatch(
             createDocFromTemplate({
               templateId,
               title,
-              folderId: selectedFolder?.id,
+              folderId: targetFolder,
             }),
           ).unwrap();
           toast.success("Document created");
@@ -347,13 +354,13 @@ const DocumentsPage = () => {
             createSheetFromTemplateAsync({
               templateId,
               title,
-              folderId: selectedFolder?.id,
+              folderId: targetFolder,
             }),
           ).unwrap();
           toast.success("Spreadsheet created");
         }
         setIsTemplateModalOpen(false);
-        if (selectedFolder?.id) dispatch(listFilesInFolder(selectedFolder.id));
+        if (targetFolder) dispatch(listFilesInFolder(targetFolder));
       } catch (err) {
         // Errors are handled via Redux reducers
       }
@@ -374,6 +381,27 @@ const DocumentsPage = () => {
         <p className="px-2 py-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
           Folders
         </p>
+
+        <button
+          onClick={() => handleSelectFolder(MY_DRIVE_ROOT)}
+          className={`group flex w-full items-center gap-2 rounded-xl px-2 py-2 text-left text-sm transition ${
+            selectedFolder?.id === MY_DRIVE_ROOT.id
+              ? "bg-[#db3f7a]/15 text-pink-200"
+              : "text-slate-300 hover:bg-slate-800 hover:text-slate-100"
+          }`}
+        >
+          <FontAwesomeIcon
+            icon={
+              selectedFolder?.id === MY_DRIVE_ROOT.id ? faFolderOpen : faFolder
+            }
+            className={`text-sm shrink-0 ${
+              selectedFolder?.id === MY_DRIVE_ROOT.id
+                ? "text-pink-300"
+                : "text-amber-400"
+            }`}
+          />
+          <span className="truncate">My Drive</span>
+        </button>
 
         {driveLoading && !folders?.length ? (
           <div className="flex items-center justify-center py-8">
@@ -399,7 +427,7 @@ const DocumentsPage = () => {
         {/* Toolbar */}
         <div className="flex items-center gap-3 border-b border-slate-700/60 px-4 py-3">
           <p className="text-sm font-medium text-slate-200">
-            {selectedFolder?.name || "All folders"}
+            {selectedFolder?.name || "My Drive"}
           </p>
 
           <div className="ml-auto flex items-center gap-2">
@@ -453,20 +481,7 @@ const DocumentsPage = () => {
 
         {/* Files section */}
         <div className="flex-1 overflow-y-auto p-4">
-          {!selectedFolder ? (
-            <div className="flex h-full flex-col items-center justify-center text-center">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-700 bg-slate-800">
-                <FontAwesomeIcon
-                  icon={faFolder}
-                  className="text-2xl text-amber-400"
-                />
-              </div>
-              <p className="text-slate-300 font-medium">Select a folder</p>
-              <p className="mt-1 text-sm text-slate-500">
-                Choose a folder from the sidebar to browse files
-              </p>
-            </div>
-          ) : isAnyLoading ? (
+          {isAnyLoading ? (
             <div className="flex h-40 items-center justify-center">
               <FontAwesomeIcon
                 icon={faSpinner}

@@ -35,3 +35,8 @@ export const refreshAccessToken = async () => {
   const res = await axiosClient.post("/auth/refresh-access-token");
   return res.data;
 };
+
+export const startGoogleAccountLink = async (payload = {}) => {
+  const res = await axiosClient.post("/auth/google-link", payload);
+  return res.data;
+};

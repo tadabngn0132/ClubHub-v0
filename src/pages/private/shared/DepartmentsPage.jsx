@@ -238,15 +238,17 @@ const DepartmentsPage = ({ role, basePath }) => {
                     colSpan={role === "ADMIN" ? 5 : 4}
                     className="px-4 py-10 text-center text-slate-300"
                   >
-                    No departments found.
-                    {role === "ADMIN" && (
-                      <Link
-                        to="/admin/departments/add"
-                        className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
-                      >
-                        Add New Department
-                      </Link>
-                    )}
+                    <div className="flex flex-col items-center gap-4">
+                      No departments found.
+                      {role === "ADMIN" && (
+                        <Link
+                          to="/admin/departments/add"
+                          className="inline-block border-1 border-[var(--pink-color)] rounded-lg p-2 py-1 text-[var(--pink-color)] text-sm/tight hover:bg-[var(--pink-color)] hover:text-white"
+                        >
+                          Add New Department
+                        </Link>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ) : (
