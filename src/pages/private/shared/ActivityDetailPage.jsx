@@ -252,16 +252,16 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           Back to Activities
         </Link>
 
-        <section className="overflow-hidden rounded-2xl border border-zinc-700/60 bg-zinc-950/50 backdrop-blur">
+        <section className="overflow-hidden rounded-t-2xl border border-zinc-700/60 bg-zinc-950/50 backdrop-blur">
           <div className="h-52 w-full sm:h-64 lg:h-80">
-            {activity?.avatarUrl ? (
+            {activity?.thumbnailUrl ? (
               <img
-                src={activity?.avatarUrl}
+                src={activity?.thumbnailUrl}
                 alt="Avatar"
-                className="flex h-full w-full shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-8xl font-bold text-pink-100"
+                className="flex h-full w-full shrink-0 items-center justify-center rounded-t-2xl border border-pink-400/30 bg-pink-500/10 text-8xl font-bold text-pink-100"
               />
             ) : (
-              <div className="flex h-full w-full shrink-0 items-center justify-center rounded-2xl border border-pink-400/30 bg-pink-500/10 text-8xl font-bold text-pink-100">
+              <div className="flex h-full w-full shrink-0 items-center justify-center rounded-t-2xl border border-pink-400/30 bg-pink-500/10 text-8xl font-bold text-pink-100">
                 {(activity?.title || "").slice(0, 1).toUpperCase()}
               </div>
             )}

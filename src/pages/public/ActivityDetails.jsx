@@ -102,30 +102,6 @@ const getAgendaByType = (type) => {
   ];
 };
 
-const SPEAKERS = [
-  {
-    name: "Alex Nguyen",
-    role: "Lead Choreographer",
-    bio: "Specializes in stage composition and team synchronization for large showcases.",
-    avatar:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=320&q=80",
-  },
-  {
-    name: "Lina Tran",
-    role: "Performance Coach",
-    bio: "Focuses on expression training and confidence-building for live performance.",
-    avatar:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=320&q=80",
-  },
-  {
-    name: "Minh Vu",
-    role: "Creative Producer",
-    bio: "Designs visual concepts and media direction for dance campaigns.",
-    avatar:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=320&q=80",
-  },
-];
-
 const getGalleryImages = (thumbnailUrl) => [
   thumbnailUrl,
   "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?auto=format&fit=crop&w=1200&q=80",
@@ -269,14 +245,6 @@ const ActivityDetails = () => {
   const agenda = useMemo(
     () => getAgendaByType(uiActivity?.type),
     [uiActivity?.type],
-  );
-  const speakerProfiles = useMemo(
-    () =>
-      SPEAKERS.map((speaker, index) => ({
-        ...speaker,
-        id: `${speaker.name}-${index}`,
-      })),
-    [],
   );
   const galleryImages = useMemo(
     () => (uiActivity ? getGalleryImages(uiActivity.thumbnailUrl) : []),
@@ -514,36 +482,6 @@ const ActivityDetails = () => {
             </article>
           ) : null}
 
-          <article className="rounded-[1.5rem] border border-white/10 bg-[#0d0d0f] p-6 md:p-8">
-            <h2 className="monument-extra-bold text-2xl uppercase">
-              Speakers & Performers
-            </h2>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {speakerProfiles.map((profile) => (
-                <div
-                  key={profile.id}
-                  className="rounded-2xl border border-white/10 bg-white/5 p-4"
-                >
-                  <img
-                    src={profile.avatar}
-                    alt={profile.name}
-                    loading="lazy"
-                    className="h-28 w-28 rounded-full object-cover"
-                  />
-                  <p className="mt-4 text-sm font-semibold text-white">
-                    {profile.name}
-                  </p>
-                  <p className="text-xs uppercase tracking-[0.12em] text-[#DB3F7A]">
-                    {profile.role}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-white/70">
-                    {profile.bio}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </article>
-
           {uiActivity.status === "Completed" ? (
             <article className="rounded-[1.5rem] border border-white/10 bg-[#0d0d0f] p-6 md:p-8">
               <h2 className="monument-extra-bold text-2xl uppercase">
@@ -626,7 +564,7 @@ const ActivityDetails = () => {
             </div>
           </article>
 
-          {uiActivity.status === "Upcoming" ? (
+          {(uiActivity.status === "Upcoming" && uiActivity.requireRegistration) ? (
             <article className="rounded-[1.5rem] border border-white/10 bg-[#0d0d0f] p-6">
               <h2 className="monument-extra-bold text-xl uppercase">
                 Registration Form
