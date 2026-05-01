@@ -125,7 +125,7 @@ const ParticipantsPage = () => {
     URL.revokeObjectURL(url);
   };
 
-  const userRole = getUserRole(currentUser);
+  const userRole = getUserRole(currentUser).toLowerCase();
 
   if (isLoading) {
     return <Loading />;
