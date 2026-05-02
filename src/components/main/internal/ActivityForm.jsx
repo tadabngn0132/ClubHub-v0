@@ -29,6 +29,7 @@ const ActivityForm = ({ activity, onSubmit }) => {
       maxParticipants: activity ? activity.maxParticipants : null,
       registrationDeadline: activity ? activity.registrationDeadline : "",
       requireRegistration: activity ? activity.requireRegistration : false,
+      designatedParticipants: activity ? activity.designatedParticipants : [],
       organizerId: currentUser?.id,
       isPublic: activity ? activity.isPublic : true,
       isFeatured: activity ? activity.isFeatured : false,
@@ -62,6 +63,10 @@ const ActivityForm = ({ activity, onSubmit }) => {
     formData.append("maxParticipants", data.maxParticipants || "");
     formData.append("registrationDeadline", data.registrationDeadline);
     formData.append("requireRegistration", data.requireRegistration);
+    formData.append(
+      "designatedParticipants",
+      JSON.stringify(data.designatedParticipants),
+    );
     formData.append("isPublic", data.isPublic);
     formData.append("isFeatured", data.isFeatured);
     formData.append("priority", data.priority);

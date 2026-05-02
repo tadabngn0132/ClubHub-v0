@@ -1,8 +1,13 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
+import { useDispatch, useSelector } from "react-redux";
+import { getUsersList } from "../../../store/slices/userSlice.js";
 
 const ActivityScheduleSection = () => {
+  const dispatch = useDispatch();
+  const { users } = useSelector((state) => state.user);
+  const [isRegistrationRequired, setIsRegistrationRequired] = useState(false);
   const {
     register,
     watch,
@@ -19,7 +24,10 @@ const ActivityScheduleSection = () => {
   return (
     <div className="flex w-full flex-col">
       {/* Activity Start Date/Time */}
-      <label htmlFor="start_date_time" className="text-sm font-semibold text-gray-100">
+      <label
+        htmlFor="start_date_time"
+        className="text-sm font-semibold text-gray-100"
+      >
         Activity Start Date/Time <span className="text-red-400">*</span>
       </label>
       <input
@@ -49,46 +57,15 @@ const ActivityScheduleSection = () => {
           validate: (value) => {
             if (!value) return VALIDATION_MESSAGES.activityEndDateRequired;
             if (!startDateValue) return true;
-            return new Date(value).getTime() > new Date(startDateValue).getTime()
-              || VALIDATION_MESSAGES.activityEndDateInvalid;
+            return (
+              new Date(value).getTime() > new Date(startDateValue).getTime() ||
+              VALIDATION_MESSAGES.activityEndDateInvalid
+            );
           },
         })}
       />
       {errors.endDate && (
         <p className={errorClassName}>{errors.endDate.message}</p>
-      )}
-
-      {/* Activity Max Participants */}
-      <label htmlFor="max_participants" className="mt-4 text-sm font-semibold text-gray-100">
-        Activity Max Participants
-      </label>
-      <input
-        type="number"
-        id="max_participants"
-        {...register("maxParticipants", {
-          min: {
-            value: 1,
-            message: "Max participants cannot be less than 1",
-          },
-        })}
-        className={inputClassName}
-      />
-      {errors.maxParticipants && (
-        <p className={errorClassName}>{errors.maxParticipants.message}</p>
-      )}
-
-      {/* Activity Registration Deadline */}
-      <label htmlFor="registration_deadline" className="mt-4 text-sm font-semibold text-gray-100">
-        Activity Registration Deadline
-      </label>
-      <input
-        type="datetime-local"
-        id="registration_deadline"
-        {...register("registrationDeadline")}
-        className={inputClassName}
-      />
-      {errors.registrationDeadline && (
-        <p className={errorClassName}>{errors.registrationDeadline.message}</p>
       )}
 
       {/* Activity Registration Required */}
@@ -98,9 +75,88 @@ const ActivityScheduleSection = () => {
           id="requireRegistration"
           {...register("requireRegistration")}
           className="mr-2 h-4 w-4 rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500"
+          onChange={(e) => setIsRegistrationRequired(e.target.checked)}
         />
-        <label htmlFor="requireRegistration" className="text-sm text-gray-200">Registration Required</label>
+        <label htmlFor="requireRegistration" className="text-sm text-gray-200">
+          Registration Required
+        </label>
       </div>
+
+      {isRegistrationRequired ? (
+        <>
+          {/* Activity Registration Deadline */}
+          <label
+            htmlFor="registration_deadline"
+            className="mt-4 text-sm font-semibold text-gray-100"
+          >
+            Activity Registration Deadline
+          </label>
+          <input
+            type="datetime-local"
+            id="registration_deadline"
+            {...register("registrationDeadline")}
+            className={inputClassName}
+          />
+          {errors.registrationDeadline && (
+            <p className={errorClassName}>
+              {errors.registrationDeadline.message}
+            </p>
+          )}
+
+          {/* Activity Max Participants */}
+          <label
+            htmlFor="max_participants"
+            className="mt-4 text-sm font-semibold text-gray-100"
+          >
+            Activity Max Participants
+          </label>
+          <input
+            type="number"
+            id="max_participants"
+            {...register("maxParticipants", {
+              min: {
+                value: 1,
+                message: "Max participants cannot be less than 1",
+              },
+            })}
+            className={inputClassName}
+          />
+          {errors.maxParticipants && (
+            <p className={errorClassName}>{errors.maxParticipants.message}</p>
+          )}
+        </>
+      ) : (
+        <>
+          {/* Nếu không yêu cầu đăng ký, vẫn cần gửi giá trị mặc định cho registrationDeadline và maxParticipants */}
+          <input type="hidden" {...register("registrationDeadline")} />
+          <input type="hidden" {...register("maxParticipants")} />
+          <div className="mt-4 rounded-lg border border-gray-700 bg-gray-80/50 p-4">
+            <h3 className="mb-3 text-sm font-semibold text-gray-200">
+              Designate Participants (Optional)
+            </h3>
+            <p className="mb-4 text-xs text-gray-400">
+              Select members who must attend this activity
+            </p>
+
+            <div className="max-h-64 space-y-2 overflow-y-auto">
+              {users.map((user) => (
+                <label
+                  key={user.id}
+                  className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-gray-700/50"
+                >
+                  <input
+                    type="checkbox"
+                    value={user.id}
+                    {...register("designatedParticipants")}
+                    className="h-4 w-4 rounded border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-gray-200">{user.fullname}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
