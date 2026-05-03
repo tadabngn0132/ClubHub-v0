@@ -139,3 +139,29 @@ body {
     transform: scaleX(1);
   }
 }
+
+/* Make native select dropdowns use a dark background and readable text
+   Some utility classes (e.g. bg-white/[0.03]) may set a light background
+   on selects; these rules increase specificity and use !important to
+   ensure the dropdown and options remain dark and readable. */
+select,
+select:focus {
+  background-color: #0f1724 !important; /* dark slate */
+  color: var(--white-color) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Style the option items in the dropdown so they don't appear with
+   white text on a white background in some browsers */
+select option,
+select optgroup {
+  background-color: #0f1724 !important;
+  color: var(--white-color) !important;
+}
+
+/* Hover/active state for options */
+select option:hover,
+select option:active {
+  background-color: #111827 !important; /* slightly different dark */
+  color: var(--white-color) !important;
+}
