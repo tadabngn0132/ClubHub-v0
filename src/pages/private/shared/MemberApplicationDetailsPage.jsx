@@ -64,6 +64,7 @@ const MemberApplicationDetailsPage = ({ role }) => {
 
   const applicationState = memberApplication?.state ?? "unknown";
   const normalizedState = String(applicationState).toLowerCase();
+  console.log("Member application details:", memberApplication);
   const displayName = memberApplication?.fullname || "Member Application";
   const statusTone = {
     submitted: "border-sky-400/40 bg-sky-400/15 text-sky-100",
@@ -112,7 +113,9 @@ const MemberApplicationDetailsPage = ({ role }) => {
 
   const canReviewCv =
     normalizedState === "submitted" || normalizedState === "cv_pending";
-  const canInterview = normalizedState === "department_interview_pending";
+  const canInterview =
+    normalizedState === "cv_passed" ||
+    normalizedState === "department_interview_pending";
   const canFinalReview = normalizedState === "final_pending";
 
   if (isLoading) {
@@ -147,14 +150,17 @@ const MemberApplicationDetailsPage = ({ role }) => {
                   CV Review
                 </Link>
               )}
-              {role === "admin" && canInterview && (
-                <Link
-                  to={`/${role}/member-applications/interview/${memberApplication?.id}`}
-                  className="inline-flex items-center justify-center rounded-full border border-violet-400/35 bg-violet-400/10 px-3.5 py-1.5 text-sm font-medium text-violet-100 transition hover:bg-violet-400/20"
-                >
-                  Interview
-                </Link>
-              )}
+              {role === "admin" &&
+                canInterview &&
+                memberApplication?.departmentInterviews?.map((interview) => (
+                  <Link
+                    key={interview.id}
+                    to={`/${role}/member-applications/interview/${memberApplication?.id}?departmentId=${interview.departmentId}&departmentName=${interview.department.name}`}
+                    className="inline-flex items-center justify-center rounded-full border border-violet-400/35 bg-violet-400/10 px-3.5 py-1.5 text-sm font-medium text-violet-100 transition hover:bg-violet-400/20"
+                  >
+                    {interview.department.name} Interview
+                  </Link>
+                ))}
               {role === "admin" && canFinalReview && (
                 <Link
                   to={`/${role}/member-applications/final-review/${memberApplication?.id}`}

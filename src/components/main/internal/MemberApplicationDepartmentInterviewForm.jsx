@@ -6,12 +6,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateMemberApplicationDepartmentInterview } from "../../../store/slices/memberApplicationSlice";
 import { useForm } from "react-hook-form";
 import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
-import { useParams, Link } from "react-router-dom";
+import {
+  useParams,
+  Link,
+  useSearchParams,
+  useNavigate,
+} from "react-router-dom";
 
 const MemberApplicationDepartmentInterviewForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.auth);
   const { applicationId } = useParams();
+  const [searchParams] = useSearchParams();
+  const departmentId = searchParams.get("departmentId");
+  const departmentName = searchParams.get("departmentName");
   const {
     register,
     handleSubmit,
@@ -19,8 +28,9 @@ const MemberApplicationDepartmentInterviewForm = () => {
   } = useForm({
     defaultValues: {
       status: "pending",
-      comment: "",
+      interviewComment: "",
       interviewerId: currentUser ? currentUser.id : null,
+      departmentId: departmentId ? Number(departmentId) : null,
     },
   });
 
@@ -31,6 +41,7 @@ const MemberApplicationDepartmentInterviewForm = () => {
         departmentInterviewData: data,
       }),
     ).unwrap();
+    navigate(`/admin/member-applications/view/${applicationId}`);
   };
 
   return (
@@ -47,7 +58,7 @@ const MemberApplicationDepartmentInterviewForm = () => {
 
         <section className="rounded-2xl border border-white/10 bg-zinc-950/75 p-5 sm:p-6">
           <h1 className="text-2xl font-bold tracking-tight text-white sm:text-3xl mb-6">
-            Department Interview
+            {departmentName} Interview
           </h1>
 
           <form
@@ -86,15 +97,15 @@ const MemberApplicationDepartmentInterviewForm = () => {
             {/* Comment field */}
             <div className="flex flex-col">
               <label
-                htmlFor="comment"
+                htmlFor="interviewComment"
                 className="text-sm font-semibold text-white/90 mb-2"
               >
                 Comments
               </label>
               <textarea
-                id="comment"
+                id="interviewComment"
                 rows={6}
-                {...register("comment")}
+                {...register("interviewComment")}
                 placeholder="Enter interview comments here..."
                 className="rounded-lg border border-white/15 bg-white/[0.03] px-4 py-3 text-sm text-white/90 placeholder:text-white/40 transition focus:border-violet-400/50 focus:outline-none focus:ring-1 focus:ring-violet-400/30 resize-none"
               />

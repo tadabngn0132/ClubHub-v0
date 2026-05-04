@@ -6,12 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateMemberApplicationCVReview } from "../../../store/slices/memberApplicationSlice";
 import { useForm } from "react-hook-form";
 import { VALIDATION_MESSAGES } from "../../../utils/validationRules";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 const MemberApplicationCvReviewForm = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
   const { applicationId } = useParams();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -31,6 +32,7 @@ const MemberApplicationCvReviewForm = () => {
         cvReviewData: data,
       }),
     ).unwrap();
+    navigate(`/admin/member-applications/view/${applicationId}`);
   };
 
   return (

@@ -6,7 +6,7 @@ import {
   restoreUserById,
 } from "../../../store/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import BulkActionBar from "../../../components/internal/BulkActionBar.jsx";
 import Pagination from "../../../components/internal/Pagination.jsx";
 import Loading from "../../../components/layout/internal/Loading.jsx";
@@ -33,6 +33,7 @@ const UsersPage = ({ role, basePath }) => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [deleteMode, setDeleteMode] = useState("");
+  const selectAllCheckboxRef = useRef(null);
 
   useEffect(() => {
     dispatch(getUsersList());
@@ -149,6 +150,41 @@ const UsersPage = ({ role, basePath }) => {
 
     return result;
   }, [users, searchTerm, statusFilter, roleFilter, sortConfig]);
+  
+  const visibleUserIds = useMemo(
+    () => filteredUsers.map((user) => user.id),
+    [filteredUsers],
+  );
+
+  const allVisibleSelected =
+    visibleUserIds.length > 0 &&
+    visibleUserIds.every((userId) => selectedUsers.includes(userId));
+
+  const someVisibleSelected =
+    visibleUserIds.some((userId) => selectedUsers.includes(userId)) &&
+    !allVisibleSelected;
+
+  useEffect(() => {
+    if (selectAllCheckboxRef.current) {
+      selectAllCheckboxRef.current.indeterminate = someVisibleSelected;
+    }
+  }, [someVisibleSelected]);
+
+  const handleToggleSelectAll = (event) => {
+    const checked = event.target.checked;
+
+    setSelectedUsers((prevSelectedUsers) => {
+      const prevSet = new Set(prevSelectedUsers);
+
+      if (checked) {
+        return Array.from(new Set([...prevSelectedUsers, ...visibleUserIds]));
+      }
+
+      return prevSelectedUsers.filter(
+        (userId) => !visibleUserIds.includes(userId),
+      );
+    });
+  };
 
   const handleRestore = async (userId) => {
     await dispatch(restoreUserById(userId)).unwrap();
@@ -183,9 +219,9 @@ const UsersPage = ({ role, basePath }) => {
         )}
       </div>
 
-      {selectedUsers.length > 0 && (
+      {/* {selectedUsers.length > 0 && (
         <BulkActionBar selectedUsers={selectedUsers} />
-      )}
+      )} */}
 
       <div className="mb-4 grid gap-3 md:grid-cols-4">
         <input
@@ -231,9 +267,14 @@ const UsersPage = ({ role, basePath }) => {
             <thead className="bg-slate-800/95 text-slate-200 backdrop-blur">
               <tr className="border-b border-slate-700 text-left">
                 <th className="px-2 py-2 text-center">
-                  <input type="checkbox" name="" id="" />
+                  <input
+                    ref={selectAllCheckboxRef}
+                    type="checkbox"
+                    checked={allVisibleSelected}
+                    onChange={handleToggleSelectAll}
+                    aria-label="Select all visible users"
+                  />
                 </th>
-                <th className="px-2 py-2">ID</th>
                 <th className="px-2 py-2">Avatar</th>
                 {/* TODO: Implement clickable for name, email, and gen here with sorting indicators and related icon */}
                 <th className="px-2 py-2" onClick={() => handleSort("name")}>
@@ -262,7 +303,7 @@ const UsersPage = ({ role, basePath }) => {
               {filteredUsers.length === 0 ? (
                 <tr className="border-t border-slate-800 odd:bg-slate-900/30 even:bg-slate-800/20">
                   <td
-                    colSpan={role === "ADMIN" ? 12 : 11}
+                    colSpan={role === "ADMIN" ? 11 : 10}
                     className="px-4 py-10 text-center"
                   >
                     <div className="mx-auto flex max-w-xl flex-col items-center gap-3">
@@ -329,18 +370,22 @@ const UsersPage = ({ role, basePath }) => {
                         type="checkbox"
                         name={`select-${user.id}`}
                         id={`select-${user.id}`}
+                        checked={selectedUsers.includes(user.id)}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            setSelectedUsers([...selectedUsers, user.id]);
+                            setSelectedUsers((prevSelectedUsers) =>
+                              Array.from(
+                                new Set([...prevSelectedUsers, user.id]),
+                              ),
+                            );
                           } else {
-                            setSelectedUsers(
-                              selectedUsers.filter((id) => id !== user.id),
+                            setSelectedUsers((prevSelectedUsers) =>
+                              prevSelectedUsers.filter((id) => id !== user.id),
                             );
                           }
                         }}
                       />
                     </td>
-                    <td className="px-2 py-2">{user.id}</td>
                     <td className="px-2 py-2">
                       {/* TODO: Implement lazy loading for avatars */}
                       {user?.avatarUrl ? (
