@@ -14,7 +14,7 @@ const ChatRoomForm = ({ open = false, onCancel }) => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
   const { users } = useSelector((state) => state.user);
-  const { isLoading, error } = useSelector((state) => state.chatRoom);
+  const { loading, error } = useSelector((state) => state.chatRoom);
   const {
     register,
     handleSubmit,
@@ -146,10 +146,10 @@ const ChatRoomForm = ({ open = false, onCancel }) => {
           </button>
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={loading.create}
             className="px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-[#db3f7a] to-[#a82d5f] rounded-lg hover:from-[#a82d5f] hover:to-[#7a1f47] transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
           >
-            {isLoading ? "Creating..." : "Create"}
+            {loading.create ? "Creating..." : "Create"}
           </button>
         </div>
       </form>

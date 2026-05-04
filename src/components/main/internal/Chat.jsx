@@ -8,9 +8,19 @@ import {
   updateRealtimeMessage,
   removeRealtimeMessage,
 } from "../../../store/slices/messageSlice";
+import {
+  getAChatRoomById,
+  deleteChatRoomById,
+  removeMemberFromChatRoomById,
+} from "../../../store/slices/chatRoomSlice";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useSocket } from "../../../hooks/useSocket";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import ChatActionsDropdown from "./ChatActionsDropdown";
+import ChatRoomMembersModal from "./ChatRoomMembersModal";
+import ConfirmationModal from "../../main/internal/ConfirmationModal";
 
 const SOCKET_EVENTS = {
   CHAT_MESSAGE_RECEIVE: "chatMessage:receive",
@@ -22,15 +32,22 @@ const SOCKET_EVENTS = {
   USER_STOP_TYPING: "user:stopTyping",
 };
 
-const Chat = ({ selectedRoomId }) => {
+const Chat = ({ selectedRoomId, onCloseRoom }) => {
   const dispatch = useDispatch();
   const { messages, isLoading, error } = useSelector((state) => state.message);
+  const { chatRoom } = useSelector((state) => state.chatRoom);
   const { currentUser, token } = useSelector((state) => state.auth);
   const { emitEventWithAck, onEvent } = useSocket(token);
   const previousRoomIdRef = useRef(null);
   const typingTimeoutRef = useRef(null);
   const isTypingRef = useRef(false);
   const [typingUserIds, setTypingUserIds] = useState([]);
+  const [isChatActionsDropdownOpen, setIsChatActionsDropdownOpen] = useState(false);
+  const [isMembersModalOpen, setIsMembersModalOpen] = useState(false);
+  const chatDropdownRef = useRef(null);
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
+  const [isLeaveConfirmationOpen, setIsLeaveConfirmationOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -48,6 +65,7 @@ const Chat = ({ selectedRoomId }) => {
   useEffect(() => {
     if (selectedRoomId) {
       dispatch(getMessagesByRoom(selectedRoomId));
+      dispatch(getAChatRoomById(selectedRoomId));
     }
   }, [dispatch, selectedRoomId]);
 
@@ -251,6 +269,81 @@ const Chat = ({ selectedRoomId }) => {
     reset({ content: "" });
   };
 
+  const handleChatActionsDropdownToggle = () => {
+    setIsChatActionsDropdownOpen((isOpen) => !isOpen);
+  };
+
+  const handleChatRoomMembersModalOpen = () => {
+    setIsMembersModalOpen(true);
+  };
+
+  const handleChatRoomMembersModalClose = () => {
+    setIsMembersModalOpen(false);
+  };
+
+  const handleViewMembers = () => {
+    handleChatRoomMembersModalOpen();
+    setIsChatActionsDropdownOpen(false);
+  };
+
+  const handleAddMembers = () => {
+    handleChatRoomMembersModalOpen();
+    setIsChatActionsDropdownOpen(false);
+  };
+
+  const handleConfirmationModalOpen = () => {
+    setIsDeleteConfirmationOpen(true);
+  };
+
+  const handleConfirmationModalClose = () => {
+    setIsDeleteConfirmationOpen(false);
+  };
+
+  const handleDeleteChatRoom = async () => {
+    try {
+      await dispatch(deleteChatRoomById(selectedRoomId)).unwrap();
+      setIsDeleteConfirmationOpen(false);
+      onCloseRoom?.();
+    } catch (deleteError) {
+      toast.error(deleteError || "Failed to delete the chat room.");
+    }
+  };
+
+  const handleDeleteChatRoomClick = () => {
+    setIsChatActionsDropdownOpen(false);
+    handleConfirmationModalOpen();
+  };
+
+  const handleLeaveConfirmationOpen = () => {
+    setIsLeaveConfirmationOpen(true);
+  };
+
+  const handleLeaveConfirmationClose = () => {
+    setIsLeaveConfirmationOpen(false);
+  };
+
+  const handleLeaveChatRoom = async () => {
+    if (!selectedRoomId || !currentUser?.id) return;
+
+    try {
+      await dispatch(
+        removeMemberFromChatRoomById({
+          id: selectedRoomId,
+          userId: currentUser.id,
+        }),
+      ).unwrap();
+      setIsLeaveConfirmationOpen(false);
+      onCloseRoom?.();
+    } catch (leaveError) {
+      toast.error(leaveError || "Failed to leave the chat room.");
+    }
+  };
+
+  const handleLeaveChatRoomClick = () => {
+    setIsChatActionsDropdownOpen(false);
+    handleLeaveConfirmationOpen();
+  };
+
   if (!selectedRoomId) {
     return (
       <div className="flex h-full w-full flex-col items-center justify-center bg-gray-900 text-slate-300">
@@ -268,7 +361,18 @@ const Chat = ({ selectedRoomId }) => {
   }
 
   return (
-    <div className="flex h-full w-full flex-col bg-gray-900 text-slate-300">
+    <div className="flex h-full w-full flex-col bg-gray-900 text-slate-300 relative">
+      {/* Chat Header */}
+      <div className="flex items-center justify-between border-b border-gray-700 px-2 py-3 sm:py-4">
+        <h2 className="text-lg font-semibold">{chatRoom?.name || "Chat Room"}</h2>
+        <button
+          ref={chatDropdownRef}
+          className="rounded-full w-10 h-10 bg-gray-800 cursor-pointer"
+          onClick={handleChatActionsDropdownToggle}
+        >
+          <FontAwesomeIcon icon={faEllipsisV} />
+        </button>
+      </div>
       {/* Messages Container */}
       <div className="flex-1 overflow-y-auto space-y-4 p-5 sm:p-6">
         {messages.length === 0 ? (
@@ -362,6 +466,47 @@ const Chat = ({ selectedRoomId }) => {
           Send
         </button>
       </form>
+
+      {/* Chat Actions Dropdown (conditionally rendered) */}
+      {isChatActionsDropdownOpen && (
+        <ChatActionsDropdown
+          onClose={() => setIsChatActionsDropdownOpen(false)}
+          triggerRef={chatDropdownRef}
+          onViewMembers={handleViewMembers}
+          onAddMembers={handleAddMembers}
+          onLeaveChat={handleLeaveChatRoomClick}
+          onDeleteChatRoom={handleDeleteChatRoomClick}
+        />
+      )}
+
+      {/* Chat Room Members Modal (conditionally rendered) */}
+      <ChatRoomMembersModal
+        isOpen={isMembersModalOpen}
+        chatRoomId={selectedRoomId}
+        onClose={handleChatRoomMembersModalClose}
+      />
+
+      <ConfirmationModal
+        open={isDeleteConfirmationOpen}
+        title="Delete chat room?"
+        message="This will permanently delete the room for everyone and cannot be undone."
+        confirmButtonText="Delete"
+        cancelButtonText="Cancel"
+        variant="danger"
+        onConfirm={handleDeleteChatRoom}
+        onCancel={handleConfirmationModalClose}
+      />
+
+      <ConfirmationModal
+        open={isLeaveConfirmationOpen}
+        title="Leave chat room?"
+        message="You will be removed from this room and it will disappear from your chat list."
+        confirmButtonText="Leave"
+        cancelButtonText="Cancel"
+        variant="warning"
+        onConfirm={handleLeaveChatRoom}
+        onCancel={handleLeaveConfirmationClose}
+      />
     </div>
   );
 };

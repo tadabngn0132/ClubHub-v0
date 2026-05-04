@@ -6,12 +6,12 @@ import {
 } from "../../../store/slices/chatRoomSlice";
 import toast from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import ChatRoomForm from "../internal/ChatRoomForm";
 
 const ChatRooms = ({ userId, selectedRoomId, onSelectRoom }) => {
   const dispatch = useDispatch();
-  const { chatRooms, isLoading, error } = useSelector(
+  const { chatRooms, loading, error } = useSelector(
     (state) => state.chatRoom,
   );
   const [isChatRoomFormOpen, setIsChatRoomFormOpen] = useState(false);
@@ -39,7 +39,7 @@ const ChatRooms = ({ userId, selectedRoomId, onSelectRoom }) => {
     setIsChatRoomFormOpen(false);
   };
 
-  if (isLoading) {
+  if (loading.list) {
     return (
       <aside className="h-auto w-full rounded-2xl border border-slate-700/60 bg-gradient-to-b from-slate-900 to-slate-800 p-3 sm:p-4 md:h-full md:w-80 md:min-w-80 md:max-w-80">
         <div className="animate-pulse space-y-3">
@@ -77,7 +77,7 @@ const ChatRooms = ({ userId, selectedRoomId, onSelectRoom }) => {
       ) : (
         <ul className="max-h-[45vh] space-y-2 overflow-y-auto pr-1 sm:max-h-[55vh] md:max-h-[calc(100vh-11rem)]">
           {chatRooms.map((room) => (
-            <li key={room.id}>
+            <li key={room.id} className="relative">
               <button
                 className={`group block w-full rounded-lg border p-3 text-left transition-all duration-200 ${
                   selectedRoomId === room.id
@@ -89,6 +89,9 @@ const ChatRooms = ({ userId, selectedRoomId, onSelectRoom }) => {
                 <span className="block truncate text-sm font-medium">
                   {room.name}
                 </span>
+              </button>
+              <button className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-slate-400 transition-opacity duration-200">
+                <FontAwesomeIcon icon={faEllipsisV} />
               </button>
             </li>
           ))}

@@ -169,7 +169,15 @@ const chatRoomSlice = createSlice({
   initialState: {
     chatRooms: [],
     chatRoom: null,
-    isLoading: false,
+    loading: {
+      list: false,
+      details: false,
+      create: false,
+      update: false,
+      delete: false,
+      members: false,
+      memberAction: false,
+    },
     error: null,
   },
   reducers: {
@@ -181,67 +189,67 @@ const chatRoomSlice = createSlice({
     builder
       // Handle createNewChatRoom
       .addCase(createNewChatRoom.pending, (state) => {
-        state.isLoading = true;
+        state.loading.create = true;
         state.error = null;
       })
       .addCase(createNewChatRoom.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.create = false;
         state.chatRooms.push(action.payload.data);
       })
       .addCase(createNewChatRoom.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.create = false;
         state.error = action.payload || action.error.message;
       })
 
       // Handle getAllChatRooms
       .addCase(getAllChatRooms.pending, (state) => {
-        state.isLoading = true;
+        state.loading.list = true;
         state.error = null;
       })
       .addCase(getAllChatRooms.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.list = false;
         state.chatRooms = action.payload.data;
       })
       .addCase(getAllChatRooms.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.list = false;
         state.error = action.payload || action.error.message;
       })
 
       // Handle getAChatRoomById
       .addCase(getAChatRoomById.pending, (state) => {
-        state.isLoading = true;
+        state.loading.details = true;
         state.error = null;
       })
       .addCase(getAChatRoomById.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.details = false;
         state.chatRoom = action.payload.data;
       })
       .addCase(getAChatRoomById.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.details = false;
         state.error = action.payload || action.error.message;
       })
 
       // Handle getAllChatRoomsByUserId
       .addCase(getAllChatRoomsByUserId.pending, (state) => {
-        state.isLoading = true;
+        state.loading.list = true;
         state.error = null;
       })
       .addCase(getAllChatRoomsByUserId.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.list = false;
         state.chatRooms = action.payload.data;
       })
       .addCase(getAllChatRoomsByUserId.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.list = false;
         state.error = action.payload || action.error.message;
       })
 
       // Handle updateChatRoomById
       .addCase(updateChatRoomById.pending, (state) => {
-        state.isLoading = true;
+        state.loading.update = true;
         state.error = null;
       })
       .addCase(updateChatRoomById.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.update = false;
         const index = state.chatRooms.findIndex(
           (chatRoom) => chatRoom.id === action.payload.data.id,
         );
@@ -250,33 +258,33 @@ const chatRoomSlice = createSlice({
         }
       })
       .addCase(updateChatRoomById.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.update = false;
         state.error = action.payload || action.error.message;
       })
 
       // Handle deleteChatRoomById
       .addCase(deleteChatRoomById.pending, (state) => {
-        state.isLoading = true;
+        state.loading.delete = true;
         state.error = null;
       })
       .addCase(deleteChatRoomById.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.delete = false;
         state.chatRooms = state.chatRooms.filter(
           (chatRoom) => chatRoom.id !== action.payload.data.id,
         );
       })
       .addCase(deleteChatRoomById.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.delete = false;
         state.error = action.payload || action.error.message;
       })
 
       // Handle getChatRoomMembersById
       .addCase(getChatRoomMembersById.pending, (state) => {
-        state.isLoading = true;
+        state.loading.members = true;
         state.error = null;
       })
       .addCase(getChatRoomMembersById.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.members = false;
         if (
           state.chatRoom &&
           state.chatRoom.id === action.payload.data.chatRoomId
@@ -285,17 +293,17 @@ const chatRoomSlice = createSlice({
         }
       })
       .addCase(getChatRoomMembersById.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.members = false;
         state.error = action.payload || action.error.message;
       })
 
       // Handle addMemberToChatRoomById
       .addCase(addMemberToChatRoomById.pending, (state) => {
-        state.isLoading = true;
+        state.loading.memberAction = true;
         state.error = null;
       })
       .addCase(addMemberToChatRoomById.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.memberAction = false;
         if (
           state.chatRoom &&
           state.chatRoom.id === action.payload.data.chatRoomId
@@ -304,17 +312,17 @@ const chatRoomSlice = createSlice({
         }
       })
       .addCase(addMemberToChatRoomById.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.memberAction = false;
         state.error = action.payload || action.error.message;
       })
 
       // Handle removeMemberFromChatRoomById
       .addCase(removeMemberFromChatRoomById.pending, (state) => {
-        state.isLoading = true;
+        state.loading.memberAction = true;
         state.error = null;
       })
       .addCase(removeMemberFromChatRoomById.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.memberAction = false;
         if (
           state.chatRoom &&
           state.chatRoom.id === action.payload.data.chatRoomId
@@ -325,7 +333,7 @@ const chatRoomSlice = createSlice({
         }
       })
       .addCase(removeMemberFromChatRoomById.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.memberAction = false;
         state.error = action.payload || action.error.message;
       });
   },

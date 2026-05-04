@@ -20,7 +20,10 @@ const ChatPage = () => {
         onSelectRoom={handleSelectConversation}
         selectedRoomId={selectedConversation?.id}
       />
-      <Chat selectedRoomId={selectedConversation?.id} />
+      <Chat
+        selectedRoomId={selectedConversation?.id}
+        onCloseRoom={() => setSelectedConversation(null)}
+      />
     </div>
   );
 };
