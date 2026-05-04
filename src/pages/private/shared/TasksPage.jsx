@@ -7,7 +7,7 @@ import {
   resetTaskStatus,
 } from "../../../store/slices/taskSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import toast from "react-hot-toast";
 import {
@@ -30,6 +30,7 @@ const TasksPage = ({ role, basePath }) => {
   const [selectedTaskId, setSelectedTaskId] = useState(null);
   const [deleteMode, setDeleteMode] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const selectAllCheckboxRef = useRef(null);
   const tasksPerPage = 10;
 
   useEffect(() => {
@@ -103,6 +104,25 @@ const TasksPage = ({ role, basePath }) => {
     startIndex + tasksPerPage,
   );
 
+  const visibleTaskIds = useMemo(
+    () => paginatedTasks.map((task) => task.id),
+    [paginatedTasks],
+  );
+
+  const allVisibleSelected =
+    visibleTaskIds.length > 0 &&
+    visibleTaskIds.every((taskId) => selectedTasks.includes(taskId));
+
+  const someVisibleSelected =
+    visibleTaskIds.some((taskId) => selectedTasks.includes(taskId)) &&
+    !allVisibleSelected;
+
+  useEffect(() => {
+    if (selectAllCheckboxRef.current) {
+      selectAllCheckboxRef.current.indeterminate = someVisibleSelected;
+    }
+  }, [someVisibleSelected]);
+
   const handleOpenConfirmationModal = () => {
     setIsConfirmationModalOpen(true);
   };
@@ -136,6 +156,20 @@ const TasksPage = ({ role, basePath }) => {
     setSearchTerm("");
     setStatusFilter("all");
     setSortBy("dueDate_desc");
+  };
+
+  const handleToggleSelectAll = (event) => {
+    const checked = event.target.checked;
+
+    setSelectedTasks((prevSelectedTasks) => {
+      if (checked) {
+        return Array.from(new Set([...prevSelectedTasks, ...visibleTaskIds]));
+      }
+
+      return prevSelectedTasks.filter(
+        (taskId) => !visibleTaskIds.includes(taskId),
+      );
+    });
   };
 
   const hasActiveFilters =
@@ -223,9 +257,12 @@ const TasksPage = ({ role, basePath }) => {
                 <tr className="border-b border-slate-700 text-left">
                   <th className="px-3 py-3 text-center">
                     <input
+                      ref={selectAllCheckboxRef}
                       type="checkbox"
                       name="selectAll"
                       id="selectAll"
+                      checked={allVisibleSelected}
+                      onChange={handleToggleSelectAll}
                       className="h-4 w-4 rounded border-slate-500 bg-slate-700"
                     />
                   </th>
@@ -236,7 +273,9 @@ const TasksPage = ({ role, basePath }) => {
                   {role !== "MEMBER" && (
                     <th className="px-3 py-3">Task Status</th>
                   )}
-                  <th className="px-3 py-3">{role !== "MEMBER" ? "Assignee Status" : "Status"}</th>
+                  <th className="px-3 py-3">
+                    {role !== "MEMBER" ? "Assignee Status" : "Status"}
+                  </th>
                   <th className="px-3 py-3">Assignee Scope</th>
                   {role === "ADMIN" && (
                     <th className="px-3 py-3">Is Deleted</th>
@@ -317,6 +356,22 @@ const TasksPage = ({ role, basePath }) => {
                           type="checkbox"
                           name="task"
                           id={`task-${task.id}`}
+                          checked={selectedTasks.includes(task.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedTasks((prevSelectedTasks) =>
+                                Array.from(
+                                  new Set([...prevSelectedTasks, task.id]),
+                                ),
+                              );
+                            } else {
+                              setSelectedTasks((prevSelectedTasks) =>
+                                prevSelectedTasks.filter(
+                                  (id) => id !== task.id,
+                                ),
+                              );
+                            }
+                          }}
                           className="h-4 w-4 rounded border-slate-500 bg-slate-700"
                         />
                       </td>
@@ -342,24 +397,28 @@ const TasksPage = ({ role, basePath }) => {
                         {formatUppercaseToCapitalized(task.status)}
                       </td>
                       <td className={`px-3 py-3 text-slate-300`}>
-                        {formatUppercaseToCapitalized(task.assignees.find((a) => a.assigneeId === currentUser.id)?.status || "UNASSIGNED")}
+                        {formatUppercaseToCapitalized(
+                          task.assignees.find(
+                            (a) => a.assigneeId === currentUser.id,
+                          )?.status || "UNASSIGNED",
+                        )}
                       </td>
                       <td className="px-3 py-3 text-slate-300">
                         {formatUppercaseToCapitalized(task.assigneeScope)}
                       </td>
                       {role === "ADMIN" && (
-                      <td className="px-3 py-3 text-sm text-center">
-                        {task.isDeleted ? (
-                          <p className="badge text-red-500/80 text-sm/tight">
-                            Deleted
-                          </p>
-                        ) : (
-                          <p className="badge text-green-500/80 text-sm/tight">
-                            Not Deleted
-                          </p>
-                        )}
-                      </td>
-                    )}
+                        <td className="px-3 py-3 text-sm text-center">
+                          {task.isDeleted ? (
+                            <p className="badge text-red-500/80 text-sm/tight">
+                              Deleted
+                            </p>
+                          ) : (
+                            <p className="badge text-green-500/80 text-sm/tight">
+                              Not Deleted
+                            </p>
+                          )}
+                        </td>
+                      )}
                       <td className="px-3 py-3 text-slate-300">
                         {task.assignedBy?.fullname || "Unassigned"}
                       </td>
