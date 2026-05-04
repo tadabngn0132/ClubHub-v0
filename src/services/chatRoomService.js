@@ -25,8 +25,13 @@ export const updateChatRoom = async (id, data) => {
   return res.data;
 };
 
-export const deleteChatRoom = async (id) => {
-  const res = await axiosClient.delete(`/chat-rooms/${id}`);
+export const softDeleteChatRoom = async (id) => {
+  const res = await axiosClient.put(`/chat-rooms/${id}/soft`);
+  return res.data;
+};
+
+export const hardDeleteChatRoom = async (id) => {
+  const res = await axiosClient.delete(`/chat-rooms/${id}/hard`);
   return res.data;
 };
 

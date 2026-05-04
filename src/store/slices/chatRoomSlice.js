@@ -5,7 +5,8 @@ import {
   getChatRoomById,
   getChatRoomsByUserId,
   updateChatRoom,
-  deleteChatRoom,
+  softDeleteChatRoom,
+  hardDeleteChatRoom,
   addMemberToChatRoom,
   removeMemberFromChatRoom,
   getChatRoomMembers,
@@ -96,11 +97,28 @@ export const updateChatRoomById = createAsyncThunk(
   },
 );
 
-export const deleteChatRoomById = createAsyncThunk(
-  "chatRooms/deleteChatRoom",
+export const softDeleteChatRoomById = createAsyncThunk(
+  "chatRooms/softDeleteChatRoom",
   async (id, thunkAPI) => {
     try {
-      const data = await deleteChatRoom(id);
+      const data = await softDeleteChatRoom(id);
+
+      if (!data.success) {
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  },
+);
+
+export const hardDeleteChatRoomById = createAsyncThunk(
+  "chatRooms/hardDeleteChatRoom",
+  async (id, thunkAPI) => {
+    try {
+      const data = await hardDeleteChatRoom(id);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -262,18 +280,34 @@ const chatRoomSlice = createSlice({
         state.error = action.payload || action.error.message;
       })
 
-      // Handle deleteChatRoomById
-      .addCase(deleteChatRoomById.pending, (state) => {
+      // Handle softDeleteChatRoomById
+      .addCase(softDeleteChatRoomById.pending, (state) => {
         state.loading.delete = true;
         state.error = null;
       })
-      .addCase(deleteChatRoomById.fulfilled, (state, action) => {
+      .addCase(softDeleteChatRoomById.fulfilled, (state, action) => {
         state.loading.delete = false;
         state.chatRooms = state.chatRooms.filter(
           (chatRoom) => chatRoom.id !== action.payload.data.id,
         );
       })
-      .addCase(deleteChatRoomById.rejected, (state, action) => {
+      .addCase(softDeleteChatRoomById.rejected, (state, action) => {
+        state.loading.delete = false;
+        state.error = action.payload || action.error.message;
+      })
+
+      // Handle hardDeleteChatRoomById
+      .addCase(hardDeleteChatRoomById.pending, (state) => {
+        state.loading.delete = true;
+        state.error = null;
+      })
+      .addCase(hardDeleteChatRoomById.fulfilled, (state, action) => {
+        state.loading.delete = false;
+        state.chatRooms = state.chatRooms.filter(
+          (chatRoom) => chatRoom.id !== action.payload.data.id,
+        );
+      })
+      .addCase(hardDeleteChatRoomById.rejected, (state, action) => {
         state.loading.delete = false;
         state.error = action.payload || action.error.message;
       })

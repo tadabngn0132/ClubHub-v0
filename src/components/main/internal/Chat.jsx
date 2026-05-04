@@ -10,7 +10,7 @@ import {
 } from "../../../store/slices/messageSlice";
 import {
   getAChatRoomById,
-  deleteChatRoomById,
+  softDeleteChatRoomById,
   removeMemberFromChatRoomById,
 } from "../../../store/slices/chatRoomSlice";
 import { get, useForm } from "react-hook-form";
@@ -326,7 +326,7 @@ const Chat = ({ userId, selectedRoomId, onCloseRoom }) => {
 
   const handleDeleteChatRoom = async () => {
     try {
-      await dispatch(deleteChatRoomById(selectedRoomId)).unwrap();
+      await dispatch(softDeleteChatRoomById(selectedRoomId)).unwrap();
       setIsDeleteConfirmationOpen(false);
       onCloseRoom?.();
     } catch (deleteError) {
@@ -514,7 +514,11 @@ const Chat = ({ userId, selectedRoomId, onCloseRoom }) => {
         onClose={handleChatRoomMembersModalClose}
       />
 
-      <ChatRoomMemberForm isOpen={isChatRoomMembersFormOpen} chatRoomId={selectedRoomId} onClose={handleChatRoomMembersFormClose} />
+      <ChatRoomMemberForm
+        isOpen={isChatRoomMembersFormOpen}
+        chatRoomId={selectedRoomId}
+        onClose={handleChatRoomMembersFormClose}
+      />
 
       <ConfirmationModal
         open={isDeleteConfirmationOpen}
