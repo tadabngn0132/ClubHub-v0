@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 
 const ChatActionsDropdown = ({
+  isGroup,
   onClose,
   triggerRef,
   onViewMembers,
@@ -31,25 +32,29 @@ const ChatActionsDropdown = ({
       ref={dropdownRef}
       className="absolute right-0 top-15 z-10 mt-2 w-56 overflow-hidden rounded-xl border border-gray-700 bg-gray-800 p-1 shadow-xl shadow-black/30"
     >
-      <button
-        className="block w-full rounded-lg px-4 py-2 text-left text-sm text-gray-300 transition-colors hover:bg-gray-700 hover:text-white"
-        onClick={onViewMembers}
-      >
-        View Members
-      </button>
-      <button
-        className="block w-full rounded-lg px-4 py-2 text-left text-sm text-gray-300 transition-colors hover:bg-gray-700 hover:text-white"
-        onClick={onAddMembers}
-      >
-        Add Members
-      </button>
-      <div className="my-1 h-px bg-gray-700" />
-      <button
-        className="block w-full rounded-lg px-4 py-2 text-left text-sm text-amber-300 transition-colors hover:bg-amber-500/10 hover:text-amber-200"
-        onClick={onLeaveChat}
-      >
-        Leave Chat
-      </button>
+      {isGroup && (
+        <>
+          <button
+            className="block w-full rounded-lg px-4 py-2 text-left text-sm text-gray-300 transition-colors hover:bg-gray-700 hover:text-white"
+            onClick={onViewMembers}
+          >
+            View Members
+          </button>
+          <button
+            className="block w-full rounded-lg px-4 py-2 text-left text-sm text-gray-300 transition-colors hover:bg-gray-700 hover:text-white"
+            onClick={onAddMembers}
+          >
+            Add Members
+          </button>
+          <div className="my-1 h-px bg-gray-700" />
+          <button
+            className="block w-full rounded-lg px-4 py-2 text-left text-sm text-amber-300 transition-colors hover:bg-amber-500/10 hover:text-amber-200"
+            onClick={onLeaveChat}
+          >
+            Leave Chat
+          </button>
+        </>
+      )}
       <button
         className="block w-full rounded-lg px-4 py-2 text-left text-sm text-rose-300 transition-colors hover:bg-rose-500/10 hover:text-rose-200"
         onClick={onDeleteChatRoom}

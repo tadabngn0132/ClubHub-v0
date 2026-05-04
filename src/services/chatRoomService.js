@@ -35,8 +35,8 @@ export const getChatRoomMembers = async (id) => {
   return res.data;
 };
 
-export const addMemberToChatRoom = async (id, userId) => {
-  const res = await axiosClient.post(`/chat-rooms/${id}/members`, { userId });
+export const addMemberToChatRoom = async (id, userIds) => {
+  const res = await axiosClient.post(`/chat-rooms/${id}/members`, { userIds });
   return res.data;
 };
 

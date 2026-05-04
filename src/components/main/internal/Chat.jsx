@@ -13,7 +13,7 @@ import {
   deleteChatRoomById,
   removeMemberFromChatRoomById,
 } from "../../../store/slices/chatRoomSlice";
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useSocket } from "../../../hooks/useSocket";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,6 +21,7 @@ import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import ChatActionsDropdown from "./ChatActionsDropdown";
 import ChatRoomMembersModal from "./ChatRoomMembersModal";
 import ConfirmationModal from "../../main/internal/ConfirmationModal";
+import ChatRoomMemberForm from "./ChatRoomMemberForm";
 
 const SOCKET_EVENTS = {
   CHAT_MESSAGE_RECEIVE: "chatMessage:receive",
@@ -32,7 +33,7 @@ const SOCKET_EVENTS = {
   USER_STOP_TYPING: "user:stopTyping",
 };
 
-const Chat = ({ selectedRoomId, onCloseRoom }) => {
+const Chat = ({ userId, selectedRoomId, onCloseRoom }) => {
   const dispatch = useDispatch();
   const { messages, loading, error } = useSelector((state) => state.message);
   const { chatRoom } = useSelector((state) => state.chatRoom);
@@ -42,11 +43,15 @@ const Chat = ({ selectedRoomId, onCloseRoom }) => {
   const typingTimeoutRef = useRef(null);
   const isTypingRef = useRef(false);
   const [typingUserIds, setTypingUserIds] = useState([]);
-  const [isChatActionsDropdownOpen, setIsChatActionsDropdownOpen] = useState(false);
+  const [isChatActionsDropdownOpen, setIsChatActionsDropdownOpen] =
+    useState(false);
   const [isMembersModalOpen, setIsMembersModalOpen] = useState(false);
   const chatDropdownRef = useRef(null);
-  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+    useState(false);
   const [isLeaveConfirmationOpen, setIsLeaveConfirmationOpen] = useState(false);
+  const [isChatRoomMembersFormOpen, setIsChatRoomMembersFormOpen] =
+    useState(false);
 
   const {
     register,
@@ -269,6 +274,18 @@ const Chat = ({ selectedRoomId, onCloseRoom }) => {
     reset({ content: "" });
   };
 
+  const getChatRoomDisplayName = (chatRoom) => {
+    if (chatRoom?.isGroup) {
+      return chatRoom.name;
+    }
+
+    const otherMember = chatRoom?.members?.find(
+      (member) => member.user?.id !== userId,
+    );
+
+    return otherMember?.user?.fullname || chatRoom?.name || "Direct chat";
+  };
+
   const handleChatActionsDropdownToggle = () => {
     setIsChatActionsDropdownOpen((isOpen) => !isOpen);
   };
@@ -286,8 +303,16 @@ const Chat = ({ selectedRoomId, onCloseRoom }) => {
     setIsChatActionsDropdownOpen(false);
   };
 
+  const handleChatRoomMembersFormOpen = () => {
+    setIsChatRoomMembersFormOpen(true);
+  };
+
+  const handleChatRoomMembersFormClose = () => {
+    setIsChatRoomMembersFormOpen(false);
+  };
+
   const handleAddMembers = () => {
-    handleChatRoomMembersModalOpen();
+    handleChatRoomMembersFormOpen();
     setIsChatActionsDropdownOpen(false);
   };
 
@@ -364,7 +389,9 @@ const Chat = ({ selectedRoomId, onCloseRoom }) => {
     <div className="flex h-full w-full flex-col bg-gray-900 text-slate-300 relative">
       {/* Chat Header */}
       <div className="flex items-center justify-between border-b border-gray-700 px-2 py-3 sm:py-4">
-        <h2 className="text-lg font-semibold">{chatRoom?.name || "Chat Room"}</h2>
+        <h2 className="text-lg font-semibold">
+          {getChatRoomDisplayName(chatRoom) || "Chat"}
+        </h2>
         <button
           ref={chatDropdownRef}
           className="rounded-full w-10 h-10 bg-gray-800 cursor-pointer"
@@ -470,6 +497,7 @@ const Chat = ({ selectedRoomId, onCloseRoom }) => {
       {/* Chat Actions Dropdown (conditionally rendered) */}
       {isChatActionsDropdownOpen && (
         <ChatActionsDropdown
+          isGroup={chatRoom?.isGroup}
           onClose={() => setIsChatActionsDropdownOpen(false)}
           triggerRef={chatDropdownRef}
           onViewMembers={handleViewMembers}
@@ -485,6 +513,8 @@ const Chat = ({ selectedRoomId, onCloseRoom }) => {
         chatRoomId={selectedRoomId}
         onClose={handleChatRoomMembersModalClose}
       />
+
+      <ChatRoomMemberForm isOpen={isChatRoomMembersFormOpen} chatRoomId={selectedRoomId} onClose={handleChatRoomMembersFormClose} />
 
       <ConfirmationModal
         open={isDeleteConfirmationOpen}

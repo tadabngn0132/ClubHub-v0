@@ -6,7 +6,9 @@ export const createMessage = async (messageData) => {
 };
 
 export const getMessagesByChatRoomId = async (chatRoomId) => {
-  const response = await axiosClient.get(`/messages/chatroom/${chatRoomId}`);
+  const response = await axiosClient.get(`/messages/chatroom/${chatRoomId}`, {
+    timeout: 10000,
+  });
   return response.data;
 };
 

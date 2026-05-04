@@ -21,6 +21,7 @@ const ChatPage = () => {
         selectedRoomId={selectedConversation?.id}
       />
       <Chat
+        userId={currentUser?.id}
         selectedRoomId={selectedConversation?.id}
         onCloseRoom={() => setSelectedConversation(null)}
       />

@@ -132,9 +132,9 @@ export const getChatRoomMembersById = createAsyncThunk(
 
 export const addMemberToChatRoomById = createAsyncThunk(
   "chatRooms/addMemberToChatRoom",
-  async ({ id, userId }, thunkAPI) => {
+  async ({ id, userIds }, thunkAPI) => {
     try {
-      const data = await addMemberToChatRoom(id, userId);
+      const data = await addMemberToChatRoom(id, userIds);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -304,11 +304,8 @@ const chatRoomSlice = createSlice({
       })
       .addCase(addMemberToChatRoomById.fulfilled, (state, action) => {
         state.loading.memberAction = false;
-        if (
-          state.chatRoom &&
-          state.chatRoom.id === action.payload.data.chatRoomId
-        ) {
-          state.chatRoom.members.push(action.payload.data);
+        if (state.chatRoom && Array.isArray(action.payload.data)) {
+          state.chatRoom.members.push(...action.payload.data);
         }
       })
       .addCase(addMemberToChatRoomById.rejected, (state, action) => {
