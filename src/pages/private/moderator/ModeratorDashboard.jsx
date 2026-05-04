@@ -103,6 +103,7 @@ const ModeratorDashboard = () => {
       dashboardTitle="Moderator Dashboard"
       currentUserName={currentUser?.fullname}
       fallbackRoleName="Moderator"
+      userRole="moderator"
       dashboardError={dashboardError}
       summaryCards={summaryCards}
       activities={activities}

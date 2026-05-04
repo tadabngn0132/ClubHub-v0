@@ -64,7 +64,6 @@ const MemberApplicationDetailsPage = ({ role }) => {
 
   const applicationState = memberApplication?.state ?? "unknown";
   const normalizedState = String(applicationState).toLowerCase();
-  console.log("Member application details:", memberApplication);
   const displayName = memberApplication?.fullname || "Member Application";
   const statusTone = {
     submitted: "border-sky-400/40 bg-sky-400/15 text-sky-100",

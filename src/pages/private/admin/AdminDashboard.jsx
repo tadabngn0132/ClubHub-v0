@@ -85,17 +85,17 @@ const AdminDashboard = () => {
     },
     {
       title: "Total Incomplete Tasks",
-      value: `${stats?.taskCount || 0} / ${tasks.length || 0}`,
+      value: `${stats?.pendingTasks || 0} / ${tasks.length || 0}`,
       accent: "text-cyan-300",
     },
     {
       title: "Total Upcoming Activities",
-      value: `${stats?.eventCount || 0} / ${activities.length || 0}`,
+      value: `${stats?.upcomingEvents || 0} / ${activities.length || 0}`,
       accent: "text-amber-300",
     },
     {
-      title: "Member Applications",
-      value: `${stats?.memberApplicationCount || 0} / ${memberApplications.length || 0}`,
+      title: "Total Pending Member Applications",
+      value: `${stats?.pendingMemberApplications || 0} / ${memberApplications.length || 0}`,
       accent: "text-fuchsia-300",
     },
   ];
@@ -110,6 +110,7 @@ const AdminDashboard = () => {
       dashboardTitle="Admin Dashboard"
       currentUserName={currentUser?.fullname}
       fallbackRoleName="Admin"
+      userRole="admin"
       dashboardError={dashboardError}
       summaryCards={summaryCards}
       activities={activities}

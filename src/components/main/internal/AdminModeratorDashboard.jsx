@@ -1,7 +1,10 @@
+import { Link } from "react-router-dom";
+
 const AdminModeratorDashboard = ({
   dashboardTitle,
   currentUserName,
   fallbackRoleName,
+  userRole,
   dashboardError,
   summaryCards,
   activities,
@@ -20,7 +23,11 @@ const AdminModeratorDashboard = ({
             {dashboardTitle}
           </h1>
           <p className="mt-1 text-slate-300">
-            Welcome, <span className="font-semibold text-white">{currentUserName || fallbackRoleName}</span>.
+            Welcome,{" "}
+            <span className="font-semibold text-white">
+              {currentUserName || fallbackRoleName}
+            </span>
+            .
           </p>
 
           {dashboardError && (
@@ -56,11 +63,14 @@ const AdminModeratorDashboard = ({
                 {activities.slice(0, 5).map((activity) => (
                   <li
                     key={activity.id}
-                    className="rounded-xl border border-slate-700 bg-slate-800/70 p-3"
+                    className="rounded-xl border border-slate-700 bg-slate-800/70 p-3 transition hover:border-amber-400/40 hover:bg-slate-800/90"
                   >
-                    <p className="text-sm font-semibold text-slate-100">
+                    <Link
+                      to={`/${userRole}/activities/view/${activity.id}`}
+                      className="block text-sm font-semibold text-slate-100 transition hover:text-white"
+                    >
                       {activity.title || activity.name || "Untitled activity"}
-                    </p>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -76,11 +86,14 @@ const AdminModeratorDashboard = ({
                 {tasks.slice(0, 5).map((task) => (
                   <li
                     key={task.id}
-                    className="rounded-xl border border-slate-700 bg-slate-800/70 p-3"
+                    className="rounded-xl border border-slate-700 bg-slate-800/70 p-3 transition hover:border-cyan-400/40 hover:bg-slate-800/90"
                   >
-                    <p className="text-sm font-semibold text-slate-100">
+                    <Link
+                      to={`/${userRole}/tasks/view/${task.id}`}
+                      className="block text-sm font-semibold text-slate-100 transition hover:text-white"
+                    >
                       {task.title || task.name || "Untitled task"}
-                    </p>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -88,7 +101,9 @@ const AdminModeratorDashboard = ({
           </div>
 
           <div className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
-            <h2 className="mb-4 text-lg font-bold">Recent Member Applications</h2>
+            <h2 className="mb-4 text-lg font-bold">
+              Recent Member Applications
+            </h2>
             {memberApplications.length === 0 ? (
               <p className="text-sm text-slate-400">No applications found.</p>
             ) : (
@@ -96,13 +111,16 @@ const AdminModeratorDashboard = ({
                 {memberApplications.slice(0, 5).map((application) => (
                   <li
                     key={application.id}
-                    className="rounded-xl border border-slate-700 bg-slate-800/70 p-3"
+                    className="rounded-xl border border-slate-700 bg-slate-800/70 p-3 transition hover:border-fuchsia-400/40 hover:bg-slate-800/90"
                   >
-                    <p className="text-sm font-semibold text-slate-100">
+                    <Link
+                      to={`/${userRole}/member-applications/view/${application.id}`}
+                      className="block text-sm font-semibold text-slate-100 transition hover:text-white"
+                    >
                       {application.applicantName ||
                         application.fullname ||
                         "Unnamed applicant"}
-                    </p>
+                    </Link>
                   </li>
                 ))}
               </ul>
