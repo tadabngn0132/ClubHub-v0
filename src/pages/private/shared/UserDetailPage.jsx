@@ -23,7 +23,7 @@ const UserDetailPage = ({ role, basePath }) => {
   const { userId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, isLoading, error } = useSelector((state) => state.user);
+  const { user, loading, error } = useSelector((state) => state.user);
   const {
     activities,
     isLoading: activitiesLoading,
@@ -76,7 +76,7 @@ const UserDetailPage = ({ role, basePath }) => {
     await dispatch(getUserById(userId)).unwrap();
   };
 
-  if (isLoading) {
+  if (loading.details) {
     return <Loading />;
   }
 

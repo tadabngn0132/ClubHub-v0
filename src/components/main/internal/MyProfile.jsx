@@ -11,7 +11,7 @@ import { getUserRole } from "../../../utils/helper";
 const MyProfile = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
-  const { user, isLoading, error } = useSelector((state) => state.user);
+  const { user, loading, error } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (currentUser) {
@@ -23,7 +23,7 @@ const MyProfile = () => {
     };
   }, [dispatch, currentUser]);
 
-  if (isLoading) {
+  if (loading.details) {
     return <Loading />;
   }
 

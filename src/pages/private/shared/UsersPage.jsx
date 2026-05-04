@@ -21,7 +21,7 @@ import { getUserRole } from "../../../utils/helper.js";
 
 const UsersPage = ({ role, basePath }) => {
   const dispatch = useDispatch();
-  const { users, isLoading, error } = useSelector((state) => state.user);
+  const { users, loading, error } = useSelector((state) => state.user);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -155,7 +155,7 @@ const UsersPage = ({ role, basePath }) => {
     await dispatch(getUsersList()).unwrap();
   };
 
-  if (isLoading) {
+  if (loading.list) {
     return <Loading />;
   }
 

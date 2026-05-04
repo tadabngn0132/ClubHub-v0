@@ -97,7 +97,13 @@ const messageSlice = createSlice({
   name: "message",
   initialState: {
     messages: [],
-    isLoading: false,
+    loading: {
+      list: false,
+      create: false,
+      update: false,
+      softDelete: false,
+      hardDelete: false,
+    },
     error: null,
   },
   reducers: {
@@ -141,10 +147,10 @@ const messageSlice = createSlice({
     builder
       // Handle createNewMessage
       .addCase(createNewMessage.pending, (state) => {
-        state.isLoading = true;
+        state.loading.create = true;
       })
       .addCase(createNewMessage.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.create = false;
         const createdMessage = action.payload.data;
         const existingIndex = state.messages.findIndex(
           (message) => message.id === createdMessage.id,
@@ -157,29 +163,29 @@ const messageSlice = createSlice({
         }
       })
       .addCase(createNewMessage.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.create = false;
         state.error = action.payload || "Failed to create message";
       })
 
       // Handle getMessagesByRoom
       .addCase(getMessagesByRoom.pending, (state) => {
-        state.isLoading = true;
+        state.loading.list = true;
       })
       .addCase(getMessagesByRoom.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.list = false;
         state.messages = action.payload.data;
       })
       .addCase(getMessagesByRoom.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.list = false;
         state.error = action.payload || "Failed to fetch messages";
       })
 
       // Handle updateMessageById
       .addCase(updateMessageById.pending, (state) => {
-        state.isLoading = true;
+        state.loading.update = true;
       })
       .addCase(updateMessageById.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.update = false;
         const index = state.messages.findIndex(
           (message) => message.id === action.payload.data.id,
         );
@@ -188,37 +194,37 @@ const messageSlice = createSlice({
         }
       })
       .addCase(updateMessageById.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.update = false;
         state.error = action.payload || "Failed to update message";
       })
 
       // Handle softDeleteMessageById
       .addCase(softDeleteMessageById.pending, (state) => {
-        state.isLoading = true;
+        state.loading.softDelete = true;
       })
       .addCase(softDeleteMessageById.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.softDelete = false;
         state.messages = state.messages.filter(
           (message) => message.id !== action.meta.arg,
         );
       })
       .addCase(softDeleteMessageById.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.softDelete = false;
         state.error = action.payload || "Failed to soft delete message";
       })
 
       // Handle hardDeleteMessageById
       .addCase(hardDeleteMessageById.pending, (state) => {
-        state.isLoading = true;
+        state.loading.hardDelete = true;
       })
       .addCase(hardDeleteMessageById.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading.hardDelete = false;
         state.messages = state.messages.filter(
           (message) => message.id !== action.meta.arg,
         );
       })
       .addCase(hardDeleteMessageById.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading.hardDelete = false;
         state.error = action.payload || "Failed to hard delete message";
       });
   },

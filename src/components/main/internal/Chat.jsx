@@ -34,7 +34,7 @@ const SOCKET_EVENTS = {
 
 const Chat = ({ selectedRoomId, onCloseRoom }) => {
   const dispatch = useDispatch();
-  const { messages, isLoading, error } = useSelector((state) => state.message);
+  const { messages, loading, error } = useSelector((state) => state.message);
   const { chatRoom } = useSelector((state) => state.chatRoom);
   const { currentUser, token } = useSelector((state) => state.auth);
   const { emitEventWithAck, onEvent } = useSocket(token);
@@ -352,7 +352,7 @@ const Chat = ({ selectedRoomId, onCloseRoom }) => {
     );
   }
 
-  if (isLoading) {
+  if (loading.list) {
     return (
       <div className="flex h-full w-full items-center justify-center bg-gray-900 text-slate-300">
         <p>Loading messages...</p>

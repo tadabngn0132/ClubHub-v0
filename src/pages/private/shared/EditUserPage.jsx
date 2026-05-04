@@ -16,7 +16,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 const EditUserPage = ({ basePath }) => {
   const { userId } = useParams();
   const dispatch = useDispatch();
-  const { user, isLoading, error } = useSelector((state) => state.user);
+  const { user, loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const EditUserPage = ({ basePath }) => {
     navigate(basePath);
   };
 
-  if (isLoading) {
+  if (loading.details) {
     return <Loading />;
   }
 

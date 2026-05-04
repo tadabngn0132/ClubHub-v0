@@ -16,7 +16,7 @@ const SettingPage = () => {
   const [isLinkingGoogle, setIsLinkingGoogle] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { currentUser } = useSelector((state) => state.auth);
-  const { user, isLoading, error } = useSelector((state) => state.user);
+  const { user, loading, error } = useSelector((state) => state.user);
 
   const isGoogleLinked = useMemo(() => {
     return Boolean(
@@ -141,7 +141,7 @@ const SettingPage = () => {
     };
   }, [dispatch, currentUser]);
 
-  if (isLoading) {
+  if (loading.details) {
     return <Loading />;
   }
 
