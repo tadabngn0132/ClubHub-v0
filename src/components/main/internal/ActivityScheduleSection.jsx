@@ -8,11 +8,44 @@ const ActivityScheduleSection = () => {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.user);
   const [isRegistrationRequired, setIsRegistrationRequired] = useState(false);
+  const [isSelectAll, setIsSelectAll] = useState(false);
   const {
     register,
     watch,
+    setValue,
     formState: { errors },
   } = useFormContext();
+
+  const designatedParticipantsValue = watch("designatedParticipants");
+
+  useEffect(() => {
+    dispatch(getUsersList());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // Update isSelectAll when designatedParticipantsValue changes
+    if (users.length > 0 && designatedParticipantsValue) {
+      const allSelected = users.every((user) =>
+        designatedParticipantsValue.includes(user.id.toString()),
+      );
+      setIsSelectAll(allSelected);
+    } else {
+      setIsSelectAll(false);
+    }
+  }, [designatedParticipantsValue, users]);
+
+  const handleSelectAll = (e) => {
+    const checked = e.target.checked;
+    setIsSelectAll(checked);
+    if (checked) {
+      // Select all users
+      const allUserIds = users.map((user) => user.id.toString());
+      setValue("designatedParticipants", allUserIds);
+    } else {
+      // Deselect all users
+      setValue("designatedParticipants", []);
+    }
+  };
 
   const startDateValue = watch("startDate");
 
@@ -139,6 +172,22 @@ const ActivityScheduleSection = () => {
             </p>
 
             <div className="max-h-64 space-y-2 overflow-y-auto">
+              {/* Select All Checkbox */}
+              <div className="sticky top-0 mb-3 border-b border-gray-600 bg-gray-800/80 p-2">
+                <label className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-gray-700/50">
+                  <input
+                    type="checkbox"
+                    checked={isSelectAll}
+                    onChange={handleSelectAll}
+                    className="h-4 w-4 rounded border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
+                  />
+                  <span className="text-sm font-semibold text-gray-100">
+                    Select All
+                  </span>
+                </label>
+              </div>
+
+              {/* Individual User Checkboxes */}
               {users.map((user) => (
                 <label
                   key={user.id}

@@ -20,7 +20,7 @@ const API_BASE_URL =
 // Create an axios instance
 const axiosClient = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 5000,
+  timeout: 8000,
   withCredentials: true,
 });
 
