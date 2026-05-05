@@ -7,6 +7,7 @@ import { getUsersList } from "../../../store/slices/userSlice.js";
 const ActivityScheduleSection = () => {
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.auth);
   const [isRegistrationRequired, setIsRegistrationRequired] = useState(false);
   const [isSelectAll, setIsSelectAll] = useState(false);
   const {
@@ -17,6 +18,11 @@ const ActivityScheduleSection = () => {
   } = useFormContext();
 
   const designatedParticipantsValue = watch("designatedParticipantIds");
+  const organizerId = watch("organizerId");
+
+  // Lọc bỏ organizer khỏi danh sách user để chọn (dùng organizerId từ form, hoặc currentUser.id nếu form chưa load)
+  const userId = organizerId || currentUser?.id;
+  const availableUsers = users.filter((user) => user.id !== userId);
 
   useEffect(() => {
     dispatch(getUsersList());
@@ -24,22 +30,22 @@ const ActivityScheduleSection = () => {
 
   useEffect(() => {
     // Update isSelectAll when designatedParticipantsValue changes
-    if (users.length > 0 && designatedParticipantsValue) {
-      const allSelected = users.every((user) =>
+    if (availableUsers.length > 0 && designatedParticipantsValue) {
+      const allSelected = availableUsers.every((user) =>
         designatedParticipantsValue.includes(user.id.toString()),
       );
       setIsSelectAll(allSelected);
     } else {
       setIsSelectAll(false);
     }
-  }, [designatedParticipantsValue, users]);
+  }, [designatedParticipantsValue, availableUsers]);
 
   const handleSelectAll = (e) => {
     const checked = e.target.checked;
     setIsSelectAll(checked);
     if (checked) {
-      // Select all users
-      const allUserIds = users.map((user) => user.id.toString());
+      // Select all users (trừ organizer)
+      const allUserIds = availableUsers.map((user) => user.id.toString());
       setValue("designatedParticipantIds", allUserIds);
     } else {
       // Deselect all users
@@ -188,7 +194,7 @@ const ActivityScheduleSection = () => {
               </div>
 
               {/* Individual User Checkboxes */}
-              {users.map((user) => (
+              {availableUsers.map((user) => (
                 <label
                   key={user.id}
                   className="flex cursor-pointer items-center gap-2 rounded p-2 hover:bg-gray-700/50"

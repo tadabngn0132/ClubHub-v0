@@ -117,8 +117,11 @@ const ActivitiesTableView = ({
                         : "N/A"}
                     </td>
                     <td className="px-4 py-3 text-gray-300">
-                      {activity.venueName || activity.venueAddress || "N/A"}
-                      {activity.roomNumber ? ` - ${activity.roomNumber}` : ""}
+                      {activity.locationType === "online"
+                        ? "Online"
+                        : activity.locationType === "in_person"
+                          ? activity.venueName
+                          : "N/A"}
                     </td>
                     <td className="px-4 py-3">
                       <span className="rounded-full border border-emerald-500/40 bg-emerald-500/20 px-2.5 py-1 text-xs font-semibold uppercase text-emerald-200">

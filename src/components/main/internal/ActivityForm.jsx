@@ -32,8 +32,12 @@ const ActivityForm = ({ activity, onSubmit }) => {
         ? formatDateTimeToLocal(activity.registrationDeadline)
         : "",
       requireRegistration: activity ? activity.requireRegistration : false,
-      designatedParticipantIds: activity ? activity.activityParticipations.map((p) => p.userId) : [],
-      organizerId: currentUser?.id,
+      designatedParticipantIds: activity
+        ? activity.activityParticipations
+            .map((p) => p.userId)
+            .filter((userId) => userId !== activity.organizerId)
+        : [],
+      organizerId: activity ? activity.organizerId : currentUser?.id,
       isPublic: activity ? activity.isPublic : true,
       isFeatured: activity ? activity.isFeatured : false,
       // priority: activity ? activity.priority : 0,
@@ -66,9 +70,13 @@ const ActivityForm = ({ activity, onSubmit }) => {
     formData.append("maxParticipants", data.maxParticipants || "");
     formData.append("registrationDeadline", data.registrationDeadline);
     formData.append("requireRegistration", data.requireRegistration);
+    // Lọc bỏ organizerId khỏi designatedParticipantIds để an toàn
+    const filteredParticipantIds = data.designatedParticipantIds.filter(
+      (id) => id !== data.organizerId,
+    );
     formData.append(
       "designatedParticipantIds",
-      JSON.stringify(data.designatedParticipantIds),
+      JSON.stringify(filteredParticipantIds),
     );
     formData.append("isPublic", data.isPublic);
     formData.append("isFeatured", data.isFeatured);
@@ -123,7 +131,7 @@ const ActivityForm = ({ activity, onSubmit }) => {
           <input
             type="hidden"
             {...methods.register("organizerId")}
-            value={currentUser?.id}
+            value={activity ? activity.organizerId : currentUser?.id}
           />
 
           {/* Render active tab content */}
