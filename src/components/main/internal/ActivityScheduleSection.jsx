@@ -16,7 +16,7 @@ const ActivityScheduleSection = () => {
     formState: { errors },
   } = useFormContext();
 
-  const designatedParticipantsValue = watch("designatedParticipants");
+  const designatedParticipantsValue = watch("designatedParticipantIds");
 
   useEffect(() => {
     dispatch(getUsersList());
@@ -40,10 +40,10 @@ const ActivityScheduleSection = () => {
     if (checked) {
       // Select all users
       const allUserIds = users.map((user) => user.id.toString());
-      setValue("designatedParticipants", allUserIds);
+      setValue("designatedParticipantIds", allUserIds);
     } else {
       // Deselect all users
-      setValue("designatedParticipants", []);
+      setValue("designatedParticipantIds", []);
     }
   };
 
@@ -196,7 +196,7 @@ const ActivityScheduleSection = () => {
                   <input
                     type="checkbox"
                     value={user.id}
-                    {...register("designatedParticipants")}
+                    {...register("designatedParticipantIds")}
                     className="h-4 w-4 rounded border-gray-600 bg-gray-900 text-blue-500 focus:ring-blue-500"
                   />
                   <span className="text-sm text-gray-200">{user.fullname}</span>

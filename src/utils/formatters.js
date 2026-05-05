@@ -2,56 +2,65 @@ export const formatDate = (dateString) => {
   if (!dateString) return "";
   const options = { year: "numeric", month: "long", day: "numeric" };
   return new Date(dateString).toLocaleDateString(undefined, options);
-}
+};
 
 export const formatDateToLocal = (dateString) => {
   if (!dateString) return "";
   return dateString.slice(0, 10);
-}
+};
+
+export const formatDateTimeToLocal = (dateTimeString) => {
+  if (!dateTimeString) return "";
+  const date = new Date(dateTimeString);
+  if (Number.isNaN(date.getTime())) return "";
+
+  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return localDate.toISOString().slice(0, 16);
+};
 
 export const formatNumberToString = (number) => {
   if (number === null || number === undefined) return "";
   return number.toString();
-}
+};
 
 export const formatUppercaseToLowercase = (str) => {
   if (!str) return "";
   return str.toLowerCase();
-}
+};
 
 export const formatUppercaseToCapitalized = (str) => {
   if (!str) return "";
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
+};
 
 export const formatPositionLevel = (level) => {
   if (level === null || level === undefined) return "";
   switch (level) {
-    case 'TOP_HEAD':
-      return 'Top Head';
-    case 'TOP_VICE_HEAD':
-      return 'Top Vice Head';
-    case 'MIDDLE_HEAD':
-      return 'Middle Head';
-    case 'MIDDLE_VICE_HEAD':
-      return 'Middle Vice Head';
-    case 'MEMBER':
-      return 'Member';
+    case "TOP_HEAD":
+      return "Top Head";
+    case "TOP_VICE_HEAD":
+      return "Top Vice Head";
+    case "MIDDLE_HEAD":
+      return "Middle Head";
+    case "MIDDLE_VICE_HEAD":
+      return "Middle Vice Head";
+    case "MEMBER":
+      return "Member";
     default:
       return level;
   }
-}
+};
 
 export const formatRoleBadgeColor = (role) => {
   switch (role.toLowerCase()) {
     case "admin":
-        return "bg-rose-500/20 text-rose-300 border-rose-500/30";
-      case "moderator":
-        return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
-      case "member":
-        return "bg-sky-500/20 text-sky-300 border-sky-500/30";
-      default:
-        return "bg-slate-500/20 text-slate-300 border-slate-500/30";
+      return "bg-rose-500/20 text-rose-300 border-rose-500/30";
+    case "moderator":
+      return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
+    case "member":
+      return "bg-sky-500/20 text-sky-300 border-sky-500/30";
+    default:
+      return "bg-slate-500/20 text-slate-300 border-slate-500/30";
   }
 };
 
@@ -68,8 +77,8 @@ export const formatStatusBadgeColor = (status) => {
 
 export const formatDeptStatusBadgeColor = (isActive) => {
   return isActive ? "text-green-600 font-medium" : "text-gray-600 font-medium";
-}
+};
 
 export const formatDeletedBadgeColor = (isDeleted) => {
   return isDeleted ? "text-red-600 font-medium" : "text-green-600 font-medium";
-}
+};

@@ -5,6 +5,7 @@ import ActivityBasicInfoSection from "./ActivityBasicInfoSection.jsx";
 import ActivityLocationSection from "./ActivityLocationSection.jsx";
 import ActivityDescriptionSection from "./ActivityDescriptionSection.jsx";
 import ActivityScheduleSection from "./ActivityScheduleSection.jsx";
+import { formatDateTimeToLocal } from "../../../utils/formatters.js";
 
 const ActivityForm = ({ activity, onSubmit }) => {
   const [activeTab, setActiveTab] = useState(0);
@@ -16,8 +17,8 @@ const ActivityForm = ({ activity, onSubmit }) => {
       description: activity ? activity.description : "",
       shortDescription: activity ? activity.shortDescription : "",
       slug: activity ? activity.slug : "",
-      startDate: activity ? activity.startDate : "",
-      endDate: activity ? activity.endDate : "",
+      startDate: activity ? formatDateTimeToLocal(activity.startDate) : "",
+      endDate: activity ? formatDateTimeToLocal(activity.endDate) : "",
       locationType: activity ? activity.locationType : "",
       venueName: activity ? activity.venueName : "",
       venueAddress: activity ? activity.venueAddress : "",
@@ -27,13 +28,15 @@ const ActivityForm = ({ activity, onSubmit }) => {
       thumbnailUrl: activity ? activity.thumbnailUrl : "",
       thumbnail: activity ? activity.thumbnail : null,
       maxParticipants: activity ? activity.maxParticipants : null,
-      registrationDeadline: activity ? activity.registrationDeadline : "",
+      registrationDeadline: activity
+        ? formatDateTimeToLocal(activity.registrationDeadline)
+        : "",
       requireRegistration: activity ? activity.requireRegistration : false,
-      designatedParticipants: activity ? activity.designatedParticipants : [],
+      designatedParticipantIds: activity ? activity.activityParticipations.map((p) => p.userId) : [],
       organizerId: currentUser?.id,
       isPublic: activity ? activity.isPublic : true,
       isFeatured: activity ? activity.isFeatured : false,
-      priority: activity ? activity.priority : 0,
+      // priority: activity ? activity.priority : 0,
     },
     mode: "onChange",
     reValidateMode: "onChange",
@@ -64,12 +67,12 @@ const ActivityForm = ({ activity, onSubmit }) => {
     formData.append("registrationDeadline", data.registrationDeadline);
     formData.append("requireRegistration", data.requireRegistration);
     formData.append(
-      "designatedParticipants",
-      JSON.stringify(data.designatedParticipants),
+      "designatedParticipantIds",
+      JSON.stringify(data.designatedParticipantIds),
     );
     formData.append("isPublic", data.isPublic);
     formData.append("isFeatured", data.isFeatured);
-    formData.append("priority", data.priority);
+    // formData.append("priority", data.priority);
     formData.append("organizerId", data.organizerId);
 
     if (data.thumbnail && data.thumbnail[0]) {

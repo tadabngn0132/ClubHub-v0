@@ -63,7 +63,7 @@ const ActivityDescriptionSection = () => {
       </div>
 
       {/* Priority */}
-      <label htmlFor="priority" className={labelClassName}>
+      {/* <label htmlFor="priority" className={labelClassName}>
         Priority
       </label>
       <input
@@ -79,7 +79,7 @@ const ActivityDescriptionSection = () => {
       />
       {errors.priority && (
         <p className={errorClassName}>{errors.priority.message}</p>
-      )}
+      )} */}
     </div>
   );
 };

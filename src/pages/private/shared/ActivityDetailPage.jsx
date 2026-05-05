@@ -299,9 +299,9 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
                 <span className="rounded-full border border-amber-500/60 bg-amber-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-200">
                   {normalizeText(activity?.type)}
                 </span>
-                <span className="rounded-full border border-violet-500/60 bg-violet-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-violet-200">
+                {/* <span className="rounded-full border border-violet-500/60 bg-violet-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-violet-200">
                   Priority: {String(activity?.priority)}
-                </span>
+                </span> */}
               </div>
 
               <h1 className="text-2xl font-black tracking-tight text-white sm:text-3xl">
