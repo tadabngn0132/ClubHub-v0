@@ -248,7 +248,7 @@ const ClubCalendarView = ({ activities = [] }) => {
                             className="w-3 text-gray-500"
                           />
                           <span className="line-clamp-1">
-                            {activity.venueName}
+                            {activity.locationType ? activity.venueName : "Online"}
                           </span>
                         </div>
                       )}
