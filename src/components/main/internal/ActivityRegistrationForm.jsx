@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { createNewActivityParticipation } from "../../../store/slices/activityParticipationSlice";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -12,10 +10,7 @@ const ActivityRegistrationForm = ({
 }) => {
   const { activityId } = useParams();
   const resolvedActivityId = activityIdProp || activityId;
-  const dispatch = useDispatch();
-  const { isLoading, error } = useSelector(
-    (state) => state.activityParticipation,
-  );
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -30,11 +25,7 @@ const ActivityRegistrationForm = ({
     mode: "onChange",
   });
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error.message || "An error occurred during registration.");
-    }
-  }, [error]);
+  // keep component focused on public registration; errors handled by axios interceptor
 
   const handleActivityRegistration = async (data) => {
     if (!resolvedActivityId) {
@@ -43,35 +34,27 @@ const ActivityRegistrationForm = ({
     }
 
     try {
-      if (activityIdProp) {
-        const response = await registerPublicActivity(resolvedActivityId, data);
-
-        if (!response?.success) {
-          toast.error(response?.message || "Registration failed.");
-          return;
-        }
-
-        toast.success(
-          response.message || "Registration submitted successfully.",
-        );
-        reset();
-        if (onSuccess) {
-          onSuccess(response.data);
-        }
+      // Only support public registration from this form; private creation handled elsewhere
+      if (!activityIdProp) {
+        toast.error("This form supports public registration only.");
         return;
       }
 
-      await dispatch(
-        createNewActivityParticipation({
-          activityId: Number(resolvedActivityId),
-          status: "registered",
-          guestName: data.name,
-          guestEmail: data.email,
-          guestPhoneNumber: data.phoneNumber,
-        }),
-      ).unwrap();
+      setLoading(true);
+      const response = await registerPublicActivity(resolvedActivityId, data);
+
+      setLoading(false);
+
+      if (!response?.success) {
+        toast.error(response?.message || "Registration failed.");
+        return;
+      }
+
+      toast.success(response.message || "Registration submitted successfully.");
       reset();
+      if (onSuccess) onSuccess(response.data);
     } catch (submitError) {
+      setLoading(false);
       toast.error(
         submitError?.response?.data?.message ||
           submitError?.message ||
@@ -167,10 +150,10 @@ const ActivityRegistrationForm = ({
 
       <button
         type="submit"
-        disabled={isLoading}
         className="mt-5 rounded-lg bg-cyan-500/20 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-500/35 disabled:cursor-not-allowed disabled:opacity-50"
+        disabled={loading}
       >
-        {isLoading ? "Submitting..." : "Submit Registration"}
+        {loading ? "Submitting..." : "Submit Registration"}
       </button>
     </form>
   );

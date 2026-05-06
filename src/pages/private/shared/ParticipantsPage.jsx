@@ -49,8 +49,8 @@ const ParticipantsPage = () => {
         (statusFilter === "no-show" && participant.status === "ABSENT") ||
         (statusFilter === "cancelled" && participant.status === "CANCELLED");
 
-      const name = participant.participantName || "";
-      const email = participant.participantEmail || "";
+      const name = participant.user ? participant.user.fullname : participant.guestName || "";
+      const email = participant.user ? participant.user.email : participant.guestEmail || "";
       const searchMatched =
         normalizedSearch.length === 0 ||
         name.toLowerCase().includes(normalizedSearch) ||
@@ -102,8 +102,8 @@ const ParticipantsPage = () => {
 
     const header = ["Name", "Email", "Status"];
     const rows = filteredRegistrations.map((p) => [
-      p.participantName || "N/A",
-      p.participantEmail || "N/A",
+      p.user ?  p.user.fullname : p.guestName || "N/A",
+      p.user ? p.user.email : p.guestEmail || "N/A",
       p.status || "N/A",
     ]);
 
@@ -228,10 +228,10 @@ const ParticipantsPage = () => {
                   filteredRegistrations.map((participation) => (
                     <tr key={participation.id} className="hover:bg-zinc-900/60">
                       <td className="px-4 py-3 font-medium text-zinc-100">
-                        {participation.participantName || "N/A"}
+                        {participation.user ? participation.user.fullname : participation.guestName || "N/A"}
                       </td>
                       <td className="px-4 py-3 text-zinc-300">
-                        {participation.participantEmail || "N/A"}
+                        {participation.user ? participation.user.email : participation.guestEmail || "N/A"}
                       </td>
                       <td className="px-4 py-3">
                         <span
