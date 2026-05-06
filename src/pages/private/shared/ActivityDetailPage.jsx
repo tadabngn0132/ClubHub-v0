@@ -196,7 +196,7 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
 
     if (
       activity?.activityParticipations?.some(
-        (p) => p.userId === currentUser.id && p.status === "REGISTERED",
+        (p) => p?.user?.id === currentUser.id && p.status === "REGISTERED",
       )
     ) {
       return true;
@@ -206,7 +206,7 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
 
   const handleRegister = async () => {
     await dispatch(
-      createNewActivityParticipation({ activityId, userId: currentUser.id }),
+      createNewActivityParticipation({ activityId, userId: currentUser.id, status: "REGISTERED" }),
     ).unwrap();
   };
 
@@ -566,13 +566,13 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
                   className="rounded-lg border border-zinc-700 bg-zinc-950/60 p-3"
                 >
                   <p className="font-semibold text-zinc-100">
-                    {participant.name || "Unknown member"}
+                    {participant.user ? participant.user.fullname : participant.guestName || "Unknown member"}
                   </p>
                   <p className="mt-1 text-sm text-zinc-300">
-                    {participant.email || "N/A"}
+                    {participant.user ? participant.user.email : participant.guestEmail || "N/A"}
                   </p>
-                  <p className="text-sm text-zinc-400">
-                    {participant.phoneNumber || "N/A"}
+                  <p className="mt-1 text-xs text-zinc-400">
+                    {participant.user ? participant.user.phoneNumber : participant.guestPhoneNumber || "N/A"}
                   </p>
 
                   {role === "ADMIN" && (

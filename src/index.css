@@ -169,3 +169,7 @@ select option:active {
 button {
   cursor: pointer;
 }
+
+button:disabled {
+  cursor: not-allowed;
+}
