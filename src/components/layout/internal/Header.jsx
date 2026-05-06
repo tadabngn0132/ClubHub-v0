@@ -135,7 +135,7 @@ const Header = ({ role, onHandleSideBarToggle }) => {
 
           {isNotificationOpen && (
             <div className="absolute right-0 top-7 z-[1200] w-80">
-              <Notification />
+              <Notification onClose={() => setIsNotificationOpen(false)} />
             </div>
           )}
         </div>

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUserDashboardStats } from "../../../store/slices/userSlice";
-import { getUserNotifications } from "../../../store/slices/notificationSlice";
 import Loading from "../../layout/internal/Loading";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -13,30 +12,24 @@ const DashboardWidget = () => {
   const { dashboardStats, isLoading, error } = useSelector(
     (state) => state.user,
   );
-  const {
-    notifications,
-    isLoading: isNotificationsLoading,
-    error: notificationError,
-  } = useSelector((state) => state.notification);
   const { incompleteTasks, upcomingEvents, recentActivities } =
     dashboardStats || {};
 
   useEffect(() => {
     if (currentUser) {
       dispatch(getAllUserDashboardStats(currentUser.id));
-      dispatch(getUserNotifications(currentUser.id));
     }
   }, [currentUser, dispatch]);
 
   useEffect(() => {
-    if (error || notificationError) {
-      toast.error(error || notificationError);
+    if (error) {
+      toast.error(error.message || "An error occurred while fetching dashboard data.");
     }
-  }, [error, notificationError]);
+  }, [error]);
 
   const userRole = getUserRole(currentUser)?.toLowerCase();
 
-  if (isLoading || isNotificationsLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -150,35 +143,6 @@ const DashboardWidget = () => {
                   >
                     {task.task.title || "Untitled task"}
                   </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div className={sectionCardClassName}>
-          <div className="mb-4 flex items-center justify-between gap-4">
-            <div>
-              <h2 className="text-lg font-semibold text-white">
-                Notifications
-              </h2>
-              <p className="mt-1 text-sm text-slate-400">
-                Recent updates and alerts for you.
-              </p>
-            </div>
-            <span className="rounded-full border border-sky-500/20 bg-sky-500/10 px-3 py-1 text-xs font-medium text-sky-200">
-              {notifications?.length || 0}
-            </span>
-          </div>
-          {notifications?.length === 0 ? (
-            <p className="rounded-xl border border-dashed border-white/10 bg-white/5 px-4 py-4 text-sm text-slate-400">
-              No notifications.
-            </p>
-          ) : (
-            <ul className="space-y-3">
-              {notifications?.map((notification) => (
-                <li key={notification.id} className={listItemClassName}>
-                  {notification.message || "Notification"}
                 </li>
               ))}
             </ul>

@@ -14,10 +14,10 @@ import {
 import { Link } from "react-router-dom";
 import { getUserRole } from "../../../utils/helper";
 
-const Notification = () => {
+const Notification = ({ onClose }) => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.auth);
-  const { notifications, isLoading, error } = useSelector(
+  const { notifications, isLoading: isNotificationLoading, error } = useSelector(
     (state) => state.notification,
   );
 
@@ -51,13 +51,14 @@ const Notification = () => {
         <h1 className="text-md font-semibold text-white">Notifications</h1>
         <button
           onClick={handleMarkAllAsRead}
-          className="inline-flex items-center rounded-md border border-[#DB3F7A]/40 bg-[#DB3F7A]/10 px-3 py-1.5 text-xs font-semibold text-[#ff9ac0] transition hover:bg-[#DB3F7A]/20"
+          disabled={notifications.length === 0 || notifications.every((n) => n.isRead)}
+          className="inline-flex items-center rounded-md border border-[#DB3F7A]/40 bg-[#DB3F7A]/10 px-3 py-1.5 text-xs font-semibold text-[#ff9ac0] transition hover:bg-[#DB3F7A]/20 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[#DB3F7A]/10"
         >
           Mark all as read
         </button>
       </div>
 
-      {isLoading ? (
+      {isNotificationLoading ? (
         <div className="mt-4">
           <Loading />
         </div>
@@ -89,6 +90,7 @@ const Notification = () => {
       )}
       <Link
         to={`/${userRole}/notifications`}
+        onClick={onClose}
         className="mt-3 inline-flex items-center text-xs font-medium text-white/70 transition hover:text-white"
       >
         View All Notifications
