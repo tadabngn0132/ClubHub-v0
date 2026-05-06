@@ -11,6 +11,7 @@ import {
 } from "../../../store/slices/userSlice";
 import toast from "react-hot-toast";
 import { getActivitiesByUserId } from "../../../store/slices/activitySlice";
+import { getUserTasks } from "../../../store/slices/taskSlice.js";
 import Loading from "../../../components/layout/internal/Loading.jsx";
 import {
   formatDate,
@@ -29,12 +30,16 @@ const UserDetailPage = ({ role, basePath }) => {
     isLoading: activitiesLoading,
     error: activitiesError,
   } = useSelector((state) => state.activity);
+  const { tasks, isLoading: tasksLoading, error: tasksError } = useSelector(
+    (state) => state.task,
+  );
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [deleteMode, setDeleteMode] = useState("");
 
   useEffect(() => {
     dispatch(getUserById(userId));
     dispatch(getActivitiesByUserId(userId));
+    dispatch(getUserTasks(userId));
   }, [dispatch, userId]);
 
   useEffect(() => {
@@ -282,7 +287,7 @@ const UserDetailPage = ({ role, basePath }) => {
               </p>
               <p className="mt-1 text-2xl font-bold text-amber-300">
                 {
-                  activities.filter((activity) => activity.type === "task")
+                  tasks.filter((task) => task.status === "done")
                     .length
                 }
               </p>
@@ -294,6 +299,7 @@ const UserDetailPage = ({ role, basePath }) => {
           id="recent-activities-list"
           className="grid gap-6 lg:grid-cols-2"
         >
+          {activities.length > 0 ? (
           <div className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
             <h2 className="mb-4 text-lg font-bold text-slate-100">
               Recent Activities
@@ -313,48 +319,62 @@ const UserDetailPage = ({ role, basePath }) => {
                       {activity.title}
                     </h3>
                     <p className="mt-1 text-sm text-slate-300">
-                      {activity.description}
+                      {activity.description.length > 100 ? `${activity.description.slice(0, 100)}...` : activity.description}
                     </p>
                     <p className="mt-2 text-xs text-slate-400">
                       <strong className="text-slate-300">Date:</strong>{" "}
-                      {formatDate(activity.date)}
+                      {formatDate(activity.startDate)}
                     </p>
                   </li>
                 ))}
               </ul>
             )}
           </div>
+          ) : (
+            <div className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
+              <h2 className="mb-4 text-lg font-bold text-slate-100">
+                Recent Activities
+              </h2>
+              <p className="text-sm text-slate-500">No recent activities found.</p>
+            </div>
+          )}
 
+          {tasks.length > 0 ? (
           <div className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
             <h2 className="mb-4 text-lg font-bold text-slate-100">
               Recent CF Tasks
             </h2>
-            {activitiesLoading ? (
-              <p className="text-sm text-slate-400">Loading activities...</p>
-            ) : activitiesError ? (
-              <p className="text-sm text-rose-300">{activitiesError}</p>
+            {tasksLoading ? (
+              <p className="text-sm text-slate-400">Loading tasks...</p>
+            ) : tasksError ? (
+              <p className="text-sm text-rose-300">{tasksError}</p>
             ) : (
               <ul className="space-y-3">
-                {activities.map((activity) => (
+                {tasks.map((task) => (
                   <li
-                    key={activity.id}
+                    key={task.id}
                     className="rounded-xl border border-slate-700 bg-slate-800/70 p-4"
                   >
                     <h3 className="font-semibold text-slate-100">
-                      {activity.title}
+                      {task.task.title}
                     </h3>
-                    <p className="mt-1 text-sm text-slate-300">
-                      {activity.description}
-                    </p>
                     <p className="mt-2 text-xs text-slate-400">
-                      <strong className="text-slate-300">Date:</strong>{" "}
-                      {formatDate(activity.date)}
+                      <strong className="text-slate-300">Due Date:</strong>{" "}
+                      {formatDate(task.task.dueDate)}
                     </p>
                   </li>
                 ))}
               </ul>
             )}
           </div>
+          ) : (
+            <div className="rounded-2xl border border-slate-700/60 bg-slate-900/65 p-5 md:p-6">
+              <h2 className="mb-4 text-lg font-bold text-slate-100">
+                Recent CF Tasks
+              </h2>
+              <p className="text-sm text-slate-500">No recent CF tasks found.</p>
+            </div>
+          )}
         </section>
 
         <ConfirmationModal
