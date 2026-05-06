@@ -422,7 +422,7 @@ const Chat = ({ userId, selectedRoomId, onCloseRoom }) => {
                   <img
                     src={message.sender?.avatarUrl}
                     alt="Avatar"
-                    className="flex shrink-0 items-center justify-center rounded-full border border-pink-400/30 bg-pink-500/10 text-xl font-bold text-pink-100"
+                    className="flex shrink-0 items-center justify-center rounded-full border border-pink-400/30 bg-pink-500/10 text-xl font-bold text-pink-100 w-8 h-8 object-cover"
                   />
                 ) : (
                   <div>
