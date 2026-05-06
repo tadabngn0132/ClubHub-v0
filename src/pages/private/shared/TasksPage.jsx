@@ -206,12 +206,6 @@ const TasksPage = ({ role, basePath }) => {
           </div>
         </section>
 
-        {error && (
-          <div className="rounded-xl border border-rose-400/50 bg-rose-500/15 px-4 py-3 text-sm text-rose-200">
-            {error}
-          </div>
-        )}
-
         <div className="grid gap-3 md:grid-cols-4">
           <input
             value={searchTerm}

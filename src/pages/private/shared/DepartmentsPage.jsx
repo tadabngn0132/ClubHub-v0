@@ -158,8 +158,8 @@ const DepartmentsPage = ({ role, basePath }) => {
   }
 
   return (
-    <div>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight md:text-3xl">
             Departments
@@ -181,42 +181,43 @@ const DepartmentsPage = ({ role, basePath }) => {
         )}
       </div>
 
+      <div className="grid gap-3 md:grid-cols-4">
+        <input
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search department name or description"
+          className="md:col-span-2 rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+        />
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+        >
+          <option value="all">All Statuses</option>
+          {USER_STATUS_OPTIONS.map((status) => (
+            <option key={status} value={status}>
+              {formatUppercaseToCapitalized(status)}
+            </option>
+          ))}
+        </select>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
+        >
+          <option value="name_asc">Name: A-Z</option>
+          <option value="name_desc">Name: Z-A</option>
+        </select>
+        <button
+          type="button"
+          onClick={clearFilters}
+          className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm font-medium text-slate-100 hover:border-[var(--pink-color)]"
+        >
+          Clear Filters
+        </button>
+      </div>
+      
       <div className="overflow-hidden rounded-2xl border border-slate-700/60 bg-slate-900/65">
-        <div className="grid gap-3 p-3 md:grid-cols-4">
-          <input
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search department name or description"
-            className="md:col-span-2 rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
-          />
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
-          >
-            <option value="all">All Statuses</option>
-            {USER_STATUS_OPTIONS.map((status) => (
-              <option key={status} value={status}>
-                {formatUppercaseToCapitalized(status)}
-              </option>
-            ))}
-          </select>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-[var(--pink-color)]"
-          >
-            <option value="name_asc">Name: A-Z</option>
-            <option value="name_desc">Name: Z-A</option>
-          </select>
-          <button
-            type="button"
-            onClick={clearFilters}
-            className="rounded-lg border border-slate-600 bg-slate-900 px-3 py-2 text-sm font-medium text-slate-100 hover:border-[var(--pink-color)]"
-          >
-            Clear Filters
-          </button>
-        </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] border-collapse text-sm">
             <thead className="bg-slate-800/95 text-slate-200 backdrop-blur">
