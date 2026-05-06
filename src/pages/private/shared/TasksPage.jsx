@@ -396,13 +396,15 @@ const TasksPage = ({ role, basePath }) => {
                       <td className={`px-3 py-3 text-slate-300`}>
                         {formatUppercaseToCapitalized(task.status)}
                       </td>
-                      <td className={`px-3 py-3 text-slate-300`}>
-                        {formatUppercaseToCapitalized(
-                          task.assignees.find(
-                            (a) => a.assigneeId === currentUser.id,
-                          )?.status || "UNASSIGNED",
-                        )}
-                      </td>
+                      {role !== "MEMBER" && (
+                        <td className={`px-3 py-3 text-slate-300`}>
+                          {formatUppercaseToCapitalized(
+                            task.assignees.find(
+                              (a) => a.assigneeId === currentUser.id,
+                            )?.status || "UNASSIGNED",
+                          )}
+                        </td>
+                      )}
                       <td className="px-3 py-3 text-slate-300">
                         {formatUppercaseToCapitalized(task.assigneeScope)}
                       </td>
