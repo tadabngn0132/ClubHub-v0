@@ -99,7 +99,7 @@ export const getActivityParticipationsByUserId = createAsyncThunk(
 
 export const updateActivityParticipationById = createAsyncThunk(
   "updateActivityParticipationById",
-  async ({ id, ...participationData }, thunkAPI) => {
+  async ({ id, participationData }, thunkAPI) => {
     try {
       const data = await updateParticipationById(id, participationData);
 

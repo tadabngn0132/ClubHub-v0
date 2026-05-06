@@ -71,7 +71,7 @@ const DashboardWidget = () => {
     "rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-200 transition hover:border-white/20 hover:bg-white/10";
 
   return (
-    <div className="mx-auto max-w-7xl rounded-3xl border border-white/10 bg-slate-950/90 p-6 text-slate-100 shadow-2xl shadow-black/30 backdrop-blur md:p-8">
+    <div className="p-2 md:p-0">
       <div className="mb-8 flex flex-col gap-4 border-b border-white/10 pb-6 md:flex-row md:items-end md:justify-between">
         <div className="space-y-3">
           <div className="inline-flex w-fit items-center rounded-full border border-sky-500/30 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-sky-200">
