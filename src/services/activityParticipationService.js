@@ -47,10 +47,9 @@ export const checkInParticipant = async (participationId) => {
   return res.data;
 };
 
-export const markParticipantNoShow = async (activityId, userId) => {
+export const markParticipantNoShow = async (participationId) => {
   const res = await axiosClient.put(
-    `/activity-participations/${activityId}/no-show`,
-    { userId },
+    `/activity-participations/${participationId}/no-show`,
   );
   return res.data;
 };

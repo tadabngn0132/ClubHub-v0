@@ -165,3 +165,7 @@ select option:active {
   background-color: #111827 !important; /* slightly different dark */
   color: var(--white-color) !important;
 }
+
+button {
+  cursor: pointer;
+}

@@ -150,9 +150,9 @@ export const checkInActivityParticipant = createAsyncThunk(
 
 export const markActivityParticipantNoShow = createAsyncThunk(
   "markActivityParticipantNoShow",
-  async ({ activityId, userId }, thunkAPI) => {
+  async (participationId, thunkAPI) => {
     try {
-      const data = await markParticipantNoShow(activityId, userId);
+      const data = await markParticipantNoShow(participationId);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);

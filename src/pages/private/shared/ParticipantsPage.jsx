@@ -94,37 +94,6 @@ const ParticipantsPage = () => {
     return "border-amber-500/50 bg-amber-500/20 text-amber-200";
   };
 
-  const exportToCsv = () => {
-    if (filteredRegistrations.length === 0) {
-      toast.error("No participant data available to export.");
-      return;
-    }
-
-    const header = ["Name", "Email", "Status"];
-    const rows = filteredRegistrations.map((p) => [
-      p.user ?  p.user.fullname : p.guestName || "N/A",
-      p.user ? p.user.email : p.guestEmail || "N/A",
-      p.status || "N/A",
-    ]);
-
-    const csvContent = [header, ...rows]
-      .map((row) =>
-        row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(","),
-      )
-      .join("\n");
-
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-
-    link.href = url;
-    link.setAttribute("download", `participants-${activityId}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
   const userRole = getUserRole(currentUser).toLowerCase();
 
   if (isLoading) {
@@ -174,8 +143,8 @@ const ParticipantsPage = () => {
               >
                 <option value="all">All statuses</option>
                 <option value="registered">Registered</option>
-                <option value="checked-in">Checked-In</option>
-                <option value="no-show">No-Shows</option>
+                <option value="checked-in">Attended</option>
+                <option value="no-show">Absent</option>
                 <option value="cancelled">Cancelled</option>
               </select>
 
@@ -186,30 +155,6 @@ const ParticipantsPage = () => {
                 placeholder="Search by name or email..."
                 className="min-w-[240px] rounded-lg border border-zinc-600 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 outline-none transition focus:border-cyan-400"
               />
-            </div>
-
-            <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                className="rounded-lg bg-zinc-700/60 px-3 py-2 text-sm font-medium text-zinc-200 opacity-70"
-                disabled
-              >
-                Bulk Attended
-              </button>
-              <button
-                type="button"
-                className="rounded-lg bg-zinc-700/60 px-3 py-2 text-sm font-medium text-zinc-200 opacity-70"
-                disabled
-              >
-                Bulk Absent
-              </button>
-              <button
-                type="button"
-                onClick={exportToCsv}
-                className="rounded-lg bg-cyan-500/20 px-3 py-2 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-500/35"
-              >
-                Export CSV
-              </button>
             </div>
           </div>
 
@@ -261,18 +206,6 @@ const ParticipantsPage = () => {
                             className="rounded-md bg-rose-500/20 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-rose-200 transition hover:bg-rose-500/35"
                           >
                             Absent
-                          </button>
-                          <button
-                            onClick={() =>
-                              dispatch(
-                                resetActivityParticipantStatus(
-                                  participation.id,
-                                ),
-                              )
-                            }
-                            className="rounded-md bg-amber-500/20 px-2.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-amber-200 transition hover:bg-amber-500/35"
-                          >
-                            Reset
                           </button>
                         </div>
                       </td>
