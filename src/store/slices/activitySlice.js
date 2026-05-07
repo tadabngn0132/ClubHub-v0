@@ -138,9 +138,9 @@ export const hardDeleteActivityById = createAsyncThunk(
 
 export const createNewActivityImage = createAsyncThunk(
   "activity/createNewActivityImage",
-  async ({ activityId, formData }, thunkAPI) => {
+  async ({ activityId, imageData }, thunkAPI) => {
     try {
-      const data = await createActivityImage(activityId, formData);
+      const data = await createActivityImage(activityId, imageData);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);
@@ -172,9 +172,9 @@ export const getActivitiesByUserId = createAsyncThunk(
 
 export const createNewActivityVideo = createAsyncThunk(
   "activity/createNewActivityVideo",
-  async ({ activityId, formData }, thunkAPI) => {
+  async ({ activityId, videoData }, thunkAPI) => {
     try {
-      const data = await createActivityVideo(activityId, formData);
+      const data = await createActivityVideo(activityId, videoData);
 
       if (!data.success) {
         return thunkAPI.rejectWithValue(data.message);

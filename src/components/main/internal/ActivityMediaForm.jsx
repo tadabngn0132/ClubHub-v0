@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const ActivityMediaForm = ({ onImagesSubmit, onVideosSubmit }) => {
+    const [isImagesUploading, setIsImagesUploading] = useState(false);
+    const [isVideosUploading, setIsVideosUploading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -15,12 +19,24 @@ const ActivityMediaForm = ({ onImagesSubmit, onVideosSubmit }) => {
 
     const handleImagesFormSubmit = async (formData) => {
         const imageFiles = Array.from(formData?.images || []);
-        await onImagesSubmit(imageFiles);
+
+        setIsImagesUploading(true);
+        try {
+            await onImagesSubmit(imageFiles);
+        } finally {
+            setIsImagesUploading(false);
+        }
     };
 
     const handleVideosFormSubmit = async (formData) => {
         const videoFiles = Array.from(formData?.videos || []);
-        await onVideosSubmit(videoFiles);
+
+        setIsVideosUploading(true);
+        try {
+            await onVideosSubmit(videoFiles);
+        } finally {
+            setIsVideosUploading(false);
+        }
     };
 
     return (
@@ -47,7 +63,8 @@ const ActivityMediaForm = ({ onImagesSubmit, onVideosSubmit }) => {
                     id="images"
                     accept="image/*"
                     multiple
-                    className="mt-2 block w-full cursor-pointer rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-200 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-cyan-500/20 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-cyan-200 hover:border-zinc-500"
+                    disabled={isImagesUploading}
+                    className="mt-2 block w-full cursor-pointer rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-200 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-cyan-500/20 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-cyan-200 hover:border-zinc-500 disabled:cursor-not-allowed disabled:opacity-60"
                     {...register("images")}
                 />
                 {errors.images && (
@@ -56,9 +73,11 @@ const ActivityMediaForm = ({ onImagesSubmit, onVideosSubmit }) => {
 
                 <button
                     type="submit"
-                    className="mt-4 rounded-lg bg-cyan-500/20 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-500/35"
+                    disabled={isImagesUploading}
+                    aria-busy={isImagesUploading}
+                    className="mt-4 rounded-lg bg-cyan-500/20 px-4 py-2 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-500/35 disabled:cursor-not-allowed disabled:bg-cyan-500/10 disabled:text-cyan-200/60"
                 >
-                    Upload Images
+                    {isImagesUploading ? "Uploading Images..." : "Upload Images"}
                 </button>
             </form>
 
@@ -84,7 +103,8 @@ const ActivityMediaForm = ({ onImagesSubmit, onVideosSubmit }) => {
                     id="videos"
                     accept="video/*"
                     multiple
-                    className="mt-2 block w-full cursor-pointer rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-200 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-amber-500/20 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-amber-200 hover:border-zinc-500"
+                    disabled={isVideosUploading}
+                    className="mt-2 block w-full cursor-pointer rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-200 file:mr-3 file:cursor-pointer file:rounded-md file:border-0 file:bg-amber-500/20 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-amber-200 hover:border-zinc-500 disabled:cursor-not-allowed disabled:opacity-60"
                     {...register("videos")}
                 />
                 {errors.videos && (
@@ -93,9 +113,11 @@ const ActivityMediaForm = ({ onImagesSubmit, onVideosSubmit }) => {
 
                 <button
                     type="submit"
-                    className="mt-4 rounded-lg bg-amber-500/20 px-4 py-2 text-sm font-semibold text-amber-200 transition hover:bg-amber-500/35"
+                    disabled={isVideosUploading}
+                    aria-busy={isVideosUploading}
+                    className="mt-4 rounded-lg bg-amber-500/20 px-4 py-2 text-sm font-semibold text-amber-200 transition hover:bg-amber-500/35 disabled:cursor-not-allowed disabled:bg-amber-500/10 disabled:text-amber-200/60"
                 >
-                    Upload Videos
+                    {isVideosUploading ? "Uploading Videos..." : "Upload Videos"}
                 </button>
             </form>
         </div>

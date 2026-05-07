@@ -108,7 +108,7 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           }
 
           const formData = new FormData();
-          formData.append("video", video);
+          formData.append("file", video);
           formData.append("upload_preset", "clubhub_activity_videos_unsigned");
 
           const response = await fetch(
@@ -120,6 +120,14 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           );
 
           const resData = await response.json();
+
+          if (!response.ok || !resData?.secure_url || !resData?.public_id) {
+            throw new Error(
+              resData?.error?.message ||
+                resData?.message ||
+                "Failed to upload video to Cloudinary.",
+            );
+          }
 
           return dispatch(
             createNewActivityVideo({ activityId, videoData: resData }),
@@ -150,7 +158,7 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           }
 
           const formData = new FormData();
-          formData.append("image", image);
+          formData.append("file", image);
           formData.append("upload_preset", "clubhub_activity_images_unsigned");
 
           const response = await fetch(
@@ -162,6 +170,15 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           );
 
           const resData = await response.json();
+
+          if (!response.ok || !resData?.secure_url || !resData?.public_id) {
+            throw new Error(
+              resData?.error?.message ||
+                resData?.message ||
+                "Failed to upload image to Cloudinary.",
+            );
+          }
+
           return dispatch(
             createNewActivityImage({ activityId, imageData: resData }),
           );
@@ -597,12 +614,12 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-zinc-400">
             Activity Images
           </h2>
-          {activity?.images?.length > 0 && isCompleted ? (
+          {activity?.images?.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {activity.images.map((image, index) => (
                 <img
                   key={index}
-                  src={image.url}
+                  src={image.imageUrl}
                   alt={`Activity Image ${index + 1}`}
                   className="h-48 w-full rounded-lg border border-zinc-700 object-cover"
                 />
@@ -619,7 +636,7 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-zinc-400">
             Activity Videos
           </h2>
-          {activity?.videos?.length > 0 && isCompleted ? (
+          {activity?.videos?.length > 0 ? (
             <div className="grid gap-3 lg:grid-cols-2">
               {activity.videos.map((video, index) => (
                 <video
@@ -627,7 +644,7 @@ const ActivityDetailPage = ({ role, basePath, permissions }) => {
                   controls
                   className="h-64 w-full rounded-lg border border-zinc-700 bg-black object-cover"
                 >
-                  <source src={video.url} type="video/mp4" />
+                  <source src={video.videoUrl} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
               ))}
