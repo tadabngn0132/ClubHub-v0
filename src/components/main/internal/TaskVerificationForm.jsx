@@ -7,7 +7,7 @@ const TaskVerificationForm = ({ taskVerifyData, onSubmit }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      isVerified: taskVerifyData?.isVerified || false,
+      isVerified: taskVerifyData?.status === "VERIFIED" ? "true" : "false",
       reviewerComments: taskVerifyData?.reviewerComments || "",
       assigneeId: taskVerifyData?.assigneeId || null,
     },

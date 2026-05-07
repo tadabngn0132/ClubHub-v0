@@ -172,6 +172,23 @@ const TasksPage = ({ role, basePath }) => {
     });
   };
 
+  const handleTaskStatusText = (status) => {
+    switch (status) {
+      case "NEW":
+        return "New";
+      case "IN_PROGRESS":
+        return "In Progress";
+      case "DONE":
+        return "Done";
+      case "CANCELLED":
+        return "Cancelled";
+      case "ON_HOLD":
+        return "On Hold";
+      default:
+        return status || "Unknown";
+    }
+  };
+
   const hasActiveFilters =
     searchTerm.trim().length > 0 ||
     statusFilter !== "all" ||
@@ -388,7 +405,7 @@ const TasksPage = ({ role, basePath }) => {
                         {task.isCheckCf ? "Yes" : "No"}
                       </td>
                       <td className={`px-3 py-3 text-slate-300`}>
-                        {formatUppercaseToCapitalized(task.status)}
+                        {handleTaskStatusText(task.status)}
                       </td>
                       {role !== "MEMBER" && (
                         <td className={`px-3 py-3 text-slate-300`}>

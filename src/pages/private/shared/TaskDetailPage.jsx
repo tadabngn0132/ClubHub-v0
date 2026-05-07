@@ -231,7 +231,7 @@ const TaskDetailPage = ({ role, basePath }) => {
           <h1 className="mb-4 text-xl font-black text-zinc-100 md:text-2xl">
             Assignee Confirmation
           </h1>
-          {currentUserAssignee && (
+          {task?.status !== "DONE" && currentUserAssignee && (
             <TaskConfirmationForm
               taskCfData={currentUserAssignee}
               onSubmit={handleConfirmCompletion}
@@ -274,12 +274,13 @@ const TaskDetailPage = ({ role, basePath }) => {
 
                   {(role === "ADMIN" ||
                     task.assignorId === currentUser.id ||
-                    assignee.status !== "VERIFIED") && (
-                    <TaskVerificationForm
-                      taskVerifyData={assignee}
-                      onSubmit={handleVerifyTask}
-                    />
-                  )}
+                    assignee.status !== "VERIFIED") &&
+                    task?.status !== "DONE" && (
+                      <TaskVerificationForm
+                        taskVerifyData={assignee}
+                        onSubmit={handleVerifyTask}
+                      />
+                    )}
 
                   {(assignee.status === "VERIFIED" ||
                     assignee.status === "REJECTED") && (
