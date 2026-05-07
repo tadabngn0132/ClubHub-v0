@@ -7,6 +7,8 @@ import {
   receiveRealtimeMessage,
   updateRealtimeMessage,
   removeRealtimeMessage,
+  updateMessageById,
+  softDeleteMessageById,
 } from "../../../store/slices/messageSlice";
 import {
   getAChatRoomById,
@@ -22,6 +24,7 @@ import ChatActionsDropdown from "./ChatActionsDropdown";
 import ChatRoomMembersModal from "./ChatRoomMembersModal";
 import ConfirmationModal from "../../main/internal/ConfirmationModal";
 import ChatRoomMemberForm from "./ChatRoomMemberForm";
+import MessageActionsDropdown from "./MessageActionsDropdown";
 
 const SOCKET_EVENTS = {
   CHAT_MESSAGE_RECEIVE: "chatMessage:receive",
@@ -52,6 +55,9 @@ const Chat = ({ userId, selectedRoomId, onCloseRoom }) => {
   const [isLeaveConfirmationOpen, setIsLeaveConfirmationOpen] = useState(false);
   const [isChatRoomMembersFormOpen, setIsChatRoomMembersFormOpen] =
     useState(false);
+  const [activeMessageMenuId, setActiveMessageMenuId] = useState(null);
+  const [editingMessageId, setEditingMessageId] = useState(null);
+  const [editingContent, setEditingContent] = useState("");
 
   const {
     register,
@@ -290,6 +296,10 @@ const Chat = ({ userId, selectedRoomId, onCloseRoom }) => {
     setIsChatActionsDropdownOpen((isOpen) => !isOpen);
   };
 
+  const closeMessageActionsDropdown = () => {
+    setActiveMessageMenuId(null);
+  };
+
   const handleChatRoomMembersModalOpen = () => {
     setIsMembersModalOpen(true);
   };
@@ -369,6 +379,66 @@ const Chat = ({ userId, selectedRoomId, onCloseRoom }) => {
     handleLeaveConfirmationOpen();
   };
 
+  const handleEditMessage = (message) => {
+    setActiveMessageMenuId(null);
+    setEditingMessageId(message.id);
+    setEditingContent(message.content || "");
+  };
+
+  const handleDeleteMessage = (message) => {
+    setActiveMessageMenuId(null);
+    if (!message?.id) return;
+
+    // Optimistic realtime remove
+    const original = messages.find((m) => m.id === message.id);
+    dispatch(removeRealtimeMessage(message.id));
+
+    dispatch(softDeleteMessageById(message.id))
+      .unwrap()
+      .catch((err) => {
+        // revert on error
+        if (original) dispatch(receiveRealtimeMessage(original));
+        toast.error(err?.message || "Failed to delete message");
+      });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingMessageId(null);
+    setEditingContent("");
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingMessageId) return;
+    if (!editingContent.trim()) {
+      toast.error("Message content is required");
+      return;
+    }
+
+    try {
+      // Optimistic realtime update
+      const original = messages.find((m) => m.id === editingMessageId);
+      const optimistic = {
+        ...(original || {}),
+        content: editingContent,
+        updatedAt: new Date().toISOString(),
+      };
+
+      dispatch(updateRealtimeMessage(optimistic));
+
+      await dispatch(
+        updateMessageById({ messageId: editingMessageId, updateData: { content: editingContent } }),
+      ).unwrap();
+
+      setEditingMessageId(null);
+      setEditingContent("");
+    } catch (err) {
+      // revert optimistic update on failure
+      const original = messages.find((m) => m.id === editingMessageId);
+      if (original) dispatch(updateRealtimeMessage(original));
+      toast.error(err?.message || "Failed to update message");
+    }
+  };
+
   if (!selectedRoomId) {
     return (
       <div className="flex h-full w-full flex-col items-center justify-center bg-gray-900 text-slate-300">
@@ -414,7 +484,7 @@ const Chat = ({ userId, selectedRoomId, onCloseRoom }) => {
               key={message.id}
               className={`flex gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300 ${
                 message.senderId === currentUser?.id ? "flex-row-reverse" : ""
-              }`}
+              } relative`}
             >
               {/* Avatar */}
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-[#db3f7a] to-[#a82d5f] flex-shrink-0 text-sm font-semibold text-white">
@@ -442,27 +512,81 @@ const Chat = ({ userId, selectedRoomId, onCloseRoom }) => {
                 <p className="text-xs font-medium text-gray-400">
                   {message.sender?.fullname || message.senderName || "Unknown"}
                 </p>
-                <div
-                  className={`rounded-xl px-4 py-2.5 transition duration-200 ${
-                    message.senderId === currentUser?.id
-                      ? "bg-gradient-to-r from-[#db3f7a] to-[#a82d5f] text-white"
-                      : "bg-gray-800 text-slate-300"
-                  }`}
-                >
-                  <p className="break-words text-sm">{message.content}</p>
-                </div>
-                <span className="text-xs text-gray-500">
-                  {message.createdAt
-                    ? new Date(message.createdAt).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "2-digit",
-                      })
-                    : ""}
-                </span>
+
+                {editingMessageId === message.id ? (
+                  <div className="w-full">
+                    <input
+                      value={editingContent}
+                      onChange={(e) => setEditingContent(e.target.value)}
+                      className="w-full rounded-md bg-gray-800 px-3 py-2 text-sm text-slate-300"
+                      autoFocus
+                    />
+                    <div className="mt-2 flex gap-2">
+                      <button
+                        onClick={handleSaveEdit}
+                        className="rounded-md bg-gradient-to-r from-[#db3f7a] to-[#a82d5f] px-3 py-1 text-sm text-white"
+                        disabled={!editingContent.trim()}
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={handleCancelEdit}
+                        className="rounded-md border border-gray-700 px-3 py-1 text-sm text-gray-300"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div
+                      className={`rounded-xl px-4 py-2.5 transition duration-200 ${
+                        message.senderId === currentUser?.id
+                          ? "bg-gradient-to-r from-[#db3f7a] to-[#a82d5f] text-white"
+                          : "bg-gray-800 text-slate-300"
+                      }`}
+                    >
+                      <p className="break-words text-sm">{message.content}</p>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      {message.createdAt
+                        ? new Date(message.createdAt).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "2-digit",
+                          })
+                        : ""}
+                    </span>
+                  </>
+                )}
               </div>
+
+              {message.senderId === currentUser?.id && (
+                <button
+                  type="button"
+                  className="rounded-full w-6 h-6 bg-gray-800 cursor-pointer flex items-center justify-center self-center-safe group-hover:opacity-100 transition-opacity duration-200"
+                  onMouseDown={(event) => {
+                    event.stopPropagation();
+                  }}
+                  onClick={() => {
+                    setActiveMessageMenuId((currentId) =>
+                      currentId === message.id ? null : message.id,
+                    );
+                  }}
+                >
+                  <FontAwesomeIcon icon={faEllipsisV} size="xs" />
+                </button>
+              )}
+
+              {activeMessageMenuId === message.id && (
+                <MessageActionsDropdown
+                  onClose={closeMessageActionsDropdown}
+                  onEditMessage={() => handleEditMessage(message)}
+                  onDeleteMessage={() => handleDeleteMessage(message)}
+                />
+              )}
             </div>
           ))
         )}
