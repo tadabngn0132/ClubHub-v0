@@ -15,7 +15,7 @@ import { faTiktok } from "@fortawesome/free-brands-svg-icons";
 import { getPublicActivities } from "../../services/publicActivityService";
 
 const HERO_BACKGROUND_URL =
-  "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1920&h=800&q=80";
+  "https://scontent.fhan2-4.fna.fbcdn.net/v/t39.30808-6/464611744_519155820938083_7847493753639758528_n.png?stp=dst-jpg_tt6&_nc_cat=100&ccb=1-7&_nc_sid=b895b5&_nc_ohc=xwLwb44seqgQ7kNvwGO1Qgn&_nc_oc=AdqTiksXBHYZZgCu-9vh93uQObr2p0DKwWrgkbRyLPHlJ9NjvjGNZ5CX8ny52jG0U5w&_nc_zt=23&_nc_ht=scontent.fhan2-4.fna&_nc_gid=IM2p-zCStgOctODHyB59kw&_nc_ss=7b2a8&oh=00_Af5hLzlkBeGbdwzeTTGNbR8KfmeCkwkZ19ZhF97BGHlgWg&oe=6A01DAF2";
 
 const TIKTOK_TOTAL_VIEWS = 5200000;
 const CURRENT_MEMBERS = 68;
