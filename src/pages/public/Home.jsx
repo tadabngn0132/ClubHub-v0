@@ -209,11 +209,11 @@ const Home = () => {
 
   return (
     <main className="w-full min-h-[var(--pub-main-min-height)] mt-[var(--pub-main-margin-y)] mb-[var(--pub-main-margin-y)] px-[var(--pub-container-padding-x-mobile)] md:px-[var(--pub-container-padding-x)]">
-      <section className="relative overflow-hidden rounded-[2.5rem] border border-white/10 min-h-[22rem] md:min-h-[30rem]">
+      <section className="relative overflow-hidden rounded-[2.5rem] border border-white/10 min-h-[22rem] md:min-h-[30rem] lg:min-h-[42rem]">
         <img
           src={HERO_BACKGROUND_URL}
           alt="Greenwich Dance Crew Hero Banner"
-          className="h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
           fetchPriority="high"
           decoding="async"
         />
@@ -222,17 +222,6 @@ const Home = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,_rgba(219,63,122,0.25)_0%,_transparent_48%)]" />
 
         <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8 md:p-12">
-          <p className="text-xs uppercase tracking-[0.28em] text-white/70">Greenwich Dance Crew</p>
-          <h1 className="monument-extra-bold mt-4 max-w-3xl text-4xl uppercase leading-[1.02] text-white sm:text-5xl md:text-7xl">
-            Where passion
-            <br />
-            meets discipline
-          </h1>
-          <p className="mt-5 max-w-xl text-sm leading-7 text-white/80 md:text-base">
-            Together, we build a professional student stage powered by creativity,
-            accountability, and community connection.
-          </p>
-
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               to="/about"
