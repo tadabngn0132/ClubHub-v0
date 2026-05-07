@@ -12,13 +12,13 @@ import {
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTiktok } from "@fortawesome/free-brands-svg-icons";
-import { sampleActivityData } from "../../data/sampleActivityData";
+import { getPublicActivities } from "../../services/publicActivityService";
 
 const HERO_BACKGROUND_URL =
   "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1920&h=800&q=80";
 
-const TIKTOK_TOTAL_VIEWS = 2400000;
-const CURRENT_MEMBERS = 132;
+const TIKTOK_TOTAL_VIEWS = 5200000;
+const CURRENT_MEMBERS = 68;
 const FOUNDATION_YEAR = 2022;
 
 const formatDateLabel = (isoDate) => {
@@ -36,6 +36,10 @@ const formatDateLabel = (isoDate) => {
 };
 
 const trimWords = (text, wordLimit = 50) => {
+  if (!text) {
+    return "No description available.";
+  }
+
   const words = text.split(/\s+/).filter(Boolean);
 
   if (words.length <= wordLimit) {
@@ -101,6 +105,10 @@ const StatCounter = ({ endValue, label, icon, suffix = "", formatter }) => {
 };
 
 const Home = () => {
+  const [rawActivities, setRawActivities] = useState([]);
+  const [isLoadingActivities, setIsLoadingActivities] = useState(true);
+  const [activitiesError, setActivitiesError] = useState("");
+
   const featuredLayoutClasses = [
     "md:col-span-4 md:row-span-2",
     "md:col-span-3 md:row-span-3",
@@ -109,6 +117,45 @@ const Home = () => {
     "md:col-span-3 md:row-span-1",
     "md:col-span-4 md:row-span-1",
   ];
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadActivities = async () => {
+      try {
+        setIsLoadingActivities(true);
+        setActivitiesError("");
+
+        const response = await getPublicActivities();
+
+        if (!response.success) {
+          throw new Error(response.message || "Failed to load activities");
+        }
+
+        if (isMounted) {
+          setRawActivities(response.data || []);
+        }
+      } catch (loadError) {
+        if (isMounted) {
+          setActivitiesError(
+            loadError?.response?.data?.message ||
+              loadError.message ||
+              "Failed to load activities.",
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoadingActivities(false);
+        }
+      }
+    };
+
+    loadActivities();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const coreValues = useMemo(
     () => [
@@ -141,18 +188,21 @@ const Home = () => {
   );
 
   const featuredActivities = useMemo(() => {
-    return [...sampleActivityData]
+    return rawActivities
+      .filter((activity) => activity.isFeatured === true)
       .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
       .slice(0, 6)
       .map((activity) => ({
         id: activity.id,
         slug: activity.slug,
-        title: activity.title,
+        title: activity.title || "Untitled Activity",
         dateLabel: formatDateLabel(activity.startDate),
-        thumbnailUrl: activity.thumbnailUrl,
-        description: trimWords(activity.description, 50),
+        thumbnailUrl:
+          activity.thumbnailUrl ||
+          "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=1200&h=800&fit=crop",
+        description: trimWords(activity.shortDescription || activity.description, 50),
       }));
-  }, []);
+  }, [rawActivities]);
 
   const clubOverviewText =
     "Greenwich Dance Crew is a student-led community where young creators train, collaborate, and turn ideas into impactful projects. From skills workshops and stage productions to media campaigns, the club helps members grow their artistic mindset, execution capability, and teamwork in real environments. We believe every individual can shine when supported by a culture that values discipline, openness, and inspiration. Beyond dance, this is a space to build confidence, leadership, and lifelong connections.";
@@ -241,7 +291,7 @@ const Home = () => {
           <StatCounter endValue={CURRENT_MEMBERS} label="Current members" icon={faPeopleGroup} />
           <StatCounter endValue={FOUNDATION_YEAR} label="Founded in" icon={faCalendarCheck} />
           <StatCounter
-            endValue={sampleActivityData.length}
+            endValue={rawActivities.length}
             label="Events organized"
             icon={faClapperboard}
           />
@@ -271,46 +321,66 @@ const Home = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:auto-rows-[minmax(9rem,_auto)] md:grid-cols-7">
-          {featuredActivities.map((activity, index) => (
-            <article
-              key={activity.id}
-              className={`group relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-5 text-white transition-all duration-300 hover:-translate-y-1 hover:border-[#DB3F7A]/60 hover:shadow-[0_24px_60px_rgba(0,0,0,0.28)] md:p-6 ${
-                featuredLayoutClasses[index] || "md:col-span-3 md:row-span-1"
-              }`}
-            >
-              <img
-                src={activity.thumbnailUrl}
-                alt={activity.title}
-                className="absolute inset-0 h-full w-full object-cover opacity-25 transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/70 to-black/85" />
-              <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-[#DB3F7A]/20 blur-2xl" />
+        {isLoadingActivities ? (
+          <div className="rounded-2xl border border-white/10 bg-[#0d0d0f] p-6 text-sm text-white/70">
+            Loading featured activities...
+          </div>
+        ) : activitiesError ? (
+          <div className="rounded-2xl border border-red-400/20 bg-red-900/10 p-6 text-sm text-red-200">
+            {activitiesError}
+          </div>
+        ) : featuredActivities.length === 0 ? (
+          <div className="rounded-2xl border border-white/10 bg-[#0d0d0f] p-6 text-sm text-white/70">
+            No featured activities available right now.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 md:auto-rows-[minmax(9rem,_auto)] md:grid-cols-7">
+            {featuredActivities.map((activity, index) => (
+              <article
+                key={activity.id}
+                className={`group relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#0d0d0f] p-5 text-white transition-all duration-300 hover:-translate-y-1 hover:border-[#DB3F7A]/60 hover:shadow-[0_24px_60px_rgba(0,0,0,0.28)] md:p-6 ${
+                  featuredLayoutClasses[index] || "md:col-span-3 md:row-span-1"
+                }`}
+              >
+                {activity.thumbnailUrl ? (
+                    <img
+                      src={activity.thumbnailUrl}
+                      alt={activity.title}
+                      className="absolute inset-0 h-full w-full object-cover opacity-25 transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center rounded-[2rem] border border-[#DB3F7A]/30 bg-[#DB3F7A]/20 text-4xl font-bold text-white/80">
+                      {(activity.title || "").slice(0, 1).toUpperCase()}
+                    </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/70 to-black/85" />
+                <div className="pointer-events-none absolute -right-10 -top-10 h-24 w-24 rounded-full bg-[#DB3F7A]/20 blur-2xl" />
 
-              <div className="relative flex h-full flex-col">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-white/55">{activity.dateLabel}</p>
+                <div className="relative flex h-full flex-col">
+                  <p className="text-[11px] uppercase tracking-[0.22em] text-white/55">{activity.dateLabel}</p>
 
-                <h3 className="monument-extra-bold mt-3 text-2xl uppercase leading-tight md:text-3xl">
-                  {activity.title}
-                </h3>
+                  <h3 className="monument-extra-bold mt-3 text-2xl uppercase leading-tight md:text-3xl">
+                    {activity.title}
+                  </h3>
 
-                <p className="mt-4 max-w-sm text-xs font-light leading-6 text-white/80 md:text-sm">
-                  {activity.description}
-                </p>
+                  <p className="mt-4 max-w-sm text-xs font-light leading-6 text-white/80 md:text-sm">
+                    {activity.description}
+                  </p>
 
-                <Link
-                  to={`/activities/${activity.slug}`}
-                  className="mt-4 inline-flex w-fit items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#DB3F7A] transition-colors hover:text-[#ef6b9b] md:mt-auto"
-                >
-                  View details
-                  <FontAwesomeIcon icon={faArrowRight} size="sm" />
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
+                  <Link
+                    to={`/activities/${activity.slug}`}
+                    className="mt-4 inline-flex w-fit items-center gap-2 text-xs uppercase tracking-[0.2em] text-[#DB3F7A] transition-colors hover:text-[#ef6b9b] md:mt-auto"
+                  >
+                    View details
+                    <FontAwesomeIcon icon={faArrowRight} size="sm" />
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
 
         <Link
           to="/activities"
